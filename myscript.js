@@ -43,5 +43,6 @@ function addTask() {
 function addQuestion(event, button) {
     console.log(button);
     alert(button);
+     alert(button);
 }
 
