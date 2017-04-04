@@ -69,6 +69,19 @@ function addTask2(event){
 		inputTaskName.placeholder="Task's Title";
 		wrapper.appendChild(inputTaskName);
 	
+	//Creation of the remove task button
+	var removeTaskButton = document.createElement("button");
+		removeTaskButton.setAttribute("class", "removeButton");
+		removeTaskButton.type="button";
+		removeTaskButton.value= "Remove the task";
+		removeTaskButton.innerHTML ="Remove the task";
+		wrapper.appendChild(removeTaskButton);
+		
+		//Add the event for removing the task
+			removeTaskButton.addEventListener("click", function(event){
+				removeTask(event, task);
+			});
+	
 	//Creation of the add question button
 	var buttonQuestion = document.createElement("button");
 		buttonQuestion.setAttribute("class", "addQuestionButton");
@@ -84,6 +97,11 @@ function addTask2(event){
 			});
 	
 	nbTasks++;
+}
+function removeTask(event, task){
+	
+	var parent = task.parentElement;
+	parent.removeChild(task);
 }
 
 function addQuestion(event, button) {
@@ -120,3 +138,11 @@ function addQuestion(event, button) {
 
 
 document.getElementById("addTask").addEventListener("click", addTask2);
+
+//#############################################
+//
+// Remove the number : "Task n°x", will be difficult to deal with if we remove a task
+// Same for the question
+//
+//
+//##############################################

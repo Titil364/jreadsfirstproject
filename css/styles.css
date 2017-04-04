@@ -28,9 +28,20 @@
     margin-right: 5%;
     padding:2%;
 }
+
+
+/* BUTTONS */
 .addQuestionButton{
 	display:block;
 }
+.removeButton{
+
+}
+
+}
+/* END BUTTONS */
+
+
 .task{
 	border:1px solid #777;
 	border-radius:16px;
@@ -42,8 +53,6 @@
 	border-radius:16px;
 	padding:7px;
 	margin-bottom: 5px;
-	
-
 }
 .task > div{
 	margin-bottom: 5px;
