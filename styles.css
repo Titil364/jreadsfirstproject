@@ -1,0 +1,29 @@
+#center{
+    padding : 2%; 
+    width : 75%;
+    background-color: #eccd69;
+    margin: auto;
+    height:100vh;
+}
+#existing{
+    background-color: #e5c250;
+    padding:2%;
+}
+#newForm{
+    background-color: #e5ba2d;
+    padding:2%;
+}
+#newTask{
+    background-color: #e0ae0b;
+    width:90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding:2%;
+}
+#newQuestion{
+    background-color:#edb602;
+    width:90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding:2%;
+}

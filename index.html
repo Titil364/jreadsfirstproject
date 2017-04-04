@@ -4,15 +4,54 @@
             <title> uclanForm</title>
             <meta charset="utf-8">
             <link rel="stylesheet" href="styles.css">
+            <script src ="myscript.js"></script>
         </head>
         <body>
-            <div id="fpart">
-                
-            </div>
-            <div id="spart">
-                
-            </div>
-            <div id="tpart">
+            <div id ="center">
+                <div id="header">
+                    <h1>Welcome on the form creation page</h1>
+                    <!-- This is supposed to be empty is there are no forms on this account-->
+                </div>                
+                <div id="existing">
+                    <p>Existing forms</p>
+                </div>
+                <div id="newForm">
+                    <button type="button">Add a new Form</button>
+                        <fieldset>
+                            <p>
+                                Title : <input type="text"  name ="title" placeholder="Form's Title">
+                            </p>
+                            <p>Choose your required information</p>
+                            <button type="button">Add a new Field</button>
+                                <p> Existing tasks for this form</p>
+                                <button type="button" onclick="addTask()">Add a new Task</button>
+                                <div id="newTask">
+                                    <!--
+                                    <label for="id2">Name : </label>
+                                    <input type="text" id="id2" name ="title" placeholder="Task's Title">
+                                    <p>
+                                        <label for="id1">Image : </label>
+                                        <input type="url"  id="id1" label="image" name ="title" placeholder="URL for the task's image">
+                                        <button type ="button" value="Preview">Preview</button>
+                                    </p>
+                                    
+                                    <p> Existing questions for this form</p> 
+                                    <button type="button">Add a new Question</button>
+                                    <fieldset id="newQuestion">
+                                        <p>
+                                            <label for="id">Title : </label>
+                                            <input type="text" id="id" label="Title" name ="title" placeholder="Question's Title">
+                                        </p>
+                                        <p>
+                                            <button type="button">Yes/No Question</button>
+                                            <button type="button">Text Area</button>
+                                            <button type="button">Thumb Up</button>
+                                            <button type="button">Smiley</button>
+                                        </p>
+                                    </fieldset> 
+                                </div>
+                        </fieldset> -->
+                </div>
                 
             </div>
         </body>
