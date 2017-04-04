@@ -12,6 +12,7 @@
 #newForm{
     background-color: #e5ba2d;
     padding:2%;
+	border: 2px solid black;
 }
 #newTask{
     background-color: #e0ae0b;
@@ -26,4 +27,24 @@
     margin-left: 5%;
     margin-right: 5%;
     padding:2%;
+}
+.addQuestionButton{
+	display:block;
+}
+.task{
+	border:1px solid #777;
+	border-radius:16px;
+	padding:7px;
+	margin:5px;
+}
+.question{
+	border:1px solid #333;
+	border-radius:16px;
+	padding:7px;
+	margin-bottom: 5px;
+	
+
+}
+.task > div{
+	margin-bottom: 5px;
 }
