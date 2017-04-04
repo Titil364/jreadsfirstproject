@@ -79,7 +79,7 @@ function addTask2(event){
 		
 		//Add the event for removing the task
 			removeTaskButton.addEventListener("click", function(event){
-				removeTask(event, task);
+				removeMe(event, task);
 			});
 	
 	//Creation of the add question button
@@ -98,10 +98,9 @@ function addTask2(event){
 	
 	nbTasks++;
 }
-function removeTask(event, task){
-	
-	var parent = task.parentElement;
-	parent.removeChild(task);
+function removeMe(event, me){
+	var parent = me.parentElement;
+	parent.removeChild(me);
 }
 
 function addQuestion(event, button) {
@@ -121,11 +120,14 @@ function addQuestion(event, button) {
 	task.appendChild(qWrapper);
 	
 	//Creation of the childs
+		
 		//The label of the question
 	var taskNameLabel = document.createElement("label");
 		taskNameLabel.setAttribute("for","id1");
 		taskNameLabel.innerHTML ="Question n°"+nbQuestions+" : ";
 		qWrapper.appendChild(taskNameLabel);
+		
+		
 		//The input of the task's name
     var inputQuestion = document.createElement("input");
 		inputQuestion.type = "text";
@@ -133,6 +135,20 @@ function addQuestion(event, button) {
 		inputQuestion.name="title";
 		inputQuestion.placeholder="Do you like carrots ?";
 		qWrapper.appendChild(inputQuestion);
+		
+		
+		//Creation of the remove question button
+	var removeQButton = document.createElement("button");
+		removeQButton.setAttribute("class", "removeButton");
+		removeQButton.type="button";
+		removeQButton.value= "Remove the question";
+		removeQButton.innerHTML ="Remove the question";
+		qWrapper.appendChild(removeQButton);
+		
+		//Add the event for removing the task
+			removeQButton.addEventListener("click", function(event){
+				removeMe(event, qWrapper);
+			});
 	
 }
 
