@@ -1,47 +1,7 @@
 var b = document.body;
 var nbTasks = 1;
 
-function addTask() {
-    nbTasks ++;
-    var question =[];
-    tasks.push(question);
-	
-    var div = document.getElementById("newTask");
-    var field = document.createElement("fieldset");
-    field.id = nbTasks;
-    div.appendChild(field);
-    var newDiv = document.getElementsByTagName("fieldset");
-    var label1 = document.createElement("label");
-    label1.setAttribute("for","id1");
-    label1.innerHTML ="Name : ";
-    newDiv[nbTasks].appendChild(label1);
-    var input = document.createElement("input");
-    input.type = "text";
-    input.id="id1";
-    input.name="title";
-    input.placeholder="Task's Title";
-    newDiv[nbTasks].appendChild(input);
-	
-    var button = document.createElement("button");
-    button.type="button";
-    button.value="Preview";
-    button.innerHTML ="Preview";
-    newDiv[nbTasks].appendChild(button);
-    var divClass = document.createElement("div");
-    divClass.class ="button";
-    newDiv[nbTasks].appendChild(divClass);
-    var buttonQuestion = document.createElement("button");
-    buttonQuestion.type = "button";
-    buttonQuestion.value= "Add Question";
-    buttonQuestion.innerHTML ="Add a question";
-    divClass.appendChild(buttonQuestion);
-		//Add the event for adding the question
-		buttonQuestion  .addEventListener("click", function(event){
-			addQuestion(event, buttonQuestion);
-		});
-}
-
-function addTask2(event){
+function addTask(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
 	
@@ -99,8 +59,15 @@ function addTask2(event){
 	nbTasks++;
 }
 function removeMe(event, me){
+
 	var parent = me.parentElement;
-	parent.removeChild(me);
+	if(me.className === "task"){
+				if(confirm("Are you sure you wanna delete this task ? \nIt will delete all the questions included in the task.")){
+			parent.removeChild(me);
+		}
+	}
+	else
+		parent.removeChild(me);
 }
 
 function addQuestion(event, button) {
@@ -151,7 +118,6 @@ function addQuestion(event, button) {
 			});
 	
 }
-
 function addField(event) {
     //fieldset creation
     var fieldset = document.createElement("fieldset");
@@ -184,7 +150,7 @@ function addField(event) {
 }
 
 
-document.getElementById("addTask").addEventListener("click", addTask2);
+document.getElementById("addTask").addEventListener("click", addTask);
 document.getElementById("addField").addEventListener("click",addField);
 
 //#############################################
