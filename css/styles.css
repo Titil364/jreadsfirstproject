@@ -60,3 +60,10 @@
     display: flex;
     flex-direction: column;
 }
+
+.field{
+	border:1px solid #F77;
+	border-radius:16px;
+	padding:7px;
+	margin:5px;
+}

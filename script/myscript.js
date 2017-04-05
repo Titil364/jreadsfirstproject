@@ -214,7 +214,7 @@ function addField(event) {
     
     //wrapper creation
     var wrapper = document.createElement("div");
-    wrapper.setAttribute("class","addQuestionButton");
+    wrapper.setAttribute("class","field");
     
     //Create label
     var inputLabel = document.createElement("input");
