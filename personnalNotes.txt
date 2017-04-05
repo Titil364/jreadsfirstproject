@@ -1,5 +1,3 @@
 
 Are you sure you wanna delete this task ? 
 It will delete all the questions included in the task. 
-
-test
