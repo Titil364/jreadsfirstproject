@@ -183,22 +183,22 @@ function answers(event){
 		case 'smiley':
 			//emojis http://emojipedia.org/emoji-one/
 			console.log("smiley");
-			answerArea.appendChild(makeInputImage("smiley",-2,"img/vsadsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",-1,"img/sadsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",0,"img/neutralsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",1,"img/happysmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",-2,"img/vhappysmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",-2,"media/vsadsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",-1,"media/sadsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",0,"media/neutralsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",1,"media/happysmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",-2,"media/vhappysmiley.png"));
 			break;
 		case 'textArea':
 			console.log("textArea"); 
 			break;
 		case 'thumbs':
 			console.log("thumbs");
-			answerArea.appendChild(makeInputImage("thumbs",-2,"img/twothumbsdown.png"));
-			answerArea.appendChild(makeInputImage("thumbs",-1,"img/thumbdown.png"));
-			answerArea.appendChild(makeInputImage("thumbs",0,"img/thumbup.png"));
-			answerArea.appendChild(makeInputImage("thumbs",1,"img/twothumbsup.png"));
-			answerArea.appendChild(makeInputImage("thumbs",-2,"img/threethumbsup.png"));
+			answerArea.appendChild(makeInputImage("thumbs",-2,"media/twothumbsdown.png"));
+			answerArea.appendChild(makeInputImage("thumbs",-1,"media/thumbdown.png"));
+			answerArea.appendChild(makeInputImage("thumbs",0,"media/thumbup.png"));
+			answerArea.appendChild(makeInputImage("thumbs",1,"media/twothumbsup.png"));
+			answerArea.appendChild(makeInputImage("thumbs",-2,"media/threethumbsup.png"));
 			break;
 	}
 }
