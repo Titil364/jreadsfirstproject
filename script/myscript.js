@@ -1,47 +1,7 @@
 var b = document.body;
 var nbTasks = 1;
 
-function addTask() {
-    nbTasks ++;
-    var question =[];
-    tasks.push(question);
-	
-    var div = document.getElementById("newTask");
-    var field = document.createElement("fieldset");
-    field.id = nbTasks;
-    div.appendChild(field);
-    var newDiv = document.getElementsByTagName("fieldset");
-    var label1 = document.createElement("label");
-    label1.setAttribute("for","id1");
-    label1.innerHTML ="Name : ";
-    newDiv[nbTasks].appendChild(label1);
-    var input = document.createElement("input");
-    input.type = "text";
-    input.id="id1";
-    input.name="title";
-    input.placeholder="Task's Title";
-    newDiv[nbTasks].appendChild(input);
-	
-    var button = document.createElement("button");
-    button.type="button";
-    button.value="Preview";
-    button.innerHTML ="Preview";
-    newDiv[nbTasks].appendChild(button);
-    var divClass = document.createElement("div");
-    divClass.class ="button";
-    newDiv[nbTasks].appendChild(divClass);
-    var buttonQuestion = document.createElement("button");
-    buttonQuestion.type = "button";
-    buttonQuestion.value= "Add Question";
-    buttonQuestion.innerHTML ="Add a question";
-    divClass.appendChild(buttonQuestion);
-		//Add the event for adding the question
-		buttonQuestion.addEventListener("click", function(event){
-			addQuestion(event, buttonQuestion);
-		});
-}
-
-function addTask2(event){
+function addTask(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
 	
@@ -59,7 +19,7 @@ function addTask2(event){
 		//The label of the task's name
 	var taskNameLabel = document.createElement("label");
 		taskNameLabel.setAttribute("for","nameTaskLabel"+nbTasks);
-		taskNameLabel.innerHTML ="Name of the task n°"+nbTasks+" : ";
+		taskNameLabel.innerHTML ="Name of the task : ";
 		wrapper.appendChild(taskNameLabel);
 		//The input of the task's name
     var inputTaskName = document.createElement("input");
@@ -99,8 +59,16 @@ function addTask2(event){
 	nbTasks++;
 }
 function removeMe(event, me){
+
+	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
-	parent.removeChild(me);
+	if(me.className === "task" & !(inputChild.value=="")){
+				if(confirm("Are you sure you wanna delete this task ? \nIt will delete all the questions included in the task.")){
+			parent.removeChild(me);
+		}
+	}
+	else
+		parent.removeChild(me);
 }
 
 function addQuestion(event, button) {
@@ -234,6 +202,37 @@ function answers(event){
 			break;
 	}
 }
+function addField(event) {
+    //fieldset creation
+    var fieldset = document.createElement("fieldset");
+    
+    //wrapper creation
+    var wrapper = document.createElement("div");
+    wrapper.setAttribute("class","addQuestionButton");
+    
+    //Create label
+    var inputLabel = document.createElement("input");
+    inputLabel.type = "text";
+    inputLabel.placeholder ="Your Field name";
+    wrapper.appendChild(inputLabel);
+        
+    var removeTaskButton = document.createElement("button");
+		removeTaskButton.setAttribute("class", "removeButton");
+		removeTaskButton.type="button";
+		removeTaskButton.value= "Remove the Field";
+		removeTaskButton.innerHTML ="Remove the Field";
+		wrapper.appendChild(removeTaskButton);
+		
+		//Add the event for removing the task
+			removeTaskButton.addEventListener("click", function(event){
+				removeMe(event, wrapper);
+			});
+            
+    //Add fieldset to thecode
+    var newField = document.getElementById("newField");
+    newField.appendChild(wrapper);
+}
+
 
 
 function makeRadioButton(name, value, text) {
@@ -267,7 +266,10 @@ function makeInputImage(name, value, imageAdr) {
     return label;
   }
 
-document.getElementById("addTask").addEventListener("click", addTask2);
+
+document.getElementById("addTask").addEventListener("click", addTask);
+document.getElementById("addField").addEventListener("click",addField);
+
 
 //#############################################
 //
