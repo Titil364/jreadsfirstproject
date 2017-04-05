@@ -99,8 +99,15 @@ function addTask2(event){
 	nbTasks++;
 }
 function removeMe(event, me){
+
 	var parent = me.parentElement;
-	parent.removeChild(me);
+	if(me.className === "task"){
+				if(confirm("Are you sure you wanna delete this task ? \nIt will delete all the questions included in the task.")){
+			parent.removeChild(me);
+		}
+	}
+	else
+		parent.removeChild(me);
 }
 
 function addQuestion(event, button) {
