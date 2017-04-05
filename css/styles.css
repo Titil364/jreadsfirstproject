@@ -56,7 +56,7 @@
 	margin-bottom: 5px;
 }
 
-#answerArea{
+.answerArea{
     display: flex;
     flex-direction: column;
 }

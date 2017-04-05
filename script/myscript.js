@@ -118,65 +118,71 @@ function addQuestion(event, button) {
 				removeMe(event, qWrapper);
 			});
 
-	//add evalutation choice
+			
+	//Add evalutation choices
 
-		//add form
-		var form  = document.createElement("form");
-		qWrapper.appendChild(form);
+		//Add a choice wrapper
+		var cWrapper  = document.createElement("div");
+			qWrapper.appendChild(cWrapper);
 
 
-		//creating thumbs option
-
-    	var labelThumb = document.createElement("label");
+		//Creating the thumbs option
+    	
 		var radioInputThumb = document.createElement('input');
-		radioInputThumb.setAttribute('type', 'radio');
-		radioInputThumb.setAttribute('name', 'option');
-		radioInputThumb.setAttribute('value', 'thumbs');
-		radioInputThumb.innerHTML = "thumbs";
-		labelThumb.appendChild(radioInputThumb);
-		labelThumb.appendChild(document.createTextNode("Thumbs"));
+			radioInputThumb.setAttribute('type', 'radio');
+			radioInputThumb.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputThumb.setAttribute('required', 'required');
+			radioInputThumb.setAttribute('value', 'thumbs');
+			radioInputThumb.innerHTML = "thumbs";
+		var labelThumb = document.createElement("label");
+			labelThumb.appendChild(radioInputThumb);
+			labelThumb.appendChild(document.createTextNode("Thumbs"));
 
-		//creating smiley option
+			
+		//Creating the smiley option
 
-    	var labelSmiley = document.createElement("label");
 		var radioInputSmiley = document.createElement('input');
-		radioInputSmiley.setAttribute('type', 'radio');
-		radioInputSmiley.setAttribute('name', 'option');
-		radioInputSmiley.setAttribute('value', 'smiley');
-		labelSmiley.appendChild(radioInputSmiley);
-		labelSmiley.appendChild(document.createTextNode("smiley"));
+			radioInputSmiley.setAttribute('type', 'radio');
+			radioInputSmiley.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputSmiley.setAttribute('value', 'smiley');
+		var labelSmiley = document.createElement("label");
+			labelSmiley.appendChild(radioInputSmiley);
+			labelSmiley.appendChild(document.createTextNode("smiley"));
 
-		//creating textArea option
-
-    	var labelTextArea = document.createElement("label");
+			
+		//Creating the textArea option
+    	
 		var radioInputTextArea = document.createElement('input');
-		radioInputTextArea.setAttribute('type', 'radio');
-		radioInputTextArea.setAttribute('name', 'option');
-		radioInputTextArea.setAttribute('value', 'textArea');
-		labelTextArea.appendChild(radioInputTextArea);
-		labelTextArea.appendChild(document.createTextNode("textArea"));
+			radioInputTextArea.setAttribute('type', 'radio');
+			radioInputTextArea.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputTextArea.setAttribute('value', 'textArea');
+		var labelTextArea = document.createElement("label");
+			labelTextArea.appendChild(radioInputTextArea);
+			labelTextArea.appendChild(document.createTextNode("textArea"));
 
 		
-		//add to form
-		form.appendChild(labelThumb);
-		form.appendChild(labelSmiley);
-		form.appendChild(labelTextArea);
+		//Add the options to form
+			cWrapper.appendChild(labelThumb);
+			cWrapper.appendChild(labelSmiley);
+			cWrapper.appendChild(labelTextArea);
 
-		//add div 
+		//Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
-		answerArea.setAttribute("id","answerArea");
-		form.appendChild(answerArea);
+			answerArea.setAttribute("class","answerArea");
+			cWrapper.appendChild(answerArea);
 
-		//add listener on radio changement
-		form.addEventListener('change',answers);
+			//add listener on radio changement
+			cWrapper.addEventListener('change', function(event){
+				answers(event, answerArea);
+			});
 
 
 
 
 }
 
-function answers(event){
-	var answerArea = document.getElementById("answerArea");
+function answers(event, aArea){
+	var answerArea = aArea;
 	//on vide la zone rep
 	answerArea.innerHTML = "";
 	switch(event.target.value){
