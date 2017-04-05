@@ -149,9 +149,123 @@ function addQuestion(event, button) {
 			removeQButton.addEventListener("click", function(event){
 				removeMe(event, qWrapper);
 			});
-	
+
+	//add evalutation choice
+
+		//add form
+		var form  = document.createElement("form");
+		qWrapper.appendChild(form);
+
+
+		//creating thumbs option
+
+    	var labelThumb = document.createElement("label");
+		var radioInputThumb = document.createElement('input');
+		radioInputThumb.setAttribute('type', 'radio');
+		radioInputThumb.setAttribute('name', 'option');
+		radioInputThumb.setAttribute('value', 'thumbs');
+		radioInputThumb.innerHTML = "thumbs";
+		labelThumb.appendChild(radioInputThumb);
+		labelThumb.appendChild(document.createTextNode("Thumbs"));
+
+		//creating smiley option
+
+    	var labelSmiley = document.createElement("label");
+		var radioInputSmiley = document.createElement('input');
+		radioInputSmiley.setAttribute('type', 'radio');
+		radioInputSmiley.setAttribute('name', 'option');
+		radioInputSmiley.setAttribute('value', 'smiley');
+		labelSmiley.appendChild(radioInputSmiley);
+		labelSmiley.appendChild(document.createTextNode("smiley"));
+
+		//creating textArea option
+
+    	var labelTextArea = document.createElement("label");
+		var radioInputTextArea = document.createElement('input');
+		radioInputTextArea.setAttribute('type', 'radio');
+		radioInputTextArea.setAttribute('name', 'option');
+		radioInputTextArea.setAttribute('value', 'textArea');
+		labelTextArea.appendChild(radioInputTextArea);
+		labelTextArea.appendChild(document.createTextNode("textArea"));
+
+		
+		//add to form
+		form.appendChild(labelThumb);
+		form.appendChild(labelSmiley);
+		form.appendChild(labelTextArea);
+
+		//add div 
+		var answerArea = document.createElement("div");
+		answerArea.setAttribute("id","answerArea");
+		form.appendChild(answerArea);
+
+		//add listener on radio changement
+		form.addEventListener('change',answers);
+
+
+
+
 }
 
+function answers(event){
+	var answerArea = document.getElementById("answerArea");
+	//on vide la zone rep
+	answerArea.innerHTML = "";
+	switch(event.target.value){
+		case 'smiley':
+			//emojis http://emojipedia.org/emoji-one/
+			console.log("smiley");
+			answerArea.appendChild(makeInputImage("smiley",-2,"img/vsadsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",-1,"img/sadsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",0,"img/neutralsmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",1,"img/happysmiley.png"));
+			answerArea.appendChild(makeInputImage("smiley",-2,"img/vhappysmiley.png"));
+			break;
+		case 'textArea':
+			console.log("textArea"); 
+			break;
+		case 'thumbs':
+			console.log("thumbs");
+			answerArea.appendChild(makeInputImage("thumbs",-2,"img/twothumbsdown.png"));
+			answerArea.appendChild(makeInputImage("thumbs",-1,"img/thumbdown.png"));
+			answerArea.appendChild(makeInputImage("thumbs",0,"img/thumbup.png"));
+			answerArea.appendChild(makeInputImage("thumbs",1,"img/twothumbsup.png"));
+			answerArea.appendChild(makeInputImage("thumbs",-2,"img/threethumbsup.png"));
+			break;
+	}
+}
+
+
+function makeRadioButton(name, value, text) {
+
+    var label = document.createElement("label");
+    var radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = name;
+    radio.value = value;
+
+    label.appendChild(radio);
+
+    label.appendChild(document.createTextNode(text));
+    return label;
+  }
+
+function makeInputImage(name, value, imageAdr) {
+
+	var label = document.createElement("label");
+
+    var inputBox = document.createElement("input");
+    inputBox.setAttribute("type","text");
+    inputBox.setAttribute("id",name+value);
+
+    var image = document.createElement("img");
+    image.setAttribute("src",imageAdr);
+
+    label.appendChild(image);
+
+    label.appendChild(inputBox);
+    return label;
+  }
 
 document.getElementById("addTask").addEventListener("click", addTask2);
 
