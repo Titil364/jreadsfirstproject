@@ -19,7 +19,7 @@ function addTask(event){
 		//The label of the task's name
 	var taskNameLabel = document.createElement("label");
 		taskNameLabel.setAttribute("for","nameTaskLabel"+nbTasks);
-		taskNameLabel.innerHTML ="Name of the task n°"+nbTasks+" : ";
+		taskNameLabel.innerHTML ="Name of the task : ";
 		wrapper.appendChild(taskNameLabel);
 		//The input of the task's name
     var inputTaskName = document.createElement("input");
@@ -60,8 +60,9 @@ function addTask(event){
 }
 function removeMe(event, me){
 
+	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
-	if(me.className === "task"){
+	if(me.className === "task" & !(inputChild.value=="")){
 				if(confirm("Are you sure you wanna delete this task ? \nIt will delete all the questions included in the task.")){
 			parent.removeChild(me);
 		}
