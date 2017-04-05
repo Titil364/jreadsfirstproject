@@ -2,6 +2,8 @@
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
 
+
+
 $action = "";
 
 if(isset($_GET['action']){
@@ -13,7 +15,8 @@ else{
 	//default action
 	$action = '';
 }
-$controller
+
+$controller = "";
 if(isset($_GET['controller']){
 	$controller = $_GET['controller'];
 }else if(isset($_POST['controller']){
