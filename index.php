@@ -1,5 +1,5 @@
 <?php
-	//session_start();
+	session_start();
 	
     require_once "./lib/File.php";
     require_once File::build_path(array('controller', 'router.php'));

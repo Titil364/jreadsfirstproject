@@ -14,13 +14,18 @@
 			<input type="text"  name ="title" placeholder="Form's Title">
 		</p>
 		<p>Choose your required information</p>
+		<button type="button" id="addField">Add a new Field</button>
 		<div id="newField">
-			<button type="button" id="addField">Add a new Field</button>
+			
 		</div>						
 
 			<p> Existing tasks for this form</p>
 			<button type="button" id="addTask">Add a new Task</button>
-			<!--<div id="newTask">
+	
+</div>
+<button type="button" id="submit">Create the form</button> 
+ 
+ 		<!--<div id="newTask">
 				
 				<label for="id2">Name : </label>
 				<input type="text" id="id2" name ="title" placeholder="Task's Title">
@@ -45,6 +50,3 @@
 					</p>
 				</fieldset> 
 			</div> -->
-</div>
-<button type="button" id="submit">Create the form</button> 
- 
