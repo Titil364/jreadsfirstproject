@@ -78,7 +78,8 @@ CREATE TABLE `User` (
   `userId` int(11) NOT NULL,
   `userMail` varchar(20) DEFAULT NULL,
   `userSurname` varchar(20) DEFAULT NULL,
-  `userForename` varchar(20) DEFAULT NULL
+  `userForename` varchar(20) DEFAULT NULL,
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
