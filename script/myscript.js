@@ -308,8 +308,8 @@ function extractData(){
 	var applications = $(".application");
 	for(var i = 0; i < applications.length; i++){
 		var id = applications[i].id.slice(1, applications[i].id.length);
-		var title = $("#nameApplicationLabel"+id).val();
 		//console.log("#################");
+sy		var title = $("#nameApplicationLabel"+id).val();
 		//console.log("Task : "+title);
 		//var a = new Application(title);
 		var questions = $("#T"+id+"> .question");
