@@ -16,7 +16,10 @@
         <footer>
             
         </footer>
-		
+		<script src ="script/jquery.js"></script>
+		<script src ="script/object.js"></script>
 		<script src ="script/myscript.js"></script>
+		
+		<!--<script src ="script/jquery.min.js"></script>-->
     </body>
 </html>

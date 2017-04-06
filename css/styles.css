@@ -42,7 +42,7 @@ main{
 /* END BUTTONS */
 
 
-.task{
+.application{
 	border:1px solid #777;
 	border-radius:16px;
 	padding:7px;
@@ -54,7 +54,7 @@ main{
 	padding:7px;
 	margin-bottom: 5px;
 }
-.task > div{
+.application > div{
 	margin-bottom: 5px;
 }
 
@@ -68,4 +68,13 @@ main{
 	border-radius:16px;
 	padding:7px;
 	margin:5px;
+}
+
+img{
+	width:16px;
+	height:16px;
+}
+
+.question div:not(:last-child){
+	display:inline;
 }

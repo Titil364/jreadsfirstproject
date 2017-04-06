@@ -1,45 +1,45 @@
 var b = document.body;
-var nbTasks = 1;
+var nbElement = 0;
 
-function addTask(event){
+function addApplication(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
 	
-	//Creation of the task wrapper
-	var task = document.createElement("div");
-		task.setAttribute("class", "task");
-		task.setAttribute("id", "T"+nbTasks);
-		form.appendChild(task);
+	//Creation of the application wrapper
+	var application = document.createElement("div");
+		application.setAttribute("class", "application");
+		application.setAttribute("id", "T"+nbElement);
+		form.appendChild(application);
 	
 	//Creation of the childs
 	
 	var wrapper = document.createElement("div");
-	task.appendChild(wrapper);
+	application.appendChild(wrapper);
 	
-		//The label of the task's name
-	var taskNameLabel = document.createElement("label");
-		taskNameLabel.setAttribute("for","nameTaskLabel"+nbTasks);
-		taskNameLabel.innerHTML ="Name of the task : ";
-		wrapper.appendChild(taskNameLabel);
-		//The input of the task's name
-    var inputTaskName = document.createElement("input");
-		inputTaskName.type = "text";
-		inputTaskName.id="nameTaskLabel"+nbTasks;
-		inputTaskName.name="title";
-		inputTaskName.placeholder="Task's Title";
-		wrapper.appendChild(inputTaskName);
+		//The label of the application's name
+	var applicationNameLabel = document.createElement("label");
+		applicationNameLabel.setAttribute("for","nameApplicationLabel"+nbElement);
+		applicationNameLabel.innerHTML ="Name of the application : ";
+		wrapper.appendChild(applicationNameLabel);
+		//The input of the application's name
+    var inputApplicationName = document.createElement("input");
+		inputApplicationName.type = "text";
+		inputApplicationName.id="nameApplicationLabel"+nbElement;
+		inputApplicationName.name="title";
+		inputApplicationName.placeholder="Application's Title";
+		wrapper.appendChild(inputApplicationName);
 	
-	//Creation of the remove task button
-	var removeTaskButton = document.createElement("button");
-		removeTaskButton.setAttribute("class", "removeButton");
-		removeTaskButton.type="button";
-		removeTaskButton.value= "Remove the task";
-		removeTaskButton.innerHTML ="Remove the task";
-		wrapper.appendChild(removeTaskButton);
+	//Creation of the remove application button
+	var removeApplicationButton = document.createElement("button");
+		removeApplicationButton.setAttribute("class", "removeButton");
+		removeApplicationButton.type="button";
+		removeApplicationButton.value= "Remove the application";
+		removeApplicationButton.innerHTML ="Remove the application";
+		wrapper.appendChild(removeApplicationButton);
 		
-		//Add the event for removing the task
-			removeTaskButton.addEventListener("click", function(event){
-				removeMe(event, task);
+		//Add the event for removing the application
+			removeApplicationButton.addEventListener("click", function(event){
+				removeMe(event, application);
 			});
 	
 	//Creation of the add question button
@@ -56,47 +56,63 @@ function addTask(event){
 				addQuestion(event, buttonQuestion);
 			});
 	
-	nbTasks++;
+	nbElement++;
 }
 function removeMe(event, me){
 
 	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
-	if(me.className === "task" & !(inputChild.value=="")){
-				if(confirm("Are you sure you wanna delete this task ? \nIt will delete all the questions included in the task.")){
+	if(me.className === "application" & (!(inputChild.value=="") || $(me).children().length > 1)){
+				if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
 			parent.removeChild(me);
 		}
 	}
-	else
+	/*if(me.className === "question"){
+		var id = me.id.slice(1, me.id.length);
+		
+		var questions = $("#"+parent.id+" > .question");
+		console.log(questions);
+		console.log(questions.length);
+		for(var i = id; i < questions.length-1; i++){
+			questions[id+1].id = "q"+id;
+			$(questions).children()[0].setAttribute("for", "question"+id);
+			$(questions).children()[1].id = "question"+id;
+			if($ques)
+		}
+	}*/
+	else{
 		parent.removeChild(me);
+		nbElement--;
+	}
+		
 }
 
 function addQuestion(event, button) {
     //console.log(button);
 	//console.log(button.parentElement);
 	
-	//Recovery of the task associated with the question (button's parent)
-		//the button is in a wrapper but we need to climb up to the task container
-	var task = button.parentElement.parentElement;
+	//Recovery of the application associated with the question (button's parent)
+		//the button is in a wrapper but we need to climb up to the application container
+	var application = button.parentElement.parentElement;
 		//
-	var nbQuestions = task.children.length;
+	var nbQuestions = application.children.length;
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
 	qWrapper.setAttribute("id", "q"+nbQuestions);
 	qWrapper.setAttribute("class", "question");
-	task.appendChild(qWrapper);
+	application.appendChild(qWrapper);
 	
 	//Creation of the childs
 		
 		//The label of the question
-	var taskNameLabel = document.createElement("label");
-		taskNameLabel.setAttribute("for","id1");
-		taskNameLabel.innerHTML ="Question n°"+nbQuestions+" : ";
-		qWrapper.appendChild(taskNameLabel);
+	var applicationNameLabel = document.createElement("label");
+		applicationNameLabel.setAttribute("for","question"+nbQuestions);
+		applicationNameLabel.innerHTML ="Question n°"+nbQuestions+" : ";
+		qWrapper.appendChild(applicationNameLabel);
 		
 		
-		//The input of the task's name
+		//The input of the application's name
     var inputQuestion = document.createElement("input");
 		inputQuestion.type = "text";
 		inputQuestion.id="question"+nbQuestions;
@@ -113,7 +129,7 @@ function addQuestion(event, button) {
 		removeQButton.innerHTML ="Remove the question";
 		qWrapper.appendChild(removeQButton);
 		
-		//Add the event for removing the task
+		//Add the event for removing the application
 			removeQButton.addEventListener("click", function(event){
 				removeMe(event, qWrapper);
 			});
@@ -133,11 +149,14 @@ function addQuestion(event, button) {
 			radioInputThumb.setAttribute('name', 'optionQ'+nbQuestions);
 			radioInputThumb.setAttribute('required', 'required');
 			radioInputThumb.setAttribute('value', 'thumbs');
+			radioInputThumb.setAttribute('id', 'thumb'+nbQuestions);
 			radioInputThumb.innerHTML = "thumbs";
 		var labelThumb = document.createElement("label");
-			labelThumb.appendChild(radioInputThumb);
+			labelThumb.setAttribute("for", "thumb"+nbQuestions);
 			labelThumb.appendChild(document.createTextNode("Thumbs"));
-
+		var thumbWrapper = document.createElement("div");
+			thumbWrapper.appendChild(labelThumb);
+			thumbWrapper.appendChild(radioInputThumb);
 			
 		//Creating the smiley option
 
@@ -145,10 +164,13 @@ function addQuestion(event, button) {
 			radioInputSmiley.setAttribute('type', 'radio');
 			radioInputSmiley.setAttribute('name', 'optionQ'+nbQuestions);
 			radioInputSmiley.setAttribute('value', 'smiley');
+			radioInputSmiley.setAttribute('id', 'smiley'+nbQuestions);
 		var labelSmiley = document.createElement("label");
-			labelSmiley.appendChild(radioInputSmiley);
+			labelSmiley.setAttribute("for", "smiley"+nbQuestions);
 			labelSmiley.appendChild(document.createTextNode("smiley"));
-
+		var smileyWrapper = document.createElement("div");
+			smileyWrapper.appendChild(labelSmiley);
+			smileyWrapper.appendChild(radioInputSmiley);
 			
 		//Creating the textArea option
     	
@@ -156,15 +178,18 @@ function addQuestion(event, button) {
 			radioInputTextArea.setAttribute('type', 'radio');
 			radioInputTextArea.setAttribute('name', 'optionQ'+nbQuestions);
 			radioInputTextArea.setAttribute('value', 'textArea');
+			radioInputTextArea.setAttribute('id', 'textArea'+nbQuestions);
 		var labelTextArea = document.createElement("label");
-			labelTextArea.appendChild(radioInputTextArea);
+			labelTextArea.setAttribute("for", "textArea"+nbQuestions);
 			labelTextArea.appendChild(document.createTextNode("textArea"));
-
+		var textAreaWrapper = document.createElement("div");
+			textAreaWrapper.appendChild(labelTextArea);
+			textAreaWrapper.appendChild(radioInputTextArea);
 		
 		//Add the options to form
-			cWrapper.appendChild(labelThumb);
-			cWrapper.appendChild(labelSmiley);
-			cWrapper.appendChild(labelTextArea);
+			cWrapper.appendChild(thumbWrapper);
+			cWrapper.appendChild(smileyWrapper);
+			cWrapper.appendChild(textAreaWrapper);
 
 		//Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
@@ -188,23 +213,23 @@ function answers(event, aArea){
 	switch(event.target.value){
 		case 'smiley':
 			//emojis http://emojipedia.org/emoji-one/
-			console.log("smiley");
-			answerArea.appendChild(makeInputImage("smiley",-2,"media/vsadsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",-1,"media/sadsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",0,"media/neutralsmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",1,"media/happysmiley.png"));
-			answerArea.appendChild(makeInputImage("smiley",-2,"media/vhappysmiley.png"));
+			//console.log("smiley");
+			makeInputImage("smiley",-2,"media/vsadsmiley.png", aArea);
+			makeInputImage("smiley",-1,"media/sadsmiley.png", aArea);
+			makeInputImage("smiley",0,"media/neutralsmiley.png", aArea);
+			makeInputImage("smiley",1,"media/happysmiley.png", aArea);
+			makeInputImage("smiley",-2,"media/vhappysmiley.png", aArea);
 			break;
 		case 'textArea':
 			console.log("textArea"); 
 			break;
 		case 'thumbs':
-			console.log("thumbs");
-			answerArea.appendChild(makeInputImage("thumbs",-2,"media/twothumbsdown.png"));
-			answerArea.appendChild(makeInputImage("thumbs",-1,"media/thumbdown.png"));
-			answerArea.appendChild(makeInputImage("thumbs",0,"media/thumbup.png"));
-			answerArea.appendChild(makeInputImage("thumbs",1,"media/twothumbsup.png"));
-			answerArea.appendChild(makeInputImage("thumbs",-2,"media/threethumbsup.png"));
+			//console.log("thumbs");
+			makeInputImage("thumbs",-2,"media/twothumbsdown.png", aArea);
+			makeInputImage("thumbs",-1,"media/thumbdown.png", aArea);
+			makeInputImage("thumbs",0,"media/thumbup.png", aArea);
+			makeInputImage("thumbs",1,"media/twothumbsup.png", aArea);
+			makeInputImage("thumbs",-2,"media/threethumbsup.png", aArea);
 			break;
 	}
 }
@@ -220,21 +245,21 @@ function addField(event){
     inputLabel.placeholder ="Your Field name";
     wrapper.appendChild(inputLabel);
         
-    var removeTaskButton = document.createElement("button");
-		removeTaskButton.setAttribute("class", "removeButton");
-		removeTaskButton.type="button";
-		removeTaskButton.value= "Remove the Field";
-		removeTaskButton.innerHTML ="Remove the Field";
-		wrapper.appendChild(removeTaskButton);
+    var removeApplicationButton = document.createElement("button");
+		removeApplicationButton.setAttribute("class", "removeButton");
+		removeApplicationButton.type="button";
+		removeApplicationButton.value= "Remove the Field";
+		removeApplicationButton.innerHTML ="Remove the Field";
+		wrapper.appendChild(removeApplicationButton);
 		
-		//Add the event for removing the task
-			removeTaskButton.addEventListener("click", function(event){
+		//Add the event for removing the application
+			removeApplicationButton.addEventListener("click", function(event){
 				removeMe(event, wrapper);
 			});
             
     //Add fieldset to thecode
     var newField = document.getElementById("newField");
-    newField.appendChild(wrapper);
+		newField.appendChild(wrapper);
 }
 
 
@@ -251,9 +276,9 @@ function makeRadioButton(name, value, text){
 
     label.appendChild(document.createTextNode(text));
     return label;
-  }
+}
 
-function makeInputImage(name, value, imageAdr){
+function makeInputImage(name, value, imageAdr, parent){
 	var id = name+value;
 	var label = document.createElement("label");
 		label.setAttribute("id", id);
@@ -263,23 +288,63 @@ function makeInputImage(name, value, imageAdr){
 		inputBox.setAttribute("id", id);
 
     var image = document.createElement("img");
-    image.setAttribute("src", imageAdr);
+		image.setAttribute("src", imageAdr);
+		label.appendChild(image)
+  
+	var wrapper = document.createElement("div");
+		wrapper.appendChild(label);
+		wrapper.appendChild(inputBox);
+		
+	parent.appendChild(wrapper);
+}
 
-		label.appendChild(image);
-
-    label.appendChild(inputBox);
-    return label;
-  }
 
 
-document.getElementById("addTask").addEventListener("click", addTask);
+
+
+
+function extractData(){
+	//Liste of application in the form
+	var applications = $(".application");
+	for(var i = 0; i < applications.length; i++){
+		var id = applications[i].id.slice(1, applications[i].id.length);
+		var title = $("#nameApplicationLabel"+id).val();
+		//console.log("#################");
+		//console.log("Task : "+title);
+		//var a = new Application(title);
+		var questions = $("#T"+id+"> .question");
+		//me.id.slice(1, me.id.length);
+		for(var y = 0; y < questions.length; y++){
+			//Dig out the type of the question (the radio button checked)
+			
+			var idQ = questions[y].id.slice(1, questions[y].id.length);
+			//console.log(idQ);
+			var qLabel = $("#question"+idQ).val();
+			//console.log(qLabel)
+			var qType = $("input[name=optionQ"+idQ+"]:checked").val();
+			//console.log(qType);
+		}
+		//console.log("");
+	}
+}
+function extractAnswers(question, type){
+	return null;
+}
+
+document.getElementById("addApplication").addEventListener("click", addApplication);
+//Adding one application
+addApplication();
+
 document.getElementById("addField").addEventListener("click",addField);
 
-
+$("#submit").click(extractData);
 //#############################################
 //
-// Remove the number : "Task n°x", will be difficult to deal with if we remove a task
+// Remove the number : "Application n°x", will be difficult to deal with if we remove a application
 // Same for the question
 //
 //
 //##############################################
+
+
+	

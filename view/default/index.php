@@ -20,7 +20,7 @@
 		</div>						
 
 			<p> Existing tasks for this form</p>
-			<button type="button" id="addTask">Add a new Task</button>
+			<button type="button" id="addApplication">Add a new Task</button>
 	
 </div>
 <button type="button" id="submit">Create the form</button> 
