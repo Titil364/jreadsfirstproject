@@ -1,0 +1,26 @@
+TODO list
+
+
+GENERAL - 
+- RESPONSIVE for computers and tablets
+
+
+
+CREATION MODE - 
+- A solution with the ID problem within the form will be needed 
+
+- Handle the data from the creation mode : 
+	- extract them
+	- save them in the database
+
+
+"VISITOR" MODE - 
+- The form itself : 
+	- Pick up the datas from the database
+	- display them
+	- save the answers
+
+
+- Print mode : 
+	- enable a PDF format to be extracted. How to do it ?
+	
