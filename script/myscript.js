@@ -309,9 +309,12 @@ function extractData(){
 	for(var i = 0; i < applications.length; i++){
 		var id = applications[i].id.slice(1, applications[i].id.length);
 		//console.log("#################");
-sy		var title = $("#nameApplicationLabel"+id).val();
+		var title = $("#nameApplicationLabel"+id).val();
 		//console.log("Task : "+title);
-		//var a = new Application(title);
+		var a = new Application(title);
+		//console.log(a.getTitle());
+		send("test", JSON.stringify(a));
+		
 		var questions = $("#T"+id+"> .question");
 		//me.id.slice(1, me.id.length);
 		for(var y = 0; y < questions.length; y++){
@@ -346,5 +349,34 @@ $("#submit").click(extractData);
 //
 //##############################################
 
+function send(url, object) {
+	//
+  /*  var requete = new XMLHttpRequest();
+	var url = "test.php";
+	$.post()
+	console.log(object);
+    requete.open("POST", url, true);
+    requete.addEventListener("load", function () {
+        callback(requete);
+    });
+    requete.send("application="+object);*/
+	//console.log(object);
+	$.get(
+		url+".php", // url cible
+		"json="+object, // données envoyées 
+		function(res){ // le callback
+			var message = res;
+			console.log(message);
+			},
+		"json" // type de données reçues
+	);
+}
 
+//Le résultat de la requête php est encodé en JSON
+//Le résultat est converti ensuite en objet Javascript et ranger dans la variable globale armes contenant
+// toutes les armes
+function processing(req) {
+	var message = req.response;
+	console.log(JSON.parse(message));
+}
 	

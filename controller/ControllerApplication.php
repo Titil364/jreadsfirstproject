@@ -1,10 +1,10 @@
 <?php
 
-require_once File::build_path(array('model', 'ModelUser.php'));
+require_once File::build_path(array('model', 'ModelApplication.php'));
 
-class ControllerUser {
+class ControllerApplication {
 	
-    public static function welcome() {
+    public static function created(){
         $view = 'index';
         $controller = 'default';
         $pagetitle = 'Create Form';

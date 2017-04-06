@@ -7,7 +7,9 @@ class ModelApplication extends Model{
 	private applicationName;
 	private applicationDescription;
     private formId;
-
+	
+    protected static $object = "Application";
+    protected static $primary = 'applicationId';
 
     public function getApplicationId() {
    		return $this->applicationId;
@@ -43,7 +45,7 @@ class ModelApplication extends Model{
   	
         }
     }
-
+/* The generic model will provide this functin
     public function getApplicationById($id){
 		try{
 			$sql  = "SELECT * FROM Application WHERE formId=:id";
@@ -68,7 +70,7 @@ class ModelApplication extends Model{
             return false;
         }
     }
-
+*/
     public function getFormByFormId($formId){
 		try{
 			$sql  = "SELECT * FROM Form WHERE formId=:id";

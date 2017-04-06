@@ -1,8 +1,8 @@
 <?php
 
-require_once File::build_path(array('model', 'ModelUser.php'));
+require_once File::build_path(array('model', 'ModelForm.php'));
 
-class ControllerUser {
+class ControllerForm {
 	
     public static function welcome() {
         $view = 'index';

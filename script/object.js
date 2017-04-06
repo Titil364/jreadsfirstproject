@@ -3,6 +3,9 @@ class Application{
 		this.title = title;
 		this.description = description;
 	}
+	getTitle(){
+		return this.title;
+	}
 }
 class Question{
 	constructor(l){
@@ -10,7 +13,7 @@ class Question{
 	}
 }
 class QType{
-	constructor(l){
-		this.type = l;
+	constructor(type){
+		this.type = type;
 	}
 }

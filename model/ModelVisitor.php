@@ -106,7 +106,7 @@ class ModelVisitor extends Model{
             return false;
         }
 	}
-
+/* The generic model will provide this function
 	public static function findVisitorById($id){
 		try{
 			$sql  = "SELECT * FROM Visitors WHERE visitorId=:id";
@@ -128,5 +128,5 @@ class ModelVisitor extends Model{
                 echo "Error";
             }
             return false;
-        }
+    */
 	}

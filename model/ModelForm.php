@@ -6,7 +6,10 @@ class ModelForm extends Model{
 	private formId;
 	private formName;
 	private userId;
-
+	
+    protected static $object = "Form";
+    protected static $primary = 'formId';
+	
     public function getFormId() {
    		return $this->formId;
     }    
@@ -40,7 +43,7 @@ class ModelForm extends Model{
   	
         }
     }
-
+/* The generic model will provide this function
     public function getFormById($id){
 		try{
 			$sql  = "SELECT * FROM Form WHERE formId=:id";
@@ -65,7 +68,7 @@ class ModelForm extends Model{
             return false;
         }
     }
-
+*/
     public function getFormByUserId($userId){
 		try{
 			$sql  = "SELECT * FROM Form WHERE formId=:id";
