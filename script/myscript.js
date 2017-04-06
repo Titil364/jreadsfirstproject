@@ -208,9 +208,7 @@ function answers(event, aArea){
 			break;
 	}
 }
-function addField(event) {
-    //fieldset creation
-    var fieldset = document.createElement("fieldset");
+function addField(event){
     
     //wrapper creation
     var wrapper = document.createElement("div");
@@ -241,13 +239,13 @@ function addField(event) {
 
 
 
-function makeRadioButton(name, value, text) {
+function makeRadioButton(name, value, text){
 
     var label = document.createElement("label");
     var radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = name;
-    radio.value = value;
+		radio.type = "radio";
+		radio.name = name;
+		radio.value = value;
 
     label.appendChild(radio);
 
@@ -255,18 +253,19 @@ function makeRadioButton(name, value, text) {
     return label;
   }
 
-function makeInputImage(name, value, imageAdr) {
-
+function makeInputImage(name, value, imageAdr){
+	var id = name+value;
 	var label = document.createElement("label");
+		label.setAttribute("id", id);
 
     var inputBox = document.createElement("input");
-    inputBox.setAttribute("type","text");
-    inputBox.setAttribute("id",name+value);
+		inputBox.setAttribute("type", "text");
+		inputBox.setAttribute("id", id);
 
     var image = document.createElement("img");
-    image.setAttribute("src",imageAdr);
+    image.setAttribute("src", imageAdr);
 
-    label.appendChild(image);
+		label.appendChild(image);
 
     label.appendChild(inputBox);
     return label;
