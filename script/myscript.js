@@ -1,5 +1,6 @@
 var b = document.body;
 var nbElement = 0;
+var _func;
 
 function addApplication(event){
 	//Recovery of the container
@@ -101,12 +102,16 @@ function removeMe(event, me){
 				
 				var who = $("input[name=optionQ"+newId+"]:checked").val();
 				console.log(who);
-				if(!(who === "textArea") && !(who === undefined)){
+				if((who === "smiley") || (who === "thumbs")){
 					for(var t = 0; t < 5; t++){
 						var name = who+t+(newId+1);
-						console.log($("input[id="+name+"]"));
+						//console.log($("input[id="+name+"]"));
 						$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
 					}
+					$(children[4])[0].removeEventListener('change', _func);
+					var answerArea = $("input[id^="+who+"0"+newId+"]").parent().parent()[0];
+					_func = function(event){answers(event, answerArea, newId);};
+					$(children[4])[0].addEventListener('change', _func);
 				}
 				y++;
 			}
@@ -228,13 +233,9 @@ function addQuestion(event, button) {
 			answerArea.setAttribute("class","answerArea");
 			cWrapper.parentElement.appendChild(answerArea);
 
+			_func = function(event){answers(event, answerArea, nbQuestions)};
 			//add listener on radio changement
-			cWrapper.addEventListener('change', function(event){
-				answers(event, answerArea, nbQuestions);
-			});
-
-
-
+			cWrapper.addEventListener('change', _func);
 
 }
 
