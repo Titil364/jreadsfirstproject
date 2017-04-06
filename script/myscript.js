@@ -63,23 +63,55 @@ function removeMe(event, me){
 	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
 	if(me.className === "application" & (!(inputChild.value=="") || $(me).children().length > 1)){
-				if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
+		if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
 			parent.removeChild(me);
 		}
 	}
-	/*if(me.className === "question"){
+	else if(me.className === "question"){
 		var id = me.id.slice(1, me.id.length);
 		
+		
 		var questions = $("#"+parent.id+" > .question");
-		console.log(questions);
-		console.log(questions.length);
-		for(var i = id; i < questions.length-1; i++){
-			questions[id+1].id = "q"+id;
-			$(questions).children()[0].setAttribute("for", "question"+id);
-			$(questions).children()[1].id = "question"+id;
-			if($ques)
+		if(id == questions.length){
+			parent.removeChild(me);
+		}else{
+			parent.removeChild(me);
+			//console.log(questions[id]);
+			var y = 0;
+			for(var i = id; i < questions.length; i++){
+				var children = $(questions[i]).children();
+				var newId = parseInt(id, 10)+y;
+				questions[i].setAttribute("id", "q"+newId);
+				children[0].setAttribute("for", "question"+newId);
+				children[0].innerHTML = "Question n°"+newId+" : ";
+				children[1].setAttribute("id", "question"+newId);
+				
+				var options = $(children[3]).children();
+					$(options[0]).children()[0].setAttribute("for", "thumb"+newId);
+					$(options[0]).children()[1].setAttribute("name", "optionQ"+newId);
+					$(options[0]).children()[1].setAttribute("id", "thumb"+newId);
+					
+					$(options[1]).children()[0].setAttribute("for", "smiley"+newId);
+					$(options[1]).children()[1].setAttribute("name", "optionQ"+newId);
+					$(options[1]).children()[1].setAttribute("id", "smiley"+newId);
+					
+					$(options[2]).children()[0].setAttribute("for", "textArea"+newId);
+					$(options[2]).children()[1].setAttribute("name", "optionQ"+newId);
+					$(options[2]).children()[1].setAttribute("id", "textArea"+newId);
+				
+				var who = $("input[name=optionQ"+newId+"]:checked").val();
+				console.log(who);
+				if(!(who === "textArea") && !(who === undefined)){
+					for(var t = 0; t < 5; t++){
+						var name = who+t+(newId+1);
+						console.log($("input[id="+name+"]"));
+						$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
+					}
+				}
+				y++;
+			}
 		}
-	}*/
+	}
 	else{
 		parent.removeChild(me);
 		nbElement--;
@@ -194,11 +226,11 @@ function addQuestion(event, button) {
 		//Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
 			answerArea.setAttribute("class","answerArea");
-			cWrapper.appendChild(answerArea);
+			cWrapper.parentElement.appendChild(answerArea);
 
 			//add listener on radio changement
 			cWrapper.addEventListener('change', function(event){
-				answers(event, answerArea);
+				answers(event, answerArea, nbQuestions);
 			});
 
 
@@ -206,30 +238,30 @@ function addQuestion(event, button) {
 
 }
 
-function answers(event, aArea){
+function answers(event, aArea, id){
 	var answerArea = aArea;
-	//on vide la zone rep
+	//Bug lorsque l'on clique sur le même truc
 	answerArea.innerHTML = "";
 	switch(event.target.value){
 		case 'smiley':
 			//emojis http://emojipedia.org/emoji-one/
 			//console.log("smiley");
-			makeInputImage("smiley",-2,"media/vsadsmiley.png", aArea);
-			makeInputImage("smiley",-1,"media/sadsmiley.png", aArea);
-			makeInputImage("smiley",0,"media/neutralsmiley.png", aArea);
-			makeInputImage("smiley",1,"media/happysmiley.png", aArea);
-			makeInputImage("smiley",-2,"media/vhappysmiley.png", aArea);
+			makeInputImage("smiley0",id,"media/vsadsmiley.png", aArea);
+			makeInputImage("smiley1",id,"media/sadsmiley.png", aArea);
+			makeInputImage("smiley2",id,"media/neutralsmiley.png", aArea);
+			makeInputImage("smiley3",id,"media/happysmiley.png", aArea);
+			makeInputImage("smiley4",id,"media/vhappysmiley.png", aArea);
 			break;
 		case 'textArea':
 			console.log("textArea"); 
 			break;
 		case 'thumbs':
 			//console.log("thumbs");
-			makeInputImage("thumbs",-2,"media/twothumbsdown.png", aArea);
-			makeInputImage("thumbs",-1,"media/thumbdown.png", aArea);
-			makeInputImage("thumbs",0,"media/thumbup.png", aArea);
-			makeInputImage("thumbs",1,"media/twothumbsup.png", aArea);
-			makeInputImage("thumbs",-2,"media/threethumbsup.png", aArea);
+			makeInputImage("thumbs0",id,"media/twothumbsdown.png", aArea);
+			makeInputImage("thumbs1",id,"media/thumbdown.png", aArea);
+			makeInputImage("thumbs2",id,"media/thumbup.png", aArea);
+			makeInputImage("thumbs3",id,"media/twothumbsup.png", aArea);
+			makeInputImage("thumbs4",id,"media/threethumbsup.png", aArea);
 			break;
 	}
 }
@@ -272,7 +304,6 @@ function makeRadioButton(name, value, text){
 		radio.name = name;
 		radio.value = value;
 
-    label.appendChild(radio);
 
     label.appendChild(document.createTextNode(text));
     return label;
@@ -280,6 +311,7 @@ function makeRadioButton(name, value, text){
 
 function makeInputImage(name, value, imageAdr, parent){
 	var id = name+value;
+	
 	var label = document.createElement("label");
 		label.setAttribute("id", id);
 

@@ -75,6 +75,6 @@ img{
 	height:16px;
 }
 
-.question div:not(:last-child){
+.question div > *{
 	display:inline;
 }
