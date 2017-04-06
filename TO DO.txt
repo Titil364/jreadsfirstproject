@@ -9,7 +9,7 @@ GENERAL -
 CREATION MODE - 
 - A solution with the ID problem within the form will be needed 
 
-- Handle the datas from the creation mode : 
+- Handle the data from the creation mode : 
 	- extract them
 	- save them in the database
 
