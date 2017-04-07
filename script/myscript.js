@@ -267,7 +267,6 @@ function addQuestion(event, button) {
 
 			//add listener on radio changement
 			$(cWrapper).bind("change", function(event){
-				console.log("bite");
 				answers(event)
 			});
 
