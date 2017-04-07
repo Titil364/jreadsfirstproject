@@ -3,10 +3,10 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelApplication extends Model{
 
-	private applicationId;
-	private applicationName;
-	private applicationDescription;
-    private formId;
+	private $applicationId;
+	private $applicationName;
+	private $applicationDescription;
+        private $formId;
 	
     protected static $object = "Application";
     protected static $primary = 'applicationId';
@@ -29,7 +29,7 @@ class ModelApplication extends Model{
 
     public function getApplicationDescription(){
     	return $this->applicationDescription;
- application
+    }
 
     public function setApplicationDescription($applicationDescription){
     	$this->applicationDescription ->$applicationDescription;
@@ -96,6 +96,6 @@ class ModelApplication extends Model{
         }
     }    
        
-
+}
 
 
