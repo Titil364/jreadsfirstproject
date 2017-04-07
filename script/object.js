@@ -1,5 +1,6 @@
 class Application{
-	constructor(title, description){
+	constructor(id, title, description){
+		this.id = id;
 		this.title = title;
 		this.description = description;
 	}
@@ -8,8 +9,10 @@ class Application{
 	}
 }
 class Question{
-	constructor(l){
-		this.label = l;
+	constructor(id, label, type){
+		this.id = id;
+		this.label = label;
+		this.type = type;
 	}
 }
 class QType{

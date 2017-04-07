@@ -88,9 +88,8 @@ function removeMe(event, me){
 }
 function refreshApplication(me, parent){
 	var applications = $(".application");
-	console.log(applications);
 	for(var i = 0; i < applications.length; i++){
-		applications[i].id = "T"+i;
+		applications[i].id = "A"+i;
 		
 		var children = $($(applications[i]).children()[0]).children();
 		//console.log(children);
@@ -101,7 +100,6 @@ function refreshApplication(me, parent){
 	}
 }
 function refreshQuestion(me, parent){
-	console.log(me);
 	var id = me.id.slice(3, me.id.length);
 		
 	var questions = $("#"+parent.id+" > .question");
@@ -113,7 +111,7 @@ function refreshQuestion(me, parent){
 
 		//console.log(questions[id]);
 		var y = 0;
-		console.log("ID me : "+id);
+		//console.log("ID me : "+id);
 		for(var i = 0; i < questions.length; i++){
 			var formerId = me.id;
 			//console.log($(questions[i]));
@@ -144,7 +142,7 @@ function refreshQuestion(me, parent){
 			if((who === "smiley") || (who === "thumbs")){
 				for(var t = 0; t < 5; t++){
 					var name = who+t+formerId;
-					console.log($("input[id="+name+"]"));
+					//console.log($("input[id="+name+"]"));
 					$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
 				}
 			}
@@ -159,7 +157,6 @@ function addQuestion(event, button) {
 	//Recovery of the application associated with the question (button's parent)
 		//the button is in a wrapper but we need to climb up to the application container
 	var application = button.parentElement.parentElement;
-	console.log(application.id);
 		//
 	var nbQuestions = application.children.length;
 	
@@ -306,6 +303,7 @@ function addField(event){
     
     //Create label
     var inputLabel = document.createElement("input");
+	inputLabel.setAttribute("class","fieldInput");
     inputLabel.type = "text";
     inputLabel.placeholder ="Your Field name";
     wrapper.appendChild(inputLabel);
@@ -372,26 +370,27 @@ function extractData(){
 	//Liste of application in the form
 	var applications = $(".application");
 	for(var i = 0; i < applications.length; i++){
-		var id = applications[i].id.slice(1, applications[i].id.length);
-		//console.log("#################");
+		var id = applications[i].id;
+		console.log("#################");
 		var title = $("#nameApplicationLabel"+id).val();
-		//console.log("Task : "+title);
-		var a = new Application(title);
-		//console.log(a.getTitle());
-		send("test", JSON.stringify(a));
+		console.log("Task : "+title);
+		var a = new Application(5,title, "Test");
 		
-		var questions = $("#T"+id+"> .question");
-		//me.id.slice(1, me.id.length);
+		var questions = $("#"+id+" > .question");
+		var q = []
 		for(var y = 0; y < questions.length; y++){
 			//Dig out the type of the question (the radio button checked)
 			
-			var idQ = questions[y].id.slice(1, questions[y].id.length);
+			var idQ = questions[y].id;
 			//console.log(idQ);
 			var qLabel = $("#question"+idQ).val();
 			//console.log(qLabel)
-			var qType = $("input[name=optionQ"+idQ+"]:checked").val();
+			var qType = $("input[name=option"+idQ+"]:checked").val();
 			//console.log(qType);
+			
+			q.push(new Question(idQ, qLabel, qType));
 		}
+		send("test", a, q);
 		//console.log("");
 	}
 }
@@ -414,7 +413,7 @@ $("#submit").click(extractData);
 //
 //##############################################
 
-function send(url, object) {
+function send(url, applications, questions) {
 	//
   /*  var requete = new XMLHttpRequest();
 	var url = "test.php";
@@ -426,9 +425,11 @@ function send(url, object) {
     });
     requete.send("application="+object);*/
 	//console.log(object);
+	var data = "applications="+JSON.stringify(applications)+"&questions="+JSON.stringify(questions);
+	//console.log(data);
 	$.get(
 		url+".php", // url cible
-		"json="+object, // données envoyées 
+		data, // données envoyées 
 		function(res){ // le callback
 			var message = res;
 			console.log(message);
@@ -437,13 +438,6 @@ function send(url, object) {
 	);
 }
 
-//Le résultat de la requête php est encodé en JSON
-//Le résultat est converti ensuite en objet Javascript et ranger dans la variable globale armes contenant
-// toutes les armes
-function processing(req) {
-	var message = req.response;
-	console.log(JSON.parse(message));
-}
 
 //function to return an array of the name of the checked default information	
 function checkDefaultInformations(){
@@ -497,7 +491,6 @@ function makeDraggble(event) {
 			});
 			draggable.swap(droppable);
 			
-			console.log(droppable);
 			refreshQuestion(droppable[0], droppable.parent()[0]);
 		}
 	});

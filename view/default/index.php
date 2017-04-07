@@ -17,13 +17,13 @@
 		<div>
 			<p><h3>Predefined informations</h3></p>
 			<div id="defaultInfCheckboxes">
-				<input type="checkbox" id="name" name="informations" value="name">
+				<input type="checkbox" id="name" name="informations" value="name" class="defaultInformation">
 				<label for="name">Name </label><br>
-				<input type="checkbox" id="age" name="informations" value="age">
+				<input type="checkbox" id="age" name="informations" value="age" class="defaultInformation">
 				<label for="age">Age </label><br>
-				<input type="checkbox" id="gender" name="informations" value="gender">
+				<input type="checkbox" id="gender" name="informations" value="gender" class="defaultInformation">
 				<label for="gender">Gender </label><br>
-				<input type="checkbox" id="secretName" name="informations" value="secretName">
+				<input type="checkbox" id="secretName" name="informations" value="secretName" class="defaultInformation">
 				<label for="secretName">Secret Name </label><br><br>
 			</div>
 		</div> 
