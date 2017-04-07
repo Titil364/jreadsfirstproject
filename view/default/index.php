@@ -14,6 +14,19 @@
 			<input type="text"  name ="title" placeholder="Form's Title">
 		</p>
 		<p>Choose your required information</p>
+		<div>
+			<p><h3>Predefined informations</h3></p>
+			<form id="defaultInfCheckboxes">
+				<input type="checkbox" name="informations" value="name">
+				Name <br>
+				<input type="checkbox" name="informations" value="age">
+				Age <br>
+				<input type="checkbox" name="informations" value="gender">
+				Gender <br>
+				<input type="checkbox" name="informations" value="secretName">
+				Secret Name <br><br>
+			</form>
+		</div> 
 		<button type="button" id="addField">Add a new Field</button>
 		<div id="newField">
 			
