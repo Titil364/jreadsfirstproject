@@ -16,16 +16,16 @@
 		<p>Choose your required information</p>
 		<div>
 			<p><h3>Predefined informations</h3></p>
-			<form id="defaultInfCheckboxes">
-				<input type="checkbox" name="informations" value="name">
-				Name <br>
-				<input type="checkbox" name="informations" value="age">
-				Age <br>
-				<input type="checkbox" name="informations" value="gender">
-				Gender <br>
-				<input type="checkbox" name="informations" value="secretName">
-				Secret Name <br><br>
-			</form>
+			<div id="defaultInfCheckboxes">
+				<input type="checkbox" id="name" name="informations" value="name">
+				<label for="name">Name </label><br>
+				<input type="checkbox" id="age" name="informations" value="age">
+				<label for="age">Age </label><br>
+				<input type="checkbox" id="gender" name="informations" value="gender">
+				<label for="gender">Gender </label><br>
+				<input type="checkbox" id="secretName" name="informations" value="secretName">
+				<label for="secretName">Secret Name </label><br><br>
+			</div>
 		</div> 
 		<button type="button" id="addField">Add a new Field</button>
 		<div id="newField">
