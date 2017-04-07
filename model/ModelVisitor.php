@@ -3,13 +3,13 @@ require_once File::build_path(array('model', 'Model.php'));
 
 
 class ModelVisitor extends Model{
-	private visitorId;
-	private visitorGroupId;
-	private visitorName;
-	private visitorSecretName;
-	private visitorSchool;
-	private visitorAge;
-	private visitorClass;
+	private $visitorId;
+	private $visitorGroupId;
+	private $visitorName;
+	private $visitorSecretName;
+	private $visitorSchool;
+	private $visitorAge;
+	private $visitorClass;
 
     protected static $object = "Visitor";
     protected static $primary = 'visitorSecretName';

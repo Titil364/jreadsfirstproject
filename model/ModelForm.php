@@ -3,9 +3,9 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelForm extends Model{
 
-	private formId;
-	private formName;
-	private userId;
+	private $formId;
+	private $formName;
+	private $userId;
 	
     protected static $object = "Form";
     protected static $primary = 'formId';
@@ -31,7 +31,7 @@ class ModelForm extends Model{
     }
 
     public function setUserId($userId){
-    	this->userId ->userId;
+    	$this->userId = $userId;
     }
 
 
@@ -95,5 +95,5 @@ class ModelForm extends Model{
     }    
        
 
-
+}
 
