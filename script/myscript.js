@@ -63,11 +63,9 @@ function removeMe(event, me){
 
 	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
-	console.log("Parent :");
-	console.log(parent);
-	console.log("Me : ");
-	console.log(me);
-	if(me.className === "application"){
+	var meClassName = me.className.split(" ");
+	
+	if(meClassName[0] === "application"){
 		if(!(inputChild.value=="") || $(me).children().length > 1){
 			if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
 				parent.removeChild(me);
@@ -79,9 +77,7 @@ function removeMe(event, me){
 
 		refreshApplication(me, parent);
 	}
-	else if(me.className === "question"){
-		
-	var id = me.id.slice(3, me.id.length);
+	else if(meClassName[0] === "question"){
 		parent.removeChild(me);
 		refreshQuestion(me, parent);
 	}
@@ -481,7 +477,7 @@ document.getElementById("makeMoveable").addEventListener("click",makeDraggble);
 
 function makeDraggble(event) {
 	$( ".question" ).draggable({containment : "parent", revert: true, helper: "clone" });
-	console.log("salut");
+
 	$( ".question" ).droppable({
 		accept: ".question",
 		drop: function( event, ui ) {
@@ -500,15 +496,10 @@ function makeDraggble(event) {
 				top: dragPos.top+'px'
 			});
 			draggable.swap(droppable);
+			
+			console.log(droppable);
+			refreshQuestion(droppable[0], droppable.parent()[0]);
 		}
 	});
 		
 }
-
-$(function() {
-
-
-	
-
-  });
-
