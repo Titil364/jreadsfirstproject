@@ -1,6 +1,5 @@
 var b = document.body;
-var nbElement = 0;
-var _func;
+var nbApplication = 0;
 
 function addApplication(event){
 	//Recovery of the container
@@ -9,7 +8,7 @@ function addApplication(event){
 	//Creation of the application wrapper
 	var application = document.createElement("div");
 		application.setAttribute("class", "application");
-		application.setAttribute("id", "T"+nbElement);
+		application.setAttribute("id", "A"+nbApplication);
 		form.appendChild(application);
 	
 	//Creation of the childs
@@ -19,13 +18,13 @@ function addApplication(event){
 	
 		//The label of the application's name
 	var applicationNameLabel = document.createElement("label");
-		applicationNameLabel.setAttribute("for","nameApplicationLabel"+nbElement);
+		applicationNameLabel.setAttribute("for","nameApplicationLabelA"+nbApplication);
 		applicationNameLabel.innerHTML ="Name of the application : ";
 		wrapper.appendChild(applicationNameLabel);
 		//The input of the application's name
     var inputApplicationName = document.createElement("input");
 		inputApplicationName.type = "text";
-		inputApplicationName.id="nameApplicationLabel"+nbElement;
+		inputApplicationName.id="nameApplicationLabelA"+nbApplication;
 		inputApplicationName.name="title";
 		inputApplicationName.placeholder="Application's Title";
 		wrapper.appendChild(inputApplicationName);
@@ -58,71 +57,103 @@ function addApplication(event){
 				addQuestion(event, buttonQuestion);
 			});
 	
-	nbElement++;
+	nbApplication++;
 }
 function removeMe(event, me){
 
 	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
-	if(me.className === "application" & (!(inputChild.value=="") || $(me).children().length > 1)){
-		if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
-			parent.removeChild(me);
-		}
-	}
-	else if(me.className === "question"){
-		var id = me.id.slice(1, me.id.length);
-		
-		
-		var questions = $("#"+parent.id+" > .question");
-		if(id == questions.length){
-			parent.removeChild(me);
+	console.log("Parent :");
+	console.log(parent);
+	console.log("Me : ");
+	console.log(me);
+	if(me.className === "application"){
+		if(!(inputChild.value=="") || $(me).children().length > 1){
+			if(confirm("Are you sure you wanna delete this application ? \nIt will delete all the questions included in the application.")){
+				parent.removeChild(me);
+				nbApplication--;
+			}			
 		}else{
 			parent.removeChild(me);
-			//console.log(questions[id]);
-			var y = 0;
-			for(var i = id; i < questions.length; i++){
-				var children = $(questions[i]).children();
-				var newId = parseInt(id, 10)+y;
-				questions[i].setAttribute("id", "q"+newId);
-				children[0].setAttribute("for", "question"+newId);
-				children[0].innerHTML = "Question n°"+newId+" : ";
-				children[1].setAttribute("id", "question"+newId);
-				
-				var options = $(children[3]).children();
-					$(options[0]).children()[0].setAttribute("for", "thumb"+newId);
-					$(options[0]).children()[1].setAttribute("name", "optionQ"+newId);
-					$(options[0]).children()[1].setAttribute("id", "thumb"+newId);
-					
-					$(options[1]).children()[0].setAttribute("for", "smiley"+newId);
-					$(options[1]).children()[1].setAttribute("name", "optionQ"+newId);
-					$(options[1]).children()[1].setAttribute("id", "smiley"+newId);
-					
-					$(options[2]).children()[0].setAttribute("for", "textArea"+newId);
-					$(options[2]).children()[1].setAttribute("name", "optionQ"+newId);
-					$(options[2]).children()[1].setAttribute("id", "textArea"+newId);
-				
-				var who = $("input[name=optionQ"+newId+"]:checked").val();
-				console.log(who);
-				if((who === "smiley") || (who === "thumbs")){
-					for(var t = 0; t < 5; t++){
-						var name = who+t+(newId+1);
-						//console.log($("input[id="+name+"]"));
-						$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
-					}
-					$(children[4])[0].removeEventListener('change', _func);
-					var answerArea = $("input[id^="+who+"0"+newId+"]").parent().parent()[0];
-					_func = function(event){answers(event, answerArea, newId);};
-					$(children[4])[0].addEventListener('change', _func);
-				}
-				y++;
-			}
 		}
+
+		refreshApplication(me, parent);
+	}
+	else if(me.className === "question"){
+		
+	var id = me.id.slice(3, me.id.length);
+		parent.removeChild(me);
+		refreshQuestion(me, parent);
 	}
 	else{
 		parent.removeChild(me);
-		nbElement--;
 	}
 		
+}
+function refreshApplication(me, parent){
+	var applications = $(".application");
+	console.log(applications);
+	for(var i = 0; i < applications.length; i++){
+		applications[i].id = "T"+i;
+		
+		var children = $($(applications[i]).children()[0]).children();
+		//console.log(children);
+		children[0].setAttribute("for","nameApplicationLabelA"+i);
+		children[1].setAttribute("id", "nameApplicationLabelA"+i)
+		if($(applications[i]).children().length >= 2)
+			refreshQuestion($(applications[i]).children()[1], applications[i]);
+	}
+}
+function refreshQuestion(me, parent){
+	console.log(me);
+	var id = me.id.slice(3, me.id.length);
+		
+	var questions = $("#"+parent.id+" > .question");
+	//console.log(parent.id);
+	if(id == questions.length+1){
+
+	}else{
+		//parent.removeChild(me);
+
+		//console.log(questions[id]);
+		var y = 0;
+		console.log("ID me : "+id);
+		for(var i = 0; i < questions.length; i++){
+			var formerId = me.id;
+			//console.log($(questions[i]));
+			var children = $(questions[i]).children();
+
+			var newId = parent.id+"Q"+parseInt(i+1, 10);
+			questions[i].setAttribute("id", newId);
+			children[0].setAttribute("for", "question"+newId);
+			children[0].innerHTML = "Question n°"+newId.slice(3, newId.length)+" : ";
+			children[1].setAttribute("id", "question"+newId);
+			
+			var options = $(children[3]).children();
+				$(options[0]).children()[0].setAttribute("for", "thumb"+newId);
+				$(options[0]).children()[1].setAttribute("name", "option"+newId);
+				$(options[0]).children()[1].setAttribute("id", "thumb"+newId);
+				
+				$(options[1]).children()[0].setAttribute("for", "smiley"+newId);
+				$(options[1]).children()[1].setAttribute("name", "option"+newId);
+				$(options[1]).children()[1].setAttribute("id", "smiley"+newId);
+				
+				$(options[2]).children()[0].setAttribute("for", "textArea"+newId);
+				$(options[2]).children()[1].setAttribute("name", "option"+newId);
+				$(options[2]).children()[1].setAttribute("id", "textArea"+newId);
+			
+
+			
+			var who = $("input[name=option"+newId+"]:checked").val();
+			if((who === "smiley") || (who === "thumbs")){
+				for(var t = 0; t < 5; t++){
+					var name = who+t+formerId;
+					console.log($("input[id="+name+"]"));
+					$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
+				}
+			}
+		}
+	}
 }
 
 function addQuestion(event, button) {
@@ -132,12 +163,13 @@ function addQuestion(event, button) {
 	//Recovery of the application associated with the question (button's parent)
 		//the button is in a wrapper but we need to climb up to the application container
 	var application = button.parentElement.parentElement;
+	console.log(application.id);
 		//
 	var nbQuestions = application.children.length;
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
-	qWrapper.setAttribute("id", "q"+nbQuestions);
+	qWrapper.setAttribute("id", application.id+"Q"+nbQuestions);
 	qWrapper.setAttribute("class", "question");
 	application.appendChild(qWrapper);
 	
@@ -145,7 +177,7 @@ function addQuestion(event, button) {
 		
 		//The label of the question
 	var applicationNameLabel = document.createElement("label");
-		applicationNameLabel.setAttribute("for","question"+nbQuestions);
+		applicationNameLabel.setAttribute("for", application.id+"Q"+nbQuestions);
 		applicationNameLabel.innerHTML ="Question n°"+nbQuestions+" : ";
 		qWrapper.appendChild(applicationNameLabel);
 		
@@ -153,7 +185,7 @@ function addQuestion(event, button) {
 		//The input of the application's name
     var inputQuestion = document.createElement("input");
 		inputQuestion.type = "text";
-		inputQuestion.id="question"+nbQuestions;
+		inputQuestion.id="question"+application.id+"Q"+nbQuestions;
 		inputQuestion.name="title";
 		inputQuestion.placeholder="Do you like carrots ?";
 		qWrapper.appendChild(inputQuestion);
@@ -184,13 +216,13 @@ function addQuestion(event, button) {
     	
 		var radioInputThumb = document.createElement('input');
 			radioInputThumb.setAttribute('type', 'radio');
-			radioInputThumb.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputThumb.setAttribute('name', 'option'+application.id+"Q"+nbQuestions);
 			radioInputThumb.setAttribute('required', 'required');
 			radioInputThumb.setAttribute('value', 'thumbs');
-			radioInputThumb.setAttribute('id', 'thumb'+nbQuestions);
+			radioInputThumb.setAttribute('id', 'thumb'+application.id+"Q"+nbQuestions);
 			radioInputThumb.innerHTML = "thumbs";
 		var labelThumb = document.createElement("label");
-			labelThumb.setAttribute("for", "thumb"+nbQuestions);
+			labelThumb.setAttribute("for", "thumb"+application.id+"Q"+nbQuestions);
 			labelThumb.appendChild(document.createTextNode("Thumbs"));
 		var thumbWrapper = document.createElement("div");
 			thumbWrapper.appendChild(labelThumb);
@@ -200,11 +232,11 @@ function addQuestion(event, button) {
 
 		var radioInputSmiley = document.createElement('input');
 			radioInputSmiley.setAttribute('type', 'radio');
-			radioInputSmiley.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputSmiley.setAttribute('name', 'option'+application.id+"Q"+nbQuestions);
 			radioInputSmiley.setAttribute('value', 'smiley');
-			radioInputSmiley.setAttribute('id', 'smiley'+nbQuestions);
+			radioInputSmiley.setAttribute('id', 'smiley'+application.id+"Q"+nbQuestions);
 		var labelSmiley = document.createElement("label");
-			labelSmiley.setAttribute("for", "smiley"+nbQuestions);
+			labelSmiley.setAttribute("for", "smiley"+application.id+"Q"+nbQuestions);
 			labelSmiley.appendChild(document.createTextNode("smiley"));
 		var smileyWrapper = document.createElement("div");
 			smileyWrapper.appendChild(labelSmiley);
@@ -214,11 +246,11 @@ function addQuestion(event, button) {
     	
 		var radioInputTextArea = document.createElement('input');
 			radioInputTextArea.setAttribute('type', 'radio');
-			radioInputTextArea.setAttribute('name', 'optionQ'+nbQuestions);
+			radioInputTextArea.setAttribute('name', 'option'+application.id+"Q"+nbQuestions);
 			radioInputTextArea.setAttribute('value', 'textArea');
-			radioInputTextArea.setAttribute('id', 'textArea'+nbQuestions);
+			radioInputTextArea.setAttribute('id', 'textArea'+application.id+"Q"+nbQuestions);
 		var labelTextArea = document.createElement("label");
-			labelTextArea.setAttribute("for", "textArea"+nbQuestions);
+			labelTextArea.setAttribute("for", "textArea"+application.id+"Q"+nbQuestions);
 			labelTextArea.appendChild(document.createTextNode("textArea"));
 		var textAreaWrapper = document.createElement("div");
 			textAreaWrapper.appendChild(labelTextArea);
@@ -234,36 +266,39 @@ function addQuestion(event, button) {
 			answerArea.setAttribute("class","answerArea");
 			cWrapper.parentElement.appendChild(answerArea);
 
-			_func = function(event){answers(event, answerArea, nbQuestions)};
 			//add listener on radio changement
-			cWrapper.addEventListener('change', _func);
+			$(cWrapper).bind("change", function(event){
+				answers(event)
+			});
 
 }
 
-function answers(event, aArea, id){
-	var answerArea = aArea;
+function answers(event){
+	var id = event.target.parentElement.parentElement.parentElement.id;
+	var answerArea = $("#"+event.target.parentElement.parentElement.parentElement.id+"> .answerArea")[0];
 	//Bug lorsque l'on clique sur le même truc
 	answerArea.innerHTML = "";
+	//console.log(id);
 	switch(event.target.value){
 		case 'smiley':
 			//emojis http://emojipedia.org/emoji-one/
 			//console.log("smiley");
-			makeInputImage("smiley0",id,"media/vsadsmiley.png", aArea);
-			makeInputImage("smiley1",id,"media/sadsmiley.png", aArea);
-			makeInputImage("smiley2",id,"media/neutralsmiley.png", aArea);
-			makeInputImage("smiley3",id,"media/happysmiley.png", aArea);
-			makeInputImage("smiley4",id,"media/vhappysmiley.png", aArea);
+			makeInputImage("smiley0",id,"media/vsadsmiley.png", answerArea);
+			makeInputImage("smiley1",id,"media/sadsmiley.png", answerArea);
+			makeInputImage("smiley2",id,"media/neutralsmiley.png", answerArea);
+			makeInputImage("smiley3",id,"media/happysmiley.png", answerArea);
+			makeInputImage("smiley4",id,"media/vhappysmiley.png", answerArea);
 			break;
 		case 'textArea':
 			console.log("textArea"); 
 			break;
 		case 'thumbs':
 			//console.log("thumbs");
-			makeInputImage("thumbs0",id,"media/twothumbsdown.png", aArea);
-			makeInputImage("thumbs1",id,"media/thumbdown.png", aArea);
-			makeInputImage("thumbs2",id,"media/thumbup.png", aArea);
-			makeInputImage("thumbs3",id,"media/twothumbsup.png", aArea);
-			makeInputImage("thumbs4",id,"media/threethumbsup.png", aArea);
+			makeInputImage("thumbs0",id,"media/twothumbsdown.png", answerArea);
+			makeInputImage("thumbs1",id,"media/thumbdown.png", answerArea);
+			makeInputImage("thumbs2",id,"media/thumbup.png", answerArea);
+			makeInputImage("thumbs3",id,"media/twothumbsup.png", answerArea);
+			makeInputImage("thumbs4",id,"media/threethumbsup.png", answerArea);
 			break;
 	}
 }
