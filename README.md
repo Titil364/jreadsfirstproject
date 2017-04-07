@@ -1,4 +1,4 @@
-# jreadsfirstproject7
+# jreadsfirstproject
 Alexandre COMAS 
 Cyril GOVIN
 Clément MANNIEZ
