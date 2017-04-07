@@ -447,4 +447,18 @@ function processing(req) {
 	var message = req.response;
 	console.log(JSON.parse(message));
 }
-	
+
+//function to return an array of the name of the checked default information	
+function checkDefaultInformations(){
+	var checkBoxes = document.getElementById("defaultInfCheckboxes").children;
+	var infoArray = [];
+
+	for (var i = checkBoxes.length - 1; i >= 0; i--) {
+		if (checkBoxes[i].type === "checkbox" && checkBoxes[i].checked){
+			infoArray.push(checkBoxes[i].value);
+		}
+
+	}
+
+	return infoArray;
+}
