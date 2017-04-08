@@ -5,11 +5,13 @@ function addApplication(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
 	
+	var applicationBorder = document.getElementById("applicationBorder");
+	
 	//Creation of the application wrapper
 	var application = document.createElement("div");
 		application.setAttribute("class", "application");
 		application.setAttribute("id", "A"+nbApplication);
-		form.appendChild(application);
+		applicationBorder	.appendChild(application);
 	
 	//Creation of the childs
 	
@@ -467,9 +469,10 @@ jQuery.fn.swap = function(b){
     t.parentNode.removeChild(t); 
     return this; 
 };
-document.getElementById("makeMoveable").addEventListener("click",makeDraggble);
+document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 
-function makeDraggble(event) {
+
+function makeDraggbleQuestion(event) {
 	$( ".question" ).draggable({containment : "parent", revert: true, helper: "clone" });
 
 	$( ".question" ).droppable({
@@ -496,3 +499,33 @@ function makeDraggble(event) {
 	});
 		
 }
+
+document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
+
+function makeDraggbleApplication(event) {
+	$( ".application" ).draggable({containment : "parent", revert: true, helper: "clone" });
+
+	$( ".application" ).droppable({
+		accept: ".application",
+		drop: function( event, ui ) {
+
+			var draggable = ui.draggable, droppable = $(this),
+				dragPos = draggable.position(), dropPos = droppable.position();
+			
+			
+			draggable.css({
+				left: dropPos.left+'px',
+				top: dropPos.top+'px'
+			});
+	
+			droppable.css({
+				left: dragPos.left+'px',
+				top: dragPos.top+'px'
+			});
+			draggable.swap(droppable);
+			
+			refreshQuestion(droppable[0], droppable.parent()[0]);
+		}
+	});
+}
+		

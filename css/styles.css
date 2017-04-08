@@ -46,15 +46,24 @@ main{
 	border:1px solid #777;
 	border-radius:16px;
 	padding:7px;
-	margin:5px;
+	margin:25px;
+	background-color:#FF9900; 
 }
 .question{
 	border:1px solid #333;
 	border-radius:16px;
 	padding:7px;
 	margin-bottom: 5px;
+	background-color:#D79B28;
+	width: 70%;
 }
 .application > div{
+	margin-bottom: 5px;
+}
+#applicationBorder{
+	border:1px solid #333;
+	border-radius:16px;
+	padding : 7px;
 	margin-bottom: 5px;
 }
 
