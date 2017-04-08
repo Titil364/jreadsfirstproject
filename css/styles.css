@@ -60,7 +60,7 @@ main{
 .application > div{
 	margin-bottom: 5px;
 }
-#applicationBorder{
+#applications{
 	border:1px solid #333;
 	border-radius:16px;
 	padding : 7px;
