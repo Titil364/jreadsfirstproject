@@ -123,38 +123,41 @@ function removeMe(event, me){
 	else{
 		parent.removeChild(me);
 	}
-		
 }
 function refreshApplication(){
 	var applications = $(".application");
 	for(var i = 0; i < applications.length; i++){
-		
-		var formerId = applications[i].id;
-		var newId = "Applic"+i;
-		if(!(formerId === newId)){
-			applications[i].id = newId;
-		
-			var aInfoWrapper = $("#"+formerId+"Info");
-			var aInfo = $("#"+formerId+"Info > div");
-			console.log(aInfo);
-			aInfoWrapper.id = newId+"Info";
-			//Each component is composed of a label and an input
-			for(var y = 0; y < aInfo.length; y++){
-				//Modifying the label
-				var children = $(aInfo[y]).children();
-				var name = newId+children[1].id.slice(newId.length, children[1].id.length);
-				console.log(name);
-				children[0].setAttribute("for", name);
-				
-				//Modifying the input
-				children[1].setAttribute("name", name);
-				children[1].setAttribute("id", name);
-			}
+		// The method who make the application dragable and dropabble create a moving div
+		// build exactly as the application with the same class but with no id
+		// because of this, the application tab "applications" above contains one more div 
+		// without any id which is modified as his comrades whereas it whould normally disappear
+		// we need not to modify this one otherwise the form and the drag&drop will not work. 
+		if(!(applications[i].id === "")){
+			var formerId = applications[i].id;
+			var newId = "Applic"+i;
+			if(!(formerId === newId)){
+				applications[i].id = newId;
 			
-			//This mean that if there is at least one question
-			//The question will be refreshed
-			if($(applications[i]).children().length >= 2)
-				refreshQuestion(applications[i]);
+				var aInfoWrapper = $("#"+formerId+"Info");
+				aInfoWrapper[0].setAttribute("id", newId+"Info");				
+				var aInfo = $("#"+formerId+"Info > div");
+				//Each component is composed of a label and an input
+				for(var y = 0; y < aInfo.length; y++){
+					//Modifying the label
+					var children = $(aInfo[y]).children();
+					var name = newId+children[1].id.slice(newId.length, children[1].id.length);
+					children[0].setAttribute("for", name);
+					
+					//Modifying the input
+					children[1].setAttribute("name", name);
+					children[1].setAttribute("id", name);
+				}
+				
+				//This mean that if there is at least one question
+				//The question will be refreshed
+				if($(applications[i]).children().length >= 2)
+					refreshQuestion(applications[i]);
+			}
 		}
 	}
 }
@@ -206,57 +209,6 @@ function refreshQuestion(parent){
 
 	}
 }
-/*
-function refreshQuestion(parent){
-	var id = me.id.slice(3, me.id.length);
-		
-	var questions = $("#"+parent.id+" > .question");
-	//console.log(parent.id);
-	if(id == questions.length+1){
-
-	}else{
-		//parent.removeChild(me);
-
-		//console.log(questions[id]);
-		var y = 0;
-		//console.log("ID me : "+id);
-		for(var i = 0; i < questions.length; i++){
-			var formerId = me.id;
-			//console.log($(questions[i]));
-			var children = $(questions[i]).children();
-
-			var newId = parent.id+"Q"+parseInt(i+1, 10);
-			questions[i].setAttribute("id", newId);
-			children[0].setAttribute("for", "question"+newId);
-			children[0].innerHTML = "Question n°"+newId.slice(3, newId.length)+" : ";
-			children[1].setAttribute("id", "question"+newId);
-			
-			var options = $(children[3]).children();
-				$(options[0]).children()[0].setAttribute("for", "thumb"+newId);
-				$(options[0]).children()[1].setAttribute("name", "option"+newId);
-				$(options[0]).children()[1].setAttribute("id", "thumb"+newId);
-				
-				$(options[1]).children()[0].setAttribute("for", "smiley"+newId);
-				$(options[1]).children()[1].setAttribute("name", "option"+newId);
-				$(options[1]).children()[1].setAttribute("id", "smiley"+newId);
-				
-				$(options[2]).children()[0].setAttribute("for", "textArea"+newId);
-				$(options[2]).children()[1].setAttribute("name", "option"+newId);
-				$(options[2]).children()[1].setAttribute("id", "textArea"+newId);
-			
-
-			
-			var who = $("input[name=option"+newId+"]:checked").val();
-			if((who === "smiley") || (who === "thumbs")){
-				for(var t = 0; t < 5; t++){
-					var name = who+t+formerId;
-					//console.log($("input[id="+name+"]"));
-					$("input[id^="+name+"]")[0].setAttribute("id", who+t+newId);
-				}
-			}
-		}
-	}
-}*/
 
 function addQuestion(event, parent) {
     //console.log(button);
@@ -361,7 +313,7 @@ function addQuestion(event, parent) {
 
 function answers(event){
 	console.log("teub");
-	var id = event.target.parentElement.parentElement.parentElement.id;
+	var id = event.target.parentElement.parentElement.id;
 	var answerArea = $("#"+id+" .answerArea")[0];
 	answerArea.innerHTML = "";
 	//console.log(id);
@@ -562,7 +514,7 @@ function makeDraggbleQuestion(event) {
 			});
 			draggable.swap(droppable);
 			
-			refreshQuestion(droppable[0], droppable.parent()[0]);
+			refreshQuestion(droppable.parent()[0]);
 		}
 	});
 		
@@ -590,7 +542,7 @@ function makeDraggbleApplication(event) {
 			});
 			draggable.swap(droppable);
 			
-			refreshQuestion(droppable[0], droppable.parent()[0]);
+			refreshApplication();
 		}
 	});
 }
