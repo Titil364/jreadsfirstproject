@@ -412,35 +412,44 @@ function makeInputImage(name, value, imageAdr, parent){
 
 function extractData(){
 	//Liste of application in the form
+	var formName = $("#formName").val();
+	if(formName === ""){
+		alert("Please enter the name of the form. ");
+		return null;
+	}
 	var applications = $(".application");
+	
+		var a = [];
+		var q = [];
+		
 	for(var i = 0; i < applications.length; i++){
 		var id = "#"+applications[i].id;
 		console.log("#################");
-		var name = $(id+"Name").val();
-		console.log("Task : "+name);
-		var desc = $(id+"Desc").val();
-		console.log("Description : "+desc);
-		var img = $(id+"Img").val();
-		console.log("Image : "+img);
-		var a = new Application(5, name, "Test");
+		var applicationName = $(id+"Name").val();
+		//console.log("Task : "+applicationName);
+		var applicationDesc = $(id+"Desc").val();
+		//console.log("Description : "+applicationDesc);
+		var applicationImg = $(id+"Img").val();
+		//console.log("Image : "+applicationImg);
+		a.push(new Application(5, applicationName, applicationDesc, applicationImg));
+		q.push([]);
 		
-		if(name === "" | desc === "" & img === ""){
+		if(applicationName === "" | (applicationDesc === "" & applicationImg === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			return null;
 		}
-		var questions = $("#"+id+" > .question");
-		var q = []
+		var questions = $(id+" > .question");
 		for(var y = 0; y < questions.length; y++){
 			//Dig out the type of the question (the radio button checked)
 			
-			var idQ = questions[y].id;
+			var idQ = "#"+questions[y].id;
 			//console.log(idQ);
-			var qLabel = $("#question"+idQ).val();
-			//console.log(qLabel)
-			var qType = $("input[name=option"+idQ+"]:checked").val();
-			//console.log(qType);
+			var qLabel = $(idQ+"name").val();
+			console.log(qLabel)
+			var qType = $(idQ+" select").val();
+			console.log(qType);
 			
-			q.push(new Question(idQ, qLabel, qType));
+			q[i].push(new Question(idQ, qLabel, qType));
 		}
 		//console.log("");
 	}
@@ -454,11 +463,16 @@ function extractAnswers(question, type){
 
 
 
-function send(url, applications, questions) {
+function send(url, a, q) {
 
-	var data = "applications="+JSON.stringify(applications)+"&questions="+JSON.stringify(questions);
+	var data = JSON.stringify(
+			{
+				"applications": JSON.stringify(a),
+				"question": JSON.stringify(qx)
+			}
+		);
 	//console.log(data);
-	$.get(
+	$.post(
 		url+".php", // url cible
 		data, // données envoyées 
 		function(res){ // le callback
