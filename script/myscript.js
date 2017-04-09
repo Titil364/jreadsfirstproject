@@ -468,9 +468,12 @@ function send(url, f, a, q) {
 	console.log(JSON.stringify(a));
 	console.log(JSON.stringify(q));
 	//console.log(data);
+	//normalement les données seront envoyés en post
 	$.get(
 		url+".php", // url cible
 		{
+			"action":JSON.stringify("created"),
+			"controller":JSON.stringify("form"),
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
 			"questions":JSON.stringify(q)
