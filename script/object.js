@@ -1,15 +1,15 @@
 class Form{
-	constructor(id, title, description, img){
+	constructor(id, name, description, img){
 		this.id = id;
-		this.title = title;
+		this.name = name;
 		this.description = description;
 		this.img = img;
 	}
 }
 class Application{
-	constructor(id, title, description){
+	constructor(id, name, description){
 		this.id = id;
-		this.title = title;
+		this.name = name;
 		this.description = description;
 	}
 }

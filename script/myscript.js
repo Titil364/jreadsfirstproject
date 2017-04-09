@@ -414,8 +414,8 @@ function extractData(){
 	//Liste of application in the form
 	var formName = $("#formName").val();
 	if(formName === ""){
-		alert("Please enter the name of the form. ");
-		return null;
+		//alert("Please enter the name of the form. ");
+		//return null;
 	}
 	var applications = $(".application");
 	
@@ -453,7 +453,7 @@ function extractData(){
 		}
 		//console.log("");
 	}
-	send("test", a, q);
+	send("test", formName, a, q);
 }
 function extractAnswers(question, type){
 	return null;
@@ -463,18 +463,18 @@ function extractAnswers(question, type){
 
 
 
-function send(url, a, q) {
+function send(url, f, a, q) {
 
-	var data = JSON.stringify(
-			{
-				"applications": JSON.stringify(a),
-				"question": JSON.stringify(qx)
-			}
-		);
+	console.log(JSON.stringify(a));
+	console.log(JSON.stringify(q));
 	//console.log(data);
-	$.post(
+	$.get(
 		url+".php", // url cible
-		data, // données envoyées 
+		{
+			"form":JSON.stringify(f),
+			"applications":JSON.stringify(a),
+			"questions":JSON.stringify(q)
+		}, // données envoyées 
 		function(res){ // le callback
 			var message = res;
 			console.log(message);

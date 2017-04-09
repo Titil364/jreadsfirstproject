@@ -58,11 +58,10 @@ CREATE TABLE QuestionType (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Question (
-  questionId int(11) NOT NULL,
+  questionId int(11) PRIMARY KEY,
   questionName varchar(20),
   applicationId int(11),
   questionTypeId int(11),
-  PRIMARY KEY (questionId),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
   FOREIGN KEY (questionTypeId) REFERENCES QuestionType(questionTypeId)
 )DEFAULT CHARSET=utf8;
