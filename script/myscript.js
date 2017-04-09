@@ -85,9 +85,9 @@ function addApplication(event){
 	//Creation of the add question button
 	var buttonQuestion = document.createElement("button");
 		buttonQuestion.setAttribute("class", "addQuestionButton");
-		buttonQuestion.type="button";
-		buttonQuestion.value= "Add Question";
-		buttonQuestion.innerHTML ="Add a question";
+		buttonQuestion.type = "button";
+		buttonQuestion.value = "Add Question";
+		buttonQuestion.innerHTML = "Add a question";
 		applicationInformationWrapper.appendChild(buttonQuestion);
 		
 		    
@@ -312,7 +312,6 @@ function addQuestion(event, parent) {
 }
 
 function answers(event){
-	console.log("teub");
 	var id = event.target.parentElement.parentElement.id;
 	var answerArea = $("#"+id+" .answerArea")[0];
 	answerArea.innerHTML = "";
@@ -415,12 +414,20 @@ function extractData(){
 	//Liste of application in the form
 	var applications = $(".application");
 	for(var i = 0; i < applications.length; i++){
-		var id = applications[i].id;
+		var id = "#"+applications[i].id;
 		console.log("#################");
-		var title = $("#nameApplicationLabel"+id).val();
-		console.log("Task : "+title);
-		var a = new Application(5,title, "Test");
+		var name = $(id+"Name").val();
+		console.log("Task : "+name);
+		var desc = $(id+"Desc").val();
+		console.log("Description : "+desc);
+		var img = $(id+"Img").val();
+		console.log("Image : "+img);
+		var a = new Application(5, name, "Test");
 		
+		if(name === "" | desc === "" & img === ""){
+			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
+			return null;
+		}
 		var questions = $("#"+id+" > .question");
 		var q = []
 		for(var y = 0; y < questions.length; y++){
@@ -435,9 +442,9 @@ function extractData(){
 			
 			q.push(new Question(idQ, qLabel, qType));
 		}
-		send("test", a, q);
 		//console.log("");
 	}
+	send("test", a, q);
 }
 function extractAnswers(question, type){
 	return null;

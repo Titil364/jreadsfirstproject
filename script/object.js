@@ -1,11 +1,15 @@
-class Application{
+class Form{
 	constructor(id, title, description){
 		this.id = id;
 		this.title = title;
 		this.description = description;
 	}
-	getTitle(){
-		return this.title;
+}
+class Application{
+	constructor(id, title, description){
+		this.id = id;
+		this.title = title;
+		this.description = description;
 	}
 }
 class Question{
