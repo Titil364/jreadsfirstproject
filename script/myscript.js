@@ -455,21 +455,15 @@ function extractData(){
 	}
 	send(formName, a, q);
 }
-function extractAnswers(question, type){
-	return null;
-}
-
-
-
 
 
 function send(f, a, q) {
 
-	console.log(JSON.stringify(a));
-	console.log(JSON.stringify(q));
+	//console.log(JSON.stringify(a));
+	//console.log(JSON.stringify(q));
 	//console.log(data);
 	//normalement les données seront envoyés en post
-	$.get(
+	$.post(
 		"index.php", // url cible
 		{
 			"action":JSON.stringify("created"),

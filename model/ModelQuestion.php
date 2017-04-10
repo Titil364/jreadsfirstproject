@@ -25,16 +25,17 @@ class ModelQuestion extends Model{
 
 
 
+
     public function __construct($questionId =NULL, $questionName=NULL, $applicationId=NULL, $questionTypeId=NULL){
         if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeId=NULL)) {
         	$this->questionId = $questionId;
         	$this->questionName = $questionName;
         	$this->applicationId = $applicationId;
                 $this->questionTypeId = $questionTypeId;
+
         }
     }
-    
-    
+
     public function getQuestionByApplicationId($id){
 		try{
 			$sql  = "SELECT * FROM Question WHERE applicationId=:id";
@@ -58,8 +59,6 @@ class ModelQuestion extends Model{
             }
             return false;
         }
-    }    
-       
-
+    }
 }
 

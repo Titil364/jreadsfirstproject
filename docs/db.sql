@@ -135,7 +135,7 @@ DELIMITER //
 CREATE TRIGGER complete_form_insert AFTER INSERT
 	ON DateComplete FOR EACH ROW
 	BEGIN
-			UPDATE Form SET completeForm = (completeForm+1) WHERE NEW.formId = formId;
+			UPDATE Form SET completedForm = (completedForm+1) WHERE NEW.formId = formId;
 	END;//
 	
 DELIMITER ;
@@ -145,7 +145,7 @@ DELIMITER //
 CREATE TRIGGER complete_form_delete AFTER DELETE
 	ON DateComplete FOR EACH ROW
 	BEGIN
-			UPDATE Form SET completeForm = (completeForm-1)WHERE OLD.formId = formId;
+			UPDATE Form SET completedForm = (completedForm-1)WHERE OLD.formId = formId;
 	END;//
 	
 DELIMITER ;
