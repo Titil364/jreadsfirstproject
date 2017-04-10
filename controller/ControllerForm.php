@@ -24,50 +24,45 @@ class ControllerForm {
     }
        
 	
-	public static function created(){
-		$a = json_decode($_GET["applications"], true);
-		$q = json_decode($_GET["questions"], true);
+	public static function created(){	
+		$a = json_decode($_POST["applications"], true);
+		$q = json_decode($_POST["questions"], true);
 		//var_dump($q);
 		
 		$form = array(
-					"formId" => 0,
-					"formName" => json_decode($_GET["form"], true),
+					"formName" => json_decode($_POST["form"], true),
 					"userId" => 0,
 					"completedForm" => 0			
 				);
-			
-		//###################################
-		//Enregistrer le form 
-		//###################################
+
+		ModelForm::save($form);
+		$form['formId'] = ModelForm::getLastInsert();
 		for($i = 0; $i < sizeof($a); $i++){
 			$application = array(
 				"applicationId" => $i,
 				"applicationName" => $a[$i]["name"],
 				"applicationDescription" => $a[$i]["description"],
-				"formId" =>0
+				"formId" => $form['formId']
 			);
-			//###################################
-			//Enregistrer l'application
-			//###################################
-			var_dump($q[$i]);
+			ModelApplication::save($application);
+			//var_dump($q[$i]);
 			//$q[$i] the array containing the question of the application $i
 			for($y = 0; $y < sizeof($q[$i]); $y++){
 				//chercher questionTypeId grace à $q[$i][$y]["questionType"]
 				//$qTypeId
-				$qTypeId = 0;
+				$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"])->getQuestionTypeId();
+
 				$question = array(
-					"questionId" => $q[$i][$y]["id"],
+					"questionId" => $y,//$q[$i][$y]["id"],
 					"questionName" => $q[$i][$y]["label"],
-					"applicationId" => $application["applicationId"],
+					"applicationId" => $i,//$application["applicationId"],
 					"questionTypeId" => $qTypeId
 				);
-				//###################################
-				//Enregistrer la question
-				//###################################
+				ModelQuestion::save($question);
 			}
 		}
 
-		
+
 		echo json_encode("########Success");
 	}
 }

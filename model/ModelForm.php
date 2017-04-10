@@ -60,6 +60,21 @@ class ModelForm extends Model{
             return false;
         }
     }
+	
+    public static function getLastInsert(){
+		try{
+			// Doesn't work on all the data base
+			return Model::$pdo->lastInsertId();
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+    }
 
 }
 

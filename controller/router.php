@@ -3,6 +3,10 @@
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('controller','ControllerDefault.php'));
 require_once File::build_path(array('controller','ControllerForm.php'));
+require_once File::build_path(array('controller','ControllerApplication.php'));
+require_once File::build_path(array('controller','ControllerQuestion.php'));
+require_once File::build_path(array('controller','ControllerQuestiontype.php'));
+
 
 
 $action = "";

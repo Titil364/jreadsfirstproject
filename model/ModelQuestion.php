@@ -1,7 +1,7 @@
 <?php
 require_once File::build_path(array('model', 'Model.php'));
 
-class ModelForm extends Model{
+class ModelQuestion extends Model{
 
 	private $questionId;
 	private $questionName;
@@ -33,8 +33,5 @@ class ModelForm extends Model{
 			$this->questionTypeId = qtid;
         }
     }
- 
-       
-
 }
 
