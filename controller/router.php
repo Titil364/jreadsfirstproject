@@ -2,6 +2,7 @@
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('controller','ControllerDefault.php'));
+require_once File::build_path(array('controller','ControllerForm.php'));
 
 
 $action = "";
@@ -27,14 +28,18 @@ else{
 	$controller = 'default';
 }
 
+if(File::isJson($controller) && File::isJson($action)){
+	$controller = json_decode($controller);
+	$action = json_decode($action);
+}
 
 $controllerClass = 'Controller' . ucfirst($controller);
 
 		
 if(class_exists($controllerClass)){
 	if(in_array($action,  get_class_methods($controllerClass))){
-		$controllerClass::$action();
 
+		$controllerClass::$action();
 	}
 	else{
 		//The action doesn't exist

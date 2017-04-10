@@ -1,6 +1,6 @@
 <?php
 	//$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-	require_once "./lib/File.php";
+
 	$a = json_decode($_GET["applications"], true);
 	$q = json_decode($_GET["questions"], true);
 	//var_dump($q);
@@ -11,8 +11,6 @@
 				"userId" => 0,
 				"completeForm" => 0			
 			);
-        require_once File::build_path(array('model', 'ModelForm.php'));                                                 
-        ModelForm::save($form);
         
 	//###################################
 	//Enregistrer le form 
@@ -24,7 +22,6 @@
 			"applicationDescription" => $a[$i]["description"],
 			"formId" =>0
 		);
-                require_once File::build_path(array('model', 'ModelApplication.php'));
 		//###################################
 		//Enregistrer l'application
 		//###################################

@@ -165,6 +165,15 @@ class Model {
             return false;
         }
     }
+	public static function beginTransaction(){
+		return $Model::$pdo->beginTransaction();
+	}
+	public static function commit() {
+		return $Model::$pdo->commit();
+	}
+	public static function rollback(){
+		return $Model::$pdo->rollback();
+	}
 }
 Model::Init();
 
