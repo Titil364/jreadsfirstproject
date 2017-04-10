@@ -11,7 +11,7 @@ class ModelUsers extends Model{
     private $mail;
     private $nonce;
     protected static $object = "Users";
-    protected static $primary = 'nickName';
+    protected static $primary = 'userId';
 	
 	
 	public function getId(){
@@ -85,7 +85,7 @@ class ModelUsers extends Model{
 			$sql = "SELECT COUNT(*) FROM Users WHERE userNickname=:nickname";
 			$prep = Model::$pdo->prepare($sql);
 			$values = array(
-				':nickname' => $nickname
+				'nickname' => $nickname
 			);
 			$prep -> execute($values);
 			$prep -> setFetchMode(PDO::FETCH_NUM);
@@ -110,8 +110,8 @@ class ModelUsers extends Model{
 			$query = "SELECT nickName,nonce FROM Users WHERE nickName=:nickn and password=:pwd";
             $prep = Model::$pdo->prepare($query);
             $values = array(
-                ':nickn' => $nick,
-                ':pwd' => $pass
+                'nickn' => $nick,
+                'pwd' => $pass
             );
             $prep->execute($values);
             $result = $prep->fetch(PDO::FETCH_ASSOC);
@@ -133,8 +133,8 @@ class ModelUsers extends Model{
 			    $query = "Select * From Users Where nickName=:nickn and password=:pwd";
                 $prep = Model::$pdo->prepare($query);
                 $values = array(
-                    ':nickn' => $nick,
-                    ':pwd' => $pass,
+                    'nickn' => $nick,
+                    'pwd' => $pass,
                 );
                 $prep->execute($values);
                 $prep->setFetchMode(PDO::FETCH_CLASS,'ModelUsers');

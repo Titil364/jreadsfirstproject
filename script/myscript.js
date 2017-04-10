@@ -453,24 +453,18 @@ function extractData(){
 		}
 		//console.log("");
 	}
-	send("test", formName, a, q);
-}
-function extractAnswers(question, type){
-	return null;
+	send(formName, a, q);
 }
 
 
+function send(f, a, q) {
 
-
-
-function send(url, f, a, q) {
-
-	console.log(JSON.stringify(a));
-	console.log(JSON.stringify(q));
+	//console.log(JSON.stringify(a));
+	//console.log(JSON.stringify(q));
 	//console.log(data);
 	//normalement les données seront envoyés en post
-	$.get(
-		url+".php", // url cible
+	$.post(
+		"index.php", // url cible
 		{
 			"action":JSON.stringify("created"),
 			"controller":JSON.stringify("form"),

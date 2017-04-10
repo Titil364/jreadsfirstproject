@@ -2,14 +2,21 @@
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('controller','ControllerDefault.php'));
+
 require_once File::build_path(array('controller','ControllerUsers.php'));
+require_once File::build_path(array('controller','ControllerForm.php'));
+require_once File::build_path(array('controller','ControllerApplication.php'));
+require_once File::build_path(array('controller','ControllerQuestion.php'));
+require_once File::build_path(array('controller','ControllerQuestiontype.php'));
+
 
 
 $action = "";
 
 if(isset($_GET['action'])){
 	$action = $_GET['action'];
-}else if(isset($_POST['action'])){
+}else if(isset
+($_POST['action'])){
 	$action = $_POST['action'];
 }
 else{
@@ -28,14 +35,21 @@ else{
 	$controller = 'default';
 }
 
+
+
+if(File::isJson($controller) && File::isJson($action)){
+	$controller = json_decode($controller);
+	$action = json_decode($action);
+}
+
 $controllerClass = 'Controller' . ucfirst($controller);
 
 	//echo $controllerClass . "<br>" . $action;		
 if(class_exists($controllerClass)){
 
 	if(in_array($action,  get_class_methods($controllerClass))){
-		$controllerClass::$action();
 
+		$controllerClass::$action();
 	}
 	else{
 		//The action doesn't exist
@@ -43,6 +57,5 @@ if(class_exists($controllerClass)){
 }else{
 	//The controller doesn't exist
 }
-
 
 ?>

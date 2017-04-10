@@ -6,83 +6,50 @@ class ModelForm extends Model{
 	private $formId;
 	private $formName;
 	private $userId;
+	private $completedForm;
 	
     protected static $object = "Form";
     protected static $primary = 'formId';
 	
-    public function getFormId() {
-   		return $this->formId;
-    }    
+    public function getFormId(){return $this->formId;}
+	public function setFormId($formId){$this->formId = $formId;}     
 
-    public function getFormName() {
-   		return $this->formName;
-    }       
+    public function getFormName(){return $this->formName;}       
+    public function setFormName($formName){$this->formName = $formName;}
+	
+	public function getUserId(){return $this->userId;}
+    public function setUserId($userId){$this->userId = $userId;}
+ 
 
-    public function setFormId($formId) {
-   		$this->formId = $formId;
-    }    
-
-    public function setFormName($formName){
-   		$this->formName = $formName;
-    }
-
-    public function getUserId(){
-    	return $this->userId;
-    }
-
-    public function setUserId($userId){
-    	$this->userId = $userId;
-    }
+	public function getCompletedForm(){return $this->completedForm;}
 
 
-    public function __construct( $formID= NULL, $formName = NULL, $userId = NULL) {
-        if (!is_null($formID) && !is_null($formName) && !is_null($userId)) {
+
+
+
+
+    public function __construct( $formID = NULL, $formName = NULL, $userId = NULL, $completedForm = NULL) {
+        if (!is_null($formID) && !is_null($formName) && !is_null($userId) && !is_null($completedForm)){
         	$this->formId = $formId;
         	$this->formName = $formName;
-        	$this-> $userId = $userId;
-  	
+        	$this->userId = $userId;
+			$this->completedForm = $completedForm;
         }
     }
-/* The generic model will provide this function
-    public function getFormById($id){
-		try{
-			$sql  = "SELECT * FROM Form WHERE formId=:id";
-			$prep = Model::$pdo->prepare($sql);
 
-			$values = array(
-				"id" => $id,
-				);
-
-			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelForm');
-			$form_array = $prep->fetchAll();
-			
-			return $form_array[0];
-
-		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return false;
-        }
-    }
-*/
     public function getFormByUserId($userId){
 		try{
-			$sql  = "SELECT * FROM Form WHERE formId=:id";
+			$sql  = "SELECT * FROM Form WHERE userId=:userId";
 			$prep = Model::$pdo->prepare($sql);
 
 			$values = array(
-				"id" => $userId,
+				"userId" => $userId,
 				);
 
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelForm');
-			$form_array = $prep->fetchAll();
 			
-			return $form_array;
+			return $prep->fetchAll();
 
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
@@ -92,8 +59,22 @@ class ModelForm extends Model{
             }
             return false;
         }
-    }    
-       
+    }
+	
+    public static function getLastInsert(){
+		try{
+			// Doesn't work on all the data base
+			return Model::$pdo->lastInsertId();
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+    }
 
 }
 

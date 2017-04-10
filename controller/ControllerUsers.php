@@ -16,11 +16,24 @@ class ControllerUsers {
 		$view = 'createdUsers';
         $controller = 'users';
         $pagetitle = 'User Created !';
+		
+		$users = array(
+				"userMail" => $_POST['userMail'],
+				"userPassword" => $_POST['userPassword'],
+				"userNickname" => $_POST['userNickname'],
+				"userSurname" => $_POST['userSurname'],
+				"userForname" => $_POST['userForname']
+			);
+		
+		require File::build_path(array('view', 'view.php'));
 	}
 	
-	public static function existingUser($user){
-		alert("niquetamere");
-		echo(json_encode("salut"));
+	public static function existingUser(){
+		$nick = $_POST['userNickname'];
+		$var = json_decode($nick);
+		$rep = ModelUsers::checkExistingUser($var);
+		$return = json_encode($rep);
+		echo($return);
 	}
 }
 ?>
