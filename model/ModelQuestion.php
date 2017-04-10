@@ -26,8 +26,8 @@ class ModelQuestion extends Model{
 
 
 
-    public function __construct($questionId =NULL, $questionName=NULL, $applicationId=NULL, $questionTypeId=NULL){
-        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeId=NULL)) {
+    public function __construct($questionId = NULL, $questionName = NULL, $applicationId=  NULL, $questionTypeId = NULL){
+        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeId)) {
         	$this->questionId = $questionId;
         	$this->questionName = $questionName;
         	$this->applicationId = $applicationId;
@@ -42,13 +42,14 @@ class ModelQuestion extends Model{
 			$prep = Model::$pdo->prepare($sql);
                         
 			$values = array(
-				"id" => $id,
+				"id" => $id
 				);
                         
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestion');
+                        
 			$question_array = $prep->fetchAll();
-			
+
 			return $question_array;
 
 		}catch (PDOException $ex) {

@@ -25,30 +25,34 @@ foreach ($task_array as $t)
     
     echo "<h2>$taskName</h2>";
     echo $taskDesc;
-    echo "</div>";
+
     
     //displaying questions
     require_once File::build_path(array('model', 'ModelQuestion.php'));
-    var_dump($t);
-    $question_array = ModelQuestion::getQuestionByApplicationId($t->getApplicationId());
-    echo json_encode($question_array);
     
-/*
+    $question_array = ModelQuestion::getQuestionByApplicationId($t->getApplicationId());
+    
     foreach ($question_array as $q){
-        //displaying questions 
-        echo "<h3> $q->getQuestionName() </h3>";
+                //displaying questions 
+        echo "<h3> ";
+        echo $q->getQuestionName();
+        echo " </h3>";
+
         
-        $qType = ModelQuestionType::getQuestionTypeByQuestionId($q->getQuestionId());
+        $qType = ModelQuestionType::select($q->getQestionTypeId());
         
-        $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
+        /*$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
         
         //diplaying answers
         foreach($answers_array as $a){
             echo "<img src=\"$a->getImage()\"></img>";
             echo $a->getLabel();
         }
+        */
         
-    }*/
+        
+    }
+echo "</div>";    
 
  ?>
 </main>
