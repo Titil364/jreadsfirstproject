@@ -423,35 +423,34 @@ function extractData(){
 		var q = [];
 		
 	for(var i = 0; i < applications.length; i++){
-		var id = "#"+applications[i].id;
-		console.log("#################");
-		var applicationName = $(id+"Name").val();
+		var id = applications[i].id;
+		var applicationName = $("#"+id+"Name").val();
 		//console.log("Task : "+applicationName);
-		var applicationDesc = $(id+"Desc").val();
+		var applicationDesc = $("#"+id+"Desc").val();
 		//console.log("Description : "+applicationDesc);
-		var applicationImg = $(id+"Img").val();
+		var applicationImg = $("#"+id+"Img").val();
 		//console.log("Image : "+applicationImg);
-		a.push(new Application(5, applicationName, applicationDesc, applicationImg));
+		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
 		q.push([]);
 		
 		if(applicationName === "" | (applicationDesc === "" & applicationImg === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			return null;
 		}
-		var questions = $(id+" > .question");
+		var questions = $("#"+id+" > .question");
 		for(var y = 0; y < questions.length; y++){
 			//Dig out the type of the question (the radio button checked)
 			
-			var idQ = "#"+questions[y].id;
+			var idQ = questions[y].id;
 			//console.log(idQ);
-			var qLabel = $(idQ+"name").val();
-			console.log(qLabel)
-			var qType = $(idQ+" select").val();
-			console.log(qType);
+			var qLabel = $("#"+idQ+"name").val();
+			//console.log(qLabel)
+			var qType = $("#"+idQ+" select").val();
+			//console.log(qType);
 			
 			q[i].push(new Question(idQ, qLabel, qType));
 		}
-		//console.log("");
+		console.log("");
 	}
 	send(formName, a, q);
 }

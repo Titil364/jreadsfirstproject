@@ -49,22 +49,22 @@ CREATE TABLE DateComplete (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Application (
-  applicationId int(11) PRIMARY KEY,
-  applicationName varchar(20),
-  applicationDescription varchar(20),
+  applicationId varchar(20) PRIMARY KEY,
+  applicationName varchar(30),
+  applicationDescription varchar(80),
   formId int(11),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE QuestionType (
-    questionTypeId int(11) PRIMARY KEY,
+    questionTypeId int(11) PRIMARY KEY AUTO_INCREMENT,
     questionTypeName varchar(20)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Question (
-  questionId int(11) PRIMARY KEY,
-  questionName varchar(20),
-  applicationId int(11),
+  questionId varchar(20) PRIMARY KEY,
+  questionName varchar(30),
+  applicationId varchar(20),
   questionTypeId int(11),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
   FOREIGN KEY (questionTypeId) REFERENCES QuestionType(questionTypeId)
@@ -79,7 +79,7 @@ CREATE TABLE Answer (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE AnswerType (
-    answerTypeId int(11) PRIMARY KEY,
+    answerTypeId int(11) PRIMARY KEY AUTO_INCREMENT,
     answerTypeName varchar(20),
     answerTypeImage varchar(20),
     questionTypeId int (11),
@@ -88,43 +88,6 @@ CREATE TABLE AnswerType (
 
 --
 -- Triggers
-/*
-CREATE OR REPLACE TRIGGER complete_form AFTER DELETE OR INSERT
-	ON DateComplete FOR EACH ROW
-	BEGIN 
--- A réfléchir
-		--IF(UPDATING or INSERTING) THEN
-		/*
-			IF(v_nb = 0) THEN
-				RAISE_APPLICATION_ERROR(-20003, '');
-			END IF;
-			
-			IF(UPDATING) THEN
-				IF(:OLD.formId != :NEW.formId) THEN
-					UPDATE Form SET completeForm = (completeForm-1)
-					WHERE :OLD.visitorId = visitorId;	
-					
-					UPDATE Form SET completeForm = (completeForm+1)
-					WHERE :NEW.formId = formId;
-				END IF;
-				
-				
-			END IF;
-		
-
-			IF(INSERTING) THEN
-				UPDATE Form SET completeForm = (completeForm+1)
-				WHERE NEW.formId = formId;
-				
-			END IF;
-	--	END IF;
-		
-
-		IF(DELETING) THEN
-			UPDATE Form SET completeForm = (completeForm-1)
-			WHERE OLD.formId = formId;
-		END IF;
-	END;*/
 	
 DROP TRIGGER IF EXISTS complete_form_insert;
 DROP TRIGGER IF EXISTS complete_form_delete;
@@ -152,23 +115,38 @@ DELIMITER ;
 
 --
 -- Insert data
-INSERT INTO QuestionType VALUES(0, "thumb");
-INSERT INTO QuestionType VALUES(1, "smiley");
-INSERT INTO QuestionType VALUES(2, "textarea");
-INSERT INTO QuestionType VALUES(3, "yesno");
+INSERT INTO QuestionType VALUES(1, "thumbs");
+INSERT INTO QuestionType VALUES(2, "smiley");
+INSERT INTO QuestionType VALUES(3, "textarea");
+INSERT INTO QuestionType VALUES(4, "yesno");
 
-INSERT INTO AnswerType VALUES(0, "textarea", "", 2);
-INSERT INTO AnswerType VALUES(1, "awful", "thumb1image", 0);
-INSERT INTO AnswerType VALUES(2, "bad", "thumb2image", 0);
-INSERT INTO AnswerType VALUES(3, "cool", "thumb3image", 0);
-INSERT INTO AnswerType VALUES(4, "nice", "thumb4image", 0);
-INSERT INTO AnswerType VALUES(5, "awesome", "thumb5image", 0);
-INSERT INTO AnswerType VALUES(6, "smiley1", "smiley1image", 1);
-INSERT INTO AnswerType VALUES(7, "smiley2", "smiley2image", 1);
-INSERT INTO AnswerType VALUES(8, "smiley3", "smiley3image", 1);
-INSERT INTO AnswerType VALUES(9, "smiley4", "smiley4image", 1);
-INSERT INTO AnswerType VALUES(10, "smiley5", "smiley5image", 1);
-INSERT INTO AnswerType VALUES(11, "yes", "", 3);
-INSERT INTO AnswerType VALUES(12, "no", "", 3);
+INSERT INTO AnswerType VALUES(1, "textarea", "", 2);
+INSERT INTO AnswerType VALUES(2, "awful", "thumb1image", 0);
+INSERT INTO AnswerType VALUES(3, "bad", "thumb2image", 0);
+INSERT INTO AnswerType VALUES(4, "cool", "thumb3image", 0);
+INSERT INTO AnswerType VALUES(5, "nice", "thumb4image", 0);
+INSERT INTO AnswerType VALUES(6, "awesome", "thumb5image", 0);
+INSERT INTO AnswerType VALUES(7, "smiley1", "smiley1image", 1);
+INSERT INTO AnswerType VALUES(8, "smiley2", "smiley2image", 1);
+INSERT INTO AnswerType VALUES(9, "smiley3", "smiley3image", 1);
+INSERT INTO AnswerType VALUES(10, "smiley4", "smiley4image", 1);
+INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 1);
+INSERT INTO AnswerType VALUES(12, "yes", "", 3);
+INSERT INTO AnswerType VALUES(13, "no", "", 3);
+
+INSERT INTO Form VALUES(1, 'Manger ou boire', 0, 0);
+
+
+INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);
+INSERT INTO Application VALUES('1Applic1', 'Boire', 'L\'alcool c\'est bon pour la santé', 1);
+INSERT INTO Application VALUES('1Applic2', 'Manger au toilette', 'Exprimez vous', 1);
+
+INSERT INTO Question VALUES('1Applic0Q1', 'Manger une banane', '1Applic0', 2);
+INSERT INTO Question VALUES('1Applic0Q2', 'J\'aime la merguez', '1Applic0', 1);
+INSERT INTO Question VALUES('1Applic0Q3', 'Manger des choux', '1Applic0', 2);
+INSERT INTO Question VALUES('1Applic1Q1', 'Boire de l\'eau', '1Applic1', 2);
+INSERT INTO Question VALUES('1Applic1Q2', 'J\'aime la vodka', '1Applic1', 0);
+INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 2);
+INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 1);
 
 

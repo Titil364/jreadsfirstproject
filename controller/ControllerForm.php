@@ -32,30 +32,30 @@ class ControllerForm {
 		$form = array(
 					"formName" => json_decode($_POST["form"], true),
 					"userId" => 0,
-					"completedForm" => 0			
+					"completedForm" => 0		
 				);
 
 		ModelForm::save($form);
 		$form['formId'] = ModelForm::getLastInsert();
 		for($i = 0; $i < sizeof($a); $i++){
 			$application = array(
-				"applicationId" => $i,
+				"applicationId" => $form['formId'] . $a[$i]["id"],
 				"applicationName" => $a[$i]["name"],
 				"applicationDescription" => $a[$i]["description"],
 				"formId" => $form['formId']
 			);
 			ModelApplication::save($application);
-			//var_dump($q[$i]);
 			//$q[$i] the array containing the question of the application $i
 			for($y = 0; $y < sizeof($q[$i]); $y++){
 				//chercher questionTypeId grace à $q[$i][$y]["questionType"]
 				//$qTypeId
-				$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"])->getQuestionTypeId();
+				$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"]);
+				$qTypeId = $qTypeId->getQuestionTypeId();
 
 				$question = array(
-					"questionId" => $y,//$q[$i][$y]["id"],
+					"questionId" => $form['formId'] . $q[$i][$y]["id"],
 					"questionName" => $q[$i][$y]["label"],
-					"applicationId" => $i,//$application["applicationId"],
+					"applicationId" => $application["applicationId"],
 					"questionTypeId" => $qTypeId
 				);
 				ModelQuestion::save($question);

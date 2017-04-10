@@ -18,7 +18,7 @@ class Model {
             self::$pdo = new PDO("mysql:host=$hostname;dbname=$database_name", $login, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
             self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		//	self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
+			//self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
         } catch (PDOException $e) {
             if (Conf::getDebug()) {
                 echo $e->getMessage(); // affiche un message d'erreur
@@ -141,7 +141,6 @@ class Model {
             $table_name = static::$object;
         
             $class_name = 'Model' . $table_name;
-			var_dump($table_name);
             $sql = "INSERT INTO $table_name (";
             
             foreach ($data as $cle => $valeur) {
@@ -157,7 +156,6 @@ class Model {
 			
             $req_prep = Model::$pdo->prepare($sql);
             $req_prep->execute($data);
-			var_dump($data);
             return true;
         } catch (PDOException $ex) {
             if (Conf::getDebug()) {

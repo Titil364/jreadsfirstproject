@@ -35,6 +35,7 @@ class ModelQuestiontype extends Model{
 
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestiontype');
+
 			
 			return $prep->fetchAll()[0];
 
