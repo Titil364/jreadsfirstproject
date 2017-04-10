@@ -51,7 +51,7 @@
 	
 </div>
 <button type="button" id="submit">Create the form</button> 
- 
+ <script src ="script/myscript.js"></script>
  		<!--<div id="newApplication">
 				
 				<label for="id2">Name : </label>

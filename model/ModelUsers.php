@@ -2,7 +2,7 @@
 require_once File::build_path(array('model', 'Model.php'));
 
 
-class ModelUser extends Model{
+class ModelUsers extends Model{
     private $id;
 	private $password;
     private $nickName;
@@ -10,7 +10,7 @@ class ModelUser extends Model{
     private $lastName;
     private $mail;
     private $nonce;
-    protected static $object = "User";
+    protected static $object = "Users";
     protected static $primary = 'nickName';
 	
 	
@@ -82,7 +82,7 @@ class ModelUser extends Model{
 	
 	public static function checkExistingUser($nickname){
 		try{	
-			$sql = "SELECT COUNT(*) FROM Users WHERE nickName=:nickname";
+			$sql = "SELECT COUNT(*) FROM Users WHERE userNickname=:nickname";
 			$prep = Model::$pdo->prepare($sql);
 			$values = array(
 				':nickname' => $nickname
@@ -126,7 +126,7 @@ class ModelUser extends Model{
         }
     }
     public static function connect($nick, $pass) {
-        $result = ModelUser::checkPassword($nick, $pass);
+        $result = ModelUsers::checkPassword($nick, $pass);
         if ($result['nickName'] == $nick && $result['nonce'] == NULL) {
            
             try {
@@ -137,7 +137,7 @@ class ModelUser extends Model{
                     ':pwd' => $pass,
                 );
                 $prep->execute($values);
-                $prep->setFetchMode(PDO::FETCH_CLASS,'ModelUser');
+                $prep->setFetchMode(PDO::FETCH_CLASS,'ModelUsers');
                 $res = $prep->fetch();
                 return $res;
             } catch (PDOException $ex) {

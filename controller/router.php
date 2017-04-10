@@ -2,6 +2,7 @@
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('controller','ControllerDefault.php'));
+require_once File::build_path(array('controller','ControllerUsers.php'));
 
 
 $action = "";
@@ -27,11 +28,11 @@ else{
 	$controller = 'default';
 }
 
-
 $controllerClass = 'Controller' . ucfirst($controller);
 
-		
+	//echo $controllerClass . "<br>" . $action;		
 if(class_exists($controllerClass)){
+
 	if(in_array($action,  get_class_methods($controllerClass))){
 		$controllerClass::$action();
 

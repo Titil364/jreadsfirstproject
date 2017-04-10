@@ -571,7 +571,6 @@ function makeDraggbleApplication(event) {
 	});
 }
 		
-
 function init(){
 	
 	$("#submit").click(extractData);
@@ -580,7 +579,9 @@ function init(){
 	addApplication();
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
-	document.getElementById("addField").addEventListener("click",addField);			
+	document.getElementById("addField").addEventListener("click",addField);
+	
 }
+
 
 $(init);

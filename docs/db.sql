@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Answer;
 DROP TABLE IF EXISTS AnswerType;
 
 CREATE TABLE Users (
-  userId int(11) PRIMARY KEY,
+  userId int(11) PRIMARY KEY AUTO_INCREMENT,
   userMail varchar(20),
   userPassword varchar(64),
   userNickname varchar (20),
@@ -22,7 +22,7 @@ CREATE TABLE Users (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Visitor (
-  visitorId int(11) PRIMARY KEY,
+  visitorId int(11) PRIMARY KEY AUTO_INCREMENT,
   visitorGroupId int(11),
   visitorSecretName varchar(20),
   visitorSchool varchar(20),
@@ -31,7 +31,7 @@ CREATE TABLE Visitor (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Form (
-  formId int(11) PRIMARY KEY,
+  formId int(11) PRIMARY KEY AUTO_INCREMENT,
   formName varchar(20),
   userId int(11),
   completeForm int(11),

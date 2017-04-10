@@ -134,10 +134,11 @@ class Model {
             return false;
         }
     }
+	
     public static function save($data) {
         try {
             $table_name = static::$object;
-            
+        
             $class_name = 'Model' . $table_name;
 			
             $sql = "INSERT INTO $table_name (";
