@@ -2,6 +2,7 @@
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('controller','ControllerDefault.php'));
+require_once File::build_path(array('controller','ControllerForm.php'));
 
 
 $action = "";
@@ -42,6 +43,5 @@ if(class_exists($controllerClass)){
 }else{
 	//The controller doesn't exist
 }
-
 
 ?>

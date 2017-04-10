@@ -25,6 +25,7 @@
 			"formId" =>0
 		);
                 require_once File::build_path(array('model', 'ModelApplication.php'));
+                ModelApplication::save($application);
 		//###################################
 		//Enregistrer l'application
 		//###################################
@@ -40,6 +41,7 @@
 				"applicationId" => $application["applicationId"],
 				"questionTypeId" => $qTypeId
 			);
+                        //require_once File::build_path(array('model', 'ModelQueston.php'));
 			//###################################
 			//Enregistrer la question
 			//###################################
