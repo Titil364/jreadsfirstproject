@@ -3,17 +3,20 @@ require_once File::build_path(array('model', 'Model.php'));
 
 
 class ModelUser extends Model{
-    private $password;
+    private $id;
+	private $password;
     private $nickName;
     private $firstName;
     private $lastName;
     private $mail;
-    private $birthDate;
-    private $isAdmin;
     private $nonce;
     protected static $object = "User";
     protected static $primary = 'nickName';
 	
+	
+	public function getId(){
+		return $this->id;
+	}
     public function getNonce() {
         return $this->nonce;
     }

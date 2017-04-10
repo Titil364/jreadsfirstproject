@@ -14,8 +14,12 @@ DROP TABLE IF EXISTS AnswerType;
 CREATE TABLE Users (
   userId int(11) PRIMARY KEY,
   userMail varchar(20),
+  userPassword varchar(64),
+  userNickname varchar (20),
   userSurname varchar(20),
-  userForname varchar(20)
+
+  userForname varchar(20),
+  userNonce varchar (64)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Visitor (
