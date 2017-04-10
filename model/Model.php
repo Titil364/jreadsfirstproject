@@ -30,6 +30,7 @@ class Model {
 	
 	public static function update($data) {
         try {
+            $table_name = static::$object;
             $class_name = 'Model' . $table_name;
 			
             $sql = "UPDATE $table_name SET ";
@@ -53,6 +54,7 @@ class Model {
     }
     public static function selectAll() {
         try {
+            $table_name = static::$object;
             $class_name = 'Model' . $table_name;
 			
             $sql = "SELECT * FROM $table_name;";
@@ -74,6 +76,7 @@ class Model {
     }
     public static function select($data) {
         try {
+            $table_name = static::$object;
             $class_name = 'Model' . $table_name;
             
             
@@ -106,7 +109,7 @@ class Model {
     }
     public static function delete($primary) {
         try {
-			
+            $table_name = static::$object;
             $class_name = 'Model' . $table_name;
 			
             $primary_key = static::$primary;
@@ -133,6 +136,7 @@ class Model {
     }
     public static function save($data) {
         try {
+            $table_name = static::$object;
             
             $class_name = 'Model' . $table_name;
 			

@@ -5,10 +5,10 @@ class Conf {
     static private $databases = array(
         // Le nom d'hote est infolimon a l'IUT
         // ou localhost sur votre machine
-        'hostname' => 'http://localhost:81/phpmyadmin',
+        'hostname' => 'localhost',
         // A l'IUT, vous avez une BDD nommee comme votre login
         // Sur votre machine, vous devrez creer une BDD
-        'database_name' => 'funtookit',
+        'database_name' => 'ChiCI',
         // A l'IUT, c'est votre login
         // Sur votre machine, vous avez surement un compte 'root'
         'login' => 'root',
