@@ -78,6 +78,7 @@ function addApplication(event){
 			inputApplicationImg.id = applicationName+"Img";
 			inputApplicationImg.name = applicationName+"Img";
 			inputApplicationImg.accept = "image/*";
+			//inputApplicationImg.addEventListener("change", upload);
 			imgWrapper.appendChild(inputApplicationImg);
 	applicationInformationWrapper.appendChild(imgWrapper);	
 	
@@ -563,13 +564,52 @@ function makeDraggbleApplication(event) {
 		}
 	});
 }
+
+function upload(){
+
+	var file_data = $("#Applic0Img").prop("files")[0];
+	
+	var re = /(?:\.([^.]+))?$/;
+	var ext = re.exec(file_data.name)[1];
+	var form_data = new FormData(); 
+
+	form_data.append("file", file_data, "Applic0Img."+ext);
+	
+	
+	/*$.post(
+		"test.php", // url cible
+		form_data,
+		function(res){ // le callback
+			var message = res;
+			console.log(message);
+			},
+		"json" // type de données reçues
+	);*/
+
+	$.ajax({
+		url: "test.php",
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: form_data,                        
+		type: 'post',
+		success: function(result){
+				  console.log(result);
+				},
+		error: function(){
+		  alert("Erreur lors du téléchargement du fichier");
+		}           
+	});       
+}
 		
 function init(){
 	
 	$("#submit").click(extractData);
+	
 	document.getElementById("addApplication").addEventListener("click", addApplication);
 	//Adding one application
 	addApplication();
+	$("#test").click(upload);
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);

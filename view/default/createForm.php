@@ -51,29 +51,6 @@
 	
 </div>
 <button type="button" id="submit">Create the form</button> 
+<button type="button" id="test">Upload test on Applic0Img</button> 
+
  <script src ="script/myscript.js"></script>
- 		<!--<div id="newApplication">
-				
-				<label for="id2">Name : </label>
-				<input type="text" id="id2" name ="title" placeholder="Application's Title">
-				<p>
-					<label for="id1">Image : </label>
-					<input type="url"  id="id1" label="image" name ="title" placeholder="URL for the task's image">
-					<button type ="button" value="Preview">Preview</button>
-				</p>
-				
-				<p> Existing questions for this form</p> 
-				<button type="button">Add a new Question</button>
-				<fieldset id="newQuestion">
-					<p>
-						<label for="id">Title : </label>
-						<input type="text" id="id" label="Title" name ="title" placeholder="Question's Title">
-					</p>
-					<p>
-						<button type="button">Yes/No Question</button>
-						<button type="button">Text Area</button>
-						<button type="button">Thumb Up</button>
-						<button type="button">Smiley</button>
-					</p>
-				</fieldset> 
-			</div> -->

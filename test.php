@@ -1,6 +1,6 @@
 <?php
 	//$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
+/*
 	$a = json_decode($_GET["applications"], true);
 	$q = json_decode($_GET["questions"], true);
 	//var_dump($q);
@@ -46,7 +46,10 @@
 	}
 
 
-	
-	echo json_encode("########Success");
+
+	echo json_encode("########Success");*/
+	var_dump($_FILES);
+	move_uploaded_file($_FILES['file']['tmp_name'], "media/".$_FILES['file']['name']);
+	echo "Success";
 
 ?>
