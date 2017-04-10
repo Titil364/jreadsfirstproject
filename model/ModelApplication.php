@@ -77,7 +77,7 @@ class ModelApplication extends Model{
 			$prep = Model::$pdo->prepare($sql);
 
 			$values = array(
-				"id" => $formId,
+				"id" => $formId
 				);
 
 			$prep-> execute($values);

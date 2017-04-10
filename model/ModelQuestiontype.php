@@ -48,5 +48,6 @@ class ModelQuestiontype extends Model{
         }
 	}
 
+
 }
 
