@@ -48,13 +48,14 @@ class ControllerForm {
 		//var_dump($q);
 		$abort = false;
 		
+		var_dump($a);
+		
 		$form = array(
 					"formName" => json_decode($_POST["form"], true),
 					"userId" => 0,
 					"completedForm" => 0		
 				);
 		ModelForm::beginTransaction();
-		
 		if(ModelForm::save($form)){
 			$form['formId'] = ModelForm::getLastInsert();
 			for($i = 0; $i < sizeof($a); $i++){
