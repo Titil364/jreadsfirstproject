@@ -1,14 +1,19 @@
 <?php
 //Importation pattern
 //require_once File::build_path(array('folder','file.php'));
+require_once File::build_path(array('lib','Security.php'));
+require_once File::build_path(array('lib','Session.php'));
+
 require_once File::build_path(array('controller','ControllerDefault.php'));
 
 require_once File::build_path(array('controller','ControllerUsers.php'));
 require_once File::build_path(array('controller','ControllerForm.php'));
 require_once File::build_path(array('controller','ControllerApplication.php'));
 require_once File::build_path(array('controller','ControllerQuestion.php'));
-
 require_once File::build_path(array('controller','ControllerQuestionType.php'));
+
+
+
 
 
 

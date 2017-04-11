@@ -645,7 +645,7 @@ function upload(id, name){
 }
 
 function goToSignIn	(){
-	window.location='index.php?controller=users&action=welcome';
+	window.location='index.php?controller=users&action=create';
 }
 function goToProfile (){
 	window.location='index.php?controller=users&action=update';

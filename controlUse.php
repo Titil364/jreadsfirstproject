@@ -76,20 +76,6 @@ class ControllerUser {
             ControllerDefault::error($dataErr);
 			return;
         }
-		if(ModelUser::checkExistingUser($_POST['nickname'])==1){
-			$dataErr['error'] = "Cet utilisateur existe déjà";
-			$dataErr['view'] = 'register';
-			$dataErr['controller'] = 'user';
-            ControllerDefault::error($dataErr);
-			return;
-		}
-		if($_POST['password'] != $_POST['password2']){
-			$dataErr['error'] = "Les mots de passes ne correspondent pas";
-			$dataErr['view'] = 'register';
-			$dataErr['controller'] = 'user';
-            ControllerDefault::error($dataErr);
-			return;
-		}
 		
         $hashpass = Security::encrypt($_POST['password']);
         $nonce = Security::generateRandomHex();

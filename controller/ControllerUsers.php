@@ -4,7 +4,7 @@ require_once File::build_path(array('model', 'ModelUsers.php'));
 
 class ControllerUsers {
 	
-    public static function welcome() {
+    public static function create() {
         $view = 'createUsers';
         $controller = 'users';
         $pagetitle = 'Sign in';
@@ -12,19 +12,25 @@ class ControllerUsers {
         require File::build_path(array('view', 'view.php'));
     }
 	
-	public static function	created(){
+	public static function created(){
 		$view = 'createdUsers';
         $controller = 'users';
         $pagetitle = 'User Created !';
 		
+		$hashpass = Security::encrypt($_POST['password']);
+        $nonce = Security::generateRandomHex();
+		
 		$users = array(
 				"userMail" => $_POST['userMail'],
-				"userPassword" => $_POST['userPassword'],
+				"userPassword" => $hashpass,
 				"userNickname" => $_POST['userNickname'],
 				"userSurname" => $_POST['userSurname'],
-				"userForname" => $_POST['userForname']
+				"userForname" => $_POST['userForname'],
+				"userNonce" => $nonce//,
+				//"isAdmin" => 0
 			);
 		ModelUsers::save($users);
+		
 		require File::build_path(array('view', 'view.php'));
 	}
 	
