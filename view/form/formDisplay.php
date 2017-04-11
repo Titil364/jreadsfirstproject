@@ -52,7 +52,7 @@ foreach ($task_array as $t)
         if(!is_null($answers_array[0])){
             switch ($answers_array[0]->getAnswerTypeName()){
                 case "textarea":
-                    echo "<textarea rows=\"5\" cols =\"50\">";
+                    echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
                     break;
                 /*case "yes" or "no":
                     echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
