@@ -601,7 +601,11 @@ function upload(){
 		}           
 	});       
 }
-		
+
+function goToSignIn	(){
+	window.location='index.php?controller=users&action=welcome';
+}
+
 function init(){
 	
 	$("#submit").click(extractData);
@@ -613,7 +617,7 @@ function init(){
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
-	
+	document.getElementById("signIn").addEventListener("click",goToSignIn);
 }
 
 

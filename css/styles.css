@@ -87,3 +87,13 @@ img{
 .question div > *{
 	display:inline;
 }
+
+#signIn{
+	display: block;
+	position: absolute;
+	top: 20px;
+	right: 30px;
+}
+#passwordVerif,#nicknameVerif{
+	font-size: 75%;
+}

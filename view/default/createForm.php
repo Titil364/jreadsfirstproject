@@ -1,8 +1,12 @@
 <header>
 <h1>Welcome on the form creation page</h1>
 <!-- This is supposed to be empty is there are no forms on this account-->
+		<div id="signIn">
+				<button type="button" id="goToSignIn">Sign In</button>
+		</div>
 </header> 
 <main>
+		
 <!-- we don't need this for the moment
 <div id="existing">
 	<p>Existing forms</p>

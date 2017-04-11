@@ -24,7 +24,7 @@ class ControllerUsers {
 				"userSurname" => $_POST['userSurname'],
 				"userForname" => $_POST['userForname']
 			);
-		
+		ModelUsers::save($users);
 		require File::build_path(array('view', 'view.php'));
 	}
 	
