@@ -7,7 +7,8 @@ require_once File::build_path(array('controller','ControllerUsers.php'));
 require_once File::build_path(array('controller','ControllerForm.php'));
 require_once File::build_path(array('controller','ControllerApplication.php'));
 require_once File::build_path(array('controller','ControllerQuestion.php'));
-require_once File::build_path(array('controller','ControllerQuestiontype.php'));
+
+require_once File::build_path(array('controller','ControllerQuestionType.php'));
 
 
 
