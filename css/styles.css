@@ -11,7 +11,7 @@ main{
     background-color: #e5c250;
     padding:2%;
 }
-#newForm{
+.formCss{
     background-color: #e5ba2d;
     padding:2%;
 	border: 2px solid black;

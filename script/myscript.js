@@ -55,7 +55,7 @@ function addApplication(event){
 	var descWrapper = document.createElement("div");
 		var applicationDescLabel = document.createElement("label");
 			applicationDescLabel.setAttribute("for", applicationName+"Desc");
-			applicationDescLabel.innerHTML ="Decribe your application : ";
+			applicationDescLabel.innerHTML ="Describe your application : ";
 			descWrapper.appendChild(applicationDescLabel);
 			//Adding the textarea section
 		var inputApplicationDesc = document.createElement("textArea");

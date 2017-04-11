@@ -11,7 +11,7 @@
 <div id="existing">
 	<p>Existing forms</p>
 </div>-->
-<div id="newForm">
+<div id="newForm" class="formCss">
 	<!-- <button type="button">Add a new Form</button>-->
 		<div id="surveyInformations">
 				<label for="formName">Name of the form : </label>
