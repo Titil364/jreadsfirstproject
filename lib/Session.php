@@ -8,7 +8,7 @@ class Session{
     public static function is_admin() {
         return (!empty($_SESSION['admin']) && $_SESSION['admin']==1);
     }
-    public static function connect($nickname, $surname, $forename, $mail) {
+    public static function connect($nickname, $forename, $surname, $mail) {
         $_SESSION['connected'] = true;
         $_SESSION['nickname'] = $nickname;
         $_SESSION['surname'] = $surname;

@@ -62,13 +62,16 @@ class ControllerUsers {
             $pagetitle = 'Update';
             $controller = 'users';
 			
+			
 			$data = array(
-				"nickname" => htmlspecialchars($_SESSION['nickname']),
-				"surname" =>  htmlspecialchars($_SESSION['surname']),
-                "forename" => htmlspecialchars($_SESSION['forename']),
-                "mail"  => htmlspecialchars($_SESSION['mail'])
+				"userNickname" => htmlspecialchars($_SESSION['nickname']),
+				"userSurname" =>  htmlspecialchars($_SESSION['surname']),
+                "userForename" => htmlspecialchars($_SESSION['forename']),
+                "userMail"  => htmlspecialchars($_SESSION['mail'])
 			);
 			
+			
+
 			require File::build_path(array('view', 'view.php'));
 			/*
             $data = array(
@@ -87,6 +90,34 @@ class ControllerUsers {
         }*/
 		}
     }
+	public static function updated() {
+		
+		if (Session::is_connected()) {
+            $view = 'updateUsers';
+            $pagetitle = 'Updated';
+            $controller = 'users';		
+			
+			$nickname = $_POST['userNickname'];
+			$userForename = $_POST['userForename'];
+			$userSurname = $_POST['userSurname'];
+			$userMail = $_POST['userMail'];
+			
+			$hashpass = Security::encrypt($_POST['userPassword']);
+			
+			$data =  array(
+				"userNickname" => $nickname,
+				"userSurname" => $userSurname,
+				"userForename" => $userForename,
+				"userMail" => $userMail,
+				"userPassword" => $hashpass
+			);
+			
+			ModelUsers::update($data);
+			Session::connect($nickname, $userForename, $userSurname, $userMail);
+			
+			require File::build_path(array('view', 'view.php'));
+		}
+	}
 	
 	public static function displaySelf() {
         $view = 'userProfil';
@@ -132,7 +163,7 @@ class ControllerUsers {
             $surname = $user->getSurname();
             $forename = $user->getForename();
             $mail = $user->getMail();
-            Session::connect($nickname,$surname,$forename,$mail);
+            Session::connect($nickname, $forename, $surname, $mail);
 
         } else {
 			$data = array();
