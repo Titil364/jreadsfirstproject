@@ -16,6 +16,24 @@ class ControllerForm {
         if (!$f){
             // error page
         }else{
+            $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+            
+            $question_array = [];
+            foreach ($application_array as $a){
+                $questionAndAnswer = [];
+                $questions_array = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+                
+                foreach ($questions_array as $q){
+                    $qType = ModelQuestionType::select($q->getQestionTypeId());
+                    $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
+                    
+                    $question = array("question" => $qType, "answers" =>$answers_array);
+                    array_push($questionAndAnswer, $question);              
+                }
+                array_push($questions_array, $question);
+            }
+            //var_dump($questions_array);
+            
             $pagetitle = 'Form';
             $view='displayForm';
             $controller = 'form';
