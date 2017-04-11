@@ -1,7 +1,7 @@
 <?php
 require_once File::build_path(array('model', 'Model.php'));
 
-class ModelQuestiontype extends Model{
+class ModelQuestionType extends Model{
 
 	private $questionTypeId;
 	private $questionTypeName;
@@ -34,7 +34,7 @@ class ModelQuestiontype extends Model{
 				);
 
 			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestiontype');
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
 
 			
 			return $prep->fetchAll()[0];
