@@ -15,13 +15,13 @@ echo "<h1> $name </h1>";
 
 //displaying tasks
 
-$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 
-foreach ($task_array as $t)
+for($i=0; $i < count($application_array);$i++){
     //dispalying task informations
     echo"<div id=\"applications\">";
-    $taskName = htmlspecialchars($t->getApplicationName());
-    $taskDesc = htmlspecialchars($t->getApplicationDescription());
+    $taskName = htmlspecialchars($application_array[$i]->getApplicationName());
+    $taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
     
     echo "<h2>$taskName</h2>";
     echo $taskDesc;
@@ -30,20 +30,20 @@ foreach ($task_array as $t)
     //displaying questions
 
     
-    $question_array = ModelQuestion::getQuestionByApplicationId($t->getApplicationId());
+    $question_array = $questions_array_list[$i];
     
-    foreach ($question_array as $q){
+    
+for($j=0; $j < count($questions_array);$j++){
                 //displaying questions 
         echo "<h3> ";
-        echo $q->getQuestionName();
+        echo $questions_array[$j]->getQuestionName();
         echo " </h3>";
 
         
-        $qType = ModelQuestionType::select($q->getQestionTypeId());
-        
-
-        $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
-        
+        $qType = $questionType_list[$i][$j]->getQuestionTypeId();
+        //var_dump($questionType_list[$i][$j]->getQuestionTypeId());
+        //$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
+        $answers_array = $answers_array_list[$i][$j];
         //diplaying answers
         /*
         foreach($answers_array as $a){
@@ -62,7 +62,7 @@ foreach ($task_array as $t)
                     foreach($answers_array as $a){
                         echo '<div class = "answerArea">';
                         echo '<label id="'. $a->getAnswerTypeName() .'"><img src="media/'. $a->getAnswerTypeImage().'.png"></label>';
-                        echo '<input type = "radio" name = "question'.$q->getQestionTypeId().'" value = "answer'.$a->getAnswerTypeId().'"> '.$a->getAnswerTypeName().' <br>';
+                        echo '<input type = "radio" name = "question'.$questions_array[$j]->getQestionTypeId().'" value = "answer'.$a->getAnswerTypeId().'"> '.$a->getAnswerTypeName().' <br>';
                     }
                     break;
             }
@@ -73,6 +73,7 @@ foreach ($task_array as $t)
         
         
     }
+}
 echo "</div>";    
 
  ?>

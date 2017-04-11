@@ -18,21 +18,29 @@ class ControllerForm {
         }else{
             $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
             
-            $question_array = [];
-            foreach ($application_array as $a){
+            $questions_array_list = [];
+            $answers_array_list = [];
+            $questionType_list = [];
+            
+            for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
-                $questions_array = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+                $questions_array = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
+
+                array_push($questions_array_list, $questions_array);
                 
-                foreach ($questions_array as $q){
-                    $qType = ModelQuestionType::select($q->getQestionTypeId());
+                array_push($answers_array_list, []);
+                array_push($questionType_list, []);
+                
+
+                for($j=0; $j < count($questions_array);$j++){
+                $qType = ModelQuestionType::select($questions_array[$j]->getQestionTypeId());
                     $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
                     
-                    $question = array("question" => $qType, "answers" =>$answers_array);
-                    array_push($questionAndAnswer, $question);              
+                    array_push($answers_array_list[$i], $answers_array);
+                    array_push($questionType_list[$i], $qType);  
                 }
-                array_push($questions_array, $question);
+                
             }
-            //var_dump($questions_array);
             
             $pagetitle = 'Form';
             $view='displayForm';
