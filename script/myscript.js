@@ -138,21 +138,24 @@ function refreshApplication(){
 		if(!(applications[i].id === "")){
 			var formerId = applications[i].id;
 			var newId = "Applic"+count;
+			
 			if(!(formerId === newId)){
 				applications[i].id = newId;
 			
-				var aInfoWrapper = $("#"+formerId+"Info");			
-				var aInfo = $("#"+formerId+"Info > div");
-				aInfoWrapper[0].setAttribute("id", newId+"Info");	
+				var aInfoWrapper = $(applications[i]).children()[0];
+				aInfoWrapper.setAttribute("id", newId+"Info");
+
+				
+				var aInfo = $("#"+aInfoWrapper.id + " > div");
+				console.log(aInfo);
 				//Each component is composed of a label and an input
 				for(var y = 0; y < aInfo.length; y++){
 					//Modifying the label
 					var children = $(aInfo[y]).children();
 					
-					
+					console.log(children[1]);
 					var name = newId+children[1].id.slice(newId.length, children[1].id.length);
-					console.log(name);
-					console.log("###");
+
 					children[0].setAttribute("for", name);
 					
 					//Modifying the input

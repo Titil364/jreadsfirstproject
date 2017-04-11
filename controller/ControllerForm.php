@@ -30,8 +30,6 @@ class ControllerForm {
 		//var_dump($q);
 		$abort = false;
 		
-		var_dump($a);
-		
 		$form = array(
 					"formName" => json_decode($_POST["form"], true),
 					"userId" => 0,
