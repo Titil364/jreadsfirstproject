@@ -16,8 +16,8 @@ class ControllerForm {
         if (!$f){
             // error page
         }else{
-            $pagetitle = 'Formulaire';
-            $view='formDisplay';
+            $pagetitle = 'Form';
+            $view='displayForm';
             $controller = 'form';
             require File::build_path(array('view','view.php'));
         }
