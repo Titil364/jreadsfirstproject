@@ -10,8 +10,13 @@
     <form class ="formCss"id="userForm" method="post" action="index.php?action=created&controller=users">
         <fieldset>
             <p>
-              <label for="userForname">User Forname</label> :
-              <input type="text" placeholder="John" name="userForname" id="userForname" required/>
+              <label for="userNickname">User Nickname</label> :
+              <input type="text" placeholder="doe34" name="userNickname" id="userNickname" required/>
+              <p id="nicknameVerif"></p>
+            </p>
+            <p>
+              <label for="userForename">User Forname</label> :
+              <input type="text" placeholder="John" name="userForename" id="userForname" required/>
             </p>
             <p>
               <label for="userSurname">User Surname</label> :
@@ -21,11 +26,7 @@
               <label for="userMail">User Mail</label> :
               <input type="email" placeholder="johndoe@mail.com" name="userMail" id="userMail" required/> 
             </p>
-            <p>
-              <label for="userNickname">User Nickname</label> :
-              <input type="text" placeholder="doe34" name="userNickname" id="userNickname" required/>
-              <p id="nicknameVerif"></p>
-            </p>
+
             <p>
               <label for="userPassword">User Password</label> :
               <input type="password" minlength="6" placeholder="******" name="userPassword" id="userPassword" required/>
@@ -34,9 +35,10 @@
               <label for="userPasswordVerif">User Password Confirmation</label> :
               <input type="password" minlength="6" placeholder="******" name="userPasswordVerif" id="userPasswordVerif" required/>
             </p>
-            <p id="passwordVerif"> </p>
+<!-- A quoi ça correspond ? -->
+			<p id="passwordVerif"></p>
             <p>
-                <button type="button" id ="validation"/>Create !</button> 
+                <button type="button" id ="validation"/>Register</button> 
             </p>
         </fieldset> 
     </form>

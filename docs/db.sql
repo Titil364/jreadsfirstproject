@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS AnswerType;
 CREATE TABLE Users (
   userNickname varchar (20) PRIMARY KEY,
   userSurname varchar(20),
-  userForname varchar(20),
+  userForename varchar(20),
   userMail varchar(20),
   userPassword varchar(250),
   userNonce varchar(64),
@@ -114,6 +114,9 @@ DELIMITER ;
 
 --
 -- Insert data
+
+INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 1);
+
 INSERT INTO QuestionType VALUES(1, "thumbs");
 INSERT INTO QuestionType VALUES(2, "smiley");
 INSERT INTO QuestionType VALUES(3, "textarea");
@@ -133,7 +136,7 @@ INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 2);
 INSERT INTO AnswerType VALUES(12, "yes", "", 4);
 INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
-INSERT INTO Form VALUES(1, 'Manger ou boire', 0, 0);
+INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0);
 
 
 INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);
@@ -150,4 +153,3 @@ INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 
 
 
 -- mdp : 123456
-INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 1);

@@ -134,3 +134,17 @@ header > *{
 	margin:auto;
 }
 /* END HEADER */
+
+table{
+	width:100%;
+	border-collapse:collapse;
+}
+table td{
+	text-align:center;
+}
+table td{	
+	border: 1px solid black;
+}
+table th{
+	border: 2px solid black;
+}

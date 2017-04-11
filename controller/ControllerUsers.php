@@ -3,6 +3,16 @@
 require_once File::build_path(array('model', 'ModelUsers.php'));
 
 class ControllerUsers {
+	public static function readAllMyForm() {
+        $view = 'displayAllMyForms';
+        $controller = 'users';
+        $pagetitle = 'Create Form';
+		
+		if(Session::is_connected()){
+			$form = ModelUsers::getMyForms($_SESSION['nickname']);
+		}
+        require File::build_path(array('view', 'view.php'));
+    }
 	
     public static function create() {
         $view = 'createUsers';
@@ -55,7 +65,7 @@ class ControllerUsers {
 			$data = array(
 				"nickname" => htmlspecialchars($_SESSION['nickname']),
 				"surname" =>  htmlspecialchars($_SESSION['surname']),
-                "forname" => htmlspecialchars($_SESSION['forname']),
+                "forename" => htmlspecialchars($_SESSION['forename']),
                 "mail"  => htmlspecialchars($_SESSION['mail'])
 			);
 			
@@ -76,6 +86,24 @@ class ControllerUsers {
             ControllerDefault::error($data);
         }*/
 		}
+    }
+	
+	public static function displaySelf() {
+        $view = 'userProfil';
+        $controller = 'users';
+        $pagetitle = 'Profil';
+		if(Session::is_connected()){
+			$data = array(
+				"nickname" => htmlspecialchars($_SESSION['nickname']),
+				"surname" =>  htmlspecialchars($_SESSION['surname']),
+				"forename" => htmlspecialchars($_SESSION['forename']),
+				"mail"  => htmlspecialchars($_SESSION['mail'])
+			);
+		}
+		else{
+			echo "Error";
+		}
+        require File::build_path(array('view', 'view.php'));
     }
 	
 	public static function connect(){
@@ -102,9 +130,9 @@ class ControllerUsers {
             }
             $nickname = $user->getNickname();
             $surname = $user->getSurname();
-            $forname = $user->getForname();
+            $forename = $user->getForename();
             $mail = $user->getMail();
-            Session::connect($nickname,$surname,$forname,$mail);
+            Session::connect($nickname,$surname,$forename,$mail);
 
         } else {
 			$data = array();
@@ -117,6 +145,13 @@ class ControllerUsers {
 		require File::build_path(array('view', 'view.php'));
     }
 	
+	public static function disconnect() {
+        session_unset();
+        session_destroy();
+		ControllerDefault::welcome();
+    }
+	
+	//JSON
 	public static function existingUser(){
 		$nick = $_POST['userNickname'];
 		$var = json_decode($nick);
@@ -124,10 +159,5 @@ class ControllerUsers {
 		$return = json_encode($rep);
 		echo $return;
 	}
-	public static function disconnect() {
-        session_unset();
-        session_destroy();
-		ControllerDefault::welcome();
-    }
 }
 ?>

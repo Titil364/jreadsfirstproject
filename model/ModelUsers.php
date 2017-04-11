@@ -3,16 +3,15 @@ require_once File::build_path(array('model', 'Model.php'));
 
 
 class ModelUsers extends Model{
-    private $userId;
 	private $userMail;
 	private $userPassword;
-    private $suerNickname;
+    private $userNickname;
     private $userSurname;
-    private $userForname;
+    private $userForename;
     private $userNonce;
 	private $isAdmin;
     protected static $object = "Users";
-    protected static $primary = 'userId';
+    protected static $primary = 'userNickname';
 	
 	
 	public function getId(){return $this->userId;}
@@ -29,8 +28,8 @@ class ModelUsers extends Model{
     public function getSurname() {return $this->userSurname;}
 	public function setSurname($firstName){$this->userSurname = $firstName;}
 	
-    public function getForname(){return $this->userForname;}
-	public function setForname($lastName){$this->userForname = $lastName;}
+    public function getForename(){return $this->userForename;}
+	public function setForename($lastName){$this->userForename = $lastName;}
 	
     public function getMail(){return $this->userMail;}
 	public function setMail($mail){$this->userMail = $mail;}
@@ -45,12 +44,12 @@ class ModelUsers extends Model{
     public static function getSeed() {
         return self::$seed;
     }
-    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickName = NULL, $surName = NULL, $forName = NULL, $nonce = NULL, $isAdmin = NULL) {
-        if (!is_null($id) && !is_null($nickName) && !is_null($forName) && !is_null($surName) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin)) {
+    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickname = NULL, $surname = NULL, $forename = NULL, $nonce = NULL, $isAdmin = NULL) {
+        if (!is_null($id) && !is_null($nickname) && !is_null($forename) && !is_null($surname) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin)) {
             $this->userId = $id;
-			$this->userNickname = $nickName;
-            $this->userSurname= $surName;
-            $this->userForname = $forName;
+			$this->userNickname = $nickname;
+            $this->userSurname= $surname;
+            $this->userForename = $forename;
             $this->userMail = $mail;
             $this->userPassword = $pwd;
             $this->userNonce = $nonce;
@@ -108,7 +107,7 @@ class ModelUsers extends Model{
         if ($result['userNickname'] == $nick){// && $result['userNonce'] == NULL) {
            
             try {
-			    $query = "Select * From Users Where userNickname=:nickn and userPassword=:pwd";
+			    $query = "SELECT * FROM Users WHERE userNickname=:nickn AND userPassword=:pwd";
                 $prep = Model::$pdo->prepare($query);
                 $values = array(
                     'nickn' => $nick,
@@ -129,6 +128,26 @@ class ModelUsers extends Model{
         } else{
             return NULL;
         }
+    }
+	public static function getMyForms($nick) {           
+		try {
+			$query = "SELECT * FROM Form WHERE userNickname=:nickn";
+			$prep = Model::$pdo->prepare($query);
+			$values = array(
+				'nickn' => $nick
+			);
+			$prep->execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelForm');
+			$res = $prep->fetchAll();
+			return $res;
+		} catch (PDOException $ex) {
+			if (Conf::getDebug()) {
+				echo $ex->getMessage();
+			} else {
+				echo "une erreur est survenue.";
+			}
+			return NULL;
+		}
     }
 }
 ?>
