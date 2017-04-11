@@ -14,7 +14,7 @@ $name = htmlspecialchars($f->getFormName());
 echo "<h1> $name </h1>";
 
 //displaying tasks
-require_once File::build_path(array('model', 'ModelApplication.php'));
+
 $task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 
 foreach ($task_array as $t)
@@ -28,7 +28,7 @@ foreach ($task_array as $t)
 
     
     //displaying questions
-    require_once File::build_path(array('model', 'ModelQuestion.php'));
+
     
     $question_array = ModelQuestion::getQuestionByApplicationId($t->getApplicationId());
     
@@ -41,7 +41,7 @@ foreach ($task_array as $t)
         
         $qType = ModelQuestionType::select($q->getQestionTypeId());
         
-        require_once File::build_path(array('model', 'ModelAnswerType.php'));
+
         $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
         
         //diplaying answers

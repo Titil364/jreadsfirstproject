@@ -28,7 +28,7 @@ class ControllerUsers {
 		require File::build_path(array('view', 'view.php'));
 	}
 	
-	public static function update() {
+	/*public static function update() {
         $view = 'profileUsers';
         $controller = 'users';
         $pagetitle = 'Profile';
@@ -38,7 +38,46 @@ class ControllerUsers {
 			echo $value;
 		}
         require File::build_path(array('view', 'view.php'));
+    }*/
+	public static function update() {
+       // if (isset($_SESSION[''])) {
+            //$checkBoxAdmin = ControllerUsers::setCheckBox();
+            $view = 'profileUsers';
+            $pagetitle = 'Update';
+            $controller = 'users';
+			$information = ModelUsers::select('1');
+			var_dump($information);
+			echo $information->getNickName();
+			$data = array(
+				"nickname" => $information->getNickName(),
+				"firstName" => $information->getSurName(),
+                "lastName" => $information->getForName(),
+                "mail"  => $information->getMail()
+			);
+			/*
+            $data = array(
+                "nickName" => htmlspecialchars($information['nickname']),
+                "fName" => htmlspecialchars($information['firstName']),
+                "lName" => htmlspecialchars($information['lastName']),
+                "mail"  => htmlspecialchars($information['mail'])
+            );
+            require File::build_path(array('view', 'view.php'));
+      /*} else {
+			$data = array();
+			$data['error'] = "Please log in";
+			$data['view'] = 'connectUsers';
+			$data['controller'] = 'users';
+            ControllerDefault::error($data);
+        }*/
     }
+	
+	public static function connect(){
+		$view = 'connectUsers';
+        $controller = 'users';
+        $pagetitle = 'Connect';
+		
+        require File::build_path(array('view', 'view.php'));
+	}
 	
 	public static function existingUser(){
 		$nick = $_POST['userNickname'];

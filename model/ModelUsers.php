@@ -4,11 +4,11 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelUsers extends Model{
     private $id;
+	private $mail;
 	private $password;
     private $nickName;
-    private $firstName;
-    private $lastName;
-    private $mail;
+    private $surName;
+    private $forName;
     private $nonce;
     protected static $object = "Users";
     protected static $primary = 'userId';
@@ -27,11 +27,11 @@ class ModelUsers extends Model{
     public function getNickName() {
         return $this->nickName;
     }
-    public function getFirstName() {
-        return $this->firstName;
+    public function getSurName() {
+        return $this->surName;
     }
-    public function getLastName() {
-        return $this->lastName;
+    public function getForName() {
+        return $this->forName;
     }
     public function getMail() {
         return $this->mail;
@@ -45,11 +45,11 @@ class ModelUsers extends Model{
     public function setNickName($nickName) {
         $this->nickName = $nickName;
     }
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
+    public function setSurName($firstName) {
+        $this->surName = $firstName;
     }
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
+    public function setForName($lastName) {
+        $this->ForName = $lastName;
     }
     public function setMail($mail) {
         $this->mail = $mail;
@@ -67,14 +67,20 @@ class ModelUsers extends Model{
     public static function getSeed() {
         return self::$seed;
     }
-    public function __construct($nickName = NULL, $pwd = NULL, $firstName = NULL, $lastName = NULL, $mail = NULL, $bd = NULL, $isAdmn = NULL, $nonce = NULL) {
-        if (!is_null($nickName) && !is_null($firstName) && !is_null($lastName) && !is_null($mail) && !is_null($bd) && !is_null($isAdmn) && !is_null($pwd) && !is_null($nonce)) {
-            $this->nickName = $nickName;
-            $this->firstName = $firstName;
-            $this->lastName = $lastName;
+    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickName = NULL, $surName = NULL, $forName = NULL, $nonce = NULL) {
+		echo $id;
+		echo $mail;
+		echo $pwd;
+		echo $nickName;
+		echo $surName;
+		echo $forName;
+		echo $nonce;
+        if (!is_null($id) && !is_null($nickName) && !is_null($forName) && !is_null($surName) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce)) {
+            $this->id = $id;
+			$this->nickName = $nickName;
+            $this->surName = $surName;
+            $this->forName = $forName;
             $this->mail = $mail;
-            $this->birthDate = $bd;
-            $this->isAdmin = $isAdmn;
             $this->password = $pwd;
             $this->nonce = $nonce;
         }
