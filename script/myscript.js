@@ -127,6 +127,8 @@ function removeMe(event, me){
 }
 function refreshApplication(){
 	var applications = $(".application");
+	var count = 0;
+	console.log(applications.length);
 	for(var i = 0; i < applications.length; i++){
 		// The method who make the application dragable and dropabble create a moving div
 		// build exactly as the application with the same class but with no id
@@ -135,18 +137,22 @@ function refreshApplication(){
 		// we need not to modify this one otherwise the form and the drag&drop will not work. 
 		if(!(applications[i].id === "")){
 			var formerId = applications[i].id;
-			var newId = "Applic"+i;
+			var newId = "Applic"+count;
 			if(!(formerId === newId)){
 				applications[i].id = newId;
 			
-				var aInfoWrapper = $("#"+formerId+"Info");
-				aInfoWrapper[0].setAttribute("id", newId+"Info");				
+				var aInfoWrapper = $("#"+formerId+"Info");			
 				var aInfo = $("#"+formerId+"Info > div");
+				aInfoWrapper[0].setAttribute("id", newId+"Info");	
 				//Each component is composed of a label and an input
 				for(var y = 0; y < aInfo.length; y++){
 					//Modifying the label
 					var children = $(aInfo[y]).children();
+					
+					
 					var name = newId+children[1].id.slice(newId.length, children[1].id.length);
+					console.log(name);
+					console.log("###");
 					children[0].setAttribute("for", name);
 					
 					//Modifying the input
@@ -159,6 +165,7 @@ function refreshApplication(){
 				if($(applications[i]).children().length >= 2)
 					refreshQuestion(applications[i]);
 			}
+			count++;
 		}
 	}
 }
@@ -429,7 +436,7 @@ function extractData(){
 		//console.log("Task : "+applicationName);
 		var applicationDesc = $("#"+id+"Desc").val();
 		//console.log("Description : "+applicationDesc);
-		var applicationImg = $("#"+id+"Img").val();
+		var applicationImg = id+"Img";
 		//console.log("Image : "+applicationImg);
 		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
 		q.push([]);
@@ -451,7 +458,6 @@ function extractData(){
 			
 			q[i].push(new Question(idQ, qLabel, qType));
 		}
-		console.log("");
 	}
 	send(formName, a, q);
 }
@@ -473,9 +479,41 @@ function send(f, a, q) {
 			"questions":JSON.stringify(q)
 		}, // données envoyées 
 		function(res){ // le callback
-			if(res !== false){
-				
-			}
+		
+					//res is supposed to send the id of the form
+					//We need this form ID to save the image
+				if(res !== false){
+					console.log("response");
+					var re = /(?:\.([^.]+))?$/;
+					var ext = "";
+					for(var i = 0; i < a.length; i++){
+						var name = a[i]['img'];
+						var file_data = $("#"+name).prop("files")[0];
+	
+
+						ext = re.exec(file_data.name)[1];
+						var form_data = new FormData();
+
+						form_data.append("file", file_data, res+name+"."+ext);
+							$.ajax({
+								url: "index.php?controller=application&action=saveImg",
+								cache: false,
+								contentType: false,
+								processData: false,
+								data: form_data,                  
+								type: 'post',
+								success: function(result){
+										  console.log(result);
+										},
+								error: function(){
+										  console.log("Error while downloading the file. ");
+								}   
+							});  
+					}
+				}
+				else{
+					console.log("Error when saving the form. ");
+				}
 			},
 		"json" // type de données reçues
 	);
