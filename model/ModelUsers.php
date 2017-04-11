@@ -3,56 +3,50 @@ require_once File::build_path(array('model', 'Model.php'));
 
 
 class ModelUsers extends Model{
-    private $id;
-	private $mail;
-	private $password;
-    private $nickName;
-    private $surName;
-    private $forName;
-    private $nonce;
+    private $userId;
+	private $userMail;
+	private $userPassword;
+    private $suerNickname;
+    private $userSurname;
+    private $userForname;
+    private $userNonce;
     protected static $object = "Users";
     protected static $primary = 'userId';
 	
 	
 	public function getId(){
-		return $this->id;
+		return $this->userId;
 	}
     public function getNonce() {
-        return $this->nonce;
+        return $this->userNonce;
     }
     
     public function getPassword() {
-        return $this->password;
+        return $this->userPassword;
     }
     public function getNickName() {
-        return $this->nickName;
+        return $this->userNickname;
     }
     public function getSurName() {
-        return $this->surName;
+        return $this->userSurname;
     }
     public function getForName() {
-        return $this->forName;
+        return $this->userForname;
     }
     public function getMail() {
-        return $this->mail;
-    }
-    public function getBirthDate() {
-        return $this->birthDate;
-    }
-    public function getIsAdmin() {
-        return $this->isAdmin;
+        return $this->userMail;
     }
     public function setNickName($nickName) {
-        $this->nickName = $nickName;
+        $this->userNickname = $nickName;
     }
     public function setSurName($firstName) {
-        $this->surName = $firstName;
+        $this->userSurname = $firstName;
     }
     public function setForName($lastName) {
-        $this->ForName = $lastName;
+        $this->userForname = $lastName;
     }
     public function setMail($mail) {
-        $this->mail = $mail;
+        $this->userMail = $mail;
     }
     public function setBirthDate($birthDate) {
         $this->birthDate = $birthDate;
@@ -62,7 +56,7 @@ class ModelUsers extends Model{
     }
     
     public function setNonce($nonce) {
-        $this->nonce = $nonce;
+        $this->userNonce = $nonce;
     }
     public static function getSeed() {
         return self::$seed;
@@ -76,13 +70,13 @@ class ModelUsers extends Model{
 		echo $forName;
 		echo $nonce;
         if (!is_null($id) && !is_null($nickName) && !is_null($forName) && !is_null($surName) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce)) {
-            $this->id = $id;
-			$this->nickName = $nickName;
-            $this->surName = $surName;
-            $this->forName = $forName;
-            $this->mail = $mail;
-            $this->password = $pwd;
-            $this->nonce = $nonce;
+            $this->userId = $id;
+			$this->userNickname = $nickName;
+            $this->userSurname= $surName;
+            $this->userForname = $forName;
+            $this->userMail = $mail;
+            $this->userPassword = $pwd;
+            $this->userNonce = $nonce;
         }
     }
 	

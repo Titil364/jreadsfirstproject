@@ -9,7 +9,6 @@ require_once File::build_path(array('controller','ControllerApplication.php'));
 require_once File::build_path(array('controller','ControllerQuestion.php'));
 
 require_once File::build_path(array('controller','ControllerQuestionType.php'));
-require_once File::build_path(array('controller','ControllerAnswerType.php')); 
 
 
 

@@ -45,15 +45,15 @@ class ControllerUsers {
             $view = 'profileUsers';
             $pagetitle = 'Update';
             $controller = 'users';
-			$information = ModelUsers::select('1');
-			var_dump($information);
-			echo $information->getNickName();
+			$information = ModelUsers::select('17');
 			$data = array(
 				"nickname" => $information->getNickName(),
-				"firstName" => $information->getSurName(),
-                "lastName" => $information->getForName(),
+				"surname" => $information->getSurName(),
+                "forname" => $information->getForName(),
                 "mail"  => $information->getMail()
 			);
+			echo $data["nickname"];
+			require File::build_path(array('view', 'view.php'));
 			/*
             $data = array(
                 "nickName" => htmlspecialchars($information['nickname']),
