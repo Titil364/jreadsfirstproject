@@ -15,50 +15,33 @@ class ModelUsers extends Model{
     protected static $primary = 'userId';
 	
 	
-	public function getId(){
-		return $this->userId;
-	}
-    public function getNonce() {
-        return $this->userNonce;
-    }
+	public function getId(){return $this->userId;}
+	
+    public function getNonce(){return $this->userNonce;}
+	public function setNonce($nonce){$this->userNonce = $nonce;}
     
-    public function getPassword() {
-        return $this->userPassword;
-    }
-    public function getNickname() {
-        return $this->userNickname;
-    }
-    public function getSurname() {
-        return $this->userSurname;
-    }
-    public function getForname() {
-        return $this->userForname;
-    }
-    public function getMail() {
-        return $this->userMail;
-    }
-    public function setNickname($nickName) {
-        $this->userNickname = $nickName;
-    }
-    public function setSurname($firstName) {
-        $this->userSurname = $firstName;
-    }
-    public function setForname($lastName) {
-        $this->userForname = $lastName;
-    }
-    public function setMail($mail) {
-        $this->userMail = $mail;
-    }
-    public function setBirthDate($birthDate) {
-        $this->birthDate = $birthDate;
-    }
-    public function setIsAdmin($isAdmin) {
-        $this->isAdmin = $isAdmin;
-    }
+    public function getPassword(){return $this->userPassword;}
+	
+	
+    public function getNickname(){return $this->userNickname;}
+    public function setNickname($nickName){$this->userNickname = $nickName;}	
+	
+    public function getSurname() {return $this->userSurname;}
+	public function setSurname($firstName){$this->userSurname = $firstName;}
+	
+    public function getForname(){return $this->userForname;}
+	public function setForname($lastName){$this->userForname = $lastName;}
+	
+    public function getMail(){return $this->userMail;}
+	public function setMail($mail){$this->userMail = $mail;}
     
-    public function setNonce($nonce) {
-        $this->userNonce = $nonce;
-    }
+
+
+	public function getIsAdmin(){return $this->isAdmin;}
+    public function setIsAdmin($isAdmin){$this->isAdmin = $isAdmin;}
+    
+
+	
     public static function getSeed() {
         return self::$seed;
     }
@@ -102,7 +85,7 @@ class ModelUsers extends Model{
     
     public static function checkPassword($nick, $pass) {
         try {
-			$query = "SELECT nickName,nonce FROM Users WHERE nickName=:nickn and password=:pwd";
+			$query = "SELECT userNickname, userNonce FROM Users WHERE userNickname=:nickn and userPassword=:pwd";
             $prep = Model::$pdo->prepare($query);
             $values = array(
                 'nickn' => $nick,
@@ -122,10 +105,10 @@ class ModelUsers extends Model{
     }
     public static function connect($nick, $pass) {
         $result = ModelUsers::checkPassword($nick, $pass);
-        if ($result['nickName'] == $nick && $result['nonce'] == NULL) {
+        if ($result['userNickname'] == $nick){// && $result['userNonce'] == NULL) {
            
             try {
-			    $query = "Select * From Users Where nickName=:nickn and password=:pwd";
+			    $query = "Select * From Users Where userNickname=:nickn and userPassword=:pwd";
                 $prep = Model::$pdo->prepare($query);
                 $values = array(
                     'nickn' => $nick,

@@ -17,7 +17,7 @@ class ControllerUsers {
         $controller = 'users';
         $pagetitle = 'User Created !';
 		
-		$hashpass = Security::encrypt($_POST['password']);
+		$hashpass = Security::encrypt($_POST['userPassword']);
         $nonce = Security::generateRandomHex();
 		
 		$users = array(
@@ -93,7 +93,7 @@ class ControllerUsers {
 		
         if ($user != NULL) {
             $view = 'connected';
-            $controller = 'user';
+            $controller = 'users';
             $pagetitle = 'Connecté';
             if ($user->getIsAdmin() == 1) {
                 $_SESSION['admin'] = 1;
@@ -110,10 +110,11 @@ class ControllerUsers {
 			$data = array();
 			$data['error'] = "Problème de connexion";
 			$data['view'] = 'connect';
-			$data['controller'] = 'user';
+			$data['controller'] = 'users';
 			$data['login'] = $_POST['nickname'];
             ControllerDefault::error($data);	
         }
+		require File::build_path(array('view', 'view.php'));
     }
 	
 	public static function existingUser(){

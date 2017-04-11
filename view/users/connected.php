@@ -1,3 +1,4 @@
 <?php
-    echo "<p>Hello".  htmlspecialchars($name)."! </p>";
+    echo "<p>Hello ".  htmlspecialchars($surname)."! </p>";
+	var_dump($_SESSION);
 ?>

@@ -14,12 +14,12 @@ DROP TABLE IF EXISTS AnswerType;
 CREATE TABLE Users (
   userId int(11) PRIMARY KEY AUTO_INCREMENT,
   userMail varchar(20),
-  userPassword varchar(64),
+  userPassword varchar(250),
   userNickname varchar (20),
   userSurname varchar(20),
-
   userForname varchar(20),
-  userNonce varchar (64)
+  userNonce varchar (64),
+  isAdmin int(1)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Visitor (
@@ -120,19 +120,19 @@ INSERT INTO QuestionType VALUES(2, "smiley");
 INSERT INTO QuestionType VALUES(3, "textarea");
 INSERT INTO QuestionType VALUES(4, "yesno");
 
-INSERT INTO AnswerType VALUES(1, "textarea", "", 2);
-INSERT INTO AnswerType VALUES(2, "awful", "thumb1image", 0);
-INSERT INTO AnswerType VALUES(3, "bad", "thumb2image", 0);
-INSERT INTO AnswerType VALUES(4, "cool", "thumb3image", 0);
-INSERT INTO AnswerType VALUES(5, "nice", "thumb4image", 0);
-INSERT INTO AnswerType VALUES(6, "awesome", "thumb5image", 0);
-INSERT INTO AnswerType VALUES(7, "smiley1", "smiley1image", 1);
-INSERT INTO AnswerType VALUES(8, "smiley2", "smiley2image", 1);
-INSERT INTO AnswerType VALUES(9, "smiley3", "smiley3image", 1);
-INSERT INTO AnswerType VALUES(10, "smiley4", "smiley4image", 1);
-INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 1);
-INSERT INTO AnswerType VALUES(12, "yes", "", 3);
-INSERT INTO AnswerType VALUES(13, "no", "", 3);
+INSERT INTO AnswerType VALUES(1, "textarea", "", 3);
+INSERT INTO AnswerType VALUES(2, "awful", "thumb1image", 1);
+INSERT INTO AnswerType VALUES(3, "bad", "thumb2image", 1);
+INSERT INTO AnswerType VALUES(4, "cool", "thumb3image", 1);
+INSERT INTO AnswerType VALUES(5, "nice", "thumb4image", 1);
+INSERT INTO AnswerType VALUES(6, "awesome", "thumb5image", 1);
+INSERT INTO AnswerType VALUES(7, "smiley1", "smiley1image", 2);
+INSERT INTO AnswerType VALUES(8, "smiley2", "smiley2image", 2);
+INSERT INTO AnswerType VALUES(9, "smiley3", "smiley3image", 2);
+INSERT INTO AnswerType VALUES(10, "smiley4", "smiley4image", 2);
+INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 2);
+INSERT INTO AnswerType VALUES(12, "yes", "", 4);
+INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
 INSERT INTO Form VALUES(1, 'Manger ou boire', 0, 0);
 
