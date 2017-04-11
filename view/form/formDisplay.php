@@ -41,14 +41,35 @@ foreach ($task_array as $t)
         
         $qType = ModelQuestionType::select($q->getQestionTypeId());
         
-        /*$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
+        require_once File::build_path(array('model', 'ModelAnswerType.php'));
+        $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
         
         //diplaying answers
+        /*
         foreach($answers_array as $a){
-            echo "<img src=\"$a->getImage()\"></img>";
-            echo $a->getLabel();
+            
+        }*/
+        if(!is_null($answers_array[0])){
+            switch ($answers_array[0]->getAnswerTypeName()){
+                case "textarea":
+                    echo "<textarea rows=\"5\" cols =\"50\">";
+                    break;
+                /*case "yes" or "no":
+                    echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
+                    echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
+                    break;*/
+                default :
+                    foreach($answers_array as $a){
+                        echo '<div class = "answerArea">';
+                        echo '<label id="'. $a->getAnswerTypeName() .'"><img src="media/'. $a->getAnswerTypeImage().'.png"></label>';
+                        echo '<input type = "radio" name = "question'.$q->getQestionTypeId().'" value = "answer'.$a->getAnswerTypeId().'"> '.$a->getAnswerTypeName().' <br>';
+                    }
+                    break;
+            }
+            
         }
-        */
+        
+        
         
         
     }
