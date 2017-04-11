@@ -48,17 +48,17 @@ class ControllerUsers {
 	public static function update() {
 		if (Session::is_connected()) {
             //$checkBoxAdmin = ControllerUsers::setCheckBox();
-            $view = 'profileUsers';
+            $view = 'updateUsers';
             $pagetitle = 'Update';
             $controller = 'users';
-			$information = ModelUsers::select('17');
+			
 			$data = array(
-				"nickname" => $information->getNickname(),
-				"surname" => $information->getSurname(),
-                "forname" => $information->getForname(),
-                "mail"  => $information->getMail()
+				"nickname" => htmlspecialchars($_SESSION['nickname']),
+				"surname" =>  htmlspecialchars($_SESSION['surname']),
+                "forname" => htmlspecialchars($_SESSION['forname']),
+                "mail"  => htmlspecialchars($_SESSION['mail'])
 			);
-			echo $data["nickname"];
+			
 			require File::build_path(array('view', 'view.php'));
 			/*
             $data = array(
@@ -122,7 +122,12 @@ class ControllerUsers {
 		$var = json_decode($nick);
 		$rep = ModelUsers::checkExistingUser($var);
 		$return = json_encode($rep);
-		echo($return);
+		echo $return;
 	}
+	public static function disconnect() {
+        session_unset();
+        session_destroy();
+		ControllerDefault::welcome();
+    }
 }
 ?>

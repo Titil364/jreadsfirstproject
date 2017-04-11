@@ -12,13 +12,12 @@ DROP TABLE IF EXISTS Answer;
 DROP TABLE IF EXISTS AnswerType;
 
 CREATE TABLE Users (
-  userId int(11) PRIMARY KEY AUTO_INCREMENT,
-  userMail varchar(20),
-  userPassword varchar(250),
-  userNickname varchar (20),
+  userNickname varchar (20) PRIMARY KEY,
   userSurname varchar(20),
   userForname varchar(20),
-  userNonce varchar (64),
+  userMail varchar(20),
+  userPassword varchar(250),
+  userNonce varchar(64),
   isAdmin int(1)
 )DEFAULT CHARSET=utf8;
 
@@ -34,9 +33,9 @@ CREATE TABLE Visitor (
 CREATE TABLE Form (
   formId int(11) PRIMARY KEY AUTO_INCREMENT,
   formName varchar(20),
-  userId int(11),
+  userNickname varchar (20),
   completedForm int(11),
-  FOREIGN KEY (userId) REFERENCES Users(userId)
+  FOREIGN KEY (userNickname) REFERENCES Users(userNickname)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE DateComplete (
@@ -150,3 +149,5 @@ INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 1);
 
 
+-- mdp : 123456
+INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 1);

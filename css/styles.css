@@ -89,11 +89,48 @@ img{
 }
 
 #signIn{
-	display: block;
-	position: absolute;
-	top: 20px;
-	right: 30px;
+	display: flex;
 }
 #passwordVerif,#nicknameVerif{
 	font-size: 75%;
 }
+
+/* FOOTER */
+@keyframes blink {
+    0%   {background-color:red; left:0px; bottom:0px;}
+    25%  {background-color:yellow; left:1000px; bottom:0px;}
+    50%  {background-color:blue; left:0px; bottom:200px;}
+    75%  {background-color:green; left:1000px; bottom:200px;}
+    100% {background-color:red; left:0px; bottom:0px;}
+}
+footer{
+	display:flex;
+	position:absolute;
+	min-height:40px;
+	animation-name: blink;
+    animation-duration: 4s;
+	animation-iteration-count: infinite;
+}
+
+footer > * {	
+	margin:auto;
+}
+/* END FOOTER */
+
+/* HEADER */
+header{
+	display:flex;
+}
+
+header > *{
+	flex:1;
+}
+.menu-buttons{
+	display:flex;
+	flex:2;
+}
+.menu-buttons > *{
+	flex:1;
+	margin:auto;
+}
+/* END HEADER */

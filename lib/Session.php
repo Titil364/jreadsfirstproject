@@ -10,7 +10,7 @@ class Session{
     }
     public static function connect($nickname, $surname, $forname, $mail) {
         $_SESSION['connected'] = true;
-        $_SESSION['nickName'] = $nickname;
+        $_SESSION['nickname'] = $nickname;
         $_SESSION['surname'] = $surname;
         $_SESSION['forname']  = $forname;
         $_SESSION['mail'] = $mail;
@@ -18,10 +18,6 @@ class Session{
     
     public static function is_connected() {
         return (!empty($_SESSION['connected']) && $_SESSION['connected']);
-    }
-    public static function get_nbItems(){
-        return Panier::countArticles();
-    }
-    
+    }    
 }
 ?>

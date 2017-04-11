@@ -36,7 +36,7 @@ class ModelAnswerType extends Model{
         }
     }
 
-    public static function getAnswerTypeByQuestionTypeId ($id){
+    public static function getAnswerTypeByQuestionTypeId($id){
 		try{
 			$sql  = "SELECT * FROM AnswerType WHERE questionTypeId=:id";
 			$prep = Model::$pdo->prepare($sql);
