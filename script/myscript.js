@@ -606,7 +606,9 @@ function upload(id, name){
 function goToSignIn	(){
 	window.location='index.php?controller=users&action=welcome';
 }
-
+function goToProfile (){
+	window.location='index.php?controller=users&action=update';
+}
 function init(){
 	
 	$("#submit").click(extractData);
@@ -618,7 +620,8 @@ function init(){
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
-	document.getElementById("signIn").addEventListener("click",goToSignIn);
+	document.getElementById("goToSignIn").addEventListener("click",goToSignIn);
+	document.getElementById("goToProfile").addEventListener("click",goToProfile);
 }
 
 

@@ -28,6 +28,18 @@ class ControllerUsers {
 		require File::build_path(array('view', 'view.php'));
 	}
 	
+	public static function update() {
+        $view = 'profileUsers';
+        $controller = 'users';
+        $pagetitle = 'Profile';
+		
+		$information = ModelUsers::select('1');
+		foreach ($information as $value){
+			echo $value;
+		}
+        require File::build_path(array('view', 'view.php'));
+    }
+	
 	public static function existingUser(){
 		$nick = $_POST['userNickname'];
 		$var = json_decode($nick);

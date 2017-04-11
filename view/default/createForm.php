@@ -3,6 +3,7 @@
 <!-- This is supposed to be empty is there are no forms on this account-->
 		<div id="signIn">
 				<button type="button" id="goToSignIn">Sign In</button>
+				<button type="button" id="goToProfile">Profile</button>
 		</div>
 </header> 
 <main>
