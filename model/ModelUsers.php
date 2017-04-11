@@ -10,6 +10,7 @@ class ModelUsers extends Model{
     private $userSurname;
     private $userForname;
     private $userNonce;
+	private $isAdmin;
     protected static $object = "Users";
     protected static $primary = 'userId';
 	
@@ -24,25 +25,25 @@ class ModelUsers extends Model{
     public function getPassword() {
         return $this->userPassword;
     }
-    public function getNickName() {
+    public function getNickname() {
         return $this->userNickname;
     }
-    public function getSurName() {
+    public function getSurname() {
         return $this->userSurname;
     }
-    public function getForName() {
+    public function getForname() {
         return $this->userForname;
     }
     public function getMail() {
         return $this->userMail;
     }
-    public function setNickName($nickName) {
+    public function setNickname($nickName) {
         $this->userNickname = $nickName;
     }
-    public function setSurName($firstName) {
+    public function setSurname($firstName) {
         $this->userSurname = $firstName;
     }
-    public function setForName($lastName) {
+    public function setForname($lastName) {
         $this->userForname = $lastName;
     }
     public function setMail($mail) {
@@ -61,15 +62,8 @@ class ModelUsers extends Model{
     public static function getSeed() {
         return self::$seed;
     }
-    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickName = NULL, $surName = NULL, $forName = NULL, $nonce = NULL) {
-		echo $id;
-		echo $mail;
-		echo $pwd;
-		echo $nickName;
-		echo $surName;
-		echo $forName;
-		echo $nonce;
-        if (!is_null($id) && !is_null($nickName) && !is_null($forName) && !is_null($surName) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce)) {
+    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickName = NULL, $surName = NULL, $forName = NULL, $nonce = NULL, $isAdmin = NULL) {
+        if (!is_null($id) && !is_null($nickName) && !is_null($forName) && !is_null($surName) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin)) {
             $this->userId = $id;
 			$this->userNickname = $nickName;
             $this->userSurname= $surName;
@@ -77,6 +71,7 @@ class ModelUsers extends Model{
             $this->userMail = $mail;
             $this->userPassword = $pwd;
             $this->userNonce = $nonce;
+			$this->isAdmin = $isAdmin;
         }
     }
 	

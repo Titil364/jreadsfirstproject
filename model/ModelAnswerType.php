@@ -1,12 +1,12 @@
 <?php
 require_once File::build_path(array('model', 'Model.php'));
 
-class ModelAnswertype extends Model{
+class ModelAnswerType extends Model{
 
 	private $answerTypeId;
 	private $answerTypeName;
-        private $answerTypeImage;
-        private $questionTypeId;
+	private $answerTypeImage;
+	private $questionTypeId;
 	
     protected static $object = "AnswerType";
     protected static $primary = "answerTypeId";
@@ -36,7 +36,7 @@ class ModelAnswertype extends Model{
         }
     }
 
-    public function getAnswerTypeByQuestionTypeId ($id){
+    public static function getAnswerTypeByQuestionTypeId ($id){
 		try{
 			$sql  = "SELECT * FROM AnswerType WHERE questionTypeId=:id";
 			$prep = Model::$pdo->prepare($sql);

@@ -26,8 +26,8 @@ class ControllerUsers {
 				"userNickname" => $_POST['userNickname'],
 				"userSurname" => $_POST['userSurname'],
 				"userForname" => $_POST['userForname'],
-				"userNonce" => $nonce//,
-				//"isAdmin" => 0
+				"userNonce" => $nonce,
+				"isAdmin" => 0
 			);
 		ModelUsers::save($users);
 		
@@ -46,16 +46,16 @@ class ControllerUsers {
         require File::build_path(array('view', 'view.php'));
     }*/
 	public static function update() {
-       // if (isset($_SESSION[''])) {
+		if (Session::is_connected()) {
             //$checkBoxAdmin = ControllerUsers::setCheckBox();
             $view = 'profileUsers';
             $pagetitle = 'Update';
             $controller = 'users';
 			$information = ModelUsers::select('17');
 			$data = array(
-				"nickname" => $information->getNickName(),
-				"surname" => $information->getSurName(),
-                "forname" => $information->getForName(),
+				"nickname" => $information->getNickname(),
+				"surname" => $information->getSurname(),
+                "forname" => $information->getForname(),
                 "mail"  => $information->getMail()
 			);
 			echo $data["nickname"];
@@ -75,15 +75,46 @@ class ControllerUsers {
 			$data['controller'] = 'users';
             ControllerDefault::error($data);
         }*/
+		}
     }
 	
 	public static function connect(){
-		$view = 'connectUsers';
+		$view = 'connect';
         $controller = 'users';
         $pagetitle = 'Connect';
 		
         require File::build_path(array('view', 'view.php'));
 	}
+	
+	 public static function connected() {
+		 
+        $hashpass = Security::encrypt($_POST['password']);
+        $user = ModelUsers::connect($_POST['nickname'], $hashpass);
+		
+        if ($user != NULL) {
+            $view = 'connected';
+            $controller = 'user';
+            $pagetitle = 'Connecté';
+            if ($user->getIsAdmin() == 1) {
+                $_SESSION['admin'] = 1;
+            } else {
+                $_SESSION['admin'] = 0;
+            }
+            $nickname = $user->getNickname();
+            $surname = $user->getSurname();
+            $forname = $user->getForname();
+            $mail = $user->getMail();
+            Session::connect($nickname,$surname,$forname,$mail);
+
+        } else {
+			$data = array();
+			$data['error'] = "Problème de connexion";
+			$data['view'] = 'connect';
+			$data['controller'] = 'user';
+			$data['login'] = $_POST['nickname'];
+            ControllerDefault::error($data);	
+        }
+    }
 	
 	public static function existingUser(){
 		$nick = $_POST['userNickname'];

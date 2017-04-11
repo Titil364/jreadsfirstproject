@@ -71,7 +71,7 @@ class ModelApplication extends Model{
         }
     }
 */
-    public function getApplicationByFormId($formId){
+    public static function getApplicationByFormId($formId){
 		try{
 			$sql  = "SELECT * FROM Application WHERE formId=:id";
 			$prep = Model::$pdo->prepare($sql);

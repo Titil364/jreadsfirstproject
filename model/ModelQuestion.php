@@ -36,7 +36,7 @@ class ModelQuestion extends Model{
         }
     }
 
-    public function getQuestionByApplicationId($id){
+    public static function getQuestionByApplicationId($id){
 		try{
 			$sql  = "SELECT * FROM Question WHERE applicationId=:id";
 			$prep = Model::$pdo->prepare($sql);

@@ -1,5 +1,5 @@
 <header>
-<h1>Answer the form.</h1>
+<h1>Answer the form</h1>
 <!-- This is supposed to be empty is there are no forms on this account-->
 </header> 
 <main>

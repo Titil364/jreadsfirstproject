@@ -33,7 +33,8 @@ class ControllerForm {
                 
 
                 for($j=0; $j < count($questions_array);$j++){
-                $qType = ModelQuestionType::select($questions_array[$j]->getQestionTypeId());
+					$qType = ModelQuestionType::select($questions_array[$j]->getQestionTypeId());
+
                     $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
                     
                     array_push($answers_array_list[$i], $answers_array);

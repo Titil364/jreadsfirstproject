@@ -25,7 +25,7 @@ class ModelQuestionType extends Model{
     }
 
 	public static function getQuestionTypeByName($name){
-				try{
+		try{
 			$sql  = "SELECT questionTypeId FROM QuestionType WHERE questionTypeName=:n";
 			$prep = Model::$pdo->prepare($sql);
 
