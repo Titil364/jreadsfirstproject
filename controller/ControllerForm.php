@@ -28,42 +28,63 @@ class ControllerForm {
 		$a = json_decode($_POST["applications"], true);
 		$q = json_decode($_POST["questions"], true);
 		//var_dump($q);
+		$abort = false;
 		
 		$form = array(
 					"formName" => json_decode($_POST["form"], true),
 					"userId" => 0,
 					"completedForm" => 0		
 				);
-
-		ModelForm::save($form);
-		$form['formId'] = ModelForm::getLastInsert();
-		for($i = 0; $i < sizeof($a); $i++){
-			$application = array(
-				"applicationId" => $form['formId'] . $a[$i]["id"],
-				"applicationName" => $a[$i]["name"],
-				"applicationDescription" => $a[$i]["description"],
-				"formId" => $form['formId']
-			);
-			ModelApplication::save($application);
-			//$q[$i] the array containing the question of the application $i
-			for($y = 0; $y < sizeof($q[$i]); $y++){
-				//chercher questionTypeId grace à $q[$i][$y]["questionType"]
-				//$qTypeId
-				$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"]);
-				$qTypeId = $qTypeId->getQuestionTypeId();
-
-				$question = array(
-					"questionId" => $form['formId'] . $q[$i][$y]["id"],
-					"questionName" => $q[$i][$y]["label"],
-					"applicationId" => $application["applicationId"],
-					"questionTypeId" => $qTypeId
+		ModelForm::beginTransaction();
+		
+		if(ModelForm::save($form)){
+			$form['formId'] = ModelForm::getLastInsert();
+			for($i = 0; $i < sizeof($a); $i++){
+				$application = array(
+					"applicationId" => $form['formId'] . $a[$i]["id"],
+					"applicationName" => $a[$i]["name"],
+					"applicationDescription" => $a[$i]["description"],
+					"formId" => $form['formId']
 				);
-				ModelQuestion::save($question);
-			}
+				if(!ModelApplication::save($application)){
+					$abort = true;
+					break;
+				}
+				//$q[$i] the array containing the question of the application $i
+				for($y = 0; $y < sizeof($q[$i]); $y++){
+					//chercher questionTypeId grace à $q[$i][$y]["questionType"]
+					//$qTypeId
+					$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"]);
+					$qTypeId = $qTypeId->getQuestionTypeId();
+
+					$question = array(
+						"questionId" => $form['formId'] . $q[$i][$y]["id"],
+						"questionName" => $q[$i][$y]["label"],
+						"applicationId" => $application["applicationId"],
+						"questionTypeId" => $qTypeId
+					);
+					if(!ModelQuestion::save($question)){
+						$abort = true;
+						break;
+					}
+				}
+			}			
+		}
+		else{
+			$abort = true;
+		}
+
+		if($abort){
+			//ModelForm::rollback();
+			echo json_encode(false);
+		}
+		else{
+			//ModelForm::commit();
+			echo json_encode($form['formId']);			
 		}
 
 
-		echo json_encode("########Success");
+		
 	}
 }
 ?>

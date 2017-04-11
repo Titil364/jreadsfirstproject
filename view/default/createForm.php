@@ -54,7 +54,6 @@
 		</div>
 	
 </div>
-<button type="button" id="submit">Create the form</button> 
-<button type="button" id="test">Upload test on Applic0Img</button> 
+<button type="button" id="submit">Create the form</button>
 
  <script src ="script/myscript.js"></script>

@@ -18,7 +18,6 @@ class Model {
             self::$pdo = new PDO("mysql:host=$hostname;dbname=$database_name", $login, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
             self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
         } catch (PDOException $e) {
             if (Conf::getDebug()) {
                 echo $e->getMessage(); // affiche un message d'erreur
@@ -167,13 +166,18 @@ class Model {
         }
     }
 	public static function beginTransaction(){
+		self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, false);	
 		return Model::$pdo->beginTransaction();
 	}
 	public static function commit() {
-		return Model::$pdo->commit();
+		$ans = Model::$pdo->commit();
+		self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+		return $ans;
 	}
 	public static function rollback(){
-		return Model::$pdo->rollback();
+		$ans = Model::$pdo->rollback();
+		self::$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+		return $ans;
 	}
 }
 Model::Init();

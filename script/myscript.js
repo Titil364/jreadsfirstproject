@@ -473,8 +473,9 @@ function send(f, a, q) {
 			"questions":JSON.stringify(q)
 		}, // données envoyées 
 		function(res){ // le callback
-			var message = res;
-			console.log(message);
+			if(res !== false){
+				
+			}
 			},
 		"json" // type de données reçues
 	);
@@ -565,7 +566,7 @@ function makeDraggbleApplication(event) {
 	});
 }
 
-function upload(){
+function upload(id, name){
 
 	var file_data = $("#Applic0Img").prop("files")[0];
 	
@@ -573,7 +574,7 @@ function upload(){
 	var ext = re.exec(file_data.name)[1];
 	var form_data = new FormData(); 
 
-	form_data.append("file", file_data, "Applic0Img."+ext);
+	form_data.append("file", file_data, name+"."+ext);
 	
 	
 	/*$.post(
@@ -598,7 +599,7 @@ function upload(){
 				},
 		error: function(){
 		  alert("Erreur lors du téléchargement du fichier");
-		}           
+		}   
 	});       
 }
 
