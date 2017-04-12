@@ -513,9 +513,9 @@ function send(f, a, q) {
 								}   
 							});  
 					}
-                                        alert("The form has been successfully registered ! (You will be redirected)");
-                                        console.log("redirection");
-                                        setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+					alert("The form has been successfully registered ! (You will be redirected)");
+					console.log("redirection");
+					setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 				}
 				else{
 					console.log("Error when saving the form. ");
