@@ -111,5 +111,15 @@ class ControllerForm {
 		}
 		
 	}
+	public static function displaySheet2(){
+		$controller ='form';
+		$view = 'sheet2View';
+		$pagetitle='postPostView';
+		
+		$nbFSQuestions = 5;
+		$applicationTable = ModelApplication::getApplicationByFormId('1');
+		
+		require File::build_path(array('view', 'view.php'));
+	}
 }
 ?>
