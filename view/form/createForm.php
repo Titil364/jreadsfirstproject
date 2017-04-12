@@ -53,16 +53,16 @@
 			<div id="funSorterInformation">
 				<p>Choose your required questions for the fun sorter</p>
 				<p><h3>Predefined questions</h3></p>
-				<input type="checkbox" id="FSeasy" name="information" value="name" class="defaultInformation">
-				<label for="name">Easy to do / Hard to do</label><br>
-				<input type="checkbox" id="FSfun" name="information" value="age" class="defaultInformation">
-				<label for="age">Most fun / Least fun</label><br>
-				<input type="checkbox" id="FSlearn" name="information" value="gender" class="defaultInformation">
-				<label for="gender">Learned the most / Learned the least</label><br>
-				<input type="checkbox" id="FScool" name="information" value="secretName" class="defaultInformation">
-				<label for="secretName">Most cool / Least cool</label><br>
-				<input type="checkbox" id="FSboring" name="information" value="secretName" class="defaultInformation">
-				<label for="secretName">Most boring / Least boring</label><br><br>
+				<input type="checkbox" id="FSeasy" name="information" value="FSeasy" class="defaultInformation">
+				<label for="FSeasy">Easy to do / Hard to do</label><br>
+				<input type="checkbox" id="FSfun" name="information" value="FSfun" class="defaultInformation">
+				<label for="FSfun">Most fun / Least fun</label><br>
+				<input type="checkbox" id="FSlearn" name="information" value="FSlearn" class="defaultInformation">
+				<label for="FSlearn">Learned the most / Learned the least</label><br>
+				<input type="checkbox" id="FScool" name="information" value="FScool" class="defaultInformation">
+				<label for="FScool">Most cool / Least cool</label><br>
+				<input type="checkbox" id="FSboring" name="information" value="FSboring" class="defaultInformation">
+				<label for="FSboring">Most boring / Least boring</label><br><br>
 			</div>
 		
 	</div>

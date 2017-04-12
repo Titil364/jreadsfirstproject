@@ -24,11 +24,11 @@
 							</div>
 						</a>
 						<div class='menu-buttons'>
-						<!-- <div class="menu-item">   
-									<a href='index.php?action=update&controller=users'>
-										<button type="button">Paramètres</button>
+							<div class="menu-item">   
+									<a href='index.php?action=create&controller=form'>
+										<button type="button">Create a new form</button>
 									</a>
-							</div> -->
+							</div>
 							<div class="menu-item">
 								<a href='index.php?action=displaySelf&controller=users'>
 									<button type="button" id="goToProfile">Profile</button>
@@ -44,19 +44,12 @@ EOT;
 					echo <<< EOT
 							<div class="menu-item">
 								<a href='index.php?action=disconnect&controller=users'>
-									<button type="button">Se déconnecter</button>
+									<button type="button">Log out</button>
 								</a>
 							</div>
+						</div>
 EOT;
-				} else{
-					echo <<< EOT
-						<div class="menu-item">
-								<a href='index.php?action=connect&controller=users'>
-									<button type="button">Se connecter</button>
-								</a>
-						</div>				
-EOT;
-				}
+				} 
 			?>
 		</header> 
 		<!--<script src ="script/jquery.min.js"></script>-->
