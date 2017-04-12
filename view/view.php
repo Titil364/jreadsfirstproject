@@ -24,18 +24,15 @@
 							</div>
 						</a>
 						<div class='menu-buttons'>
-							<div class="menu-item">
-								<a href='index.php?controller=users&action=displaySelf'>
-									<button type="button">Compte</button>
-								</a>                    
-							</div>
-							<div class="menu-item">   
+						<!-- <div class="menu-item">   
 									<a href='index.php?action=update&controller=users'>
 										<button type="button">Paramètres</button>
 									</a>
-							</div>
+							</div> -->
 							<div class="menu-item">
-								<button type="button" id="goToProfile">Profile</button>
+								<a href='index.php?action=displaySelf&controller=users'>
+									<button type="button" id="goToProfile">Profile</button>
+								</a>
 							</div>
 EOT;
 									if (Session::is_admin()) {
@@ -72,11 +69,11 @@ EOT;
                 $filepath = File::build_path(array('view', $controller, $view . ".php"));
                 require $filepath;
                 ?>
-        
+        <!--
 		<footer>
             <div> I am a footer NOTICE ME PLEASE </div>
         </footer>
-		
+		-->
 
     </body>
 </html>

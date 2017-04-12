@@ -17,6 +17,7 @@ class ControllerForm {
             $answers_array_list = [];
             $questionType_list = [];
             
+            
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
                 $questions_array = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
@@ -116,6 +117,16 @@ class ControllerForm {
 			echo json_encode(false);
 		}
 		
+	}
+	public static function displaySheet2(){
+		$controller ='form';
+		$view = 'sheet2View';
+		$pagetitle='postPostView';
+		
+		$nbFSQuestions = 5;
+		$applicationTable = ModelApplication::getApplicationByFormId('1');
+		
+		require File::build_path(array('view', 'view.php'));
 	}
 }
 ?>

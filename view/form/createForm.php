@@ -48,6 +48,22 @@
 					<button type="button" id="makeMoveableQuestion">Make questions moveable</button>
 				</div>
 			</div>
+			
+			
+			<div id="funSorterInformation">
+				<p>Choose your required questions for the fun sorter</p>
+				<p><h3>Predefined questions</h3></p>
+				<input type="checkbox" id="FSeasy" name="information" value="name" class="defaultInformation">
+				<label for="name">Easy to do / Hard to do</label><br>
+				<input type="checkbox" id="FSfun" name="information" value="age" class="defaultInformation">
+				<label for="age">Most fun / Least fun</label><br>
+				<input type="checkbox" id="FSlearn" name="information" value="gender" class="defaultInformation">
+				<label for="gender">Learned the most / Learned the least</label><br>
+				<input type="checkbox" id="FScool" name="information" value="secretName" class="defaultInformation">
+				<label for="secretName">Most cool / Least cool</label><br>
+				<input type="checkbox" id="FSboring" name="information" value="secretName" class="defaultInformation">
+				<label for="secretName">Most boring / Least boring</label><br><br>
+			</div>
 		
 	</div>
 	<button type="button" id="submit">Create the form</button>

@@ -22,9 +22,14 @@ for($i=0; $i < count($application_array);$i++){
         echo '<div id="Applic'.$i.'Info">'; //app info div
             $taskName = htmlspecialchars($application_array[$i]->getApplicationName());
             $taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
+            $img =  "media/". $application_array[$i]->getApplicationId() . ".png";
 
             echo "<h2>$taskName</h2>";
             echo $taskDesc;
+            if (file_exists($img)){
+                echo "<img src = $img >";              
+            }
+            
         
         echo '</div>';
     //displaying questions
@@ -67,7 +72,7 @@ for($j=0; $j < count($questions_array);$j++){
                         $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
                     
                         echo '<div class = "answerArea">';
-                        echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png"></label>';
+                        echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png" class="answerIcon"></label>';
                         echo '<input type = "radio" name = "question'.$questionTypeId.'" value = "answer'.$answerTypeId.'"> '.$answerName.' <br>';
                         echo '</div>';
                     }
