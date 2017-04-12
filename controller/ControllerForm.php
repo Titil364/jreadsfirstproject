@@ -47,7 +47,7 @@ class ControllerForm {
        
 	
 	public static function created(){
-		if(Session::is_connected){
+		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
 			$q = json_decode($_POST["questions"], true);
 			//var_dump($q);
