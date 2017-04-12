@@ -93,7 +93,7 @@ class ControllerUsers {
 	public static function updated() {
 		
 		if (Session::is_connected()) {
-            $view = 'updateUsers';
+            $view = 'userProfil';
             $pagetitle = 'Updated';
             $controller = 'users';		
 			
