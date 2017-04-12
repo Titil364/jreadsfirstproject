@@ -1,0 +1,24 @@
+body main{
+	border:2px solid #777777;
+	margin:auto;
+	display:flex;
+	width:500px;
+}
+body main > div {
+	display:flex;
+	margin:auto;
+}
+#welcome{
+	flex-direction:column;
+	text-align:center;
+}
+#welcome > * {
+	padding:5px;
+	flex:1;
+}
+body header{
+	margin-bottom: 5%;
+}
+body footer{
+	margin-top: 5%;
+}

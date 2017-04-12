@@ -1,15 +1,19 @@
 -- utf8_general_ci
 
 -- User a table in the main db
-DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Visitor;
-DROP TABLE IF EXISTS Form;
-DROP TABLE IF EXISTS DateComplete;
-DROP TABLE IF EXISTS Application;
-DROP TABLE IF EXISTS QuestionType;
-DROP TABLE IF EXISTS Question;
 DROP TABLE IF EXISTS Answer;
 DROP TABLE IF EXISTS AnswerType;
+DROP TABLE IF EXISTS Question;
+DROP TABLE IF EXISTS QuestionType;
+DROP TABLE IF EXISTS Application;
+DROP TABLE IF EXISTS DateComplete;
+DROP TABLE IF EXISTS Form;
+DROP TABLE IF EXISTS Users;
+
+
+
+
 
 CREATE TABLE Users (
   userNickname varchar (20) PRIMARY KEY,

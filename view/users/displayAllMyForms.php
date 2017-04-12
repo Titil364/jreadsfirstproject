@@ -8,6 +8,7 @@
            <th>FormID</th>
            <th>Name of the form</th>
            <th>Number of form completed</th>
+		   <th></th>
        </tr>
 	</thead>
 
@@ -22,10 +23,13 @@
 			$secureName = htmlspecialchars($f->getFormName());
 			$secureNbCompletedForm = htmlspecialchars($f->getCompletedForm());
 			
+			$protectedId = rawurlencode($f->getFormId());
+			
 			echo "<tr>";
 			echo "<td>$secureId</td>";
 			echo "<td>$secureName</td>";
 			echo "<td>$secureNbCompletedForm</td>";
+			echo "<td><a href=\"index.php?controller=form&action=read&id=$protectedId\" >See the form</a></td>";
 			echo "</tr>";
 		}
 		
