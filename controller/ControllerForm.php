@@ -53,11 +53,11 @@ class ControllerForm {
 			//var_dump($q);
 			$abort = false;
 			
-			$userId = $_SESSION['nickname'];
+			$userNickname = $_SESSION['nickname'];
 			
 			$form = array(
 						"formName" => json_decode($_POST["form"], true),
-						"userId" => $userId,
+						"userNickname" => $userNickname,
 						"completedForm" => 0		
 					);
 			ModelForm::beginTransaction();
