@@ -1,8 +1,8 @@
-<form class ="formCss"id="userForm" method="post" action="index.php?action=updated&controller=users">
+<form class ="formCss" id="userForm" method="post"<?php if($create){echo "action=\"index.php?action=created&controller=users\">";} else {echo "action=\"index.php?action=updated&controller=users\">";}?>
 	<fieldset>
 		<p>
 		  <label for="userNickname">User Nickname</label> :
-		  <input type="text" placeholder="doe34" name="userNickname" id="userNickname" value="<?php echo $data["userNickname"]?>" required/>
+		  <input type="text" placeholder="doe34" name="userNickname" id="userNickname" <?php if(!$create){ echo"value=\"".$data["userNickname"]."\"";}?> <?php if($create){ echo"required";}else{ echo"readonly";}?>/>
 		  <p id="nicknameVerif"></p>
 		</p>
 		<p>
@@ -28,7 +28,15 @@
 <!-- A quoi ça correspond ?-->
 		<p id="passwordVerif"> </p>
 		<p>
-			<button type="submit" id ="validation"/>Save modification</button> 
+			<?php
+			if($create){
+				echo "<button type=\"submit\" id =\"validation\" />Create User</button>";
+			}
+			else {
+				echo "<button type=\"submit\"  id =\"validation\" />Save Modification</button>";
+			}
+			?>
 		</p>
-	</fieldset> 
+	</fieldset>
+	<script src="script/myScriptSignin.js"></script>
 </form>

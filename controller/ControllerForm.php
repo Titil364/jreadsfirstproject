@@ -6,8 +6,8 @@ class ControllerForm {
 
     
     public static function read(){
-		
-        $f = ModelForm::select($_GET['id']);
+	$formId = $_GET['id'];	
+        $f = ModelForm::select($formId);
         if (!$f){
             // error page
         }else{

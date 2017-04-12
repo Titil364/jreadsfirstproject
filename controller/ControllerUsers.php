@@ -15,10 +15,18 @@ class ControllerUsers {
     }
 	
     public static function create() {
-        $view = 'createUsers';
+        $view = 'updateUsers';
         $controller = 'users';
         $pagetitle = 'Sign in';
-		
+		$create = true;
+		$users = array(
+				"userMail" => $_POST['userMail'],
+				"userNickname" => $_POST['userNickname'],
+				"userSurname" => $_POST['userSurname'],
+				"userForname" => $_POST['userForname'],
+				"userNonce" => $nonce,
+				"isAdmin" => 0
+		);
         require File::build_path(array('view', 'view.php'));
     }
 	
@@ -61,7 +69,7 @@ class ControllerUsers {
             $view = 'updateUsers';
             $pagetitle = 'Update';
             $controller = 'users';
-			
+			$create	= false; 
 			
 			$data = array(
 				"userNickname" => htmlspecialchars($_SESSION['nickname']),
@@ -80,20 +88,23 @@ class ControllerUsers {
                 "lName" => htmlspecialchars($information['lastName']),
                 "mail"  => htmlspecialchars($information['mail'])
             );
-            require File::build_path(array('view', 'view.php'));
-      /*} else {
+            require File::build_path(array('view', 'view.php'));*/
+		} else {
+		//echo "pas connecté";
+
 			$data = array();
 			$data['error'] = "Please log in";
 			$data['view'] = 'connectUsers';
 			$data['controller'] = 'users';
             ControllerDefault::error($data);
-        }*/
-		}
+        }
     }
 	public static function updated() {
 		
 		if (Session::is_connected()) {
+
             $view = 'userProfil';
+
             $pagetitle = 'Updated';
             $controller = 'users';		
 			
