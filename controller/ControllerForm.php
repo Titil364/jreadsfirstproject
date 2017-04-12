@@ -17,6 +17,7 @@ class ControllerForm {
             $answers_array_list = [];
             $questionType_list = [];
             
+            
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
                 $questions_array = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
