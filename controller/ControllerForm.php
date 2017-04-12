@@ -60,7 +60,8 @@ class ControllerForm {
 						"userNickname" => $userNickname,
 						"completedForm" => 0		
 					);
-			ModelForm::beginTransaction();
+			//ModelForm::beginTransaction();
+			//var_dump($form);
 			if(ModelForm::save($form)){
 				$form['formId'] = ModelForm::getLastInsert();
 				for($i = 0; $i < sizeof($a); $i++){

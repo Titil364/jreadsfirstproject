@@ -486,36 +486,36 @@ function send(f, a, q) {
 					//res is supposed to send the id of the form
 					//We need this form ID to save the image
 				if(res !== false){
-					console.log("response");
 					var re = /(?:\.([^.]+))?$/;
 					var ext = "";
 					for(var i = 0; i < a.length; i++){
 						var name = a[i]['img'];
+
 						var file_data = $("#"+name).prop("files")[0];
-	
+		
+						if(file_data !== undefined){
+							ext = re.exec(file_data.name)[1];
+							var form_data = new FormData();
 
-						ext = re.exec(file_data.name)[1];
-						var form_data = new FormData();
-
-						form_data.append("file", file_data, res+name+"."+ext);
-							$.ajax({
-								url: "index.php?controller=application&action=saveImg",
-								cache: false,
-								contentType: false,
-								processData: false,
-								data: form_data,                  
-								type: 'post',
-								success: function(result){
-										  console.log(result);
-										},
-								error: function(){
-										  console.log("Error while downloading the file. ");
-								}   
-							});  
+							form_data.append("file", file_data, res+name+"."+ext);
+								$.ajax({
+									url: "index.php?controller=application&action=saveImg",
+									cache: false,
+									contentType: false,
+									processData: false,
+									data: form_data,                  
+									type: 'post',
+									success: function(result){
+											  console.log(result);
+											},
+									error: function(){
+											  console.log("Error while downloading the file. ");
+									}   
+								});  
+						}
+						alert("The form has been successfully registered ! (You will be redirected)");
+						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
-					alert("The form has been successfully registered ! (You will be redirected)");
-					console.log("redirection");
-					setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 				}
 				else{
 					console.log("Error when saving the form. ");
