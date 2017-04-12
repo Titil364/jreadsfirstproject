@@ -21,31 +21,42 @@
 						</a>
 						<div class='menu-buttons'>
 							<div class="menu-item">
-								<a href='index.php?controller=users&action=displaySelf'>Compte</a>                    
+								<a href='index.php?controller=users&action=displaySelf'>
+									<button type="button">Compte</button>
+								</a>                    
 							</div>
-
-
 							<div class="menu-item">   
-									<a href='index.php?action=update&controller=users'>Paramètres</a>
+									<a href='index.php?action=update&controller=users'>
+										<button type="button">Paramètres</button>
+									</a>
+							</div>
+							<div class="menu-item">
+								<button type="button" id="goToProfile">Profile</button>
 							</div>
 EOT;
 									if (Session::is_admin()) {
 										echo "<div class=\"menu-item\">";
-										echo "<a href='index.php'>See u soon</a>";
+										echo "<a href='index.php'>";
+										echo "<button type=\"button\">See u soon</button></a>";
 										echo "</div>";
 									}
 					echo <<< EOT
 							<div class="menu-item">
-								<a href='index.php?action=disconnect&controller=users'>Se déconnecter</a>
+								<a href='index.php?action=disconnect&controller=users'>
+									<button type="button">Se déconnecter</button>
+								</a>
 							</div>
-						</div>
+EOT;
+				} else{
+					echo <<< EOT
+						<div class="menu-item">
+								<a href='index.php?action=connect&controller=users'>
+									<button type="button">Se connecter</button>
+								</a>
+						</div>				
 EOT;
 				}
 			?>
-			<div id="signIn">
-					<button type="button" id="goToSignIn">Sign In</button>
-					<button type="button" id="goToProfile">Profile</button>
-			</div>
 		</header> 
 		<!--<script src ="script/jquery.min.js"></script>-->
 		<script src ="script/jquery.js"></script>
