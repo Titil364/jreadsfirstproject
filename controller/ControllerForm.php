@@ -47,17 +47,17 @@ class ControllerForm {
        
 	
 	public static function created(){
-		if(Session::is_connected){
+		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
 			$q = json_decode($_POST["questions"], true);
 			//var_dump($q);
 			$abort = false;
 			
-			$userId = $_SESSION['nickname'];
+			$userNickname = $_SESSION['nickname'];
 			
 			$form = array(
 						"formName" => json_decode($_POST["form"], true),
-						"userId" => $userId,
+						"userNickname" => $userNickname,
 						"completedForm" => 0		
 					);
 			ModelForm::beginTransaction();

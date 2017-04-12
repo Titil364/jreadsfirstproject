@@ -58,6 +58,7 @@ EOT;
 				}
 			?>
 		</header> 
+		<!--<script src ="script/jquery.min.js"></script>-->
 		<script src ="script/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
@@ -67,8 +68,11 @@ EOT;
                 $filepath = File::build_path(array('view', $controller, $view . ".php"));
                 require $filepath;
                 ?>
-
+        
+		<footer>
+            <div> I am a footer NOTICE ME PLEASE </div>
+        </footer>
 		
-		<!--<script src ="script/jquery.min.js"></script>-->
+
     </body>
 </html>
