@@ -2,7 +2,7 @@
 	<fieldset>
 		<p>
 		  <label for="userNickname">User Nickname</label> :
-		  <input type="text" placeholder="doe34" name="userNickname" id="userNickname" value="<?php echo $data["userNickname"]?>" required/>
+		  <input type="text" placeholder="doe34" name="userNickname" id="userNickname" <?php if(!$create){ echo"value=\"".$data["userNickname"]."\"";}?> <?php if($create){ echo"required";}else{ echo"readonly";}?>/>
 		  <p id="nicknameVerif"></p>
 		</p>
 		<p>
@@ -28,7 +28,14 @@
 <!-- A quoi ça correspond ?-->
 		<p id="passwordVerif"> </p>
 		<p>
-			<button type="submit" id ="validation"/>Save modification</button> 
+			<?php
+			if($create){
+				echo "<button type=\"submit\" id =\" validation\" />Create User</button>";
+			}
+			else {
+				echo "<button type=\"submit\"  id =\" validation\" />Save Modification</button>";
+			}
+			?>
 		</p>
 	</fieldset> 
 </form>

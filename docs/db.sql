@@ -71,7 +71,7 @@ CREATE TABLE Question (
 
 CREATE TABLE Answer (
    visitorId  int(11),
-   questionId  int(11),
+   questionId  varchar(20),
    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
    FOREIGN KEY (questionId) REFERENCES Question(questionId),
    PRIMARY KEY (visitorId, questionId)
