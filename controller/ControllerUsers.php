@@ -19,7 +19,14 @@ class ControllerUsers {
         $controller = 'users';
         $pagetitle = 'Sign in';
 		$create = true;
-		
+		$users = array(
+				"userMail" => $_POST['userMail'],
+				"userNickname" => $_POST['userNickname'],
+				"userSurname" => $_POST['userSurname'],
+				"userForname" => $_POST['userForname'],
+				"userNonce" => $nonce,
+				"isAdmin" => 0
+		);
         require File::build_path(array('view', 'view.php'));
     }
 	
@@ -95,7 +102,7 @@ class ControllerUsers {
 	public static function updated() {
 		
 		if (Session::is_connected()) {
-            $view = 'updateUsers';
+            $view = 'userProfile';
             $pagetitle = 'Updated';
             $controller = 'users';		
 			

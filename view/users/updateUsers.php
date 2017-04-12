@@ -1,4 +1,4 @@
-<form class ="formCss"id="userForm" method="post" action="index.php?action=updated&controller=users">
+<form class ="formCss" id="userForm" method="post"<?php if($create){echo "action=\"index.php?action=created&controller=users\">";} else {echo "action=\"index.php?action=updated&controller=users\">";}?>
 	<fieldset>
 		<p>
 		  <label for="userNickname">User Nickname</label> :
@@ -30,12 +30,13 @@
 		<p>
 			<?php
 			if($create){
-				echo "<button type=\"submit\" id =\" validation\" />Create User</button>";
+				echo "<button type=\"submit\" id =\"validation\" />Create User</button>";
 			}
 			else {
-				echo "<button type=\"submit\"  id =\" validation\" />Save Modification</button>";
+				echo "<button type=\"submit\"  id =\"validation\" />Save Modification</button>";
 			}
 			?>
 		</p>
-	</fieldset> 
+	</fieldset>
+	<script src="script/myScriptSignin.js"></script>
 </form>
