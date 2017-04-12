@@ -72,7 +72,7 @@ for($j=0; $j < count($questions_array);$j++){
                         $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
                     
                         echo '<div class = "answerArea">';
-                        echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png"></label>';
+                        echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png" class="answerIcon"></label>';
                         echo '<input type = "radio" name = "question'.$questionTypeId.'" value = "answer'.$answerTypeId.'"> '.$answerName.' <br>';
                         echo '</div>';
                     }

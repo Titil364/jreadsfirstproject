@@ -407,6 +407,7 @@ function makeInputImage(name, value, imageAdr, parent){
 
     var image = document.createElement("img");
 		image.setAttribute("src", imageAdr);
+                image.setAttribute("class", "answerIcon");
 		label.appendChild(image)
   
 	var wrapper = document.createElement("div");
