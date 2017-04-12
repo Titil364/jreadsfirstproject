@@ -1,8 +1,5 @@
-<header>
-<h1>Answer the form</h1>
-<!-- This is supposed to be empty is there are no forms on this account-->
-</header> 
 <main>
+<h1>Answer the form</h1>
 
 <?php
 //opening form
