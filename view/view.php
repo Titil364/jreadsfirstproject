@@ -57,7 +57,7 @@ EOT;
                 require $filepath;
                 ?>
         <footer>
-            <div> I am a footer NOTICE ME PLEASE </div>
+            <!--<div> I am a footer NOTICE ME PLEASE </div>-->
         </footer>
 		
 		
