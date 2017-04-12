@@ -81,6 +81,20 @@ CREATE TABLE Answer (
    PRIMARY KEY (visitorId, questionId)
 )DEFAULT CHARSET=utf8;
 
+CREATE TABLE FSQuestion (
+    FSQuestionId int(11) PRIMARY KEY AUTO_INCREMENT,
+    FSQuestionName varchar(50)
+)DEFAULT CHARSET=utf8;
+
+CREATE TABLE Donnerunnom (
+    formId int(11),
+    FSQuestionId int (11),
+    FOREIGN KEY (FSQuestionId) REFERENCES FSQuestion(FSQuestionId),
+    FOREIGN KEY (formId) REFERENCES Form(formId),
+    PRIMARY KEY (FSQuestionId, formId)
+)DEFAULT CHARSET=utf8;
+    
+
 CREATE TABLE AnswerType (
     answerTypeId int(11) PRIMARY KEY AUTO_INCREMENT,
     answerTypeName varchar(20),
@@ -156,4 +170,15 @@ INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 1);
 
 
+INSERT INTO `FSQuestion` (`FSQuestionId`, `FSQuestionName`) VALUES ('1', 'Easy to do / Hard to do');
+INSERT INTO `FSQuestion` (`FSQuestionId`, `FSQuestionName`) VALUES ('2', 'Most fun / Least fun');
+INSERT INTO `FSQuestion` (`FSQuestionId`, `FSQuestionName`) VALUES ('3', 'Learned the most / Learned the least');
+INSERT INTO `FSQuestion` (`FSQuestionId`, `FSQuestionName`) VALUES ('4', 'Most cool / Least cool');
+INSERT INTO `FSQuestion` (`FSQuestionId`, `FSQuestionName`) VALUES ('5', 'Most boring / Least boring');
+
+INSERT INTO `Donnerunnom` (`formId`, `FSQuestionId`) VALUES ('1', '1');
+INSERT INTO `Donnerunnom` (`formId`, `FSQuestionId`) VALUES ('1', '2');
+INSERT INTO `Donnerunnom` (`formId`, `FSQuestionId`) VALUES ('1', '3');
+INSERT INTO `Donnerunnom` (`formId`, `FSQuestionId`) VALUES ('1', '4');
+INSERT INTO `Donnerunnom` (`formId`, `FSQuestionId`) VALUES ('1', '5');
 -- mdp : 123456

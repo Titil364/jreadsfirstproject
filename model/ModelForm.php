@@ -76,6 +76,28 @@ class ModelForm extends Model{
         }
     }
 	
+	public static function getFSQuestionByFormId($formId){
+		try{
+			$sql  = "SELECT COUNT(*) FROM Donnerunnom WHERE Donnerunnom.formId=formId";
+			$prep = Model::$pdo->prepare($sql);
+			
+			$values = array(
+				"formId" => $formId,
+				);
+
+			$prep-> execute($values);
+			$prep-> setFetchMode(PDO::FETCH_CLASS,'ModelForm');
+			
+			return $prep;
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 
 }
 
