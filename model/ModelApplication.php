@@ -6,7 +6,7 @@ class ModelApplication extends Model{
 	private $applicationId;
 	private $applicationName;
 	private $applicationDescription;
-        private $formId;
+    private $formId;
 	
     protected static $object = "Application";
     protected static $primary = 'applicationId';
