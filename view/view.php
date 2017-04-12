@@ -6,7 +6,11 @@
 		<link rel="icon" href="media/favicon.png"/>
         <title><?php echo $pagetitle ?></title>
         <link rel="stylesheet" href="css/styles.css">
-		
+		<?php 
+			if(isset($stylesheet)){
+				echo "<link rel=\"stylesheet\" href=\"css/$stylesheet.css\">";
+			}
+		?>
     </head>
     <body>
 		<header>

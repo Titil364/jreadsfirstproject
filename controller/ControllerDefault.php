@@ -2,9 +2,10 @@
 class ControllerDefault {
 	
     public static function welcome() {
-        $view = 'createForm';
+        $view = 'welcome';
         $controller = 'default';
-        $pagetitle = 'Create Form';
+        $pagetitle = 'Welcome';
+		$stylesheet = "welcome";
         require File::build_path(array('view', 'view.php'));
     }
 	

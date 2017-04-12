@@ -6,7 +6,7 @@ class ControllerForm {
 
     
     public static function read(){
-	$formId = $_GET['id'];	
+		$formId = $_GET['id'];	
         $f = ModelForm::select($formId);
         if (!$f){
             // error page
@@ -30,7 +30,7 @@ class ControllerForm {
 
                 for($j=0; $j < count($questions_array);$j++){
 					$qType = ModelQuestionType::select($questions_array[$j]->getQestionTypeId());
-
+					
                     $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
                     
                     array_push($answers_array_list[$i], $answers_array);
@@ -45,8 +45,13 @@ class ControllerForm {
             require File::build_path(array('view','view.php'));
         }
     }
-       
-	
+    
+	public static function create(){
+        $view = 'createForm';
+        $controller = 'form';
+        $pagetitle = 'Create Form';
+        require File::build_path(array('view', 'view.php'));
+	}
 	public static function created(){
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
