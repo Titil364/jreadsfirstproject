@@ -65,17 +65,20 @@ for($j=0; $j < count($questions_array);$j++){
                     echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
                     break;*/
                 default :
+                    echo '<div class = "answerArea">';
                     foreach($answers_array as $a){
                         $answerName = htmlspecialchars($a->getAnswerTypeName());
                         $answerImage = htmlspecialchars($a->getAnswerTypeImage());
                         $questionTypeId = htmlspecialchars($questions_array[$j]->getQestionTypeId());
                         $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
                     
-                        echo '<div class = "answerArea">';
+                        echo '<div>';
+                        echo '<input type = "radio" name = "question'.$questionTypeId.'" value = "answer'.$answerTypeId.'"> ';
                         echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png" class="answerIcon"></label>';
-                        echo '<input type = "radio" name = "question'.$questionTypeId.'" value = "answer'.$answerTypeId.'"> '.$answerName.' <br>';
+                        echo $answerName;                        
                         echo '</div>';
                     }
+                    echo '</div>';
                     break;
             }
             
