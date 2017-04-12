@@ -69,11 +69,10 @@ EOT;
                 $filepath = File::build_path(array('view', $controller, $view . ".php"));
                 require $filepath;
                 ?>
-        <!--
 		<footer>
             <div> I am a footer NOTICE ME PLEASE </div>
         </footer>
-		-->
+
 
     </body>
 </html>

@@ -166,7 +166,7 @@ INSERT INTO Question VALUES('1Applic0Q2', 'J\'aime la merguez', '1Applic0', 1);
 INSERT INTO Question VALUES('1Applic0Q3', 'Manger des choux', '1Applic0', 2);
 INSERT INTO Question VALUES('1Applic1Q1', 'Boire de l\'eau', '1Applic1', 2);
 INSERT INTO Question VALUES('1Applic1Q2', 'J\'aime la vodka', '1Applic1', 1);
-INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 2);
+INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 3);
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 1);
 
 
