@@ -1,8 +1,5 @@
-<header>
-<h1>Answer the form</h1>
-<!-- This is supposed to be empty is there are no forms on this account-->
-</header> 
 <main>
+<h1>Answer the form</h1>
 
 <?php
 //opening form
@@ -25,9 +22,14 @@ for($i=0; $i < count($application_array);$i++){
         echo '<div id="Applic'.$i.'Info">'; //app info div
             $taskName = htmlspecialchars($application_array[$i]->getApplicationName());
             $taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
+            $img =  "media/". $application_array[$i]->getApplicationId() . ".png";
 
             echo "<h2>$taskName</h2>";
             echo $taskDesc;
+            if (file_exists($img)){
+                echo "<img src = $img >";              
+            }
+            
         
         echo '</div>';
     //displaying questions

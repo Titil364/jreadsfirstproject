@@ -17,6 +17,7 @@ class ControllerForm {
             $answers_array_list = [];
             $questionType_list = [];
             
+            
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
                 $questions_array = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
@@ -60,7 +61,8 @@ class ControllerForm {
 						"userNickname" => $userNickname,
 						"completedForm" => 0		
 					);
-			ModelForm::beginTransaction();
+			//ModelForm::beginTransaction();
+			//var_dump($form);
 			if(ModelForm::save($form)){
 				$form['formId'] = ModelForm::getLastInsert();
 				for($i = 0; $i < sizeof($a); $i++){
