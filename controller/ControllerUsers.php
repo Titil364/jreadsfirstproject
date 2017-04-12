@@ -19,14 +19,12 @@ class ControllerUsers {
         $controller = 'users';
         $pagetitle = 'Sign in';
 		$create = true;
-		$users = array(
-				"userMail" => $_POST['userMail'],
-				"userNickname" => $_POST['userNickname'],
-				"userSurname" => $_POST['userSurname'],
-				"userForname" => $_POST['userForname'],
-				"userNonce" => $nonce,
-				"isAdmin" => 0
-		);
+		$data = array(
+				"userNickname" => null,
+				"userSurname" =>  null,
+                "userForename" => null,
+                "userMail"  => null
+			);
         require File::build_path(array('view', 'view.php'));
     }
 	
@@ -52,17 +50,6 @@ class ControllerUsers {
 		require File::build_path(array('view', 'view.php'));
 	}
 	
-	/*public static function update() {
-        $view = 'profileUsers';
-        $controller = 'users';
-        $pagetitle = 'Profile';
-		
-		$information = ModelUsers::select('1');
-		foreach ($information as $value){
-			echo $value;
-		}
-        require File::build_path(array('view', 'view.php'));
-    }*/
 	public static function update() {
 		if (Session::is_connected()) {
             //$checkBoxAdmin = ControllerUsers::setCheckBox();
@@ -160,9 +147,6 @@ class ControllerUsers {
         $user = ModelUsers::connect($_POST['nickname'], $hashpass);
 		
         if ($user != NULL) {
-            $view = 'connected';
-            $controller = 'users';
-            $pagetitle = 'Connecté';
             if ($user->getIsAdmin() == 1) {
                 $_SESSION['admin'] = 1;
             } else {
@@ -173,6 +157,7 @@ class ControllerUsers {
             $forename = $user->getForename();
             $mail = $user->getMail();
             Session::connect($nickname, $forename, $surname, $mail);
+			ControllerDefault::welcome();
 
         } else {
 			$data = array();
@@ -180,9 +165,10 @@ class ControllerUsers {
 			$data['view'] = 'connect';
 			$data['controller'] = 'users';
 			$data['login'] = $_POST['nickname'];
-            ControllerDefault::error($data);	
+            ControllerDefault::error($data);
+			require File::build_path(array('view','view.php'));
         }
-		require File::build_path(array('view', 'view.php'));
+		
     }
 	
 	public static function disconnect() {

@@ -1,7 +1,7 @@
 
 <main>
 	<h1>Welcome on the Log In in page</h1>
-	<form method="POST" action="index.php">
+	<form class="formCss" method="POST" action="index.php">
 		<fieldset>
 			<legend>Log in :</legend>
 			<input type='hidden' name='action' value='connected'>
@@ -18,7 +18,9 @@
 				<input class="input-field" type="submit"  value="Envoyer"/>
 			</div>
 			<div class="register-link">
-				<a href="index.php?controller=users&action=register">Sign in</a>
+				<a href="index.php?controller=users&action=create">
+					<button type="button">Sign in</button>
+				</a>
 			</div>
 		</fieldset> 
 	</form>
