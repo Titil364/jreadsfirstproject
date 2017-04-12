@@ -123,7 +123,8 @@ class ControllerForm {
 		$view = 'sheet2View';
 		$pagetitle='postPostView';
 		
-		$nbFSQuestions = 5;
+		$countFSQuestion = ModelForm::getFSQuestionByFormId('1');
+		var_dump($countFSQuestion);
 		$applicationTable = ModelApplication::getApplicationByFormId('1');
 		
 		require File::build_path(array('view', 'view.php'));
