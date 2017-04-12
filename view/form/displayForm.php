@@ -37,12 +37,11 @@ for($i=0; $i < count($application_array);$i++){
     
     $question_array = $questions_array_list[$i];
     
-    
-for($j=0; $j < count($questions_array);$j++){
+for($j=0; $j < count($question_array);$j++){
                 //displaying questions
         echo '<div id="Applic'.$i.'Q'.$j.'" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
         echo "<h3> ";
-        echo htmlspecialchars($questions_array[$j]->getQuestionName());
+        echo htmlspecialchars($question_array[$j]->getQuestionName());
         echo " </h3>";
 
         
@@ -69,7 +68,7 @@ for($j=0; $j < count($questions_array);$j++){
                     foreach($answers_array as $a){
                         $answerName = htmlspecialchars($a->getAnswerTypeName());
                         $answerImage = htmlspecialchars($a->getAnswerTypeImage());
-                        $questionTypeId = htmlspecialchars($questions_array[$j]->getQestionTypeId());
+                        $questionTypeId = htmlspecialchars($question_array[$j]->getQestionTypeId());
                         $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
                     
                         echo '<div>';

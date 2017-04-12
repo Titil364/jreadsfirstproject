@@ -20,16 +20,16 @@ class ControllerForm {
             
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
-                $questions_array = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
+                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
 
-                array_push($questions_array_list, $questions_array);
+                array_push($questions_array_list, $questions_arrayFromModel);
                 
                 array_push($answers_array_list, []);
                 array_push($questionType_list, []);
                 
 
-                for($j=0; $j < count($questions_array);$j++){
-					$qType = ModelQuestionType::select($questions_array[$j]->getQestionTypeId());
+                for($j=0; $j < count($questions_arrayFromModel);$j++){
+					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQestionTypeId());
 					
                     $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
                     
