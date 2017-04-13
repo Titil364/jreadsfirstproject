@@ -12,19 +12,21 @@
 				   <th>Maybe</th>
 				   <th>No</th>
 			   </tr>
+			</thead>
+			<tbody>
 			   <?php
 					$i = 0;
 					foreach($applicationTable as $value){
 						echo "<tr>";
-						echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
-						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
-						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
-						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
+						echo "<td>".$value->getApplicationName()." : ".$alphabet[$i]."</td>";
+						echo "<td><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></td>";
+						echo "<td><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></td>";
+						echo "<td><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></td>";
 						echo "</tr>";
 						$i++;
 					}
 			   ?>
-			</thead>
+			</body>
 		</table>
 	</div>
 	<p></p>
@@ -33,36 +35,43 @@
 			Write the activities in the boxes to show your preferences. The first is an example
 		</p>
 		<table>
-		<caption>Fun Sorter</caption>
-		<thead>
-		   <tr>
-			   <th>Newest</th>
+			<caption>Fun Sorter</caption>
+			<thead>
+			   <tr>
+				   <th>Newest</th>
+				   <?php
+						$i = 0;
+						foreach($applicationTable as $value){
+							echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
+							$i++;
+						}
+				   ?>
+				   <th>Oldest</th>
+			   </tr>
+			</thead>
+			<tbody>
 			   <?php
-					$i = 0;
-					foreach($applicationTable as $value){
-						echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
-						$i++;
+					$j = 0;
+					foreach($FSQuestionTable as $val){
+						$name = $val->getFSQuestionName();
+						$afficher = explode("/", $name);
+						echo "<tr class=\"randomizeFS\"id=\"tr".$j."\">";
+						echo "<td>".$afficher[0]."</td>";
+						$i = 0;
+						foreach($applicationTable as $value){
+							echo "<td> <div class=\"FSmove".$j."\">".$alphabet[$i]."</div> </td>";
+							$i++;
+						}
+						$j++;
+						echo "<td>".$afficher[1]."</td>";
+						echo "</tr>";
 					}
 			   ?>
-			   <th>Oldest</th>
-		   </tr>
-		   <?php
-				foreach($FSQuestionTable as $val){
-					$name = $val->getFSQuestionName();
-					$afficher = explode("/", $name);
-					echo "<tr>";
-					echo "<th>".$afficher[0]."</th>";
-					$i = 0;
-					foreach($applicationTable as $value){
-						echo "<th> <div class=\"FSmove\">".$alphabet[$i]."</div> </th>";
-						$i++;
-					}
-					echo "<th>".$afficher[1]."</th>";
-					echo "</tr>";
-				}
-		   ?>
-		   
-		</thead>
+			</tbody>
+		</table>
+		<table>
+			x
+		</table>
 	</div>
 	<script src="script/myScriptSheet2.js"></script>
 </main>

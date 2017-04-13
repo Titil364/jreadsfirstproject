@@ -146,16 +146,16 @@ table td{
 }
 table td{	
 	border: 1px solid black;
+	height: 40px;
 }
 table th{
 	border: 2px solid black;
+	height: 40px;
 }
 
 /* Again Again Table && Fun Sorter*/
-#AAtable table th, #FunSorter table th{
-	height: 40px;
-}
-.FSmove{
+
+#FunSorter div{
 	width: 30px;
 	border: 2px solid #c5c2c2;
 	margin: auto;
