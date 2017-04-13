@@ -3,27 +3,25 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelQuestionType extends Model{
 
-	private $questionTypeId;
+
 	private $questionTypeName;
 	
     protected static $object = "QuestionType";
-    protected static $primary = "questionTypeId";
+    protected static $primary = "questionTypeName";
 	
-    public function getQuestionTypeId(){return $this->questionTypeId;}    
-	public function setQuestionTypeId($questionTypeId){$this->questionTypeId = $questionTypeId;}
+
 
     public function getQuestionTypeName(){return $this->questionTypeName;} 
 	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
 	
 
 
-    public function __construct($qid = NULL, $qn = NULL){
-        if (!is_null($qid) && !is_null($qn)) {
-        	$this->questionTypeId = $qid;
+    public function __construct($qn = NULL){
+        if (!is_null($qn)) {
         	$this->questionTypeName = $qn;
         }
     }
-
+/*
 	public static function getQuestionTypeByName($name){
 		try{
 			$sql  = "SELECT questionTypeId FROM QuestionType WHERE questionTypeName=:n";
@@ -48,7 +46,7 @@ class ModelQuestionType extends Model{
             return false;
         }
 	}
-	
+	*/
 
 
 }

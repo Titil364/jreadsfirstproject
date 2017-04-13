@@ -6,7 +6,7 @@ class ModelQuestion extends Model{
 	private $questionId;
 	private $questionName;
 	private $applicationId;
-	private $questionTypeId;
+	private $questionTypeName;
 	
     protected static $object = "Question";
     protected static $primary = "questionId";
@@ -20,18 +20,18 @@ class ModelQuestion extends Model{
     public function getApplicationId(){return $this->applicationId;}
 	public function setApplicationId($applicationId){$this->applicationId = $applicationId;}
 	
-    public function getQestionTypeId(){return $this->questionTypeId;}
-	public function setQestionTypeId($questionTypeId){$this->questionTypeId = $questionTypeId;}
+    public function getQuestionTypeName(){return $this->questionTypeName;}
+	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
 
 
 
 
-    public function __construct($questionId = NULL, $questionName = NULL, $applicationId=  NULL, $questionTypeId = NULL){
-        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeId)) {
+    public function __construct($questionId = NULL, $questionName = NULL, $applicationId=  NULL, $questionTypeName = NULL){
+        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeName)) {
         	$this->questionId = $questionId;
         	$this->questionName = $questionName;
         	$this->applicationId = $applicationId;
-                $this->questionTypeId = $questionTypeId;
+                $this->questionTypeName = $questionTypeName;
 
         }
     }

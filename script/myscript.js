@@ -275,41 +275,21 @@ function addQuestion(event, parent) {
 			
 	//Add evalutation choices
 	
-	//NOTE : It is supposed to be drop down list
 	
 		//Add a choice wrapper
 		var cWrapper  = document.createElement("select");
 			questionInfoWrapper.appendChild(cWrapper);
 
-		//Creating the textArea option
-    	
-		var textAreaOption = document.createElement('option');
-			textAreaOption.setAttribute('value', 'textArea');
-			textAreaOption.setAttribute('id', 'textArea'+application.id+"Q"+nbQuestions);
-			textAreaOption.innerHTML = "textArea"
-
-			cWrapper.appendChild(textAreaOption);
-			
-		//Creating the thumbs option
-    	
-		var thumbOption = document.createElement('option');
-			thumbOption.setAttribute('required', 'required');
-			thumbOption.setAttribute('value', 'thumbs');
-			thumbOption.setAttribute('id', 'thumb'+questionName);
-			thumbOption.innerHTML = "thumbs";
-			cWrapper.appendChild(thumbOption);
-			
-		//Creating the smiley option
-
-		var smileyOption = document.createElement('option');
-			smileyOption.setAttribute('value', 'smiley');
-			smileyOption.setAttribute('id', 'smiley'+questionName);
-			smileyOption.innerHTML = "smiley";
-			cWrapper.appendChild(smileyOption);
-			
-
 		
-
+		for(var name in placeholders){
+		var option = document.createElement('option');
+			option.setAttribute('required', 'required');
+			option.setAttribute('value', name);
+			option.setAttribute('id', name+questionName);
+			option.innerHTML = name;
+			cWrapper.appendChild(option); 
+		}
+		
 
 		//Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
@@ -317,18 +297,23 @@ function addQuestion(event, parent) {
 			qWrapper.appendChild(answerArea);
 
 			//add listener on radio changement
-			$(cWrapper).bind("change", function(event){
-				answers(event)
-			});
-
+			$(cWrapper).bind("change", answers);
+		$(cWrapper).trigger("change");
 }
 
 function answers(event){
 	var id = event.target.parentElement.parentElement.id;
+	var folder = "media/";
+	var ext = ".png";
 	var answerArea = $("#"+id+" .answerArea")[0];
 	answerArea.innerHTML = "";
 	//console.log(id);
-	switch(event.target.value){
+	var questionType = placeholders[event.target.value];
+	for(var ans in questionType){
+		if(questionType[ans]["answerTypeImage"] !== "")
+			makeLabelImage(questionType[ans]["answerTypeName"],id,folder+questionType[ans]["answerTypeImage"]+ext, answerArea);
+	}/*
+	switch(){
 		case 'smiley':
 			//emojis http://emojipedia.org/emoji-one/
 			//console.log("smiley");
@@ -349,7 +334,7 @@ function answers(event){
 			makeInputImage("thumbs4",id,"media/thumb4image.png", answerArea);
 			makeInputImage("thumbs5",id,"media/thumb5image.png", answerArea);
 			break;
-	}
+	}*/
 }
 function addField(event){
     
@@ -405,6 +390,28 @@ function makeInputImage(name, value, imageAdr, parent){
     var inputBox = document.createElement("input");
 		inputBox.setAttribute("type", "text");
 		inputBox.setAttribute("id", id);
+
+    var image = document.createElement("img");
+		image.setAttribute("src", imageAdr);
+                image.setAttribute("class", "answerIcon");
+		label.appendChild(image)
+  
+	var wrapper = document.createElement("div");
+		wrapper.appendChild(label);
+		wrapper.appendChild(inputBox);
+		
+	parent.appendChild(wrapper);
+}
+
+function makeLabelImage(name, value, imageAdr, parent){
+	var id = value+name;
+	
+	var label = document.createElement("label");
+		label.setAttribute("for", id);
+
+    var inputBox = document.createElement("span");
+		inputBox.setAttribute("id", id);
+		inputBox.innerHTML = name;
 
     var image = document.createElement("img");
 		image.setAttribute("src", imageAdr);
@@ -668,7 +675,7 @@ function answersPlaceholder(){
 function init(){
 	
 	$("#submit").click(extractData);
-	
+	answersPlaceholder();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
 	//Adding one application
 	addApplication();

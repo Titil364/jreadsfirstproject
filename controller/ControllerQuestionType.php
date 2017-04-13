@@ -3,19 +3,18 @@
 require_once File::build_path(array('model', 'ModelQuestionType.php'));
 
 class ControllerQuestionType {
-/*
+
 	public static function answersPlaceholder(){
 		
 		$questionType = ModelQuestionType::selectAll();
-		$placeholders = new Array();
+		$placeholders = array();
 		foreach($questionType as $q){
-			$placeholders[$questionType->getQuestionTypeName()] = array();
-			
-			
+			$name = $q->getQuestionTypeName();
+			$placeholders[$name] = ModelAnswerType::getAnswerTypeByQuestionTypeName($name);
 		}
-		var_dump($placeholders);
+		//var_dump($placeholders);
 	
 		echo json_encode($placeholders);
-	}*/
+	}
 }
 ?>
