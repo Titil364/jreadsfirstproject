@@ -76,7 +76,7 @@ class ModelForm extends Model{
         }
     }
 	
-	public static function getFSQuestionByFormId($formId){
+	public static function getNbFSQuestionByFormId($formId){
 		try{
 			$sql  = "SELECT COUNT(*) FROM Donnerunnom WHERE Donnerunnom.formId=:formId";
 			$prep = Model::$pdo->prepare($sql);
@@ -86,9 +86,9 @@ class ModelForm extends Model{
 				);
 
 			$prep-> execute($values);
-			$prep-> setFetchMode(PDO::FETCH_NUM,'ModelForm');
+			$prep-> setFetchMode(PDO::FETCH_NUM);
 			
-			return $prep[0];
+			return $prep->fetch();
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();

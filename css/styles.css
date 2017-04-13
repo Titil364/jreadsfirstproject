@@ -150,3 +150,18 @@ table td{
 table th{
 	border: 2px solid black;
 }
+
+/* Again Again Table && Fun Sorter*/
+#AAtable table th, #FunSorter table th{
+	height: 40px;
+}
+.FSmove{
+	width: 30px;
+	border: 2px solid #c5c2c2;
+	margin: auto;
+	border-radius: 5px;
+	background-color: #c5c2c2;
+}
+.radioButtonFS{
+	width: 30px;
+}

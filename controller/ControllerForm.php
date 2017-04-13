@@ -121,10 +121,13 @@ class ControllerForm {
 	public static function displaySheet2(){
 		$controller ='form';
 		$view = 'sheet2View';
-		$pagetitle='postPostView';
+		$pagetitle='Sheet 2';
 		
-		$countFSQuestion = ModelForm::getFSQuestionByFormId('1');
-		var_dump($countFSQuestion);
+		$alphabet = array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+		
+		$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId('1');
+		
+		
 		$applicationTable = ModelApplication::getApplicationByFormId('1');
 		
 		require File::build_path(array('view', 'view.php'));

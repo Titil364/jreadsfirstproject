@@ -13,13 +13,15 @@
 				   <th>No</th>
 			   </tr>
 			   <?php
+					$i = 0;
 					foreach($applicationTable as $value){
 						echo "<tr>";
-						echo "<th>".$value->getApplicationName()."</th>";
-						echo "<th></th>";
-						echo "<th></th>";
-						echo "<th></th>";
+						echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
+						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
+						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
+						echo "<th><input type=\"radio\" name=\"radio".$i."\" class=\"radioButtonFS\"></th>";
 						echo "</tr>";
+						$i++;
 					}
 			   ?>
 			</thead>
@@ -36,26 +38,33 @@
 		   <tr>
 			   <th>Newest</th>
 			   <?php
+					$i = 0;
 					foreach($applicationTable as $value){
-						echo "<th>".$value->getApplicationName()."</th>";
+						echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
+						$i++;
 					}
 			   ?>
 			   <th>Oldest</th>
 		   </tr>
 		   <?php
-				for($i = 0;$i <= $nbFSQuestions; $i++){
+				foreach($FSQuestionTable as $val){
+					$name = $val->getFSQuestionName();
+					$afficher = explode("/", $name);
 					echo "<tr>";
-					echo "<th> Easy to do </th>";
+					echo "<th>".$afficher[0]."</th>";
+					$i = 0;
 					foreach($applicationTable as $value){
-						echo "<th> </th>";
+						echo "<th> <div class=\"FSmove\">".$alphabet[$i]."</div> </th>";
+						$i++;
 					}
-					echo "<th> Hard to do </th>";
+					echo "<th>".$afficher[1]."</th>";
 					echo "</tr>";
 				}
 		   ?>
 		   
 		</thead>
 	</div>
+	<script src="script/myScriptSheet2.js"></script>
 </main>
     
 
