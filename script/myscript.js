@@ -1,5 +1,6 @@
 var b = document.body;
 var nbApplication = 0;
+var placeholders;
 
 function addApplication(event){
 	//Recovery of the container
@@ -399,7 +400,7 @@ function makeInputImage(name, value, imageAdr, parent){
 	var id = value+name;
 	
 	var label = document.createElement("label");
-		label.setAttribute("id", id);
+		label.setAttribute("for", id);
 
     var inputBox = document.createElement("input");
 		inputBox.setAttribute("type", "text");
@@ -426,8 +427,8 @@ function extractData(){
 	//Liste of application in the form
 	var formName = $("#formName").val();
 	if(formName === ""){
-		//alert("Please enter the name of the form. ");
-		//return null;
+		alert("Please enter the name of the form. ");
+		return null;
 	}
 	var applications = $(".application");
 	
@@ -474,15 +475,15 @@ function send(f, a, q) {
 	//console.log(data);
 	//normalement les données seront envoyés en post
 	$.post(
-		"index.php", // url cible
+		"index.php", // url
 		{
 			"action":JSON.stringify("created"),
 			"controller":JSON.stringify("form"),
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
 			"questions":JSON.stringify(q)
-		}, // données envoyées 
-		function(res){ // le callback
+		},  //data
+		function(res){ //callback
 		
 					//res is supposed to send the id of the form
 					//We need this form ID to save the image
@@ -522,7 +523,7 @@ function send(f, a, q) {
 					console.log("Error when saving the form. ");
 				}
 			},
-		"json" // type de données reçues
+		"json" // type
 	);
 }
 
@@ -647,6 +648,22 @@ function upload(id, name){
 		}   
 	});       
 }
+
+
+function answersPlaceholder(){
+	$.get(
+		"index.php", // url
+		{
+			"action":"answersPlaceholder",
+			"controller":"questionType",
+		},  //data
+		function(res){ //callback
+				placeholders = res;
+			},
+		"json" // type
+	);
+}
+
 
 function init(){
 	

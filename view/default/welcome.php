@@ -1,6 +1,4 @@
 <main> 
-
-
 	<div id="connect">
 		<h1>Welcome on the Log In in page</h1>
 		<button id="return">Return</button>
@@ -35,5 +33,14 @@
 		<button id="user">User</button>
 	</div>
 </main>
+
+<div class="answerArea">
+	<div><label id="Applic0Q1thumbs1"><img src="media/thumb1image.png" class="answerIcon"></label><input type="text" id="Applic0Q1thumbs1"></div>
+	<div><label id="Applic0Q1thumbs2"><img src="media/thumb2image.png" class="answerIcon"></label><input type="text" id="Applic0Q1thumbs2"></div>
+	<div><label id="Applic0Q1thumbs3"><img src="media/thumb3image.png" class="answerIcon"></label><input type="text" id="Applic0Q1thumbs3"></div>
+	<div><label id="Applic0Q1thumbs4"><img src="media/thumb4image.png" class="answerIcon"></label><input type="text" id="Applic0Q1thumbs4"></div>
+	<div><label id="Applic0Q1thumbs5"><img src="media/thumb5image.png" class="answerIcon"></label><input type="text" id="Applic0Q1thumbs5"></div>
+</div>
+
 
 <script src ="script/welcome.js"></script>

@@ -78,6 +78,8 @@ class ModelForm extends Model{
 	
 	public static function getNbFSQuestionByFormId($formId){
 		try{
+			//Pourquoi compter le npmbre de FS question via la BD ?
+			//Pourquoi ne psa récupérer toutes les FS questions et prendre la taille du tableau ?
 			$sql  = "SELECT COUNT(*) FROM Donnerunnom WHERE Donnerunnom.formId=:formId";
 			$prep = Model::$pdo->prepare($sql);
 			

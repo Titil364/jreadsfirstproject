@@ -3,9 +3,8 @@
 -- User a table in the main db
 DROP TABLE IF EXISTS Visitor;
 DROP TABLE IF EXISTS Answer;
-DROP TABLE IF EXISTS AnswerType;
+DROP TABLE IF EXISTS UserQuestion;
 DROP TABLE IF EXISTS Question;
-DROP TABLE IF EXISTS QuestionType;
 DROP TABLE IF EXISTS Application;
 DROP TABLE IF EXISTS DateComplete;
 DROP TABLE IF EXISTS Form;
@@ -59,16 +58,16 @@ CREATE TABLE Application (
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
-CREATE TABLE QuestionType (
-    questionTypeId int(11) PRIMARY KEY AUTO_INCREMENT,
-    questionTypeName varchar(20)
+CREATE TABLE UserQuestion (
+    questionId int(11) PRIMARY KEY AUTO_INCREMENT,
+    userNickname varchar(20)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
   questionName varchar(30),
+  questionAnswers varchar(500),
   applicationId varchar(20),
-  questionTypeId int(11),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
   FOREIGN KEY (questionTypeId) REFERENCES QuestionType(questionTypeId)
 )DEFAULT CHARSET=utf8;

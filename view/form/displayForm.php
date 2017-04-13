@@ -64,6 +64,7 @@ for($j=0; $j < count($question_array);$j++){
                     echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
                     break;*/
                 default :
+					$count = 0;
                     echo '<div class = "answerArea">';
                     foreach($answers_array as $a){
                         $answerName = htmlspecialchars($a->getAnswerTypeName());
@@ -71,10 +72,18 @@ for($j=0; $j < count($question_array);$j++){
                         $questionTypeId = htmlspecialchars($question_array[$j]->getQestionTypeId());
                         $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
                     
+						$id = "Applic".$i."question".$j.$answerName;
+						//Le nom d'un input radio permet de lier les radio button entre eux
+						//Ainsi si le boutton 1 est coché, et que tu coches le boutton 5
+						//Le bouton 5 se coche MAIS le boutton 1 se décoche. Principe des radios buttons. 
+						$name = "Applic".$i."question".$j;
                         echo '<div>';
-                        echo '<input type = "radio" name = "app'.$i.'question'.$j.'" value = "answer'.$answerTypeId.'"> ';
-                        echo '<label id="'.$answerName .'"><img src="media/'. $answerImage.'.png" class="answerIcon"></label>';
-                        echo $answerName;                        
+                        echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
+						//Si tu passes par la : les label permettent de link son block à un ID grâce à l'attribut FOR
+						//et non en mettant l'attribut ID. Il faut cela dit que le FOR soit associé à l'ID de ton input
+						//Le label est de plus la pour entouré du texte ou une image, mettre le nom $answerName en dehors
+						//Ne permet pas de cocher la case en cliquant sur le texte. 
+                        echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
                         echo '</div>';
                     }
                     echo '</div>';

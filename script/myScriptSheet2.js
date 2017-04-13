@@ -47,12 +47,13 @@ function randomizeFS(event) {
         var a = Math.random()*length;
         var b = Math.ceil(a);
         while (array.includes(b)){
-            var a = Math.random()*length;
-            var b = Math.ceil(a);
+            a = Math.random()*length;
+            b = Math.ceil(a);
         }
         array[i] = b;
     }
 }
+
 $(".randomizeFS");
 
 
