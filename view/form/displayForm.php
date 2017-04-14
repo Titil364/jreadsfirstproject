@@ -55,7 +55,7 @@ for($j=0; $j < count($question_array);$j++){
             
         }*/
         if(!is_null($answers_array[0])){
-            switch ($answers_array[0]->getAnswerTypeName()){
+            switch ($answers_array[0]['answerTypeName']){
                 case "textarea":
                     echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
                     break;
@@ -67,10 +67,10 @@ for($j=0; $j < count($question_array);$j++){
 					$count = 0;
                     echo '<div class = "answerArea">';
                     foreach($answers_array as $a){
-                        $answerName = htmlspecialchars($a->getAnswerTypeName());
-                        $answerImage = htmlspecialchars($a->getAnswerTypeImage());
+                        $answerName = htmlspecialchars($a['answerTypeName']);
+                        $answerImage = htmlspecialchars($a['answerTypeImage']);
                         $questionTypeId = htmlspecialchars($question_array[$j]->getQuestionTypeName());
-                        $answerTypeId = htmlspecialchars($a->getAnswerTypeId());
+                        $answerTypeId = htmlspecialchars($a['answerTypeId']);
                     
 						$id = "Applic".$i."question".$j.$answerName;
 						//Le nom d'un input radio permet de lier les radio button entre eux

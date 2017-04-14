@@ -18,7 +18,7 @@ class ModelAnswerType extends Model{
         public function setAnswerTypeImage($answerTypeImage){$this->answerTypeImage = $answerTypeImage;}
         
     public function getAnswerTypeName(){return $this->answerTypeName;} 
-        public function setAnswerTypeName($answerTypeName){$this->answerTypeName = $questionTypeName;}    
+        public function setAnswerTypeName($answerTypeName){$this->answerTypeName = $answerTypeName;}    
 
     public function getQuestionTypeName(){return $this->questionTypeName;}    
 	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
