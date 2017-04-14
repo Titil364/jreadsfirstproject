@@ -2,8 +2,10 @@
 var tabName;
 var length;
 var applicationNumber;
+var applicationName;
+var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
-/*function getApplicationNumber(b){
+function getApplication(b){
     $.get(
         "index.php",
         {
@@ -12,13 +14,87 @@ var applicationNumber;
             "formId":JSON.stringify(b),
         },
         function(res){
-            alert("ca passe");
-            applicationNumber = res;
-            console.log(applicationNumber);
+            applicationName = res;
+            applicationNumber = applicationName.length;
         },
         "json"
     );
-}*/
+}
+function randomizeAA(){
+    var array = new Array();
+    for (i = 0; i<applicationNumber;i++) {
+        var a = Math.random()*applicationNumber;
+        var b = Math.ceil(a);
+        while (array.includes(b-1)){
+            a = Math.random()*applicationNumber;
+            b = Math.ceil(a);
+        }
+        array[i] = b-1;
+    }
+    var table = document.getElementById("aa");
+    var tbody = document.createElement("tbody");
+    for (i=0; i<applicationNumber;i++){
+        var table_row = document.createElement('tr');
+            table_row.id = "trA"+array[i];
+        var td = document.createElement('td');
+        var text = document.createTextNode(applicationName[array[i]]);
+        td.appendChild(text);
+        table_row.appendChild(td);
+        for (j = 0; j<3; j++){
+            var td = document.createElement('td');
+            var button = document.createElement("input");
+            button.setAttribute("type","radio");
+            button.setAttribute("class","radioButtonFS");            
+            button.setAttribute("name","radio"+i);
+            td.appendChild(button);
+            table_row.appendChild(td);
+        }
+        table.appendChild(table_row);  
+    }
+}
+
+function randomizeFS() {
+        var array = new Array();
+         for(i = 0; i < length; i++){
+             var a = Math.random()*length;
+             var b = Math.ceil(a);
+             while (array.includes(b-1)){
+                 a = Math.random()*length;
+                 b = Math.ceil(a);
+             }
+            array[i] = b-1;
+         }
+         var table = document.getElementById("fs"); 
+         var tbody = document.createElement("tbody"); //Create tbody 
+         table.appendChild(tbody); //Add tbody to the table
+         for (i = 0; i<length; i++) {
+            var table_row = document.createElement('tr'); //create a table row
+            table_row.id = "tr"+array[i]; //Add id to the table row
+             
+            var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
+            var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
+            var textRight = document.createTextNode(name[1]); //And the second one, the right part
+            var td = document.createElement('td'); //Create TD 
+                td.appendChild(textLeft);       //Add left text to the Td
+                table_row.appendChild(td);      //Add td to the TR
+            for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
+                var td = document.createElement('td');
+                var div = document.createElement('div');
+                    div.setAttribute("class","FSmove"+array[i]);
+                var textDiv = document.createTextNode(alphabet[j]);
+                div.appendChild(textDiv);
+                td.appendChild(div);
+                table_row.appendChild(td);
+            }
+            var td2 = document.createElement('td');
+                td2.appendChild(textRight);
+                table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
+             
+             tbody.appendChild(table_row);      //Add tr to the table
+         }
+         makeFSDraggable();
+     }
+
 function getQuestionsName(a) {
     $.get(
         "index.php",
@@ -28,40 +104,12 @@ function getQuestionsName(a) {
             "formId":JSON.stringify(a),
         },
         function(res) {
-            alert("ca passe FS");
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
-            function randomizeFS() {
-                var array = new Array();
-                for(i = 0; i < length; i++){
-                    var a = Math.random()*length;
-                    var b = Math.ceil(a);
-                    while (array.includes(b)){
-                        a = Math.random()*length;
-                        b = Math.ceil(a);
-                    }
-                array[i] = b;
-                }
-                var wrap = ($("#FunSorter>table>tbody"));
-                var table = document.getElementById("fs");
-                var tbody = document.createElement("tbody");
-                table.appendChild(tbody);
-                for (i = 0; i<length; i++) {
-                    var table_row = document.createElement('tr');
-                    table_row.id = "tr"+array[i];
-                    tbody.appendChild(table_row);
-                }
-                for (i = 0; i<length; i++){
-                    var name = tabName[i].split("/");
-                    var textLeft = document.createTextNode(name[0]);
-                    var textRight = document.createTextNode(name[1]);
-                    var tr = document.createElement('td');
-                        tr.appendChild(textLeft);
-                    
-                    
-                }
-            }
+            randomizeAA();
+            randomizeFS();
+            
         },
         "json"
     );
@@ -81,9 +129,10 @@ jQuery.fn.swap = function(b){
 };
 
 
-function makeFSDraggable(event) {
-    for (i =0; i < length; i++){
-        var select = ".FSmove"+i;
+function makeFSDraggable() {
+    for (k =0; k < length; k++){
+        var select = ".FSmove"+k;
+        console.log(select);
         $( select ).draggable({containment : $(select).parent().parent(), revert: true, helper: "clone" });
     
         $( select ).droppable({
@@ -114,10 +163,8 @@ function makeFSDraggable(event) {
 
 
 function init(){
-    //makeFSDraggable();
-   // getApplicationNumber('1');
+    getApplication('1');
     getQuestionsName('1'); //1 is the form ID
-    //randomizeFS();
 }
 
 

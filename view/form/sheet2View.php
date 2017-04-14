@@ -3,7 +3,7 @@
 		<p>
 			Would you like to do these activities again ? Tick a box for each ?
 		</p>
-		<table>
+		<table id="aa">
 			<caption>Again Again table</caption>
 			<thead>
 			   <tr>
@@ -13,8 +13,7 @@
 				   <th>No</th>
 			   </tr>
 			</thead>
-			<tbody>
-			   <?php
+			   <?php /*
 					$i = 0;
 					foreach($applicationTable as $value){
 						echo "<tr>";
@@ -25,8 +24,7 @@
 						echo "</tr>";
 						$i++;
 					}
-			   ?>
-			</body>
+			    */?>
 		</table>
 	</div>
 	<p></p>
@@ -49,28 +47,6 @@
 				   <th>Oldest</th>
 			   </tr>
 			</thead>
-			<!--<tbody>
-			   <?php
-			   
-					/*foreach($FSQuestionTable as $val){
-						$name = $val->getFSQuestionName();
-						$afficher = explode("/", $name);
-						echo "<tr class=\"randomizeFS\"id=\"tr".$j."\">";
-						echo "<td>".$afficher[0]."</td>";
-						$i = 0;
-						foreach($applicationTable as $value){
-							echo "<td> <div class=\"FSmove".$j."\">".$alphabet[$i]."</div> </td>";
-							$i++;
-						}
-						$j++;
-						echo "<td>".$afficher[1]."</td>";
-						echo "</tr>";
-					}*/
-			   ?>
-			</tbody>-->
-		</table>
-		<table>
-			x
 		</table>
 	</div>
 	<script src="script/myScriptSheet2.js"></script>

@@ -14,15 +14,15 @@ class ControllerApplication {
 			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$_FILES['file']['name']);
     }
 	
-	public static function getApplicationCount($fromId){
-		
+	public static function getApplicationCount(){
+		$formId = json_decode($_GET['formId']);
 		$application = ModelApplication::getApplicationByFormId($formId);
-		$rep = 0;
+		$ApplicationName = array();
 		foreach($application as $value){
-			$rep++;
+			$name = $value->getApplicationName();
+			$ApplicationName[] = $name;
 		}
-		echo($rep);
-		echo json_encode($rep);
+		echo json_encode($ApplicationName);
 	}
 	
 	
