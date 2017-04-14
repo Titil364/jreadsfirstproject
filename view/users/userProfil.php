@@ -3,16 +3,16 @@
 				<legend>Your information</legend>
 		
 			<p>
-				Nickname : <?php echo $data["nickname"]?>
+				Nickname : <?php echo htmlspecialchars($data["userNickname"])?>
 			</p>
 			<p>
-				Forename : <?php echo $data["forename"]?>
+				Forename : <?php echo htmlspecialchars($data["userForename"])?>
 			</p>
 			<p>
-				Surname : <?php echo $data["surname"]?>
+				Surname : <?php echo htmlspecialchars($data["userSurname"])?>
 			</p>
 			<p>
-				Mail : <?php echo $data["mail"]?>
+				Mail : <?php echo htmlspecialchars($data["userMail"])?>
 			</p>
 		
 		</fieldset>

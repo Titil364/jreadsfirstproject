@@ -99,8 +99,8 @@ function getQuestionsName(a) {
     $.get(
         "index.php",
         {
-            "action":JSON.stringify("FSQuestionName"),
-            "controller":JSON.stringify("FSQuestion"),
+            "action":"FSQuestionName",
+            "controller":"FSQuestion",
             "formId":JSON.stringify(a),
         },
         function(res) {
