@@ -44,4 +44,31 @@ class ModelFSQuestion extends Model{
             return false;
         }
 	}
+	/*
+	public static function getAllFSQuestionName($FSQuestionId){
+		try{
+			$sql  = "SELECT * FROM FSQuestion, Donnerunnom WHERE Donnerunnom.formId= '1' AND FSQuestion.FSQuestionId = Donnerunnom.FSQuestionId ";
+			$prep = Model::$pdo->prepare($sql);
+			
+			$values = array(
+				"FSQuestionId" => $FSQuestionId,
+				);
+
+			$prep-> execute($values);
+			$prep-> setFetchMode(PDO::FETCH_CLASS, 'ModelFSQuestion');
+            
+			$rep = [];
+			foreach($prep as $val){
+				$rep[] = $val->getFSQuestionName();
+			}
+			return $rep;
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}*/
 }

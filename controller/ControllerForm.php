@@ -127,7 +127,6 @@ class ControllerForm {
 		
 		$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId('1');
 		
-		
 		$applicationTable = ModelApplication::getApplicationByFormId('1');
 		
 		require File::build_path(array('view', 'view.php'));

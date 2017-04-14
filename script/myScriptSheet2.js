@@ -1,19 +1,35 @@
 
+var tabName;
+var length;
+function getQuestionsName() {
+    $.get(
+        "index.php",
+        {
+            "action":"FSQuestionName",
+            "controller":"FSQuestion",
+        },
+        function(res) {
+            tabName = res;
+            length = tabName.length;
+        },
+        "json"
+    );
+}
+
 
     
-    jQuery.fn.swap = function(b){ 
-        // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
-        b = jQuery(b)[0]; 
-        var a = this[0]; 
-        var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
-        b.parentNode.insertBefore(a, b); 
-        t.parentNode.insertBefore(b, t); 
-        t.parentNode.removeChild(t); 
-        return this; 
-    };
+jQuery.fn.swap = function(b){ 
+    // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
+    b = jQuery(b)[0]; 
+    var a = this[0]; 
+    var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
+    b.parentNode.insertBefore(a, b); 
+    t.parentNode.insertBefore(b, t); 
+    t.parentNode.removeChild(t); 
+    return this; 
+};
 
-//var length  = ($("#FunSorter>table>tbody>tr").length);
-var length = 5;
+
 function makeFSDraggable(event) {
     for (i =0; i < length; i++){
         var select = ".FSmove"+i;
@@ -56,7 +72,6 @@ function randomizeFS() {
     var table = document.getElementById("fs");
     var tbody = document.createElement("tbody");
     table.appendChild(tbody);
-    console.log("length = "+length);
     for (i = 0; i<length; i++) {
         var table_row = document.createElement('tr');
         table_row.id = "tr"+array[i];
@@ -71,7 +86,11 @@ $(".randomizeFS");
 
 function init(){
     //makeFSDraggable();
+    getQuestionsName();
     randomizeFS();
+    alert(tabName);
+    alert(length);
 }
+
 
 $(init);
