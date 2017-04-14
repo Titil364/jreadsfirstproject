@@ -12,8 +12,8 @@
         return this; 
     };
 
-var length  = ($("#FunSorter>table>tbody>tr").length);
-
+//var length  = ($("#FunSorter>table>tbody>tr").length);
+var length = 5;
 function makeFSDraggable(event) {
     for (i =0; i < length; i++){
         var select = ".FSmove"+i;
@@ -41,7 +41,7 @@ function makeFSDraggable(event) {
         });
     }
 }
-function randomizeFS(event) {
+function randomizeFS() {
     var array = new Array();
     for(i = 0; i < length; i++){
         var a = Math.random()*length;
@@ -52,6 +52,16 @@ function randomizeFS(event) {
         }
         array[i] = b;
     }
+    var wrap = ($("#FunSorter>table>tbody"));
+    var table = document.getElementById("fs");
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+    console.log("length = "+length);
+    for (i = 0; i<length; i++) {
+        var table_row = document.createElement('tr');
+        table_row.id = "tr"+array[i];
+        tbody.appendChild(table_row);
+    }
 }
 
 $(".randomizeFS");
@@ -60,7 +70,8 @@ $(".randomizeFS");
 
 
 function init(){
-    makeFSDraggable();
+    //makeFSDraggable();
+    randomizeFS();
 }
 
 $(init);

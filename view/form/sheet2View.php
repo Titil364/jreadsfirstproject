@@ -34,7 +34,7 @@
 		<p>
 			Write the activities in the boxes to show your preferences. The first is an example
 		</p>
-		<table>
+		<table id="fs">
 			<caption>Fun Sorter</caption>
 			<thead>
 			   <tr>
@@ -49,10 +49,10 @@
 				   <th>Oldest</th>
 			   </tr>
 			</thead>
-			<tbody>
+			<!--<tbody>
 			   <?php
-					$j = 0;
-					foreach($FSQuestionTable as $val){
+			   
+					/*foreach($FSQuestionTable as $val){
 						$name = $val->getFSQuestionName();
 						$afficher = explode("/", $name);
 						echo "<tr class=\"randomizeFS\"id=\"tr".$j."\">";
@@ -65,9 +65,9 @@
 						$j++;
 						echo "<td>".$afficher[1]."</td>";
 						echo "</tr>";
-					}
+					}*/
 			   ?>
-			</tbody>
+			</tbody>-->
 		</table>
 		<table>
 			x
