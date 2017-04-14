@@ -1,16 +1,67 @@
 
 var tabName;
 var length;
-function getQuestionsName() {
+var applicationNumber;
+
+/*function getApplicationNumber(b){
     $.get(
         "index.php",
         {
-            "action":"FSQuestionName",
-            "controller":"FSQuestion",
+            "action":JSON.stringify("getApplicationCount"),
+            "controller":JSON.stringify("Application"),
+            "formId":JSON.stringify(b),
+        },
+        function(res){
+            alert("ca passe");
+            applicationNumber = res;
+            console.log(applicationNumber);
+        },
+        "json"
+    );
+}*/
+function getQuestionsName(a) {
+    $.get(
+        "index.php",
+        {
+            "action":JSON.stringify("FSQuestionName"),
+            "controller":JSON.stringify("FSQuestion"),
+            "formId":JSON.stringify(a),
         },
         function(res) {
+            alert("ca passe FS");
             tabName = res;
             length = tabName.length;
+            var name = tabName[0].split("/");
+            function randomizeFS() {
+                var array = new Array();
+                for(i = 0; i < length; i++){
+                    var a = Math.random()*length;
+                    var b = Math.ceil(a);
+                    while (array.includes(b)){
+                        a = Math.random()*length;
+                        b = Math.ceil(a);
+                    }
+                array[i] = b;
+                }
+                var wrap = ($("#FunSorter>table>tbody"));
+                var table = document.getElementById("fs");
+                var tbody = document.createElement("tbody");
+                table.appendChild(tbody);
+                for (i = 0; i<length; i++) {
+                    var table_row = document.createElement('tr');
+                    table_row.id = "tr"+array[i];
+                    tbody.appendChild(table_row);
+                }
+                for (i = 0; i<length; i++){
+                    var name = tabName[i].split("/");
+                    var textLeft = document.createTextNode(name[0]);
+                    var textRight = document.createTextNode(name[1]);
+                    var tr = document.createElement('td');
+                        tr.appendChild(textLeft);
+                    
+                    
+                }
+            }
         },
         "json"
     );
@@ -57,39 +108,16 @@ function makeFSDraggable(event) {
         });
     }
 }
-function randomizeFS() {
-    var array = new Array();
-    for(i = 0; i < length; i++){
-        var a = Math.random()*length;
-        var b = Math.ceil(a);
-        while (array.includes(b)){
-            a = Math.random()*length;
-            b = Math.ceil(a);
-        }
-        array[i] = b;
-    }
-    var wrap = ($("#FunSorter>table>tbody"));
-    var table = document.getElementById("fs");
-    var tbody = document.createElement("tbody");
-    table.appendChild(tbody);
-    for (i = 0; i<length; i++) {
-        var table_row = document.createElement('tr');
-        table_row.id = "tr"+array[i];
-        tbody.appendChild(table_row);
-    }
-}
 
-$(".randomizeFS");
 
 
 
 
 function init(){
     //makeFSDraggable();
-    getQuestionsName();
-    randomizeFS();
-    alert(tabName);
-    alert(length);
+   // getApplicationNumber('1');
+    getQuestionsName('1'); //1 is the form ID
+    //randomizeFS();
 }
 
 
