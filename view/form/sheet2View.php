@@ -49,5 +49,8 @@
 			</thead>
 		</table>
 	</div>
+	<div>
+		<input type ="button" id="print" value="Printable">
+	</div>
 	<script src="script/myScriptSheet2.js"></script>
 </main>

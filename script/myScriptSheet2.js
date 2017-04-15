@@ -3,6 +3,7 @@ var length;
 var applicationNumber;
 var applicationName;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+var print = false;
 
 function getApplication(b){
     $.get(
@@ -156,6 +157,33 @@ function makeFSDraggable() {
     }
 }
 
+function makePrintable(event) {
+    if (!print) {
+        var b = document.getElementsByClassName("radioButtonFS");
+        for (i=0;i<b.length;i++) {
+            b[i].style.visibility = "hidden";
+        }
+        for (k =0; k < length; k++){
+            var select = document.getElementsByClassName("FSmove"+k);
+            for (i=0;i<select.length;i++) {
+                select[i].style.visibility = "hidden";
+            }
+        }
+        print = true;
+    } else {
+        var b = document.getElementsByClassName("radioButtonFS");
+        for (i=0;i<b.length;i++) {
+            b[i].style.visibility = "visible";
+        }
+        for (k =0; k < length; k++){
+            var select = document.getElementsByClassName("FSmove"+k);
+            for (i=0;i<select.length;i++) {
+                select[i].style.visibility = "visible";
+            }
+        }
+        print = false;
+    }    
+}
 
 
 
@@ -163,6 +191,7 @@ function makeFSDraggable() {
 function init(){
     getApplication('1');
     getQuestionsName('1'); //1 is the form ID
+    document.getElementById("print").addEventListener("click",makePrintable);
 }
 
 
