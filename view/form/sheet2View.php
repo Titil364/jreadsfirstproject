@@ -51,6 +51,3 @@
 	</div>
 	<script src="script/myScriptSheet2.js"></script>
 </main>
-    
-
- 

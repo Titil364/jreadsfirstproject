@@ -1,4 +1,3 @@
-
 var tabName;
 var length;
 var applicationNumber;
@@ -132,7 +131,6 @@ jQuery.fn.swap = function(b){
 function makeFSDraggable() {
     for (k =0; k < length; k++){
         var select = ".FSmove"+k;
-        console.log(select);
         $( select ).draggable({containment : $(select).parent().parent(), revert: true, helper: "clone" });
     
         $( select ).droppable({
