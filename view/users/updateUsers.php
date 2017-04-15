@@ -1,4 +1,4 @@
-<form class ="formCss" id="userForm" method="post"<?php if($create){echo "action=\"index.php?action=created&controller=users\">";} else {echo "action=\"index.php?action=displaySelf&controller=users\">";}?>
+<form class ="formCss" id="userForm" method="post"<?php if($create){echo "action=\"index.php?action=created&controller=users\">";} else {echo "action=\"index.php?action=updated&controller=users\">";}?>
 	<fieldset>
 		<p>
 		  <label for="userNickname">User Nickname</label> :
@@ -25,7 +25,6 @@
 		  <label for="userPasswordVerif">User Password Confirmation</label> :
 		  <input type="password" minlength="6" placeholder="******" name="userPasswordVerif" id="userPasswordVerif" required/>
 		</p>
-<!-- A quoi ça correspond ?-->
 		<p id="passwordVerif"> </p>
 		<p>
 			<?php

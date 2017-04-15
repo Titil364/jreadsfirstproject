@@ -7,6 +7,7 @@ class ControllerFSQuestion {
     public static function FSQuestionName(){
         $formId = json_decode($_GET['formId']);
         $FSQuestion = ModelFSQuestion::getFSQuestionByFormId($formId);
+		//pourquoi ne pas créer directement une méthode renvoyant uniqement le nom des FSQuestion ?
         $FSQuestionName = array();
         foreach($FSQuestion as $fs){
             $name = $fs->getFSQuestionName();

@@ -484,8 +484,8 @@ function send(f, a, q) {
 	$.post(
 		"index.php", // url
 		{
-			"action":JSON.stringify("created"),
-			"controller":JSON.stringify("form"),
+			"action":"created",
+			"controller":"form",
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
 			"questions":JSON.stringify(q)

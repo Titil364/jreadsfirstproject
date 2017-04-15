@@ -123,10 +123,10 @@ class ControllerUsers {
         $pagetitle = 'Profil';
 		if(Session::is_connected()){
 			$data = array(
-				"nickname" => htmlspecialchars($_SESSION['nickname']),
-				"surname" =>  htmlspecialchars($_SESSION['surname']),
-				"forename" => htmlspecialchars($_SESSION['forename']),
-				"mail"  => htmlspecialchars($_SESSION['mail'])
+				"userNickname" => $_SESSION['nickname'],
+				"userSurname" =>  $_SESSION['surname'],
+				"userForename" => $_SESSION['forename'],
+				"userMail"  => $_SESSION['mail']
 			);
 		}
 		else{
