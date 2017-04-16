@@ -12,7 +12,8 @@ DROP TABLE IF EXISTS Form;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS FSQuestion;
 DROP TABLE IF EXISTS Donnerunnom;
-
+DROP TABLE IF EXISTS PersonnalInformation;
+DROP TABLE IF EXISTS Information;
 
 
 
@@ -101,6 +102,19 @@ CREATE TABLE AnswerType (
     answerTypeImage varchar(20),
     questionTypeName varchar(20),
     FOREIGN KEY (questionTypeName) REFERENCES QuestionType(questionTypeName)
+)DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE PersonnalInformation (
+    personnalInformationId int(11) PRIMARY KEY AUTO_INCREMENT,
+    personnalInformationName varchar(20)
+)DEFAULT CHARSET=utf8;
+
+CREATE TABLE Information (
+    informationId int(11) PRIMARY KEY AUTO_INCREMENT,
+    informationName varchar(20),
+    personnalInformationId int(11),
+    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
 )DEFAULT CHARSET=utf8;
 
 --
