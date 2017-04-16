@@ -17,8 +17,7 @@ function checkForm(event){
 						return 0;
 					}
 					else{
-						$("#userForm").submit();
-						window.change("index.php?action=displaySelf&controller=users");						
+						$("#userForm").submit();					
 					}
 				}
 				else {
