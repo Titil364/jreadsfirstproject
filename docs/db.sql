@@ -117,6 +117,14 @@ CREATE TABLE Information (
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
 )DEFAULT CHARSET=utf8;
 
+CREATE TABLE AssocFormPI (
+    formId int(11),
+    personnalInformationId int(11),
+    PRIMARY KEY (formId, personnalInformationId),
+    FOREIGN KEY (formId) REFERENCES Form(formId),
+    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
+)DEFAULT CHARSET=utf8;
+
 --
 -- Triggers
 	
