@@ -1,7 +1,7 @@
 <?php
 require_once File::build_path(array('model', 'Model.php'));
 
-class ModelPersonnalInformation extends Model{
+class ModelInformation extends Model{
 
 	private $informationId;
 	private $informationName;
