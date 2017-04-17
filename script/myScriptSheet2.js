@@ -2,8 +2,8 @@ var tabName;
 var length;
 var applicationNumber;
 var applicationName;
+var printable = false;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-var print = false;
 
 function getApplication(b){
     $.get(
@@ -157,32 +157,34 @@ function makeFSDraggable() {
     }
 }
 
-function makePrintable(event) {
-    if (!print) {
-        var b = document.getElementsByClassName("radioButtonFS");
-        for (i=0;i<b.length;i++) {
-            b[i].style.visibility = "hidden";
+function makePrintable(event){
+    if (!printable) {
+        var selected = document.getElementsByClassName('radioButtonFS');
+        for (i = 0; i<selected.length;i++) {
+            selected[i].style.visibility = "hidden";
         }
-        for (k =0; k < length; k++){
-            var select = document.getElementsByClassName("FSmove"+k);
-            for (i=0;i<select.length;i++) {
-                select[i].style.visibility = "hidden";
+        for (i = 0; i<length;i++){
+            var className = "FSmove"+i;
+            selected = document.getElementsByClassName(className);
+            for (j = 0; j<selected.length;j++){
+                selected[j].style.visibility = "hidden";
             }
         }
-        print = true;
-    } else {
-        var b = document.getElementsByClassName("radioButtonFS");
-        for (i=0;i<b.length;i++) {
-            b[i].style.visibility = "visible";
+        printable = true;
+    }else{
+        var selected = document.getElementsByClassName('radioButtonFS');
+        for (i = 0; i<selected.length;i++) {
+            selected[i].style.visibility = "visible";
         }
-        for (k =0; k < length; k++){
-            var select = document.getElementsByClassName("FSmove"+k);
-            for (i=0;i<select.length;i++) {
-                select[i].style.visibility = "visible";
+        for (i = 0; i<length;i++){
+            var className = "FSmove"+i;
+            selected = document.getElementsByClassName(className);
+            for (j = 0; j<selected.length;j++){
+                selected[j].style.visibility = "visible";
             }
         }
-        print = false;
-    }    
+        printable = false;
+    }
 }
 
 
