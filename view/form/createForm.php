@@ -64,6 +64,9 @@
 				<input type="checkbox" id="FSboring" name="information" value="FSboring" class="defaultInformation">
 				<label for="FSboring">Most boring / Least boring</label><br><br>
 			</div>
+			<div id="customQuestion">
+					<button type="button" id="addFSQuestion">Add a new question</button>
+				</div>
 		
 	</div>
 	<button type="button" id="submit">Create the form</button>

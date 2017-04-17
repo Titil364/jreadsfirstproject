@@ -671,6 +671,44 @@ function answersPlaceholder(){
 	);
 }
 
+function addFSQuestion(event) {
+    //wrapper creation
+    var wrapper = document.createElement("div");
+    wrapper.setAttribute("class","question");
+    
+    //Create label left
+    var inputLeft = document.createElement("input");
+	inputLeft.setAttribute("class","questionInputLeft");
+    inputLeft.type = "text";
+    inputLeft.placeholder ="First part ";
+    wrapper.appendChild(inputLeft);
+	
+	//Create label left
+    var inputRight = document.createElement("input");
+	inputRight.setAttribute("class","questionInputRight");
+    inputRight.type = "text";
+    inputRight.placeholder ="Second part";
+    wrapper.appendChild(inputRight);
+        
+    var removeApplicationButton = document.createElement("button");
+		removeApplicationButton.setAttribute("class", "removeButton");
+		removeApplicationButton.type="button";
+		removeApplicationButton.value= "Remove the Question";
+		removeApplicationButton.innerHTML ="Remove the Question";
+		wrapper.appendChild(removeApplicationButton);
+		
+		//Add the event for removing the application
+			removeApplicationButton.addEventListener("click", function(event){
+				removeMe(event, wrapper);
+			});
+            
+   //Add fieldset to thecodex
+    var customInfo = document.getElementById("customQuestion");
+		customInfo.appendChild(wrapper);
+}
+
+
+
 
 function init(){
 	
@@ -683,6 +721,7 @@ function init(){
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
+	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
 }
 
 
