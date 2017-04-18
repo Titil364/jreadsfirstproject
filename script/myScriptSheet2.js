@@ -186,14 +186,54 @@ function makePrintable(event){
         printable = false;
     }
 }
+var 
+	form = $('#form1'),
+    heightPDF = form.height(),
+    widthPDF = form.width(),
+	a4  =[widthPDF, heightPDF];  // for a4 size paper width and height
 
 
 
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+
+//create pdf
+
+function createPDF(event){
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+	getCanvas().then(function(canvas){
+		var 
+		img = canvas.toDataURL("image/png"),
+		doc = new jsPDF(
+          'p',"px",[widthPDF / 1.5,heightPDF / 1.4]
+        );     
+        doc.addImage(img, 'JPEG', 0, 0);
+        doc.save('Form.pdf');
+        form.width(widthPDF);
+	});
+}
+
+// create canvas object
+function getCanvas(){
+	//form.width((a4[0]) -80).css('max-width','none');
+	return html2canvas(form,{
+    	imageTimeout:2000,
+    	removeContainer:true
+    });	
+}
 
 function init(){
     getApplication('1');
     getQuestionsName('1'); //1 is the form ID
     document.getElementById("print").addEventListener("click",makePrintable);
+    document.getElementById("create_pdf").addEventListener("click",createPDF); 
 }
 
 
