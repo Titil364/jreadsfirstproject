@@ -135,9 +135,8 @@ CREATE TABLE AssocFormPI (
     PRIMARY KEY (formId, personnalInformationId),
     FOREIGN KEY (formId) REFERENCES Form(formId),
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
-)DEFAULT CHARSET=utf8;
+)DEFAULT CHARSET=utf8; 
 
---
 -- Triggers
 	
 DROP TRIGGER IF EXISTS complete_form_insert;

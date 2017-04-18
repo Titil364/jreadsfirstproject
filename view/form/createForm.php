@@ -70,11 +70,13 @@
 			</div>
 			<div id="customQuestion">
 					<button type="button" id="addFSQuestion">Add a new question</button>
-				</div>
+			</div>
+			<button type="button" id="saveQuestion">Save questions</button>
 		
 	</div>
 	<button type="button" id="submit">Create the form</button>
 	<button type="button" id="preview">Preview the full Form</button>
+	
 
 </main>
 

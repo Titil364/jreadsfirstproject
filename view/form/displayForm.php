@@ -1,6 +1,8 @@
 <main>
+	<div id="pdf">
 <h1>Answer the form</h1>
 
+		   <input type ="button" id="create_pdf" value ="Create PDF">
 <?php
 
 	//opening form
@@ -151,13 +153,13 @@
 			   </thead>
 		   </table>
 	   </div>
-	   <div>
-		   <input type ="button" id="print" value="Printable">
-	   </div>
-	   <div>
-		   <input type ="button" id="pdf" value="PDF">
-	   </div>
 	   <script src="script/myScriptSheet2.js"></script>
+	   <script src="script/html2canvas.min.js"></script>
+		<script src="script/jspdf.min.js"></script>
+	   </div>
+	</div>
+	<div>
+		   <input type ="button" id="print" value="Printable">
 	   </div>
 	</div>
 </main>

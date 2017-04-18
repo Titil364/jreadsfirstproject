@@ -692,21 +692,42 @@ function addFSQuestion(event) {
     //wrapper creation
     var wrapper = document.createElement("div");
     wrapper.setAttribute("class","question");
+	
+	var table = document.createElement("table");
+	var tr = document.createElement('tr');
+	
     
     //Create label left
     var inputLeft = document.createElement("input");
 	inputLeft.setAttribute("class","questionInputLeft");
     inputLeft.type = "text";
     inputLeft.placeholder ="First part ";
-    wrapper.appendChild(inputLeft);
+	var tdleft = document.createElement('td');
+	tdleft.appendChild(inputLeft);
+	
+	//create fake input
+	var inputFake = document.createElement("input");
+    inputFake.type = "text";
+    inputFake.placeholder ="Fake part";
+	inputFake.style.visibility='hidden';
+	var tdmiddle = document.createElement('td');
+	tdmiddle.appendChild(inputFake);
 	
 	//Create label left
     var inputRight = document.createElement("input");
 	inputRight.setAttribute("class","questionInputRight");
     inputRight.type = "text";
     inputRight.placeholder ="Second part";
-    wrapper.appendChild(inputRight);
-        
+	var tdright = document.createElement('td');
+    tdright.appendChild(inputRight);
+    
+	tr.appendChild(tdleft);
+	tr.appendChild(tdmiddle);
+	tr.appendChild(tdright);
+	table.appendChild(tr);
+	
+	wrapper.appendChild(table);
+	    
     var removeApplicationButton = document.createElement("button");
 		removeApplicationButton.setAttribute("class", "removeButton");
 		removeApplicationButton.type="button";
@@ -724,6 +745,19 @@ function addFSQuestion(event) {
 		customInfo.appendChild(wrapper);
 }
 
+function saveQuestion(event) {
+    var questions = $(".question");
+	for(i = 0; i<questions.length;i++){
+		var left = questions[i].getElementsByClassName("questionInputLeft")[0];
+		var right = questions[i].getElementsByClassName("questionInputRight")[0];
+		if (left.value==="" || right.value==="") {
+            alert("A question is empty, fill it or delete it.");
+        } else {
+			console.log("Question " +i +" left : "+left.value);
+			console.log("Question " +i +" right : "+right.value);
+		}
+	}
+}
 
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -743,6 +777,7 @@ function init(){
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
+	document.getElementById("saveQuestion").addEventListener("click",saveQuestion);
 }
 
 
