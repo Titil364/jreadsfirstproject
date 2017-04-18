@@ -469,11 +469,14 @@ function extractData(){
 		//console.log("Image : "+applicationImg);
 		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
 		q.push([]);
-		
+		console.log("desc "+applicationDesc);
+		console.log("img "+applicationImg);
 		if(applicationName === "" | (applicationDesc === "" & applicationImg === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
+			console.log("nique");
 			return null;
 		}
+		console.log("bug1 ");
 		var questions = $("#"+id+" > .question");
 		for(var y = 0; y < questions.length; y++){
 			//Dig out the type of the question (the radio button checked)

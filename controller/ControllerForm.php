@@ -75,6 +75,7 @@ class ControllerForm {
 			$a = json_decode($_POST["applications"], true);
 			$q = json_decode($_POST["questions"], true);
 			$info = json_decode($_POST["informations"], true);
+			$fs = json_decode($_POST["FSQuestions"],true);
 			//var_dump($q);	
 			$abort = false;
 			
