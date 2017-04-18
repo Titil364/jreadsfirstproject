@@ -6,9 +6,10 @@ class ControllerForm {
 
     
     public static function read(){
-		$formId = $_GET['id'];	
+		$formId = $_GET['id'];
         $f = ModelForm::select($formId);
         if (!$f){
+			echo "ca passe pas";
             // error page
         }else{
             $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
@@ -42,7 +43,7 @@ class ControllerForm {
 
                 for($j=0; $j < count($questions_arrayFromModel);$j++){
 					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeName());
-					
+										
                     $answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeName($qType->getQuestionTypeName());
                     
                     array_push($answers_array_list[$i], $answers_array);
@@ -50,6 +51,11 @@ class ControllerForm {
                 }
                 
             }
+			$alphabet = array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+		
+			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
+	
+			$applicationTable = ModelApplication::getApplicationByFormId($formId);
             
             $pagetitle = 'Form';
             $view='displayForm';
@@ -135,13 +141,9 @@ class ControllerForm {
 		$view = 'sheet2View';
 		$pagetitle='Sheet 2';
 		
-		$alphabet = array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-		
-		$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId('1');
-		
-		$applicationTable = ModelApplication::getApplicationByFormId('1');
 		
 		require File::build_path(array('view', 'view.php'));
 	}
+	
 }
 ?>

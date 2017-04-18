@@ -21,10 +21,10 @@ class ModelQuestionType extends Model{
         	$this->questionTypeName = $qn;
         }
     }
-/*
+
 	public static function getQuestionTypeByName($name){
 		try{
-			$sql  = "SELECT questionTypeId FROM QuestionType WHERE questionTypeName=:n";
+			$sql  = "SELECT questionTypeId FROM QuestionType WHERE questionTypeName=:name";
 			$prep = Model::$pdo->prepare($sql);
 
 			$values = array(
@@ -46,8 +46,5 @@ class ModelQuestionType extends Model{
             return false;
         }
 	}
-	*/
-
-
 }
 

@@ -70,6 +70,7 @@
 		
 	</div>
 	<button type="button" id="submit">Create the form</button>
+	<button type="button" id="preview">Preview the full Form</button>
 
 </main>
 
