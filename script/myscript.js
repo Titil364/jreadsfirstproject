@@ -490,6 +490,7 @@ function extractData(){
 	}
 	var info = extractInformation();
 	send(formName, a, q, info);
+	$("#submit").unbind("click", extractData);
 }
 
 
