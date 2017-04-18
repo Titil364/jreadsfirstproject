@@ -96,7 +96,7 @@ function randomizeFS() {
          makeFSDraggable();
      }
 
-function getQuestionsName(a) {
+function getQuestionsName(a){
     $.get(
         "index.php",
         {

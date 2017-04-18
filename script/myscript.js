@@ -118,7 +118,7 @@ function displayImage(input, imgDisplayer){
         var reader = new FileReader();
         reader.onload = function (e) {
             $(imgDisplayer).attr('src', e.target.result);
-        } 
+        }
         reader.readAsDataURL(input.files[0]);
     }
 }
@@ -131,7 +131,7 @@ function emptyImage(input, img){
  	if($(input).val()){
  		img.src = "";
  	}
- 	document.body.onfocus
+ 	document.body.onfocus = null;
 }
 
 function removeMe(event, me){
@@ -812,6 +812,8 @@ function saveQuestion(event) {
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+
 
 function init(){
 	
