@@ -117,16 +117,19 @@ class ControllerForm {
 						}
 					}
 				}
-				for($i = 0; $i < sizeof($info); $i++){
-					$information = array(
-						"formId" => $form['formId'],
-						"personnalInformationName" => $info[$i]
-					);
-					if(!ModelAssocFormPI::save($information)){
-						$abort = true;
-						break;
-					}
+				if($info){
+					for($i = 0; $i < sizeof($info); $i++){
+						$information = array(
+							"formId" => $form['formId'],
+							"personnalInformationName" => $info[$i]
+						);
+						if(!ModelAssocFormPI::save($information)){
+							$abort = true;
+							break;
+						}
+					}	
 				}
+
 			}
 			else{
 				$abort = true;
