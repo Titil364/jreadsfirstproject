@@ -127,7 +127,7 @@ CREATE TABLE AssocFormPI (
 )DEFAULT CHARSET=utf8; */
 
 CREATE TABLE AssocFormPI (
-	AssocFormPIId int(11) PRIMARY KEY AUTO_INCREMENT,
+	assocFormPIId int(11) PRIMARY KEY AUTO_INCREMENT,
     formId int(11),
     personnalInformationId int(11),
     FOREIGN KEY (formId) REFERENCES Form(formId),
