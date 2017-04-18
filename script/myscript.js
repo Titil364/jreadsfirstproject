@@ -471,6 +471,7 @@ function extractData(){
 		q.push([]);
 		console.log("desc "+applicationDesc);
 		console.log("img "+applicationImg);
+		
 		if(applicationName === "" | (applicationDesc === "" & applicationImg === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			console.log("nique");
