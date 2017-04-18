@@ -153,6 +153,11 @@ class ControllerForm {
 		
 		require File::build_path(array('view', 'view.php'));
 	}
+	public static function returnFormId(){
+		$formId = json_decode($_GET['formId']);
+		echo json_encode($formId);
+		
+	}
 	
 }
 ?>

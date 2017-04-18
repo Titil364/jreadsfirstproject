@@ -6,7 +6,7 @@
 <?php
 
 	//opening form
-	echo '<div id ="form'.$formId.'" class= "formCss">';
+	echo '<div id ="form-'.$formId.'" class= "formCss">';
 	//call this view with $f the form to display
 	
 	$formName = htmlspecialchars($f->getFormName());

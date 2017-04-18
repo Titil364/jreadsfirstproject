@@ -4,6 +4,7 @@ var applicationNumber;
 var applicationName;
 var printable = false;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+var formId;
 
 function getApplication(b){
     $.get(
@@ -241,12 +242,20 @@ function getCanvas(){
     });	
 }
 
+function getFormId() {
+    var select = $( "div[id*='form']");
+    var f = $(select).attr('id');
+    var id = f.split("-");
+    formId = id[1];
+}
+
 function init(){
-    getApplication('1');
-    getQuestionsName('1'); //1 is the form ID
+    getFormId();
+    getApplication(formId);
+    getQuestionsName(formId); //1 is the form ID
     document.getElementById("print").addEventListener("click",makePrintable);
 
-    document.getElementById("create_pdf").addEventListener("click",createPDF); 
+    document.getElementById("create_pdf").addEventListener("click",createPDF);
 }
 
 
