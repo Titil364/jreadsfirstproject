@@ -83,7 +83,12 @@ main{
 	width:16px;
 	height:16px;
 }
-
+.imgDisplayer{
+	max-width: 96px;
+	max-height: 80px;
+	float: right;
+	margin: 0 0 10px 10px;
+}
 .question div > *{
 	display:inline;
 }
