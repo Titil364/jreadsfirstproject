@@ -18,6 +18,18 @@ class ControllerForm {
             $answers_array_list = [];
             $questionType_list = [];
             
+            $field_array = [];
+            
+            $assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
+            foreach ($assoc_array as $assoc){
+                $perso_inf_id = $assoc->getPersonnalInformationId();
+                $perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+                
+                array_push($field_array, $perso_inf);
+               
+                
+            }
+            
             
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];

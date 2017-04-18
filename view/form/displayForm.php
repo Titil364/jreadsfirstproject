@@ -4,6 +4,7 @@
 
 		   <input type ="button" id="create_pdf" value ="Create PDF">
 <?php
+
 	//opening form
 	echo '<div id ="form'.$formId.'" class= "formCss">';
 	//call this view with $f the form to display
@@ -12,6 +13,18 @@
 	
 	//displaying form  informations
 	echo "<h1> $name </h1>";
+        
+        //displaying fields
+        echo '<div id="userInformation">';
+        foreach ($field_array as $field){
+            echo '<div>';
+                $name = $field->getPersonnalInformationName();
+                $id = $field->getPersonnalInformationId();
+                echo '<label for="field'.$id.'">'.$name.'</label>';
+                echo '<input id="field'.$id.'" name="'.$name.'"  type="text">';
+            echo '</div>';
+        }
+        echo '</div>';
 	
 	//displaying tasks
 	
@@ -100,6 +113,7 @@
 		}
 		echo '</div>'; //closing current application div
 	}
+
  ?>
 	<div id="AAtable">
 		   <p>
