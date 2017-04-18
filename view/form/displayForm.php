@@ -11,6 +11,17 @@ $name = htmlspecialchars($f->getFormName());
 //displaying form  informations
 echo "<h1> $name </h1>";
 
+//displaying fields
+echo '<div id="userInformation">';
+foreach ($field_array as $field){
+    echo '<div>';
+        $name = $field->getPersonnalInformationName();
+        $id = $field->getPersonnalInformationId();
+        echo '<label for="field'.$id.'">'.$name.'</label>';
+        echo '<input id="field'.$id.'" name="'.$name.'"  type="text">';
+    echo '</div>';
+}
+echo '</div>';
 //displaying tasks
 
 //$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
