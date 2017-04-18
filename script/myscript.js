@@ -22,8 +22,12 @@ function addApplication(event){
 	//Creation of the childs
 	
 	var applicationInformationWrapper = document.createElement("div");
-	applicationInformationWrapper.setAttribute("id", applicationName+"Info");
+		applicationInformationWrapper.setAttribute("id", applicationName+"Info");
 	application.appendChild(applicationInformationWrapper);
+	
+	var imgDisplayer = document.createElement("img");
+		imgDisplayer.setAttribute("class","imgDisplayer");
+	applicationInformationWrapper.appendChild(imgDisplayer);
 	
 		//The label of the application's name
 	var nameWrapper = document.createElement("div");
@@ -81,7 +85,13 @@ function addApplication(event){
 			inputApplicationImg.id = applicationName+"Img";
 			inputApplicationImg.name = applicationName+"Img";
 			inputApplicationImg.accept = "image/*";
-			//inputApplicationImg.addEventListener("change", upload);
+			
+			$(inputApplicationImg).change(function(event){
+ 				displayImage(this, imgDisplayer, applicationName);
+				});
+ 			$(inputApplicationImg).click(function(event){
+ 				noSelection(this, imgDisplayer);
+				});
 			imgWrapper.appendChild(inputApplicationImg);
 	applicationInformationWrapper.appendChild(imgWrapper);	
 	
@@ -102,6 +112,28 @@ function addApplication(event){
 	
 	nbApplication++;
 }
+
+function displayImage(input, imgDisplayer){
+ 	if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(imgDisplayer).attr('src', e.target.result);
+        } 
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function noSelection(input, imgDisplayer){
+ 	document.body.onfocus = function(event){
+ 		emptyImage(input, imgDisplayer);
+ 	};	
+}
+function emptyImage(input, img){
+ 	if($(input).val()){
+ 		img.src = "";
+ 	}
+ 	document.body.onfocus
+}
+
 function removeMe(event, me){
 
 	var inputChild = me.getElementsByTagName("input")[0];
