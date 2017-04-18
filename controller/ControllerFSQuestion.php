@@ -15,6 +15,10 @@ class ControllerFSQuestion {
         }        
         echo json_encode($FSQuestionName);
     }
+	public static function predefinedFSQuestions(){
+		$var = ModelFSQuestion::getDefaultFSQuestion();
+		echo json_encode($var);
+	}
     
 }
 ?>

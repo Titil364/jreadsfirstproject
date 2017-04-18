@@ -1,6 +1,8 @@
 var b = document.body;
 var nbApplication = 0;
 var placeholders;
+var predefInformation;
+var fsquestions;
 
 function addApplication(event){
 	//Recovery of the container
@@ -619,42 +621,6 @@ function makeDraggbleApplication(event) {
 	});
 }
 
-function upload(id, name){
-
-	var file_data = $("#Applic0Img").prop("files")[0];
-	
-	var re = /(?:\.([^.]+))?$/;
-	var ext = re.exec(file_data.name)[1];
-	var form_data = new FormData(); 
-
-	form_data.append("file", file_data, name+"."+ext);
-	
-	
-	/*$.post(
-		"test.php", // url cible
-		form_data,
-		function(res){ // le callback
-			var message = res;
-			console.log(message);
-			},
-		"json" // type de données reçues
-	);*/
-
-	$.ajax({
-		url: "test.php",
-		cache: false,
-		contentType: false,
-		processData: false,
-		data: form_data,                        
-		type: 'post',
-		success: function(result){
-				  console.log(result);
-				},
-		error: function(){
-		  alert("Erreur lors du téléchargement du fichier");
-		}   
-	});       
-}
 
 
 function answersPlaceholder(){
@@ -669,6 +635,57 @@ function answersPlaceholder(){
 			},
 		"json" // type
 	);
+}
+function predefinedInformation(){
+	$.get(
+		"index.php", // url
+		{
+			"action":"predefinedInformation",
+			"controller":"personnalInformation",
+		},  //data
+		function(res){ //callback
+				predefInformation = res;
+				if(predefInformation.length > 0)
+					showInformation("predefinedInformation", "information", predefInformation);
+			},
+		"json" // type
+	);	
+}
+function predefinedFSQuestion(){
+	$.get(
+		"index.php", // url
+		{
+			"action":"predefinedFSQuestions",
+			"controller":"FSQuestion",
+		},  //data
+		function(res){ //callback
+			console.log("bite");
+				fsquestions = res;
+				if(fsquestions.length > 0)
+					showInformation("funSorterInformation", "FSQuestion", fsquestions);
+			},
+		"json" // type
+	);	
+}
+
+function showInformation(id, type, tab){
+	var infoWrapper = $("#"+id)[0];
+	for(var i = 0; i < tab.length; i++){
+		var name = tab[i];
+		var wrapper = document.createElement("div");
+			infoWrapper.appendChild(wrapper);
+		var input = document.createElement("input");
+			input.setAttribute("type", "checkbox");
+			input.setAttribute("name", type);
+			input.setAttribute("class", "default"+type.capitalizeFirstLetter());
+			input.setAttribute("id", name);
+		wrapper.appendChild(input);
+		
+		var label = document.createElement("label");
+			label.setAttribute("for", name);
+			label.innerHTML = name;
+		wrapper.appendChild(label);
+	}
 }
 
 function addFSQuestion(event) {
@@ -708,16 +725,20 @@ function addFSQuestion(event) {
 }
 
 
-
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 function init(){
 	
 	$("#submit").click(extractData);
 	answersPlaceholder();
+	predefinedInformation();
+	predefinedFSQuestion();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
 	//Adding one application
 	addApplication();
-	$("#test").click(upload);
+	//uploadImage$("#test").click(uploadImage);
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);

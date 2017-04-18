@@ -5,6 +5,7 @@ class ModelPersonnalInformation extends Model{
 
 	private $personnalInformationId;
 	private $personnalInformationName;
+	private $defaultPersonnalInformation;
 	
     protected static $object = "PersonnalInformation";
     protected static $primary = "personnalInformationId";
@@ -16,10 +17,37 @@ class ModelPersonnalInformation extends Model{
         public function setPersonnalInformationName($personnalInformationName){$this->personnalInformationName = $personnalInformationName;}
 
 
-    public function __construct($personnalInformationId = NULL,$personnalInformationName  = NULL){
-        if (!is_null($personnalInformationId) && !is_null($personnalInformationName)) {
+    public function __construct($personnalInformationId = NULL,$personnalInformationName  = NULL, $def = NULL){
+        if (!is_null($personnalInformationId) && !is_null($personnalInformationName) && !is_null($def)) {
         	$this->personnalInformationId = $personnalInformationId;
         	$this->personnalInformationName = $personnalInformationName;
+			$this->defaultPersonnalInformation = $def;
         }
     }
+	
+	public static function getDefaultPersonnalInformation(){
+		try{
+			$sql  = "SELECT personnalInformationName FROM PersonnalInformation WHERE defaultPersonnalInformation=:d";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"d" => 1
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_NUM);
+                        
+			$default_info = $prep->fetchAll();
+
+			return $default_info;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }

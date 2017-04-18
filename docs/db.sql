@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS Form;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS FSQuestion;
 DROP TABLE IF EXISTS Donnerunnom;
+DROP TABLE IF EXISTS AssocFormPI;
 DROP TABLE IF EXISTS PersonnalInformation;
 DROP TABLE IF EXISTS Information;
 
@@ -27,6 +28,7 @@ CREATE TABLE Users (
   isAdmin int(1)
 )DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE Visitor (
   visitorId int(11) PRIMARY KEY AUTO_INCREMENT,
   visitorGroupId int(11),
@@ -35,6 +37,7 @@ CREATE TABLE Visitor (
   visitorAge int(11),
   visitorClass varchar(20)
 )DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE Form (
   formId int(11) PRIMARY KEY AUTO_INCREMENT,
@@ -53,6 +56,7 @@ CREATE TABLE DateComplete (
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE Application (
   applicationId varchar(20) PRIMARY KEY,
   applicationName varchar(30),
@@ -65,6 +69,7 @@ CREATE TABLE QuestionType (
     questionTypeName varchar(20) PRIMARY KEY
 )DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
   questionName varchar(30),
@@ -74,6 +79,7 @@ CREATE TABLE Question (
   FOREIGN KEY (questionTypeName) REFERENCES QuestionType(questionTypeName)
 )DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE Answer (
    visitorId  int(11),
    questionId  varchar(20),
@@ -82,10 +88,13 @@ CREATE TABLE Answer (
    PRIMARY KEY (visitorId, questionId)
 )DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE FSQuestion (
     FSQuestionId int(11) PRIMARY KEY AUTO_INCREMENT,
-    FSQuestionName varchar(50)
+    FSQuestionName varchar(50),
+	defaultFSQuestion int(1)
 )DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE Donnerunnom (
     formId int(11),
@@ -107,8 +116,10 @@ CREATE TABLE AnswerType (
 
 CREATE TABLE PersonnalInformation (
     personnalInformationId int(11) PRIMARY KEY AUTO_INCREMENT,
-    personnalInformationName varchar(20)
+    personnalInformationName varchar(20),
+	defaultPersonnalInformation int(1)
 )DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE Information (
     informationId int(11) PRIMARY KEY AUTO_INCREMENT,
@@ -117,19 +128,11 @@ CREATE TABLE Information (
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
 )DEFAULT CHARSET=utf8;
 
-/*  previous version with primary on the two foreign keys
+
 CREATE TABLE AssocFormPI (
     formId int(11),
     personnalInformationId int(11),
     PRIMARY KEY (formId, personnalInformationId),
-    FOREIGN KEY (formId) REFERENCES Form(formId),
-    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
-)DEFAULT CHARSET=utf8; */
-
-CREATE TABLE AssocFormPI (
-	assocFormPIId int(11) PRIMARY KEY AUTO_INCREMENT,
-    formId int(11),
-    personnalInformationId int(11),
     FOREIGN KEY (formId) REFERENCES Form(formId),
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
 )DEFAULT CHARSET=utf8;
@@ -201,11 +204,11 @@ INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', "smiley");
 
 
-INSERT INTO FSQuestion VALUES ('1', 'Easy to do / Hard to do');
-INSERT INTO FSQuestion VALUES ('2', 'Most fun / Least fun');
-INSERT INTO FSQuestion VALUES ('3', 'Learned the most / Learned the least');
-INSERT INTO FSQuestion VALUES ('4', 'Most cool / Least cool');
-INSERT INTO FSQuestion VALUES ('5', 'Most boring / Least boring');
+INSERT INTO FSQuestion VALUES ('1', 'Easy to do / Hard to do', 1);
+INSERT INTO FSQuestion VALUES ('2', 'Most fun / Least fun', 1);
+INSERT INTO FSQuestion VALUES ('3', 'Learned the most / Learned the least', 1);
+INSERT INTO FSQuestion VALUES ('4', 'Most cool / Least cool', 1);
+INSERT INTO FSQuestion VALUES ('5', 'Most boring / Least boring', 1);
 
 INSERT INTO Donnerunnom VALUES ('1', '1');
 INSERT INTO Donnerunnom VALUES ('1', '2');
@@ -214,10 +217,10 @@ INSERT INTO Donnerunnom VALUES ('1', '4');
 INSERT INTO Donnerunnom VALUES ('1', '5');
 -- mdp : 123456
 
-INSERT INTO PersonnalInformation (personnalInformationName) VALUES ('Name');
-INSERT INTO PersonnalInformation (personnalInformationName) VALUES ('Age');
-INSERT INTO PersonnalInformation (personnalInformationName) VALUES ('Class');
+INSERT INTO PersonnalInformation VALUES (1, 'Name', 1);
+INSERT INTO PersonnalInformation VALUES (2, 'Age', 1);
+INSERT INTO PersonnalInformation VALUES (3, 'Class', 1);
 
-INSERT INTO AssocFormPI (formId, personnalInformationId) VALUES ('1','1');
-INSERT INTO AssocFormPI (formId, personnalInformationId) VALUES ('1','2');
-INSERT INTO AssocFormPI (formId, personnalInformationId) VALUES ('1','3');
+INSERT INTO AssocFormPI VALUES ('1','1');
+INSERT INTO AssocFormPI VALUES ('1','2');
+INSERT INTO AssocFormPI VALUES ('1','3');

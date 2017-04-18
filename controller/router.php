@@ -3,6 +3,7 @@
 //require_once File::build_path(array('folder','file.php'));
 require_once File::build_path(array('lib','Security.php'));
 require_once File::build_path(array('lib','Session.php'));
+//require_once FILE::build_path(array('lib', 'TCPDFImport.php'));
 
 require_once File::build_path(array('controller','ControllerDefault.php'));
 

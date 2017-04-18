@@ -23,7 +23,8 @@
 				<div>
 					<input id=""> <label for=""> </label>
 				</div>
-				-->
+				
+				
 					<input type="checkbox" id="name" name="information" value="name" class="defaultInformation">
 					<label for="name">Name </label><br>
 					<input type="checkbox" id="age" name="information" value="age" class="defaultInformation">
@@ -32,6 +33,7 @@
 					<label for="gender">Gender </label><br>
 					<input type="checkbox" id="secretName" name="information" value="secretName" class="defaultInformation">
 					<label for="secretName">Secret Name </label><br><br>
+					-->
 				</div>
 				<div id="customInformation">
 					<button type="button" id="addField">Add a new field</button>
@@ -53,6 +55,7 @@
 			<div id="funSorterInformation">
 				<p>Choose your required questions for the fun sorter</p>
 				<p><h3>Predefined questions</h3></p>
+				<!--
 				<input type="checkbox" id="FSeasy" name="information" value="FSeasy" class="defaultInformation">
 				<label for="FSeasy">Easy to do / Hard to do</label><br>
 				<input type="checkbox" id="FSfun" name="information" value="FSfun" class="defaultInformation">
@@ -63,6 +66,7 @@
 				<label for="FScool">Most cool / Least cool</label><br>
 				<input type="checkbox" id="FSboring" name="information" value="FSboring" class="defaultInformation">
 				<label for="FSboring">Most boring / Least boring</label><br><br>
+				-->
 			</div>
 			<div id="customQuestion">
 					<button type="button" id="addFSQuestion">Add a new question</button>

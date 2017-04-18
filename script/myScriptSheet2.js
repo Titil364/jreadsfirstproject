@@ -187,6 +187,18 @@ function makePrintable(event){
     }
 }
 
+function pdf(event){
+	var html = document.body.innerHTML;
+	    $.post(
+        "lib/TCPDFImport.php",
+        {
+            "test":html
+        },
+        function(res) {
+            console.log(res);
+        }
+    );
+}
 
 
 
@@ -194,6 +206,7 @@ function init(){
     getApplication('1');
     getQuestionsName('1'); //1 is the form ID
     document.getElementById("print").addEventListener("click",makePrintable);
+	$("#pdf").click(pdf);
 }
 
 

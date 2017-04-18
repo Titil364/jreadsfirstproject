@@ -4,6 +4,7 @@ require_once File::build_path(array('model', 'Model.php'));
 class ModelFSQuestion extends Model{
     private $FSQuestionId;
     private $FSQuestionName;
+	private $defaultFSQuestion;
     
     protected static $object = "FSQuestion";
     protected static $primary = 'FSQuestionId';
@@ -14,10 +15,11 @@ class ModelFSQuestion extends Model{
     public function getFSQuestionName(){return $this->FSQuestionName;}
     public function setFSQuestionName($FSQuestionName){$this->FSQuestionName = $FSQuestionName;} 
 
-    public function __construct ($FSQuestionId = NULL, $FSQuestionName = NULL){
-        if (!is_null($FSQuestionId) && !is_null($FSQuestionName)){
+    public function __construct ($FSQuestionId = NULL, $FSQuestionName = NULL, $fs = NULL){
+        if (!is_null($FSQuestionId) && !is_null($FSQuestionName)&& !is_null(fs)){
             $this->FSQuestionId = $FSQuestionId;
             $this->FSQuestionName = $FSQuestionName;
+			$this->defaultFSQuestion = $fs;
         }
     }
     
@@ -44,24 +46,22 @@ class ModelFSQuestion extends Model{
             return false;
         }
 	}
-	/*
-	public static function getAllFSQuestionName($FSQuestionId){
+	public static function getDefaultFSQuestion(){
 		try{
-			$sql  = "SELECT * FROM FSQuestion, Donnerunnom WHERE Donnerunnom.formId= '1' AND FSQuestion.FSQuestionId = Donnerunnom.FSQuestionId ";
+			$sql  = "SELECT FSQuestionName FROM FSQuestion WHERE defaultFSQuestion=:d";
 			$prep = Model::$pdo->prepare($sql);
-			
+                        
 			$values = array(
-				"FSQuestionId" => $FSQuestionId,
+				"d" => 1
 				);
-
+                        
 			$prep-> execute($values);
-			$prep-> setFetchMode(PDO::FETCH_CLASS, 'ModelFSQuestion');
-            
-			$rep = [];
-			foreach($prep as $val){
-				$rep[] = $val->getFSQuestionName();
-			}
-			return $rep;
+			$prep->setFetchMode(PDO::FETCH_NUM);
+                        
+			$default_info = $prep->fetchAll();
+
+			return $default_info;
+
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();
@@ -70,5 +70,5 @@ class ModelFSQuestion extends Model{
             }
             return false;
         }
-	}*/
+	}
 }
