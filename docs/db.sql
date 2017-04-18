@@ -117,24 +117,15 @@ CREATE TABLE Information (
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
 )DEFAULT CHARSET=utf8;
 
-/*  previous version with primary on the two foreign keys
+
 CREATE TABLE AssocFormPI (
     formId int(11),
     personnalInformationId int(11),
     PRIMARY KEY (formId, personnalInformationId),
     FOREIGN KEY (formId) REFERENCES Form(formId),
     FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
-)DEFAULT CHARSET=utf8; */
+)DEFAULT CHARSET=utf8; 
 
-CREATE TABLE AssocFormPI (
-	assocFormPIId int(11) PRIMARY KEY AUTO_INCREMENT,
-    formId int(11),
-    personnalInformationId int(11),
-    FOREIGN KEY (formId) REFERENCES Form(formId),
-    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
-)DEFAULT CHARSET=utf8;
-
---
 -- Triggers
 	
 DROP TRIGGER IF EXISTS complete_form_insert;

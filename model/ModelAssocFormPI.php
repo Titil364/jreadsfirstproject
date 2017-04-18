@@ -3,15 +3,11 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelAssocFormPI extends Model{
         
-        private $assocFormPIId;
         private $formId;
 	private $personnalInformationId;
 	
     protected static $object = "AssocFormPI";
-    protected static $primary = "assocFormPIId";
-    
-    public function getAssocFormPIId(){return $this->assocFormPIId;}
-        public function setAssocFormPIId($assocFormPIId){$this->assocFormPIId = $assocFormPIId;}
+    protected static $primary = "formId"; //temporary
     
     public function getFormId(){return $this->formId;}
         public function setFormId($formId){$this->formId = $formId;}
