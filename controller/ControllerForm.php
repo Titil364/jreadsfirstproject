@@ -22,7 +22,7 @@ class ControllerForm {
             
             $assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
             foreach ($assoc_array as $assoc){
-                $perso_inf_id = $assoc->getPersonnalInformationId();
+                $perso_inf_id = $assoc->getPersonnalInformationName();
                 $perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
                 
                 array_push($field_array, $perso_inf);
@@ -51,7 +51,7 @@ class ControllerForm {
                 }
                 
             }
-			$alphabet = array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+			$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 		
 			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 	
@@ -74,7 +74,8 @@ class ControllerForm {
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
 			$q = json_decode($_POST["questions"], true);
-			//var_dump($q);
+			$info = json_decode($_POST["informations"], true);
+			//var_dump($q);	
 			$abort = false;
 			
 			$userNickname = $_SESSION['nickname'];
@@ -103,21 +104,29 @@ class ControllerForm {
 					for($y = 0; $y < sizeof($q[$i]); $y++){
 						//chercher questionTypeId grace à $q[$i][$y]["questionType"]
 						//$qTypeId
-						$qTypeId = ModelQuestiontype::getQuestionTypeByName($q[$i][$y]["type"]);
-						$qTypeId = $qTypeId->getQuestionTypeId();
 
 						$question = array(
 							"questionId" => $form['formId'] . $q[$i][$y]["id"],
 							"questionName" => $q[$i][$y]["label"],
 							"applicationId" => $application["applicationId"],
-							"questionTypeId" => $qTypeId
+							"questionTypeName" => $q[$i][$y]["type"]
 						);
 						if(!ModelQuestion::save($question)){
 							$abort = true;
 							break;
 						}
 					}
-				}			
+				}
+				for($i = 0; $i < sizeof($info); $i++){
+					$information = array(
+						"formId" => $form['formId'],
+						"personnalInformationName" => $info[$i]
+					);
+					if(!ModelAssocFormPI::save($information)){
+						$abort = true;
+						break;
+					}
+				}
 			}
 			else{
 				$abort = true;

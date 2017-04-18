@@ -115,8 +115,7 @@ CREATE TABLE AnswerType (
 
 
 CREATE TABLE PersonnalInformation (
-    personnalInformationId int(11) PRIMARY KEY AUTO_INCREMENT,
-    personnalInformationName varchar(20),
+    personnalInformationName varchar(20) PRIMARY KEY,
 	defaultPersonnalInformation int(1)
 )DEFAULT CHARSET=utf8;
 
@@ -124,23 +123,24 @@ CREATE TABLE PersonnalInformation (
 CREATE TABLE Information (
     informationId int(11) PRIMARY KEY AUTO_INCREMENT,
     informationName varchar(20),
-    personnalInformationId int(11),
-    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
+    personnalInformationName varchar(20),
+    FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName)
 )DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE AssocFormPI (
     formId int(11),
-    personnalInformationId int(11),
-    PRIMARY KEY (formId, personnalInformationId),
+    personnalInformationName varchar(20),
+    PRIMARY KEY (formId, personnalInformationName),
     FOREIGN KEY (formId) REFERENCES Form(formId),
-    FOREIGN KEY (personnalInformationId) REFERENCES PersonnalInformation(personnalInformationId)
+    FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName)
 )DEFAULT CHARSET=utf8; 
 
 -- Triggers
 	
 DROP TRIGGER IF EXISTS complete_form_insert;
 DROP TRIGGER IF EXISTS complete_form_delete;
+DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
 	
 	
 DELIMITER //
@@ -159,6 +159,27 @@ CREATE TRIGGER complete_form_delete AFTER DELETE
 	ON DateComplete FOR EACH ROW
 	BEGIN
 			UPDATE Form SET completedForm = (completedForm-1)WHERE OLD.formId = formId;
+	END;//
+	
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
+DELIMITER //
+
+CREATE TRIGGER insert_assoc_personnal_info BEFORE INSERT
+	ON AssocFormPI FOR EACH ROW
+	BEGIN
+		DECLARE v_nb INTEGER;
+		SELECT COUNT(*) INTO v_nb
+		FROM PersonnalInformation
+		WHERE personnalInformationName = NEW.personnalInformationName;
+	
+		-- The personnal information doesn't exist
+		-- We're going to insert the personnal information and set it non default
+		if(v_nb = 0) THEN
+			INSERT INTO PersonnalInformation VALUES(NEW.personnalInformationName, 0);
+		END IF;
 	END;//
 	
 DELIMITER ;
@@ -216,10 +237,10 @@ INSERT INTO Donnerunnom VALUES ('1', '4');
 INSERT INTO Donnerunnom VALUES ('1', '5');
 -- mdp : 123456
 
-INSERT INTO PersonnalInformation VALUES (1, 'Name', 1);
-INSERT INTO PersonnalInformation VALUES (2, 'Age', 1);
-INSERT INTO PersonnalInformation VALUES (3, 'Class', 1);
+INSERT INTO PersonnalInformation VALUES ('Name', 1);
+INSERT INTO PersonnalInformation VALUES ('Age', 1);
+INSERT INTO PersonnalInformation VALUES ('Class', 1);
 
-INSERT INTO AssocFormPI VALUES ('1','1');
-INSERT INTO AssocFormPI VALUES ('1','2');
-INSERT INTO AssocFormPI VALUES ('1','3');
+INSERT INTO AssocFormPI VALUES ('1','Name');
+INSERT INTO AssocFormPI VALUES ('1','Age');
+INSERT INTO AssocFormPI VALUES ('1','Class');

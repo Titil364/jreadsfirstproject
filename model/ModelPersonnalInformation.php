@@ -3,23 +3,19 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelPersonnalInformation extends Model{
 
-	private $personnalInformationId;
 	private $personnalInformationName;
 	private $defaultPersonnalInformation;
 	
     protected static $object = "PersonnalInformation";
-    protected static $primary = "personnalInformationId";
-    
-    public function getPersonnalInformationId(){return $this->personnalInformationId;}
-        public function setPersonnalInformationId($personnalInformationId){$this->personnalInformationId = $personnalInformationId;}
+    protected static $primary = "personnalInformationName";
+   
 
     public function getPersonnalInformationName(){return $this->personnalInformationName;}
         public function setPersonnalInformationName($personnalInformationName){$this->personnalInformationName = $personnalInformationName;}
 
 
-    public function __construct($personnalInformationId = NULL,$personnalInformationName  = NULL, $def = NULL){
-        if (!is_null($personnalInformationId) && !is_null($personnalInformationName) && !is_null($def)) {
-        	$this->personnalInformationId = $personnalInformationId;
+    public function __construct($personnalInformationName  = NULL, $def = NULL){
+        if (!is_null($personnalInformationName) && !is_null($def)) {
         	$this->personnalInformationName = $personnalInformationName;
 			$this->defaultPersonnalInformation = $def;
         }

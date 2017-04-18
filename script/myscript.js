@@ -427,7 +427,22 @@ function makeLabelImage(name, value, imageAdr, parent){
 	parent.appendChild(wrapper);
 }
 
-
+function extractInformation(){
+	var predef = $(".defaultInformation:checked");
+	var info = [];
+	for(var i = 0; i < predef.length; i++){
+		info.push(predef[i].id);
+	}
+	var custom = $(".fieldInput");
+	for(var i = 0; i < custom.length; i++){
+		if($(custom[i]).val() === "" ){
+			
+		}else{
+			info.push($(custom[i]).val());			
+		}
+	}
+	return (info.length == 0? false : info);
+}
 
 
 
@@ -473,11 +488,12 @@ function extractData(){
 			q[i].push(new Question(idQ, qLabel, qType));
 		}
 	}
-	send(formName, a, q);
+	var info = extractInformation();
+	send(formName, a, q, info);
 }
 
 
-function send(f, a, q) {
+function send(f, a, q, i) {
 
 	//console.log(JSON.stringify(a));
 	//console.log(JSON.stringify(q));
@@ -490,7 +506,8 @@ function send(f, a, q) {
 			"controller":"form",
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
-			"questions":JSON.stringify(q)
+			"questions":JSON.stringify(q),
+			"informations":JSON.stringify(i)
 		},  //data
 		function(res){ //callback
 		
@@ -659,7 +676,6 @@ function predefinedFSQuestion(){
 			"controller":"FSQuestion",
 		},  //data
 		function(res){ //callback
-			console.log("bite");
 				fsquestions = res;
 				if(fsquestions.length > 0)
 					showInformation("funSorterInformation", "FSQuestion", fsquestions);

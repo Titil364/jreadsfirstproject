@@ -9,19 +9,18 @@
 	echo '<div id ="form'.$formId.'" class= "formCss">';
 	//call this view with $f the form to display
 	
-	$name = htmlspecialchars($f->getFormName());
+	$formName = htmlspecialchars($f->getFormName());
 	
 	//displaying form  informations
-	echo "<h1> $name </h1>";
+	echo "<h1> $formName </h1>";
         
         //displaying fields
         echo '<div id="userInformation">';
         foreach ($field_array as $field){
+                $fieldName = htmlspecialchars($field->getPersonnalInformationName());
             echo '<div>';
-                $name = $field->getPersonnalInformationName();
-                $id = $field->getPersonnalInformationId();
-                echo '<label for="field'.$id.'">'.$name.'</label>';
-                echo '<input id="field'.$id.'" name="'.$name.'"  type="text">';
+                echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
+                echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text">';
             echo '</div>';
         }
         echo '</div>';
