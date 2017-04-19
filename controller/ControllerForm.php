@@ -1,9 +1,6 @@
 <?php
-
 require_once File::build_path(array('model', 'ModelForm.php'));
-
 class ControllerForm {
-
     
     public static function read(){
 		$formId = $_GET['id'];
@@ -34,13 +31,11 @@ class ControllerForm {
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
                 $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationId($application_array[$i]->getApplicationId());
-
                 array_push($questions_array_list, $questions_arrayFromModel);
                 
                 array_push($answers_array_list, []);
                 array_push($questionType_list, []);
                 
-
                 for($j=0; $j < count($questions_arrayFromModel);$j++){
 					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeName());
 										
@@ -74,7 +69,8 @@ class ControllerForm {
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
 			$q = json_decode($_POST["questions"], true);
-			$info = json_decode($_POST["informations"], true);
+			$info = json_decode($_POST["information"], true);
+			$fs = json_decode($_POST["FSQuestions"], true);
 			//var_dump($q);	
 			$abort = false;
 			
@@ -104,7 +100,6 @@ class ControllerForm {
 					for($y = 0; $y < sizeof($q[$i]); $y++){
 						//chercher questionTypeId grace à $q[$i][$y]["questionType"]
 						//$qTypeId
-
 						$question = array(
 							"questionId" => $form['formId'] . $q[$i][$y]["id"],
 							"questionName" => $q[$i][$y]["label"],
@@ -129,12 +124,22 @@ class ControllerForm {
 						}
 					}	
 				}
-
+				if($fs){
+					for($i=0; $i < sizeof($fs);$i++){
+						$fsQuestion = array(
+							"formId" => $form['formId'],
+							"FSQuestionName" => $fs[$i]
+						);
+						if(!ModelAssocFormFS::save($fsQuestion)){
+							$abort = true;;
+							break;
+						}
+					}
+				}
 			}
 			else{
 				$abort = true;
 			}
-
 			if($abort){
 				//ModelForm::rollback();
 				echo json_encode(false);
@@ -143,7 +148,8 @@ class ControllerForm {
 				//ModelForm::commit();
 				echo json_encode($form['formId']);			
 			}
-		}else{
+		}
+		else{
 			echo json_encode(false);
 		}
 		
