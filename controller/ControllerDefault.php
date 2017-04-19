@@ -6,7 +6,11 @@ class ControllerDefault {
         $controller = 'default';
         $pagetitle = 'Welcome';
 		$stylesheet = "welcome";
-        require File::build_path(array('view', 'view.php'));
+		if(Session::is_connected()){
+			ControllerUsers::displaySelf();
+		}else{
+			require File::build_path(array('view', 'view.php'));
+		}
     }
 	
 	public static function error($data){

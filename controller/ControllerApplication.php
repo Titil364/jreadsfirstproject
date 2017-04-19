@@ -11,7 +11,8 @@ class ControllerApplication {
         require File::build_path(array('view', 'view.php'));
     }
 	public static function saveImg(){
-			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$_FILES['file']['name']);
+		if(Session::is_connected())
+			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$_SESSION['nickname']."/".$_FILES['file']['name']);
     }
 	
 	public static function getApplicationCount(){

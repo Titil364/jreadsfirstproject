@@ -17,6 +17,7 @@ function getApplication(b){
         function(res){
             applicationName = res;
             applicationNumber = applicationName.length;
+			getQuestionsName(formId); //1 is the form ID
         },
         "json"
     );
@@ -108,9 +109,9 @@ function getQuestionsName(a){
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
+			
             randomizeAA();
             randomizeFS();
-            
         },
         "json"
     );
@@ -252,7 +253,6 @@ function getFormId() {
 function init(){
     getFormId();
     getApplication(formId);
-    getQuestionsName(formId); //1 is the form ID
     document.getElementById("print").addEventListener("click",makePrintable);
 
     document.getElementById("create_pdf").addEventListener("click",createPDF);

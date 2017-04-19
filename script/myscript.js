@@ -568,7 +568,7 @@ function send(f, a, q, i) {
 									data: form_data,                  
 									type: 'post',
 									success: function(result){
-											  console.log(result);
+											  //console.log(result);
 											},
 									error: function(){
 											  console.log("Error while downloading the file. ");
@@ -576,6 +576,7 @@ function send(f, a, q, i) {
 								});  
 						}
 						alert("The form has been successfully registered ! (You will be redirected)");
+						$("#submit").unbind("click", extractData);
 						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
 				}
@@ -808,6 +809,7 @@ function saveQuestion(event) {
 		}
 	}
 }
+
 
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);

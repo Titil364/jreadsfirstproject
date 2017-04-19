@@ -41,11 +41,16 @@ class ControllerUsers {
 				"userPassword" => $hashpass,
 				"userNickname" => $_POST['userNickname'],
 				"userSurname" => $_POST['userSurname'],
-				"userForname" => $_POST['userForname'],
+				"userForename" => $_POST['userForename'],
 				"userNonce" => $nonce,
 				"isAdmin" => 0
 			);
-		ModelUsers::save($users);
+		if(ModelUsers::save($users)){
+			$path = "./media/".$users['userNickname'];
+			if (!mkdir($path, 0777)) {
+				die('The creation of the user folder failed. ');
+			}
+		}
 		
 		require File::build_path(array('view', 'view.php'));
 	}

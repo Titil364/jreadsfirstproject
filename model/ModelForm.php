@@ -76,21 +76,21 @@ class ModelForm extends Model{
         }
     }
 	
-	public static function getNbFSQuestionByFormId($formId){
+	public static function getVisitorsByFormId($formId){
 		try{
-			//Pourquoi compter le npmbre de FS question via la BD ?
-			//Pourquoi ne psa récupérer toutes les FS questions et prendre la taille du tableau ?
-			$sql  = "SELECT COUNT(*) FROM Donnerunnom WHERE Donnerunnom.formId=:formId";
+			$sql  = "SELECT V.visitorId, V.visitorGroupId, V.visitorSecretName, V.visitorAge, V.visitorClass FROM Visitor V ";
+			$sql = $sql . "JOIN DateComplete d ON d.visitorId = v.visitorId WHERE d.formId=:formId;";
 			$prep = Model::$pdo->prepare($sql);
-			
+
 			$values = array(
 				"formId" => $formId,
 				);
 
 			$prep-> execute($values);
-			$prep-> setFetchMode(PDO::FETCH_NUM);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelVisitor');
 			
-			return $prep->fetch();
+			return $prep->fetchAll();
+
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();

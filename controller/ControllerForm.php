@@ -161,6 +161,19 @@ class ControllerForm {
 		echo json_encode($formId);
 		
 	}
+	public static function whoAnswered(){
+		$controller ='form';
+		$view = 'whoAnswered';
+		
+		$formId = $_GET['id'];
+		$pagetitle='Who answered '.$formId;
+		
+
+		if(Session::is_connected()){
+			$visitor = ModelForm::getVisitorsByFormId($formId);			
+		}
+		require File::build_path(array('view', 'view.php'));
+	}
 	
 }
 ?>
