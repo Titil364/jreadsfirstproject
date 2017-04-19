@@ -1,7 +1,7 @@
 <main> 
 	<div id="connect">
 		<h1>Welcome on the Log In in page</h1>
-		<button id="return">Return</button>
+		<button class="return">Return</button>
 		<form class="formCss" method="POST" action="index.php">
 			<fieldset>
 				<legend>Log in :</legend>
@@ -16,7 +16,7 @@
 					<input class="input-field" type="password" name="password" id="pass_id" required/>
 				</div>
 				<div class="input">
-					<input class="input-field" type="submit"  value="Envoyer"/>
+					<input class="input-field" type="submit"  value="Send"/>
 				</div>
 				<div class="register-link">
 					<a href="index.php?controller=users&action=create">
@@ -26,6 +26,24 @@
 			</fieldset> 
 		</form>
 	</div>
+        <div id="visitorAccess">
+                            <h1>Welcome to the visitor interface</h1>
+                    <button class="return">Return</button>
+                    <form class="formCss" method="GET" action="index.php">
+                            <fieldset>
+                                    <legend>Please enter the form number :</legend>
+                                    <input type='hidden' name='action' value='read'>
+                                    <input type='hidden' name='controller' value='form'>
+                                    <div class="input">
+                                            <label class="input-item" for="nick_id">Form number</label>
+                                            <input class="input-field" type="text" name="id" required/>
+                                    </div>
+                                    <div>
+                                            <input class="input-field" type="submit"  value="Send"/>
+                                    </div>
+                            </fieldset> 
+                    </form>
+        </div>
 	<div id="welcome">
 		<div>Are you a : </div>
 		<button id="visitor">Visitor</button>
