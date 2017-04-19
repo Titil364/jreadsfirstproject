@@ -473,7 +473,32 @@ function extractInformation(){
 			info.push($(custom[i]).val());			
 		}
 	}
+	console.log("extractInfoDone");
 	return (info.length == 0? false : info);
+}
+
+function extractFSQuestions(){
+	var predefs = $(".defaultFSQuestion:checked");
+	var FSQuestions = [];
+	for (var i = 0; i < predefs.length; i++) {
+		FSQuestions.push(predefs[i].id);
+    }
+	var customFS = $(".FSQuestionCustom");
+	for (var i = 0; i<customFS.length; i++){	
+		var left = $($(".questionInputLeft")[i]).val();
+		var right = $($(".questionInputRight")[i]).val();
+		if (left==="" |right==="") {
+        }else{
+			var FSQuestionName =left+"/"+right;
+			FSQuestions.push(FSQuestionName);
+			if (FSQuestionName.length>50) {
+                alert("trop grand");
+				return null;
+            }
+		}
+	}
+	console.log("extractFSdone");
+	return (FSQuestions.length == 0? false : FSQuestions);
 }
 
 
@@ -523,11 +548,13 @@ function extractData(){
 		}
 	}
 	var info = extractInformation();
-	send(formName, a, q, info);
+	var fs = extractFSQuestions();
+	console.log("sent to send");
+	send(formName, a, q, info, fs);
 }
 
 
-function send(f, a, q, i) {
+function send(f, a, q, i, fs) {
 
 	//console.log(JSON.stringify(a));
 	//console.log(JSON.stringify(q));
@@ -541,10 +568,11 @@ function send(f, a, q, i) {
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
 			"questions":JSON.stringify(q),
-			"informations":JSON.stringify(i)
+			"information":JSON.stringify(i),
+			"FSQuestions":JSON.stringify(fs)
 		},  //data
 		function(res){ //callback
-		
+				console.log("Le resultat = "+res);
 					//res is supposed to send the id of the form
 					//We need this form ID to save the image
 				if(res !== false){
@@ -579,8 +607,8 @@ function send(f, a, q, i) {
 						$("#submit").unbind("click", extractData);
 						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
-				}
-				else{
+					
+				}else{
 					console.log("Error when saving the form. ");
 				}
 			},
@@ -742,7 +770,7 @@ function showInformation(id, type, tab){
 function addFSQuestion(event) {
     //wrapper creation
     var wrapper = document.createElement("div");
-    wrapper.setAttribute("class","question");
+    wrapper.setAttribute("class","FSQuestionCustom");
 	
 	var table = document.createElement("table");
 	var tr = document.createElement('tr');
@@ -831,7 +859,7 @@ function init(){
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
-	document.getElementById("saveQuestion").addEventListener("click",saveQuestion);
+	document.getElementById("saveQuestion").addEventListener("click",extractFSQuestions);
 }
 
 

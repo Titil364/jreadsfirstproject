@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS DateComplete;
 DROP TABLE IF EXISTS Form;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS FSQuestion;
-DROP TABLE IF EXISTS Donnerunnom;
+DROP TABLE IF EXISTS AssocFormFS;
 DROP TABLE IF EXISTS AssocFormPI;
 DROP TABLE IF EXISTS PersonnalInformation;
 DROP TABLE IF EXISTS Information;
@@ -90,18 +90,17 @@ CREATE TABLE Answer (
 
 
 CREATE TABLE FSQuestion (
-    FSQuestionId int(11) PRIMARY KEY AUTO_INCREMENT,
-    FSQuestionName varchar(50),
+    FSQuestionName varchar(50) PRIMARY KEY,
 	defaultFSQuestion int(1)
 )DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE Donnerunnom (
+CREATE TABLE AssocFormFS (
     formId int(11),
-    FSQuestionId int (11),
-    FOREIGN KEY (FSQuestionId) REFERENCES FSQuestion(FSQuestionId),
+    FSQuestionName varchar(50),
+    FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
     FOREIGN KEY (formId) REFERENCES Form(formId),
-    PRIMARY KEY (FSQuestionId, formId)
+    PRIMARY KEY (FSQuestionName, formId)
 )DEFAULT CHARSET=utf8;
     
 
@@ -184,6 +183,27 @@ CREATE TRIGGER insert_assoc_personnal_info BEFORE INSERT
 	
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS insert_assoc_fs;
+DELIMITER //
+
+CREATE TRIGGER insert_assoc_fs BEFORE INSERT
+	ON AssocFormFS FOR EACH ROW
+	BEGIN
+		DECLARE v_nb INTEGER;
+		SELECT COUNT(*) INTO v_nb
+		FROM FSQuestion
+		WHERE FSQuestionName = NEW.FSQuestionName;
+	
+		-- The FSQuestion doesn't exist
+		-- We're going to insert the FSQuestion and set it non default
+		if(v_nb = 0) THEN
+			INSERT INTO FSQuestion VALUES(NEW.FSQuestionName, 0);
+		END IF;
+	END;//
+	
+DELIMITER ;
+
+
 --
 -- Insert data
 
@@ -224,17 +244,17 @@ INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', "smiley");
 
 
-INSERT INTO FSQuestion VALUES ('1', 'Easy to do / Hard to do', 1);
-INSERT INTO FSQuestion VALUES ('2', 'Most fun / Least fun', 1);
-INSERT INTO FSQuestion VALUES ('3', 'Learned the most / Learned the least', 1);
-INSERT INTO FSQuestion VALUES ('4', 'Most cool / Least cool', 1);
-INSERT INTO FSQuestion VALUES ('5', 'Most boring / Least boring', 1);
+INSERT INTO FSQuestion VALUES ('Easy to do / Hard to do', 1);
+INSERT INTO FSQuestion VALUES ('Most fun / Least fun', 1);
+INSERT INTO FSQuestion VALUES ('Learned the most / Learned the least', 1);
+INSERT INTO FSQuestion VALUES ('Most cool / Least cool', 1);
+INSERT INTO FSQuestion VALUES ('Most boring / Least boring', 1);
 
-INSERT INTO Donnerunnom VALUES ('1', '1');
-INSERT INTO Donnerunnom VALUES ('1', '2');
-INSERT INTO Donnerunnom VALUES ('1', '3');
-INSERT INTO Donnerunnom VALUES ('1', '4');
-INSERT INTO Donnerunnom VALUES ('1', '5');
+INSERT INTO AssocFormFS VALUES ('1', 'Easy to do / Hard to do');
+INSERT INTO AssocFormFS VALUES ('1', 'Most fun / Least fun');
+INSERT INTO AssocFormFS VALUES ('1', 'Learned the most / Learned the least');
+INSERT INTO AssocFormFS VALUES ('1', 'Most cool / Least cool');
+INSERT INTO AssocFormFS VALUES ('1', 'Most boring / Least boring');
 -- mdp : 123456
 
 INSERT INTO PersonnalInformation VALUES ('Name', 1);

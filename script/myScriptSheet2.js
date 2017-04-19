@@ -231,9 +231,13 @@ function createPDF(event){
         doc.addImage(img, 'JPEG', 0, 0);
         doc.save('Form.pdf');
         form.width(widthPDF);
+        doc.addHTML(document.body,function() {
+            pdf.output('datauri');
+        })
 	});
 }
 
+;
 // create canvas object
 function getCanvas(){
 	//form.width((a4[0]) -80).css('max-width','none');

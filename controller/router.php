@@ -18,6 +18,7 @@ require_once File::build_path(array('controller','ControllerFSQuestion.php'));
 require_once File::build_path(array('controller','ControllerInformation.php'));
 require_once File::build_path(array('controller','ControllerPersonnalInformation.php'));
 require_once File::build_path(array('controller','ControllerAssocFormPI.php'));
+require_once File::build_path(array('controller','ControllerAssocFormFS.php'));
 
 
 

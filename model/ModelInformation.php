@@ -14,7 +14,7 @@ class ModelInformation extends Model{
         public function setInformationId($informationId){$this->informationId = $informationId;}
 
     public function getPersonnalInformationName(){return $this->personnalInformationName;}
-        public function setPersonnalInformationName($personnalInformationName){$this->personnalInformationName = $personnalInformationName;}
+        public function setPersonnalInformationName($FSQuestionId){$this->personnalInformationName = $FSQuestionId;}
         
     public function getPersonnalInformationId(){return $this->personnalInformationId;}
         public function setPersonnalInformationId($personnalInformationId){$this->personnalInformationId = $personnalInformationId;}
