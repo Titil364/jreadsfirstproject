@@ -72,9 +72,10 @@ CREATE TABLE QuestionType (
 
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
-  questionName varchar(30),
+  questionName varchar(60),
   applicationId varchar(20),
   questionTypeName varchar(20),
+  questionPre int(1),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
   FOREIGN KEY (questionTypeName) REFERENCES QuestionType(questionTypeName)
 )DEFAULT CHARSET=utf8;
@@ -235,13 +236,13 @@ INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);
 INSERT INTO Application VALUES('1Applic1', 'Boire', 'L\'alcool c\'est bon pour la santé', 1);
 INSERT INTO Application VALUES('1Applic2', 'Manger au toilette', 'Exprimez vous', 1);
 
-INSERT INTO Question VALUES('1Applic0Q1', 'Manger une banane', '1Applic0', "smiley");
-INSERT INTO Question VALUES('1Applic0Q2', 'J\'aime la merguez', '1Applic0', "thumbs");
-INSERT INTO Question VALUES('1Applic0Q3', 'Manger des choux', '1Applic0', "smiley");
-INSERT INTO Question VALUES('1Applic1Q1', 'Boire de l\'eau', '1Applic1', "smiley");
-INSERT INTO Question VALUES('1Applic1Q2', 'J\'aime la vodka', '1Applic1', "thumbs");
-INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', "textarea");
-INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', "smiley");
+INSERT INTO Question VALUES('1Applic0Q1', 'Manger une banane', '1Applic0', "smiley",1);
+INSERT INTO Question VALUES('1Applic0Q2', 'J\'aime la merguez', '1Applic0', "thumbs",1);
+INSERT INTO Question VALUES('1Applic0Q3', 'Manger des choux', '1Applic0', "smiley",1);
+INSERT INTO Question VALUES('1Applic1Q1', 'Boire de l\'eau', '1Applic1', "smiley",1);
+INSERT INTO Question VALUES('1Applic1Q2', 'J\'aime la vodka', '1Applic1', "thumbs",1);
+INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', "textarea" ,1);
+INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', "smiley" ,1);
 
 
 INSERT INTO FSQuestion VALUES ('Easy to do / Hard to do', 1);
