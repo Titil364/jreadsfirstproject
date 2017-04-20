@@ -288,7 +288,7 @@ function addQuestionPre(event, parent) {
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
-	qWrapper.setAttribute("id", questionName);
+	qWrapper.setAttribute("id", questionName+"pre");
 	qWrapper.setAttribute("class", "questionPre");
 	application.appendChild(qWrapper);
 	
@@ -305,7 +305,7 @@ function addQuestionPre(event, parent) {
 			//The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
-			inputQuestion.id= questionName+"name";
+			inputQuestion.id= questionName+"prename";
 			inputQuestion.name= questionName+"Name";
 			inputQuestion.placeholder="Do you like carrots ?";
 			questionInfoWrapper.appendChild(inputQuestion);	
@@ -366,7 +366,7 @@ function addQuestionPost(event, parent) {
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
-	qWrapper.setAttribute("id", questionName);
+	qWrapper.setAttribute("id", questionName+"post");
 	qWrapper.setAttribute("class", "questionPost");
 	application.appendChild(qWrapper);
 	
@@ -383,7 +383,7 @@ function addQuestionPost(event, parent) {
 			//The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
-			inputQuestion.id= questionName+"name";
+			inputQuestion.id= questionName+"postname";
 			inputQuestion.name= questionName+"Name";
 			inputQuestion.placeholder="Do you like carrots ?";
 			questionInfoWrapper.appendChild(inputQuestion);	
@@ -609,9 +609,9 @@ function extractData(){
 	}
 	var applications = $(".application");
 	
-		var a = [];
-		var qPre = [];
-		var qPost = [];
+	var a = [];
+	var qPre = [];
+	var qPost = [];
 		
 	for(var i = 0; i < applications.length; i++){
 		var id = applications[i].id;
@@ -631,14 +631,18 @@ function extractData(){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			return null;
 		}
-		var questionsPre = $("#"+id+" > .questionPreDiv > .questionPre");
-		console.log("questionsPre = "+questionsPre);
+		var questionsPre =  $("#"+id+" > .questionPreDiv > .questionPre");
 		for(var y = 0; y < questionsPre.length; y++){
 			//Dig out the type of the question (the radio button checked)
+			
 			
 			var idQ = questionsPre[y].id;
 			//console.log(idQ);
 			var qPreLabel = $("#"+idQ+"name").val();
+			if (qPreLabel === "") {
+                alert("At least one question has no name. Please check and add a name or delete the question");
+				return null;
+			}
 			//console.log("label pre = "+qPreLabel);
 			var qPreType = $("#"+idQ+" select").val();
 			//console.log(qType);
@@ -647,14 +651,17 @@ function extractData(){
 			qPre[i].push(new Question(idQ, qPreLabel, qPreType, qPrePre));
 		}
 		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
-		console.log("questionsPost = "+questionsPost);
 		for(var y = 0; y < questionsPost.length; y++){
 			//Dig out the type of the question (the radio button checked)
 			
 			var idQ = questionsPost[y].id;
 			//console.log(idQ);
 			var qPostLabel = $("#"+idQ+"name").val();
-			//console.log("label post = "+qPostLabel);
+			if (qPostLabel === "") {
+                alert("At least one question has no name. Please check and add a name or delete the question");
+				return null;
+			}
+			//console.log(qPostLabel);
 			var qPostType = $("#"+idQ+" select").val();
 			//console.log(qType);
 			var qPostPre = '0';
@@ -664,7 +671,6 @@ function extractData(){
 	}
 	var info = extractInformation();
 	var fs = extractFSQuestions();
-	console.log("sent to send");
 	send(formName, a, qPre, qPost, info, fs);
 }
 
@@ -673,7 +679,6 @@ function send(f, a, qPre, qPost, i, fs) {
 
 	//console.log(JSON.stringify(a));
 	//console.log(JSON.stringify(q));
-	console.log("gonna post");
 	//normalement les données seront envoyés en post
 	$.post(
 		"index.php", // url
@@ -730,6 +735,7 @@ function send(f, a, qPre, qPost, i, fs) {
 			},
 		"json" // type
 	);
+	alert("done");
 }
 
 
@@ -763,9 +769,9 @@ jQuery.fn.swap = function(b){
 
 
 function makeDraggbleQuestion(event) {
-	$( ".question" ).draggable({containment : "parent", revert: true, helper: "clone" });
+	$( ".questionPre, .questionPost" ).draggable({containment : "parent", revert: true, helper: "clone" });
 
-	$( ".question" ).droppable({
+	$( ".questionPre, .questionPost" ).droppable({
 		accept: ".question",
 		drop: function( event, ui ) {
 

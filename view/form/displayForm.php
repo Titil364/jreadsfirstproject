@@ -201,9 +201,9 @@
 	}
 	echo '</div>'; // Closing post question div
 	
-	echo "<h1>Again again table and Fun Sorter</h1>";
+	echo "<h1 class=\"fsAndAa\">Again again table and Fun Sorter</h1>";
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
-	echo"<div id=\"applications\">"; // div of all app
+	echo"<div id=\"applications\" class=\"fsAndAa\" >"; // div of all app
  ?>
 	<div id="AAtable">
 		   <p>

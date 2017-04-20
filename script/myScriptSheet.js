@@ -106,11 +106,19 @@ function getQuestionsName(a){
             "formId":JSON.stringify(a),
         },
         function(res) {
+            if (res.length ==0) {
+                var changeCss = $(".fsAndAa");
+                for (var k = 0; k <changeCss.length; k++) {
+                   // changeCss[k].style.visibility = "hidden";
+                }
+                randomizeAA();
+                return null;
+            }
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
 			
-            randomizeAA();
+            
             randomizeFS();
         },
         "json"
