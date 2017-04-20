@@ -10,6 +10,7 @@ class ControllerForm {
 			echo "ca passe pas";
             // error page
         }else{
+			$folder = $f->getUserNickname();
             $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
             
             $questionsPre_array_list = [];

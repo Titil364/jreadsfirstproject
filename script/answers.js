@@ -13,7 +13,7 @@ function extractAnswers(){
 	}
 
 	var shortcut = $(".shortcut");
-	for(var i = 0; i < info.length; i++){
+	for(var i = 0; i < shortcut.length; i++){
 		n = shortcut[i].name;
 		val = $("input[name="+n+"]:checked").val();
 		if(val === undefined | val === ""){
@@ -30,6 +30,7 @@ function extractAnswers(){
 			alert("Please answer to all the questions. aaa ");
 			return null;
 		}
+		console.log(textarea[i].name);
 		answers[textarea[i].name] = val;
 	}
 	console.log(answers);

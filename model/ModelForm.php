@@ -5,7 +5,7 @@ class ModelForm extends Model{
 
 	private $formId;
 	private $formName;
-	private $userId;
+	private $userNickname;
 	private $completedForm;
 	
     protected static $object = "Form";
@@ -17,8 +17,8 @@ class ModelForm extends Model{
     public function getFormName(){return $this->formName;}       
     public function setFormName($formName){$this->formName = $formName;}
 	
-	public function getUserId(){return $this->userId;}
-    public function setUserId($userId){$this->userId = $userId;}
+	public function getUserNickname(){return $this->userNickname;}
+    public function setUserNickname($userNickname){$this->userId = $userNickname;}
  
 
 	public function getCompletedForm(){return $this->completedForm;}
@@ -32,7 +32,7 @@ class ModelForm extends Model{
         if (!is_null($formID) && !is_null($formName) && !is_null($userId) && !is_null($completedForm)){
         	$this->formId = $formId;
         	$this->formName = $formName;
-        	$this->userId = $userId;
+        	$this->userNickname = $userId;
 			$this->completedForm = $completedForm;
         }
     }

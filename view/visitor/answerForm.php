@@ -1,3 +1,5 @@
+
+
 <main>
 	<div id="pdf">
 <?php
@@ -33,12 +35,12 @@
 			echo '<div id="Applic'.$i.'Info">'; //app info div
 				$taskName = htmlspecialchars($application_array[$i]->getApplicationName());
 				$taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
-				$img =  "media/". $application_array[$i]->getApplicationId() . ".png";
+				$img =  "media/". $folder ."/". $application_array[$i]->getApplicationId() . ".png";
 	
 				echo "<h2>$taskName</h2>";
 				echo $taskDesc;
 				if (file_exists($img)){
-					echo "<img src = $img >";              
+					echo "<img src =\"$img\" >";              
 				}
 				
 			
@@ -47,10 +49,10 @@
 	
 		
 		$question_array = $questions_array_list[$i];
-		
 	for($j=0; $j < count($question_array);$j++){
 					//displaying questions
-			echo '<div id="Applic'.$i.'Q'.$j.'" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
+				$idAppli = 'Applic'.$i.'Q'.$j;
+			echo "<div id=\"$idAppli\" class = \"question\">"; //question div, id example : "Applic0Q1" for app 0 question 1
 			echo "<h3> ";
 			echo htmlspecialchars($question_array[$j]->getQuestionName());
 			echo " </h3>";
@@ -60,6 +62,7 @@
 			$answers_array = $answers_array_list[$i][$j];
 
 			if(!is_null($answers_array[0])){
+				$name = $question_array[$j]->getQuestionId();
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
 						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\"></textarea>";
@@ -70,14 +73,14 @@
 						break;*/
 					default :
 						echo '<div class = "answerArea">';
-						$name = "Applic".$i."question".$j;
+
 						echo "<input class=\"shortcut\" type =\"radio\" name=\"$name\" style=\"display:none\">";
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
 							$questionTypeId = htmlspecialchars($question_array[$j]->getQuestionTypeName());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
-						
+
 							$id = "Applic".$i."question".$j.$answerName;
 							echo '<div>';
 							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
