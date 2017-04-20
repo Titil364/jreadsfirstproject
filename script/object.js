@@ -26,3 +26,15 @@ class QType{
 		this.type = type;
 	}
 }
+class Answer{
+	constructor(questionId, ans){
+		this.questionId = questionId;
+		this.answer = ans;
+	}
+}
+class Information{
+	constructor(persoIfoNa, info){
+		this.personnalInformationName = persoIfoNa;
+		this.informationName = info;
+	}
+}

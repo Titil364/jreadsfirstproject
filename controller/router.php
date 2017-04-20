@@ -15,6 +15,7 @@ require_once File::build_path(array('controller','ControllerQuestionType.php'));
 require_once File::build_path(array('controller','ControllerAnswerType.php'));
 require_once File::build_path(array('controller','ControllerFSQuestion.php'));
 require_once File::build_path(array('controller','ControllerVisitor.php'));
+require_once File::build_path(array('controller','ControllerAnswer.php'));
 
 require_once File::build_path(array('controller','ControllerInformation.php'));
 require_once File::build_path(array('controller','ControllerPersonnalInformation.php'));

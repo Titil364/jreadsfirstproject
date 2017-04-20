@@ -18,7 +18,6 @@ class ControllerVisitor{
 					$jscript = "answers";	
 					$visitor = true;
 					$folder = $f->getUserNickname();
-					echo "bite".$folder;
 					$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 					
 					$questions_array_list = [];

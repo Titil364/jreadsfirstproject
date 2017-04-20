@@ -106,27 +106,4 @@ class ModelVisitor extends Model{
             return false;
         }
 	}
-/* The generic model will provide this function
-	public static function findVisitorById($id){
-		try{
-			$sql  = "SELECT * FROM Visitors WHERE visitorId=:id";
-			$prep = Model::$pdo->prepare($sql);
-
-			$values = array(
-				"id" => $id,
-				);
-
-			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelVisitor');
-			$visitor_array = $prep->fetchAll();
-			
-			return $visitor_array[0];
-		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return false;
-    */
-	}
+}

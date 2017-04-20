@@ -9,7 +9,7 @@ function extractAnswers(){
 			alert("Please answer to all the personnal questions. ");
 			return null;
 		}
-		personnalInfo[info[i].name] = val;
+		personnalInfo.push(new Information(info[i].name, val));
 	}
 
 	var shortcut = $(".shortcut");
@@ -20,7 +20,7 @@ function extractAnswers(){
 			alert("Please answer to all the questions. ");
 			return null;
 		}
-		answers[n] = val;
+		answers.push(new Answer(n, val));
 	}
 	var textarea = $("textarea");
 		
@@ -30,27 +30,26 @@ function extractAnswers(){
 			alert("Please answer to all the questions. aaa ");
 			return null;
 		}
-		console.log(textarea[i].name);
-		answers[textarea[i].name] = val;
+		answers.push(new Answer(textarea[i].name, val));
 	}
-	console.log(answers);
-	console.log(answers.length);
+	
+	var f = $("div[id^=form]")[0].id.split("-")[1];
+	send(f, personnalInfo, answers);
 }
 
-function send(f, a, pi) {
+function send(f, pi, a){
+
 	$.post(
 		"index.php", // url
 		{
 			"action":"completeForm",
 			"controller":"form",
-			"form":JSON.stringify(f),
-			"answers":JSON.stringify(a),
-			"visitorInfo":JSON.stringify(pi)
+			"formId":f,
+			"visitorInfo":JSON.stringify(pi),
+			"answers":JSON.stringify(a)
 		},  //data
 		function(res){ //callback
 				console.log("Le resultat = "+res);
-					//res is supposed to send the id of the form
-					//We need this form ID to save the image
 				if(res !== false){
 						$("#submit").unbind("click", extractAnswers);
 						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					

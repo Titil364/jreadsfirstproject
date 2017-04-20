@@ -225,6 +225,30 @@ class ControllerForm {
 		}
 		require File::build_path(array('view', 'view.php'));
 	}
+	
+	public static function completeForm(){
+		
+		$answers = json_decode($_POST['answers'], true);
+		$visitorInfo = json_decode($_POST['visitorInfo'], true);
+		$formId = $_POST['formId'];
+		var_dump($answers);
+		var_dump($visitorInfo);
+		//Create the visitor
+		$visitor = array(
+			"visitorSecretName" => $visitorInfo[2]["personnalInformationName"]
+		);
+		ModelVisitor::save($visitor);
+		$id = ModelVisitor::getLastInsert();
+		
+		
+		
+		for($i = 0; $i < count($answers); $i++){
+			$ans = $answers[$i];
+			$ans['visitorId'] = $id;
+			var_dump($ans);
+			ModelAnswer::save($ans);
+		}
+	}
 
     public static function toPDF(){
         
@@ -284,7 +308,7 @@ class ControllerForm {
 
         // Set some content to print
 
-        $html =file_get_contents('http://localhost/www/tests/index.php?controller=form&action=read&id=1');
+        $html = file_get_contents('http://localhost/www/tests/index.php?controller=form&action=read&id=1');
         //echo $html;
         /*$html = <<<EOD
 

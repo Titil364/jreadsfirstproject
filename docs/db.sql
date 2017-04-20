@@ -84,6 +84,7 @@ CREATE TABLE Question (
 CREATE TABLE Answer (
    visitorId  int(11),
    questionId  varchar(20),
+   answer varchar(255),
    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
    FOREIGN KEY (questionId) REFERENCES Question(questionId),
    PRIMARY KEY (visitorId, questionId)
@@ -115,15 +116,14 @@ CREATE TABLE AnswerType (
 
 
 CREATE TABLE PersonnalInformation (
-    personnalInformationName varchar(20) PRIMARY KEY,
+    personnalInformationName varchar(30) PRIMARY KEY,
 	defaultPersonnalInformation int(1)
 )DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE Information (
-    informationId int(11) PRIMARY KEY AUTO_INCREMENT,
-    informationName varchar(20),
-    personnalInformationName varchar(20),
+    personnalInformationName varchar(30),
+    informationName varchar(30),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName)
 )DEFAULT CHARSET=utf8;
 
@@ -141,7 +141,7 @@ CREATE TABLE AssocFormPI (
 DROP TRIGGER IF EXISTS complete_form_insert;
 DROP TRIGGER IF EXISTS complete_form_delete;
 DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
-	
+DROP TRIGGER IF EXISTS insert_assoc_fs;
 	
 DELIMITER //
 
@@ -152,6 +152,8 @@ CREATE TRIGGER complete_form_insert AFTER INSERT
 	END;//
 	
 DELIMITER ;
+
+
 
 DELIMITER //
 
@@ -164,7 +166,7 @@ CREATE TRIGGER complete_form_delete AFTER DELETE
 DELIMITER ;
 
 
-DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
+
 DELIMITER //
 
 CREATE TRIGGER insert_assoc_personnal_info BEFORE INSERT
@@ -184,7 +186,8 @@ CREATE TRIGGER insert_assoc_personnal_info BEFORE INSERT
 	
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS insert_assoc_fs;
+
+
 DELIMITER //
 
 CREATE TRIGGER insert_assoc_fs BEFORE INSERT
@@ -208,6 +211,7 @@ DELIMITER ;
 --
 -- Insert data
 
+-- mdp : 123456
 INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 1);
 
 INSERT INTO QuestionType VALUES("textarea");
@@ -256,7 +260,7 @@ INSERT INTO AssocFormFS VALUES ('1', 'Most fun / Least fun');
 INSERT INTO AssocFormFS VALUES ('1', 'Learned the most / Learned the least');
 INSERT INTO AssocFormFS VALUES ('1', 'Most cool / Least cool');
 INSERT INTO AssocFormFS VALUES ('1', 'Most boring / Least boring');
--- mdp : 123456
+
 
 INSERT INTO PersonnalInformation VALUES ('Name', 1);
 INSERT INTO PersonnalInformation VALUES ('Age', 1);
