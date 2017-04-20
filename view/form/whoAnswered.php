@@ -13,7 +13,7 @@
 	</thead>
 
 	<?php if(!isset($visitor) || count($visitor) == 0){
-		echo "<tr><td colspan=4>The form doesn't exist. </td></tr>";
+		echo "<tr><td colspan=4>Nobody has answered the form. </td></tr>";
 	}
 	else{
 //BODY

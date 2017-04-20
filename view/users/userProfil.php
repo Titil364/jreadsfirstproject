@@ -16,9 +16,8 @@
 			</p>
 		
 		</fieldset>
-<?php
-echo <<< EOT
-    <form method="POST" action="index.php">
+
+    <form method="GET" action="index.php">
         <input type='hidden' name='action' value='readAllMyForm'>
         <input type='hidden' name='controller' value='users'>
         <div class="input">
@@ -28,7 +27,4 @@ echo <<< EOT
 	<a href='index.php?action=update&controller=users'>
 		<button type="button"> Update your Account </button>	
     </a>
-
-EOT;
-?>
 </div>

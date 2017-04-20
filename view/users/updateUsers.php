@@ -37,5 +37,4 @@
 			?>
 		</p>
 	</fieldset>
-	<script src="script/myScriptSignin.js"></script>
 </form>

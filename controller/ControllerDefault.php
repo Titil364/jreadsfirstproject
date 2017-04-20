@@ -6,6 +6,7 @@ class ControllerDefault {
         $controller = 'default';
         $pagetitle = 'Welcome';
 		$stylesheet = "welcome";
+		$jscript = "welcome";
 		if(Session::is_connected()){
 			ControllerUsers::displaySelf();
 		}else{

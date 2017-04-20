@@ -5,6 +5,7 @@ class ControllerForm {
     public static function read(){
 		$formId = $_GET['id'];
         $f = ModelForm::select($formId);
+		$jscript = "myScriptSheet";
         if (!$f){
 			echo "ca passe pas";
             // error page
@@ -155,8 +156,8 @@ class ControllerForm {
 		
 	}
 	public static function displaySheet2(){
-		$controller ='form';
 		$view = 'sheet2View';
+		$controller ='form';
 		$pagetitle='Sheet 2';
 		
 		

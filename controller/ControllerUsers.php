@@ -18,6 +18,7 @@ class ControllerUsers {
         $view = 'updateUsers';
         $controller = 'users';
         $pagetitle = 'Sign in';
+		$jscript = "myScriptSignin";
 		$create = true;
 		$data = array(
 				"userNickname" => null,
@@ -61,6 +62,7 @@ class ControllerUsers {
             $view = 'updateUsers';
             $pagetitle = 'Update';
             $controller = 'users';
+			$jscript = "myScriptSignin";
 			$create	= false; 
 			
 			$data = array(
@@ -73,14 +75,7 @@ class ControllerUsers {
 			
 
 			require File::build_path(array('view', 'view.php'));
-			/*
-            $data = array(
-                "nickName" => htmlspecialchars($information['nickname']),
-                "fName" => htmlspecialchars($information['firstName']),
-                "lName" => htmlspecialchars($information['lastName']),
-                "mail"  => htmlspecialchars($information['mail'])
-            );
-            require File::build_path(array('view', 'view.php'));*/
+
 		} else {
 		//echo "pas connecté";
 

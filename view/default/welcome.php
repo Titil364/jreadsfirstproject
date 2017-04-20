@@ -26,24 +26,24 @@
 			</fieldset> 
 		</form>
 	</div>
-        <div id="visitorAccess">
-                            <h1>Welcome to the visitor interface</h1>
-                    <button class="return">Return</button>
-                    <form class="formCss" method="GET" action="index.php">
-                            <fieldset>
-                                    <legend>Please enter the form number :</legend>
-                                    <input type='hidden' name='action' value='read'>
-                                    <input type='hidden' name='controller' value='form'>
-                                    <div class="input">
-                                            <label class="input-item" for="nick_id">Form number</label>
-                                            <input class="input-field" type="text" name="id" required/>
-                                    </div>
-                                    <div>
-                                            <input class="input-field" type="submit"  value="Send"/>
-                                    </div>
-                            </fieldset> 
-                    </form>
-        </div>
+	<div id="visitorAccess">
+						<h1>Welcome to the visitor interface</h1>
+				<button class="return">Return</button>
+				<form class="formCss" method="GET" action="index.php">
+						<fieldset>
+								<legend>Please enter the form code : </legend>
+								<input type='hidden' name='action' value='read'>
+								<input type='hidden' name='controller' value='visitor'>
+								<div class="input">
+										<label class="input-item" for="nick_id">Form code : </label>
+										<input class="input-field" type="text" name="id" required/>
+								</div>
+								<div>
+										<input class="input-field" type="submit"  value="Send"/>
+								</div>
+						</fieldset> 
+				</form>
+	</div>
 	<div id="welcome">
 		<div>Are you a : </div>
 		<button id="visitor">Visitor</button>
@@ -51,6 +51,3 @@
 		<button id="user">User</button>
 	</div>
 </main>
-
-
-<script src ="script/welcome.js"></script>

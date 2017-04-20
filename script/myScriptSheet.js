@@ -257,9 +257,14 @@ function getFormId() {
 function init(){
     getFormId();
     getApplication(formId);
-    document.getElementById("print").addEventListener("click",makePrintable);
-
-    document.getElementById("create_pdf").addEventListener("click",createPDF);
+    var print = document.getElementById("print");
+	if(print){
+		print.addEventListener("click",makePrintable);
+	}
+	var pdf = document.getElementById("create_pdf");
+	if(pdf){
+		pdf.addEventListener("click",createPDF);
+	}
 }
 
 

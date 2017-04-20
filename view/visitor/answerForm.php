@@ -1,8 +1,5 @@
 <main>
 	<div id="pdf">
-<h1>Answer the form</h1>
-
-		   <input type ="button" id="create_pdf" value ="Create PDF">
 <?php
 
 	//opening form
@@ -60,26 +57,21 @@
 	
 			
 			$qType = $questionType_list[$i][$j]->getQuestionTypeName();
-			//var_dump($questionType_list[$i][$j]->getQuestionTypeId());
-			//$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
 			$answers_array = $answers_array_list[$i][$j];
-			//diplaying answers
-			/*
-			foreach($answers_array as $a){
-				
-			}*/
+
 			if(!is_null($answers_array[0])){
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
+						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\"></textarea>";
 						break;
 					/*case "yes" or "no":
 						echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
 						echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
 						break;*/
 					default :
-						$count = 0;
 						echo '<div class = "answerArea">';
+						$name = "Applic".$i."question".$j;
+						echo "<input class=\"shortcut\" type =\"radio\" name=\"$name\" style=\"display:none\">";
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
@@ -87,16 +79,8 @@
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
 						
 							$id = "Applic".$i."question".$j.$answerName;
-							//Le nom d'un input radio permet de lier les radio button entre eux
-							//Ainsi si le boutton 1 est coché, et que tu coches le boutton 5
-							//Le bouton 5 se coche MAIS le boutton 1 se décoche. Principe des radios buttons. 
-							$name = "Applic".$i."question".$j;
 							echo '<div>';
 							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
-							//Si tu passes par la : les label permettent de link son block à un ID grâce à l'attribut FOR
-							//et non en mettant l'attribut ID. Il faut cela dit que le FOR soit associé à l'ID de ton input
-							//Le label est de plus la pour entouré du texte ou une image, mettre le nom $answerName en dehors
-							//Ne permet pas de cocher la case en cliquant sur le texte. 
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 							echo '</div>';
 						}
@@ -114,46 +98,9 @@
 	}
 
  ?>
-	<div id="AAtable">
-		   <p>
-			   Would you like to do these activities again ? Tick a box for each ?
-		   </p>
-		   <table id="aa">
-			   <thead>
-				  <tr>
-					  <th></th>
-					  <th>Yes</th>
-					  <th>Maybe</th>
-					  <th>No</th>
-				  </tr>
-			   </thead>
-		   </table>
-	   </div>
-	   <p></p>
-	   <div id="FunSorter">
-		   <p>
-			   Write the activities in the boxes to show your preferences. The first is an example
-		   </p>
-		   <table id="fs">
-			   <thead>
-				  <tr>
-					  <th>Newest</th>
-					  <?php
-						   $i = 0;
-						   foreach($applicationTable as $value){
-							   echo "<th>".htmlspecialchars($value->getApplicationName())." : ".htmlspecialchars($alphabet[$i])."</th>";
-							   $i++;
-						   }
-					  ?>
-					  <th>Oldest</th>
-				  </tr>
-			   </thead>
-		   </table>
-	   </div>
-	   </div>
-	</div>
-	<div>
-		   <input type ="button" id="print" value="Printable">
-	   </div>
-	</div>
+ 
+   </div> <!-- applications -->
+		</div> <!-- form -->
+	</div> <!-- pdf -->
+	<input type="submit" value="Submit" id="submit">
 </main>
