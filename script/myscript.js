@@ -97,17 +97,35 @@ function addApplication(event){
 	
 	
 	//Creation of the add question button
+	var wrapQuestionPre = document.createElement("div");
+		wrapQuestionPre.setAttribute("class", "questionPreDiv");
 	var buttonQuestion = document.createElement("button");
 		buttonQuestion.setAttribute("class", "addQuestionButton");
 		buttonQuestion.type = "button";
-		buttonQuestion.value = "Add Question";
-		buttonQuestion.innerHTML = "Add a question";
-		applicationInformationWrapper.appendChild(buttonQuestion);
+		buttonQuestion.value = "Add Pre Question";
+		buttonQuestion.innerHTML = "Add a Pre question";
+		wrapQuestionPre.appendChild(buttonQuestion);
+		application.appendChild(wrapQuestionPre);
+		
+	
+	var wrapQuestionPost = document.createElement("div");
+		wrapQuestionPost.setAttribute("class", "questionPostDiv");
+	var buttonQuestionPost = document.createElement("button");
+		buttonQuestionPost.setAttribute("class", "addQuestionButton");
+		buttonQuestionPost.type = "button";
+		buttonQuestionPost.value = "Add Post Question";
+		buttonQuestionPost.innerHTML = "Add a Post question";
+		wrapQuestionPost.appendChild(buttonQuestionPost);
+		application.appendChild(wrapQuestionPost);
 		
 		    
 		//Add the event for adding the question
 			buttonQuestion.addEventListener("click", function(event){
-				addQuestion(event, application);
+				addQuestionPre(event, wrapQuestionPre);
+			});
+		//Add the event for adding the question
+			buttonQuestionPost.addEventListener("click", function(event){
+				addQuestionPost(event, wrapQuestionPost);
 			});
 	
 	nbApplication++;
@@ -256,7 +274,7 @@ function refreshQuestion(parent){
 	}
 }
 
-function addQuestion(event, parent) {
+function addQuestionPre(event, parent) {
     //console.log(button);
 	//console.log(button.parentElement);
 	
@@ -266,12 +284,12 @@ function addQuestion(event, parent) {
 		//
 	var nbQuestions = application.children.length;
 	
-	var questionName = application.id+"Q"+nbQuestions;
+	var questionName = application.parentNode.id+"Q"+nbQuestions;
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
 	qWrapper.setAttribute("id", questionName);
-	qWrapper.setAttribute("class", "question");
+	qWrapper.setAttribute("class", "questionPre");
 	application.appendChild(qWrapper);
 	
 	//Creation of the childs
@@ -280,7 +298,85 @@ function addQuestion(event, parent) {
 	var questionInfoWrapper = document.createElement("div");
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", questionName+"Name");
-			applicationNameLabel.innerHTML ="Question n°"+nbQuestions+" : ";
+			applicationNameLabel.innerHTML ="Question Pre n°"+nbQuestions+" : ";
+			questionInfoWrapper.appendChild(applicationNameLabel);
+			
+			
+			//The input of the application's name
+		var inputQuestion = document.createElement("input");
+			inputQuestion.type = "text";
+			inputQuestion.id= questionName+"name";
+			inputQuestion.name= questionName+"Name";
+			inputQuestion.placeholder="Do you like carrots ?";
+			questionInfoWrapper.appendChild(inputQuestion);	
+			
+			
+			//Creation of the remove question button
+		var removeQButton = document.createElement("button");
+			removeQButton.setAttribute("class", "removeButton");
+			removeQButton.type="button";
+			removeQButton.value= "Remove the question";
+			removeQButton.innerHTML ="Remove the question";
+			questionInfoWrapper.appendChild(removeQButton);
+			
+			//Add the event for removing the application
+				removeQButton.addEventListener("click", function(event){
+					removeMe(event, qWrapper);
+				});
+	qWrapper.appendChild(questionInfoWrapper);
+			
+	//Add evalutation choices
+	
+	
+		//Add a choice wrapper
+		var cWrapper  = document.createElement("select");
+			questionInfoWrapper.appendChild(cWrapper);
+
+		
+		for(var name in placeholders){
+		var option = document.createElement('option');
+			option.setAttribute('required', 'required');
+			option.setAttribute('value', name);
+			option.setAttribute('id', name+questionName);
+			option.innerHTML = name;
+			cWrapper.appendChild(option); 
+		}
+		
+
+		//Add the answer area (ex : the area where the smileys will be displayed)
+		var answerArea = document.createElement("div");
+			answerArea.setAttribute("class","answerArea");
+			qWrapper.appendChild(answerArea);
+
+			//add listener on radio changement
+			$(cWrapper).bind("change", answers);
+		$(cWrapper).trigger("change");
+}
+function addQuestionPost(event, parent) {
+    //console.log(button);
+	//console.log(button.parentElement);
+	
+	//Recovery of the application associated with the question (button's parent)
+		//the button is in a wrapper but we need to climb up to the application container
+	var application = parent;
+		//
+	var nbQuestions = application.children.length;
+	
+	var questionName = application.parentNode.id+"Q"+nbQuestions;
+	
+	//Creation of the question wrapper
+	var qWrapper = document.createElement("div");
+	qWrapper.setAttribute("id", questionName);
+	qWrapper.setAttribute("class", "questionPost");
+	application.appendChild(qWrapper);
+	
+	//Creation of the childs
+		
+		//The label of the question
+	var questionInfoWrapper = document.createElement("div");
+		var applicationNameLabel = document.createElement("label");
+			applicationNameLabel.setAttribute("for", questionName+"Name");
+			applicationNameLabel.innerHTML ="Question Post n°"+nbQuestions+" : ";
 			questionInfoWrapper.appendChild(applicationNameLabel);
 			
 			
@@ -514,7 +610,8 @@ function extractData(){
 	var applications = $(".application");
 	
 		var a = [];
-		var q = [];
+		var qPre = [];
+		var qPost = [];
 		
 	for(var i = 0; i < applications.length; i++){
 		var id = applications[i].id;
@@ -525,7 +622,8 @@ function extractData(){
 		var applicationImg = id+"Img";
 		//console.log("Image : "+applicationImg);
 		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
-		q.push([]);
+		qPre.push([]);
+		qPost.push([]);
 		//console.log("desc "+applicationDesc);
 		//console.log("img "+applicationImg);
 		
@@ -533,32 +631,49 @@ function extractData(){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			return null;
 		}
-		var questions = $("#"+id+" > .question");
-		for(var y = 0; y < questions.length; y++){
+		var questionsPre = $("#"+id+" > .questionPreDiv > .questionPre");
+		console.log("questionsPre = "+questionsPre);
+		for(var y = 0; y < questionsPre.length; y++){
 			//Dig out the type of the question (the radio button checked)
 			
-			var idQ = questions[y].id;
+			var idQ = questionsPre[y].id;
 			//console.log(idQ);
-			var qLabel = $("#"+idQ+"name").val();
-			//console.log(qLabel)
-			var qType = $("#"+idQ+" select").val();
+			var qPreLabel = $("#"+idQ+"name").val();
+			//console.log("label pre = "+qPreLabel);
+			var qPreType = $("#"+idQ+" select").val();
 			//console.log(qType);
+			var qPrePre = '1';
 			
-			q[i].push(new Question(idQ, qLabel, qType));
+			qPre[i].push(new Question(idQ, qPreLabel, qPreType, qPrePre));
+		}
+		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
+		console.log("questionsPost = "+questionsPost);
+		for(var y = 0; y < questionsPost.length; y++){
+			//Dig out the type of the question (the radio button checked)
+			
+			var idQ = questionsPost[y].id;
+			//console.log(idQ);
+			var qPostLabel = $("#"+idQ+"name").val();
+			//console.log("label post = "+qPostLabel);
+			var qPostType = $("#"+idQ+" select").val();
+			//console.log(qType);
+			var qPostPre = '0';
+			
+			qPost[i].push(new Question(idQ, qPostLabel, qPostType,qPostPre));
 		}
 	}
 	var info = extractInformation();
 	var fs = extractFSQuestions();
 	console.log("sent to send");
-	send(formName, a, q, info, fs);
+	send(formName, a, qPre, qPost, info, fs);
 }
 
 
-function send(f, a, q, i, fs) {
+function send(f, a, qPre, qPost, i, fs) {
 
 	//console.log(JSON.stringify(a));
 	//console.log(JSON.stringify(q));
-	//console.log(data);
+	console.log("gonna post");
 	//normalement les données seront envoyés en post
 	$.post(
 		"index.php", // url
@@ -567,7 +682,8 @@ function send(f, a, q, i, fs) {
 			"controller":"form",
 			"form":JSON.stringify(f),
 			"applications":JSON.stringify(a),
-			"questions":JSON.stringify(q),
+			"questionsPre":JSON.stringify(qPre),
+			"questionsPost":JSON.stringify(qPost),
 			"information":JSON.stringify(i),
 			"FSQuestions":JSON.stringify(fs)
 		},  //data
@@ -603,8 +719,8 @@ function send(f, a, q, i, fs) {
 									}   
 								});  
 						}
-						alert("The form has been successfully registered ! (You will be redirected)");
-						$("#submit").unbind("click", extractData);
+						//alert("The form has been successfully registered ! (You will be redirected)");
+						//$("#submit").unbind("click", extractData);
 						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
 					
@@ -859,7 +975,6 @@ function init(){
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
-	document.getElementById("saveQuestion").addEventListener("click",extractFSQuestions);
 }
 
 

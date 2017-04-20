@@ -7,6 +7,7 @@ class ModelQuestion extends Model{
 	private $questionName;
 	private $applicationId;
 	private $questionTypeName;
+	private $questionPre;
 	
     protected static $object = "Question";
     protected static $primary = "questionId";
@@ -23,15 +24,19 @@ class ModelQuestion extends Model{
     public function getQuestionTypeName(){return $this->questionTypeName;}
 	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
 
+	public function getQuestionPre(){return $this->questionPre;}
+	public function setQuestionPre($questionPre){$this->questionPre = $questionPre;}
 
 
 
-    public function __construct($questionId = NULL, $questionName = NULL, $applicationId=  NULL, $questionTypeName = NULL){
-        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeName)) {
+
+    public function __construct($questionId = NULL, $questionName = NULL, $applicationId=  NULL, $questionTypeName = NULL, $questionPre = NULL){
+        if (!is_null($questionId) && !is_null($questionName) && !is_null($applicationId)&& !is_null($questionTypeName)&& !is_null($questionPre)) {
         	$this->questionId = $questionId;
         	$this->questionName = $questionName;
         	$this->applicationId = $applicationId;
-                $this->questionTypeName = $questionTypeName;
+            $this->questionTypeName = $questionTypeName;
+			$this->questionPre = $questionPre;
 
         }
     }
@@ -43,6 +48,33 @@ class ModelQuestion extends Model{
                         
 			$values = array(
 				"id" => $id
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestion');
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+    }
+	
+	public static function getQuestionByApplicationIdAndPre($id, $pre){
+		try{
+			$sql  = "SELECT * FROM Question WHERE applicationId=:id AND questionPre=:pre";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"id" => $id,
+				"pre" => $pre
 				);
                         
 			$prep-> execute($values);
