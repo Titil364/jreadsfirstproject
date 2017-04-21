@@ -68,8 +68,35 @@ main{
 }
 
 .answerArea{
+	display: flex;
+	text-align: center;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	
+}
+
+.answerArea >div{
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    margin:10px;
+}
+
+.answerIcon{
+	margin-left: auto;
+	margin-right: auto;
+	height: 60px;
+	width: 60px;
+}
+
+.answerArea >div>label{
+	 
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.answerArea>div>input{
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .field{
@@ -79,18 +106,11 @@ main{
 	margin:5px;
 }
 
-.answerIcon{
-	width:16px;
-	height:16px;
-}
 .imgDisplayer{
 	max-width: 96px;
 	max-height: 80px;
 	float: right;
 	margin: 0 0 10px 10px;
-}
-.question div > *{
-	display:inline;
 }
 
 #signIn{
