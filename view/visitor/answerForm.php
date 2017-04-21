@@ -78,7 +78,7 @@
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
-							$questionTypeId = htmlspecialchars($question_array[$j]->getQuestionTypeName());
+							$questionTypeId = htmlspecialchars($question_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
 
 							$id = "Applic".$i."question".$j.$answerName;
