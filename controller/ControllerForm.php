@@ -44,12 +44,11 @@ class ControllerForm {
                 array_push($questionTypePre_list, []);
                 
                 for($j=0; $j < count($questions_arrayFromModel);$j++){
-					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeName());
-										
-                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionTypeName($qType->getQuestionTypeName());
-                    
+					
+					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
                     array_push($answersPre_array_list[$i], $answersPre_array);
-                    array_push($questionTypePre_list[$i], $qType);  
+                    array_push($questionTypePre_list[$i], $qType);
                 }                
             }
 			
@@ -63,9 +62,9 @@ class ControllerForm {
                 array_push($questionTypePost_list, []);
                 
                 for($j=0; $j < count($questions_arrayFromModel);$j++){
-					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeName());
+					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
 										
-                    $answersPost_array = ModelAnswerType::getAnswerTypeByQuestionTypeName($qType->getQuestionTypeName());
+                    $answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
                     
                     array_push($answersPost_array_list[$i], $answersPost_array);
                     array_push($questionTypePost_list[$i], $qType);  
@@ -95,7 +94,7 @@ class ControllerForm {
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
 			$qPre = json_decode($_POST["questionsPre"], true);
-			var_dump($qPre);
+			//var_dump($qPre);
 			$qPost = json_decode($_POST["questionsPost"], true);
 			$info = json_decode($_POST["information"], true);
 			$fs = json_decode($_POST["FSQuestions"], true);
@@ -132,7 +131,7 @@ class ControllerForm {
 							"questionId" => $form['formId'] . $qPre[$i][$y]["id"],
 							"questionName" => $qPre[$i][$y]["label"],
 							"applicationId" => $application["applicationId"],
-							"questionTypeName" => $qPre[$i][$y]["type"],
+							"questionTypeId" => $qPre[$i][$y]["type"],
 							"questionPre" => $qPre[$i][$y]["pre"]
 						);
 						if(!ModelQuestion::save($question)){
@@ -148,7 +147,7 @@ class ControllerForm {
 							"questionId" => $form['formId'] . $qPost[$i][$y]["id"],
 							"questionName" => $qPost[$i][$y]["label"],
 							"applicationId" => $application["applicationId"],
-							"questionTypeName" => $qPost[$i][$y]["type"],
+							"questionTypeId" => $qPost[$i][$y]["type"],
 							"questionPre" => $qPost[$i][$y]["pre"]
 						);
 						if(!ModelQuestion::save($question)){

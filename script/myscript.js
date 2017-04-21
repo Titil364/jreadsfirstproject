@@ -3,6 +3,7 @@ var nbApplication = 0;
 var placeholders;
 var predefInformation;
 var fsquestions;
+var qType = [];
 
 function addApplication(event){
 	//Recovery of the container
@@ -646,9 +647,8 @@ function extractData(){
 			//console.log("label pre = "+qPreLabel);
 			var qPreType = $("#"+idQ+" select").val();
 			//console.log(qType);
-			var qPrePre = '1';
 			
-			qPre[i].push(new Question(idQ, qPreLabel, qPreType, qPrePre));
+			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1));
 		}
 		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
 		for(var y = 0; y < questionsPost.length; y++){
@@ -664,9 +664,8 @@ function extractData(){
 			//console.log(qPostLabel);
 			var qPostType = $("#"+idQ+" select").val();
 			//console.log(qType);
-			var qPostPre = '0';
 			
-			qPost[i].push(new Question(idQ, qPostLabel, qPostType,qPostPre));
+			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0));
 		}
 	}
 	var info = extractInformation();
@@ -724,8 +723,8 @@ function send(f, a, qPre, qPost, i, fs) {
 									}   
 								});  
 						}
-						//alert("The form has been successfully registered ! (You will be redirected)");
-						//$("#submit").unbind("click", extractData);
+						alert("The form has been successfully registered ! (You will be redirected)");
+						$("#submit").unbind("click", extractData);
 						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
 					
@@ -735,7 +734,7 @@ function send(f, a, qPre, qPost, i, fs) {
 			},
 		"json" // type
 	);
-	alert("done");
+	//alert("done");
 }
 
 
@@ -834,6 +833,9 @@ function answersPlaceholder(){
 		},  //data
 		function(res){ //callback
 				placeholders = res;
+				for(var key in placeholders){
+					qType[key] = placeholders[key][0]["questionTypeId"];
+				}
 			},
 		"json" // type
 	);

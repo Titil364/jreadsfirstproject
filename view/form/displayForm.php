@@ -57,9 +57,7 @@
 			echo "<h3> ";
 			echo htmlspecialchars($questionPre_array[$j]->getQuestionName());
 			echo " </h3>";
-	
-			
-			$qType = $questionTypePre_list[$i][$j]->getQuestionTypeName();
+			$qType = $questionTypePre_list[$i][$j];
 			//var_dump($questionType_list[$i][$j]->getQuestionTypeId());
 			//$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
 			$answers_array = $answersPre_array_list[$i][$j];
@@ -83,7 +81,7 @@
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
-							$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeName());
+							$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
 						
 							$id = "Applic".$i."question".$j.$answerName;

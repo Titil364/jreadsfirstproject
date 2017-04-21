@@ -3,39 +3,47 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelQuestionType extends Model{
 
-
+	private $questionTypeId;
 	private $questionTypeName;
+	private $userNickname;
 	
     protected static $object = "QuestionType";
-    protected static $primary = "questionTypeName";
+    protected static $primary = "questionTypeId";
 	
 
 
-    public function getQuestionTypeName(){return $this->questionTypeName;} 
+    public function getQuestionTypeId(){return $this->questionTypeId;} 
+	public function setQuestionTypeId($questionTypeId){$this->questionTypeId = $questionTypeId;}
+	
+	public function getQuestionTypeName(){return $this->questionTypeName;} 
 	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
 	
+	public function getUserNickname(){return $this->userNickname;} 
+	public function setUserNickname($userNickname){$this->userNickname = $userNickname;}
 
 
-    public function __construct($qn = NULL){
+    public function __construct($qid = NULL, $qn = NULL, $u = NULL){
         if (!is_null($qn)) {
+        	$this->questionTypeId = $qid;
         	$this->questionTypeName = $qn;
+        	$this->userNickname = $u;
         }
     }
+	
 	//FAUX TO FIX
-	public static function getQuestionTypeByName($name){
+	public static function getQuestionTypeForUser($user){
 		try{
-			$sql  = "SELECT questionTypeId FROM QuestionType WHERE questionTypeName=:name";
+			$sql  = "SELECT * FROM QuestionType WHERE userNickname=:u OR userNickname IS NULL;";
 			$prep = Model::$pdo->prepare($sql);
-
 			$values = array(
-				"name" => $name,
+				"u" => $user
 				);
 
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
 
 			
-			return $prep->fetchAll()[0];
+			return $prep->fetchAll();
 
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
@@ -46,5 +54,6 @@ class ModelQuestionType extends Model{
             return false;
         }
 	}
+	
 }
 

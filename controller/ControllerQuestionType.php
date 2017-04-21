@@ -6,13 +6,12 @@ class ControllerQuestionType {
 
 	public static function answersPlaceholder(){
 		
-		$questionType = ModelQuestionType::selectAll();
+		$questionType = ModelQuestionType::getQuestionTypeForUser($_SESSION["nickname"]);
 		$placeholders = array();
 		foreach($questionType as $q){
 			$name = $q->getQuestionTypeName();
-			$placeholders[$name] = ModelAnswerType::getAnswerTypeByQuestionTypeName($name);
+			$placeholders[$name] = ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId());
 		}
-		//var_dump($placeholders);
 	
 		echo json_encode($placeholders);
 	}

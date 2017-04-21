@@ -6,7 +6,7 @@ class ModelAnswerType extends Model{
 	private $answerTypeId;
 	private $answerTypeName;
 	private $answerTypeImage;
-	private $questionTypeName;
+	private $questionTypeId;
 	
     protected static $object = "AnswerType";
     protected static $primary = "answerTypeId";
@@ -20,8 +20,8 @@ class ModelAnswerType extends Model{
     public function getAnswerTypeName(){return $this->answerTypeName;} 
         public function setAnswerTypeName($answerTypeName){$this->answerTypeName = $answerTypeName;}    
 
-    public function getQuestionTypeName(){return $this->questionTypeName;}    
-	public function setQuestionTypeName($questionTypeName){$this->questionTypeName = $questionTypeName;}
+    public function getQuestionTypeId(){return $this->questionTypeId;}    
+	public function setQuestionTypeId($questionTypeId){$this->questionTypeId = $questionTypeId;}
 
 
 	
@@ -32,15 +32,14 @@ class ModelAnswerType extends Model{
         	$this->answerTypeId = $atId;
         	$this->answerTypeImage = $atIm;
                 $this->answerTypeName = $atN;
-                $this->questionTypeName = $qtId;
+                $this->questionTypeId = $qtId;
         }
     }
 
-    public static function getAnswerTypeByQuestionTypeName($id){
+    public static function getAnswerTypeByQuestionId($id){
 		try{
-			$sql  = "SELECT * FROM AnswerType WHERE questionTypeName=:id";
+			$sql  = "SELECT * FROM AnswerType WHERE questionTypeId=:id";
 			$prep = Model::$pdo->prepare($sql);
-                        
 			$values = array(
 				"id" => $id
 				);
