@@ -106,7 +106,8 @@ class ControllerForm {
 			$form = array(
 						"formName" => json_decode($_POST["form"], true),
 						"userNickname" => $userNickname,
-						"completedForm" => 0		
+						"completedForm" => 0,
+						"fillable" => -1
 					);
 			//ModelForm::beginTransaction();
 			//var_dump($form);
@@ -319,5 +320,26 @@ class ControllerForm {
         //Close and output PDF document
         $pdf->Output('form.pdf', 'I');
     }
+	
+	public static function changeFillable(){
+		if(Session::is_connected()){
+			$form = json_decode($_POST["form"], true);
+			$newFill = json_decode($_POST["newFill"], true);
+			
+			$selectForm = ModelForm::select($form);
+			var_dump($selectForm);
+			$selectForm->setFillable($newFill);
+			var_dump($selectForm);
+			$form = array(
+						"formId" => $selectForm->getFormId(),
+						"formName" => $selectForm->getFormName(),
+						"userNickname" => $selectForm->getUserNickname(),
+						"completedForm" => $selectForm->getCompletedForm(),
+						"fillable" => $selectForm->getFillable()
+					);
+			ModelForm::update($form);
+		}
+	}
+			
 }
 ?>
