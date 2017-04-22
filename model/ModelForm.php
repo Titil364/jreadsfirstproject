@@ -7,6 +7,7 @@ class ModelForm extends Model{
 	private $formName;
 	private $userNickname;
 	private $completedForm;
+	private $fillable;
 	
     protected static $object = "Form";
     protected static $primary = 'formId';
@@ -20,20 +21,22 @@ class ModelForm extends Model{
 	public function getUserNickname(){return $this->userNickname;}
     public function setUserNickname($userNickname){$this->userId = $userNickname;}
  
-
 	public function getCompletedForm(){return $this->completedForm;}
 
+	public function getFillable(){return $this->fillable;}
+	public function setFillable($fillable){$this->fillable = $fillable;}
 
 
 
 
 
-    public function __construct( $formID = NULL, $formName = NULL, $userId = NULL, $completedForm = NULL) {
-        if (!is_null($formID) && !is_null($formName) && !is_null($userId) && !is_null($completedForm)){
+    public function __construct( $formID = NULL, $formName = NULL, $userId = NULL, $completedForm = NULL, $fillable = NULL) {
+        if (!is_null($formID) && !is_null($formName) && !is_null($userId) && !is_null($completedForm)&& !is_null($fillable)){
         	$this->formId = $formId;
         	$this->formName = $formName;
         	$this->userNickname = $userId;
 			$this->completedForm = $completedForm;
+			$this->fillable = $fillable;
         }
     }
 
@@ -86,6 +89,5 @@ class ModelForm extends Model{
             return false;
         }
 	}
-
 }
 

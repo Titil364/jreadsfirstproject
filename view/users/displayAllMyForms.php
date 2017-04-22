@@ -10,6 +10,7 @@
            <th>Number of form completed</th>
 		   <th></th>
 		   <th>Who answered ?</th>
+		   <th>State </th>
        </tr>
 	</thead>
 
@@ -25,6 +26,19 @@
 			$secureNbCompletedForm = htmlspecialchars($f->getCompletedForm());
 			
 			$protectedId = rawurlencode($f->getFormId());
+			$fillable = htmlspecialchars($f->getFillable());
+			
+			switch ($fillable){
+				case -1:
+					$fillWrite = "Nothing available";
+					break;
+				case 0:
+					$fillWrite = "PreForm available";
+					break;
+				case 1:
+					$fillWrite = "PostForm available";
+					break;
+			}
 			
 			echo "<tr>";
 				echo "<td>$secureId</td>";
@@ -32,6 +46,7 @@
 				echo "<td>$secureNbCompletedForm</td>";
 				echo "<td><a href=\"index.php?controller=form&action=read&id=$protectedId\" >See the form</a></td>";
 				echo "<td><a href=\"index.php?controller=form&action=whoAnswered&id=$protectedId\" >Answers</a></td>";
+				echo "<td>".$fillWrite."</td>";
 			echo "</tr>";
 		}
 		

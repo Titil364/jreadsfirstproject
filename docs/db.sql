@@ -44,6 +44,7 @@ CREATE TABLE Form (
   formName varchar(20),
   userNickname varchar (20),
   completedForm int(11),
+  fillable int(1),
   FOREIGN KEY (userNickname) REFERENCES Users(userNickname)
 )DEFAULT CHARSET=utf8;
 
@@ -77,7 +78,7 @@ CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
   questionName varchar(60),
   applicationId varchar(20),
-  questionTypeId varchar(20),
+  questionTypeId int(20),
   questionPre int(1),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
   FOREIGN KEY (questionTypeId) REFERENCES QuestionType(questionTypeId)
@@ -113,7 +114,7 @@ CREATE TABLE AnswerType (
     answerTypeId int(11) PRIMARY KEY AUTO_INCREMENT,
     answerTypeName varchar(20),
     answerTypeImage varchar(20),
-    questionTypeId varchar(20),
+    questionTypeId int(20),
     FOREIGN KEY (questionTypeId) REFERENCES QuestionType(questionTypeId)
 )DEFAULT CHARSET=utf8;
 
@@ -236,7 +237,7 @@ INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 3);
 INSERT INTO AnswerType VALUES(12, "yes", "", 4);
 INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
-INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0);
+INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0, -1);
 
 
 INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);
