@@ -225,7 +225,7 @@ class ControllerForm {
 		
 
 		if(Session::is_connected()){
-			$visitor = ModelForm::getVisitorsByFormId($formId);			
+			$visitor = ModelForm::getVisitorsByFormId($formId);
 		}
 		require File::build_path(array('view', 'view.php'));
 	}

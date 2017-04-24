@@ -3,28 +3,51 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelInformation extends Model{
 
-	private $informationId;
+	private $personnalInformationName;
 	private $informationName;
-        private $personnalInformationId;
+	private $visitorId;
 	
     protected static $object = "Information";
-    protected static $primary = "informationId";
+    protected static $primary = "presonnalInformationName";
     
-    public function getInformationId(){return $this->InformationId;}
-        public function setInformationId($informationId){$this->informationId = $informationId;}
-
     public function getPersonnalInformationName(){return $this->personnalInformationName;}
-        public function setPersonnalInformationName($FSQuestionId){$this->personnalInformationName = $FSQuestionId;}
+        public function setInformationId($personnalInformationName){$this->informationId = $personnalInformationName;}
+
+    public function getInformationName(){return $this->informationName;}
+        public function setInformationName($informationName){$this->informationName = $informationName;}
         
-    public function getPersonnalInformationId(){return $this->personnalInformationId;}
-        public function setPersonnalInformationId($personnalInformationId){$this->personnalInformationId = $personnalInformationId;}
+    public function getVisitorId(){return $this->visitorId;}
+        public function setVisitorId($visitorId){$this->visitorId = $visitorId;}
 
 
-    public function __construct($informationId = NULL,$informationName  = NULL, $personnalInformationId = NULL){
-        if (!is_null($informationId) && !is_null($informationName) && !is_null($personnalInformationId)) {
-        	$this->informationId = $informationId;
+    public function __construct($personnalInformationName = NULL,$informationName  = NULL, $visitorId = NULL){
+        if (!is_null($personnalInformationName) && !is_null($informationName) && !is_null($visitorId)) {
+        	$this->personnalInformationName = $personnalInformationName;
         	$this->informationName = $informationName;
-                $this->personnalInformationId = $personnalInformationId;
+            $this->visitorId = $visitorId;
         }
     }
+	
+	public static function getInformationByVisitorId($visitorId){
+		try{
+			$sql = "Select * From Information Where Information.visitorId=:visitorId";
+			$prep = Model::$pdo->prepare($sql);
+
+			$values = array(
+				"visitorId" => $visitorId,
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS, 'ModelInformation');
+			
+			return $prep->fetchAll();
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }

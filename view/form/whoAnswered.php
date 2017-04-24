@@ -3,35 +3,50 @@
 	<table>
 	<caption>All my delicious answers</caption>
 
-	<thead>
-       <tr>
-           <th>Visitor Id</th>
-           <th>Secret Name</th>
-           <th>Code POST</th>
-		   <th>Ble</th>
-       </tr>
-	</thead>
+	
+<?php
+	
+	
+?>
 
-	<?php $Ble = "doux";
+	<?php 
 	
 	if(!isset($visitor) || count($visitor) == 0){
 		echo "<tr><td colspan=4>Nobody has answered the form. </td></tr>";
 	}
 	else{
 //BODY
+		
+		
+		$date = ModelDateComplete::getDateByVisitorAndForm("4",$formId);
+		$datePre = $date[0]->getDateCompletePre();
+		$questions = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+		$array = array();
+		$i = 0;
+		echo "<thead>";
+		echo "<tr>";
+		echo "<td>Date Completed</td>";
+		foreach($questions as $q){
+			echo "<td>".$q->getPersonnalInformationName()."</td>";
+			$array[$i] = $q->getPersonnalInformationName();
+			$i++;
+		}
+		echo "<td>See</td>";
+		echo "</thead>";
+		echo "</tr>";
 		echo "<tbody>";
 		foreach($visitor as $f){
-			$secureId = htmlspecialchars($f->getVisitorId());
-			$secureName = htmlspecialchars($f->getVisitorSecretName());
-			$codeForm = htmlspecialchars($Ble);
-			
-
-			
 			echo "<tr>";
-				echo "<td>$secureId</td>";
-				echo "<td>$secureName</td>";
-				echo "<td>$codeForm</td>";
-				echo "<td>Ble</td>";
+			$date = ModelDateComplete::getDateByVisitorAndForm($f->getVisitorId(),$formId);
+			echo "<td>".$date[0]->getDateCompletePre()."</td>";
+			$information = ModelInformation::getInformationByVisitorId($f->getVisitorId());
+			//var_dump($information);
+			$j=0;
+			foreach($information as $a){
+				$secure = htmlspecialchars ($a->getInformationName());
+				echo "<td>$secure</td>";
+			}
+			echo "<td></td>";
 			echo "</tr>";
 		}
 		

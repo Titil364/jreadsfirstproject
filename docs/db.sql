@@ -240,7 +240,7 @@ INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 3);
 INSERT INTO AnswerType VALUES(12, "yes", "", 4);
 INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
-INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0, -1);
+INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0, 0);
 
 
 INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);
