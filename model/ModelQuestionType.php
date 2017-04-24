@@ -23,7 +23,7 @@ class ModelQuestionType extends Model{
 
 
     public function __construct($qid = NULL, $qn = NULL, $u = NULL){
-        if (!is_null($qn)) {
+        if (!is_null($qid) && !is_null($qn)&& !is_null($u)){
         	$this->questionTypeId = $qid;
         	$this->questionTypeName = $qn;
         	$this->userNickname = $u;

@@ -12,7 +12,9 @@
        </tr>
 	</thead>
 
-	<?php if(!isset($visitor) || count($visitor) == 0){
+	<?php $Ble = "doux";
+	
+	if(!isset($visitor) || count($visitor) == 0){
 		echo "<tr><td colspan=4>Nobody has answered the form. </td></tr>";
 	}
 	else{
@@ -21,9 +23,9 @@
 		foreach($visitor as $f){
 			$secureId = htmlspecialchars($f->getVisitorId());
 			$secureName = htmlspecialchars($f->getVisitorSecretName());
-			$codeForm = htmlspecialchars(Ble);
+			$codeForm = htmlspecialchars($Ble);
 			
-			$protectedId = rawurlencode($f->getFormId());
+
 			
 			echo "<tr>";
 				echo "<td>$secureId</td>";

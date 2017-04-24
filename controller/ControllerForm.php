@@ -1,5 +1,9 @@
 <?php
 require_once File::build_path(array('model', 'ModelForm.php'));
+
+require_once File::build_path(array('model', 'ModelDateComplete.php'));
+
+
 class ControllerForm {
     
     public static function read(){
@@ -7,7 +11,7 @@ class ControllerForm {
         $f = ModelForm::select($formId);
 		$jscript = "myScriptSheet";
         if (!$f){
-			echo "ca passe pas";
+			echo "Error the form doesn't exist. ";
             // error page
         }else{
 			$folder = $f->getUserNickname();
@@ -229,24 +233,50 @@ class ControllerForm {
 	public static function completeForm(){
 		
 		$answers = json_decode($_POST['answers'], true);
-		$visitorInfo = json_decode($_POST['visitorInfo'], true);
 		$formId = $_POST['formId'];
-		var_dump($answers);
-		var_dump($visitorInfo);
+		$f = ModelForm::select($formId);
+		//var_dump($answers);
+
+		
+		if($f->getFillable() == 0){
+
 		//Create the visitor
-		$visitor = array(
-			"visitorSecretName" => $visitorInfo[2]["personnalInformationName"]
-		);
-		ModelVisitor::save($visitor);
-		$id = ModelVisitor::getLastInsert();
-		
-		
+			$visitorInfo = json_decode($_POST['visitorInfo'], true);
+			var_dump($visitorInfo);
+			$visitor = array(
+				"visitorSecretName" => $visitorInfo[2]["informationName"]
+			);
+			ModelVisitor::save($visitor);
+			$id = ModelVisitor::getLastInsert();
+			
+			foreach($visitorInfo as $f){
+				$f["visitorId"] = $id;
+				ModelInformation::save($f);
+			}
+			
+			$date = array(
+				"dateCompletePre" => date('Y/m/d H:i:s'),
+				"visitorId" => $id,
+				"formId" => $formId
+			);
+			//var_dump($date);
+			//ModelDateComplete::save($date);
+		}
+		else{
+			$date = array(
+				"dateCompletePost" => date('Y/m/d H:i:s'),
+				"visitorId" => $id,
+				"formId" => $formId
+			);
+			//var_dump($date);
+			ModelDateComplete::update($date);
+		}
 		
 		for($i = 0; $i < count($answers); $i++){
 			$ans = $answers[$i];
 			$ans['visitorId'] = $id;
-			var_dump($ans);
-			ModelAnswer::save($ans);
+			//var_dump($ans);
+			//ModelAnswer::save($ans);
 		}
 	}
 
