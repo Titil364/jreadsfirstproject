@@ -335,6 +335,7 @@ function addQuestionPre(event, parent) {
 
 		
 		for(var name in placeholders){
+
 		var option = document.createElement('option');
 			option.setAttribute('required', 'required');
 			option.setAttribute('value', name);
@@ -433,13 +434,46 @@ function addQuestionPost(event, parent) {
 }
 
 function answers(event){
-	var id = event.target.parentElement.parentElement.id;
+
+	var id = event.target.parentElement.parentElement.id; 
 	var folder = "media/";
 	var ext = ".png";
 	var answerArea = $("#"+id+" .answerArea")[0];
 	answerArea.innerHTML = "";
-	//console.log(id);
 	var questionType = placeholders[event.target.value];
+
+	var questFirstPart = $(answerArea.parentNode).find(":first-child")[0]; //getting first part of the question (with title..)
+	//console.log($(answerArea.parentNode).find(":first-child")[0]);
+
+	//deleting previous custom checkbox if it exists
+	var checkbox = $(answerArea.parentNode).find(".divCheckbox"); // deleting checkbox if it exists
+	for (var i = checkbox.length - 1; i>=0; i-- ){
+			checkbox[i].parentNode.removeChild(checkbox[i]);
+
+	}
+
+	if(questionType[0].questionTypeId == 2 || questionType[0].questionTypeId == 3){ // smiley or thumbs case
+		//parent = 
+		var div  = document.createElement('div');		//create div for custom fields
+		div.setAttribute('class', 'divCheckbox');
+		questFirstPart.appendChild(div);
+
+		var label = document.createElement("label");
+			label.setAttribute("for", ""); //not yet id (waiting to decide for checkbox id format)
+			label.innerHTML ="custom : ";
+			div.appendChild(label);
+
+		var customCheckbox = document.createElement('input');
+		customCheckbox.setAttribute('type', 'checkbox');
+		div.appendChild(customCheckbox);
+
+		$(customCheckbox).on('change',function(){customQuestion(customCheckbox, answerArea);}); //eventListener on (un)check
+
+	}
+				
+		
+
+
 	for(var ans in questionType){
 		if(questionType[ans]["answerTypeImage"] !== "")
 			makeLabelImage(questionType[ans]["answerTypeName"],id,folder+questionType[ans]["answerTypeImage"]+ext, answerArea);
@@ -466,6 +500,60 @@ function answers(event){
 			makeInputImage("thumbs5",id,"media/thumb5image.png", answerArea);
 			break;
 	}*/
+}
+
+function customQuestion(customCheckbox, answerArea){
+	if ($(customCheckbox).is(':checked'))  { // ------- CHECKED
+
+		div = customCheckbox.parentNode; 
+
+
+		var subdiv = document.createElement("div");
+		subdiv.setAttribute("class","divCustomTitle");
+
+		var label = document.createElement("label"); //aski,ng yser for custom field title
+		label.setAttribute("for", ""); 
+		label.innerHTML ="Title : ";
+		subdiv.appendChild(label);
+
+		var name = document.createElement('input'); 
+		name.setAttribute("class","customCheckboxName");
+		subdiv.appendChild(name);
+
+		div.appendChild(subdiv);
+
+
+		var answerAreadivs = $(answerArea).find("div"); //finding answers div
+		console.log(answerAreadivs);
+		for (var i = 0; i<answerAreadivs.length; i++ ){ //for each one
+			var span = $(answerAreadivs[i]).find("span")[0];	//finding the span of title
+
+			var customField = document.createElement('input'); //creating a input field
+			customField.setAttribute("class","customField");
+			customField.setAttribute("id","custom"+ span.id);
+			answerAreadivs[i].appendChild(customField);
+
+			span.style.visibility = "collapse";		//collapsing title
+
+		}
+
+
+	}else{									// ------- UNCHECKED
+
+		div = customCheckbox.parentNode; 
+
+		var titleToDelete = $(div).find(".divCustomTitle")[0]; //deleting title div
+		titleToDelete.parentNode.removeChild(titleToDelete);
+
+		var spanList = $(answerArea).find("span");		//setting title visibility back
+		for (var i = 0; i<spanList.length; i++ ){
+			spanList[i].style.visibility = "visible";
+		}
+		var inputList = $(answerArea).find("input");	//deleting input fields
+		for (var i = inputList.length - 1; i>=0; i-- ){
+			inputList[i].parentNode.removeChild(inputList[i]);
+		}
+	}
 }
 function addField(event){
     
@@ -535,6 +623,7 @@ function makeInputImage(name, value, imageAdr, parent){
 }
 
 function makeLabelImage(name, value, imageAdr, parent){
+
 	var id = value+name;
 	
 	var label = document.createElement("label");

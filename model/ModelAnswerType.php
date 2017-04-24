@@ -31,8 +31,8 @@ class ModelAnswerType extends Model{
         if (!is_null($atId) && !is_null($atIm) && !is_null($atN) && !is_null($qtId)) {
         	$this->answerTypeId = $atId;
         	$this->answerTypeImage = $atIm;
-                $this->answerTypeName = $atN;
-                $this->questionTypeId = $qtId;
+			$this->answerTypeName = $atN;
+			$this->questionTypeId = $qtId;
         }
     }
 

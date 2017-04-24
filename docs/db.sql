@@ -30,7 +30,7 @@ CREATE TABLE Users (
 
 
 CREATE TABLE Visitor (
-  visitorId int(11) PRIMARY KEY AUTO_INCREMENT,
+  visitorId int(20) PRIMARY KEY AUTO_INCREMENT,
   visitorGroupId int(11),
   visitorSecretName varchar(20),
   visitorSchool varchar(20),
@@ -49,8 +49,9 @@ CREATE TABLE Form (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE DateComplete (
-  dateComplete varchar(11),
-  visitorId int(11),
+  dateCompletePre varchar(19),
+  dateCompletePost varchar(19),
+  visitorId int(20),
   formId int(11),
   PRIMARY KEY (visitorId, formId),
   FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
@@ -86,7 +87,7 @@ CREATE TABLE Question (
 
 
 CREATE TABLE Answer (
-   visitorId  int(11),
+   visitorId  int(20),
    questionId  varchar(20),
    answer varchar(255),
    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
@@ -128,7 +129,9 @@ CREATE TABLE PersonnalInformation (
 CREATE TABLE Information (
     personnalInformationName varchar(30),
     informationName varchar(30),
-    FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName)
+	visitorId int(20),
+    FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName),
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId)
 )DEFAULT CHARSET=utf8;
 
 
