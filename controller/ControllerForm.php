@@ -260,7 +260,7 @@ class ControllerForm {
 				"formId" => $formId
 			);
 			//var_dump($date);
-			//ModelDateComplete::save($date);
+			ModelDateComplete::save($date);
 		}
 		else{
 			$date = array(
@@ -276,7 +276,7 @@ class ControllerForm {
 			$ans = $answers[$i];
 			$ans['visitorId'] = $id;
 			//var_dump($ans);
-			//ModelAnswer::save($ans);
+			ModelAnswer::save($ans);
 		}
 	}
 
