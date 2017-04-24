@@ -53,5 +53,30 @@ class ModelDateComplete extends Model{
             return false;
         }
     }
+	
+	public static function getDateByVisitorAndForm($visitor, $form){
+		try {
+			$sql = "SELECT * FROM DateComplete WHERE DateComplete.visitorId=:visitorId AND DateComplete.formId=:formId"; 
+			$prep = Model::$pdo->prepare($sql);
+			
+			$values = array(
+			"visitorId" => $visitor,
+			"formId" => $form,
+			);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelDateComplete');
+			
+			return $prep->fetchAll();
+		
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }
 

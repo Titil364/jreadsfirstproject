@@ -16,6 +16,10 @@
 	}
 	else{
 //BODY
+		
+		
+		$date = ModelDateComplete::getDateByVisitorAndForm("4",$formId);
+		$datePre = $date[0]->getDateCompletePre();
 		$questions = ModelAssocFormPI::getAssocFormPIByFormId($formId);
 		$array = array();
 		$i = 0;
@@ -32,12 +36,17 @@
 		echo "</tr>";
 		echo "<tbody>";
 		foreach($visitor as $f){
-			var_dump($f);
 			echo "<tr>";
-			foreach($array as $a){
-				$secure = htmlspecialchars ($f->getVisitorA($a));
+			$date = ModelDateComplete::getDateByVisitorAndForm($f->getVisitorId(),$formId);
+			echo "<td>".$date[0]->getDateCompletePre()."</td>";
+			$information = ModelInformation::getInformationByVisitorId($f->getVisitorId());
+			//var_dump($information);
+			$j=0;
+			foreach($information as $a){
+				$secure = htmlspecialchars ($a->getInformationName());
 				echo "<td>$secure</td>";
 			}
+			echo "<td></td>";
 			echo "</tr>";
 		}
 		
