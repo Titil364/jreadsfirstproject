@@ -11,10 +11,10 @@ class ControllerVisitor{
             // error page
         }else{
 			
-				$pre = true;
+				$pre = $f->getFillable();
 				$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 
-				if($pre){
+				if($pre === '0'){
 					$jscript = "answers";	
 					$visitor = true;
 					$folder = $f->getUserNickname();
@@ -58,7 +58,7 @@ class ControllerVisitor{
 					$pagetitle = 'Welcome visitor X';
 					$view='answerForm';
 					$controller = 'visitor';				
-				}else{
+				} elseif($pre ==='1'){
 					
 					$jscript = "answers";
 					$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
