@@ -16,7 +16,7 @@ class ModelVisitor extends Model{
 
     public function getVisitorId() {
    		return $this->visitorId;
-    }    
+    }
 
     public function getVisitorGroupId() {
    		return $this->visitorGroupId;
@@ -41,6 +41,25 @@ class ModelVisitor extends Model{
     public function getVisitorClass(){
     	return $this->visitorClass;
     }
+	
+	public function getVisitorA($a){
+		switch ($a){
+			case "Id":
+				return $this->visitorId;
+			case "GroupId":
+				return $this->visitorGroupId;
+			case "Name":
+				return $this->visitorName;
+			case "SecretName":
+				return $this->visitorSecretName;
+			case "School":
+				return $this->visitorSchool;
+			case "Age":
+				return $this->visitorAge;
+			case "Class":
+				return $this->visitorClass;
+		}
+	}
 
     public function setVisitorId($visitorGroupId) {
    		$this->visitorId = $visitorId ;
