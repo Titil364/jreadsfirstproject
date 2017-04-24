@@ -67,7 +67,7 @@ class ControllerVisitor{
 					$pagetitle = 'Welcome back visitor X';
 					$view='lastPage';
 					$controller = 'visitor';
-				}
+				} //Put a default view if form is not available yet
 
             require File::build_path(array('view','view.php'));
 		}

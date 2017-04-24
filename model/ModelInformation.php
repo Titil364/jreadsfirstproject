@@ -27,4 +27,20 @@ class ModelInformation extends Model{
                 $this->personnalInformationId = $personnalInformationId;
         }
     }
+	
+	public static function getInformationByVisitorId($visitorId){
+		try{
+			$sql = "Select * From Information Where Information.visitorId =: visitorId";
+			$prep = Model::$pdo->prepare($sql);
+
+			$values = array(
+				"visitorId" => $visitorId,
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_ASSOC);
+			
+			return $prep->fetchAll();
+		}
+	}
 }

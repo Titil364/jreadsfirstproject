@@ -21,6 +21,7 @@
 		$i = 0;
 		echo "<thead>";
 		echo "<tr>";
+		echo "<td>Date Completed</td>";
 		foreach($questions as $q){
 			echo "<td>".$q->getPersonnalInformationName()."</td>";
 			$array[$i] = $q->getPersonnalInformationName();
@@ -31,6 +32,7 @@
 		echo "</tr>";
 		echo "<tbody>";
 		foreach($visitor as $f){
+			var_dump($f);
 			echo "<tr>";
 			foreach($array as $a){
 				$secure = htmlspecialchars ($f->getVisitorA($a));
