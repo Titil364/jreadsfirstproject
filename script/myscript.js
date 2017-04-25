@@ -771,9 +771,24 @@ function extractData(){
 			}
 			//console.log(qPostLabel);
 			var qPostType = $("#"+idQ+" select").val();
+
+			var customAns = null;
+
+			if ($("#checkbox"+idQ).is(":checked")){
+
+				customAns = [];
+				var title = $("#titlecheckbox"+idQ)[0].value;
+				customAns.push(title);
+
+				var fieldList = $(".fieldcheckbox"+idQ);
+				for(var j = 0; j<fieldList.length; j++){
+					customAns.push(fieldList[j].value);
+				}
+
+			}
 			//console.log(qType);
 			
-			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, null));
+			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
 	}
 	var info = extractInformation();
