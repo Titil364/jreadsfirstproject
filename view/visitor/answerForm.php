@@ -48,7 +48,7 @@
 		//displaying questions
 	
 		
-		$question_array = $questions_array_list[$i];
+		$question_array = $questionsPre_array_list[$i];
 	for($j=0; $j < count($question_array);$j++){
 					//displaying questions
 				$idAppli = 'Applic'.$i.'Q'.$j;
@@ -58,8 +58,8 @@
 			echo " </h3>";
 	
 			
-			$qType = $questionType_list[$i][$j]->getQuestionTypeName();
-			$answers_array = $answers_array_list[$i][$j];
+			$qType = $questionTypePre_list[$i][$j]->getQuestionTypeName();
+			$answers_array = $answersPre_array_list[$i][$j];
 
 			if(!is_null($answers_array[0])){
 				$name = $question_array[$j]->getQuestionId();

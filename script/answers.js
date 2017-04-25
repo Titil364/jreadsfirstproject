@@ -3,7 +3,12 @@ var applicationName;
 var formId;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
-
+function getFormId(){
+    var f = document.getElementsByClassName("formCss");
+    var g = f[0].getAttribute("id");
+    var split =  g.split("-");
+   formId = split[1];
+}
 function getApplication(b){
     $.get(
         "index.php",
@@ -225,7 +230,8 @@ function makeFSDraggable() {
 
 
 function init(){
-	getApplication('1');
+    getFormId();
+	getApplication(formId);
 	$("#submit").click(extractAnswers);
 	
 }

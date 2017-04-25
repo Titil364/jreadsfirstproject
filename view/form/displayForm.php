@@ -25,8 +25,19 @@
 				echo '</div>';
 			}else{
 				echo'<div>';
+				foreach($informationTable as $it){
+					if($it->getPersonnalInformationName() == $field->getPersonnalInformationName()){
+						$valueInfo = $it->getInformationName();
+					}
+				}
+				/*foreach($answer as $a){
+					if($a->getQuestionId() ==$field_array[$j]->getQuestionId()){
+						$ret = $a->getAnswer();
+					}
+				}*/
 					echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
-					echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text" value="'..' readonly>';
+					echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text" value="'.$valueInfo.'"  readonly>';
+				echo'</div>';
 			}
         }
         echo '</div>';
@@ -75,11 +86,15 @@
 			if(!is_null($answers_array[0])){
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						if(!$full) echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
-						else echo "<textarea rows=\"5\" cols =\"50\"readonly>";
-						foreach($answer as $a){
-							if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
-								echo $a->getAnswer();
+						if(!$full){
+							echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
+						}
+						else{
+							echo "<textarea rows=\"5\" cols =\"50\"readonly>";
+							foreach($answer as $a){
+								if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
+									echo $a->getAnswer();
+								}
 							}
 						}
 						echo "</textarea>";
