@@ -1,27 +1,43 @@
-$('select').on('change',function(){
-	var formId =  $(this).parent().parent().children().get(0).textContent;
-	var value = $(this).val();
-	console.log("formId = "+formId);
-	console.log("valueSelect = "+value);
-	changeFillable(formId, value);
-})
 
-function changeFillable(form, newfill) {
+
+function changeStatus(id, n, v) {
     $.post(
         "index.php",
         {
-            "controller":"form",
-            "action": "changeFillable",
-            "form": JSON.stringify(form),
-            "newFill": JSON.stringify(newfill)
+            "controller":"users",
+            "action": "changeUser",
+			"userPosition": id,
+            "name": n,
+			"val": v
         },
         function (res){
-            console.log("ca passe");
-            if (res === false) {
-                console.log("res = false");
-            } else{
-                console.log("res = true");
-            }
-        }, "json"
+            console.log(res);
+        }, 
+		"json"
     );
 }
+
+function destroySessionUser(){
+	alert("bite");
+	$.ajax({
+		type: 'POST',
+		url: "index.php",
+		data: {
+				"controller":"users",
+				"action": "deleteSessionUser",
+			}, 
+		success: function(res){console.log(res)},
+		async:false
+	});
+}
+function init(){
+	$('select').on('change',function(){
+
+		var id = this.parentNode.parentNode.id;
+		var name = this.name;
+		var val = $(this).val();
+		changeStatus(id, name, val);
+	});
+	window.onbeforeunload = destroySessionUser;
+}
+$(init);

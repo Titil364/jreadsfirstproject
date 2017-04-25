@@ -3,6 +3,7 @@
 require_once File::build_path(array('model', 'ModelUsers.php'));
 
 class ControllerUsers {
+	
 	public static function readAllMyForm() {
         $view = 'displayAllMyForms';
         $controller = 'users';
@@ -197,6 +198,7 @@ class ControllerUsers {
 			require File::build_path(array('view','view.php'));
 		}
 	}
+	
 	public static function readAll(){
 		if(Session::is_admin()){
 			$view = 'seeAllUsers';
@@ -207,8 +209,49 @@ class ControllerUsers {
 			
 			$users = ModelUsers::selectAll();
 
+			$_SESSION['users'] = serialize($users);
+			
 			require File::build_path(array('view','view.php'));
 		}
+	}
+	
+	public static function changeUser(){
+		
+		if(Session::is_admin() && isset($_POST['name']) && isset($_POST['val']) && isset($_POST['userPosition'])){
+			$name = $_POST['name'];
+			
+			$val = json_decode($_POST['val']);			
+			$userPosition = json_decode($_POST['userPosition']);
+			$users = unserialize($_SESSION['users']);
+			
+			if($name == "userNonce" && $val == 0){
+				$val = "";
+			}
+			$data[$name] = $val;
+			$data['userNickname'] = $users[$userPosition]->getNickname();
+			
+			ModelUsers::update($data);
+			
+			echo json_encode("Success");
+		}
+		else{
+			echo json_encode("Error");
+		}
+		
+	}
+	public static function deleteSessionUser(){
+		if(isset($_SESSION['users']))
+			unset($_SESSION['users']);
+	}
+	
+	public static function test(){
+			$view = 'displayAllMyForms';
+			$controller = 'users';
+			$pagetitle = 'All the forms';
+			
+			
+			
+			require File::build_path(array('view','view.php'));
 	}
 }
 ?>

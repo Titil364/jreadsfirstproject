@@ -7,6 +7,7 @@
 			$tmp = hash('sha512', $s);
 			return $tmp;
 		}
+		
 		public static function generateRandomHex() {
 			// Generate a 32 digits hexadecimal number
 			$numbytes = 16; // Because 32 digits hexadecimal = 16 bytes
