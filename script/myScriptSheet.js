@@ -150,19 +150,17 @@ function makeFSDraggable() {
     
                 var draggable = ui.draggable, droppable = $(this),
                     dragPos = draggable.position(), dropPos = droppable.position();
-                    
-                console.log(droppable);
-            
+
             
                 draggable.css({
                     left: dropPos.left+'px',
-                    top: dropPos.top+'px'
+                    //top: dropPos.top+'px'
                 });
                 
         
                 droppable.css({
                     left: dropPos.left+'px',
-                    top: dropPos.top+'px'
+                    //top: dropPos.top+'px'
                 });
                 draggable.swap(droppable);                
             }

@@ -59,8 +59,8 @@ class ControllerVisitor{
 					$controller = 'visitor';				
 				} elseif($pre ==='1'){
 					
-					$jscript = "answers";
-					$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+					
+					$alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 					$applicationTable = ModelApplication::getApplicationByFormId($formId);
 					
 					$folder = $f->getUserNickname();
@@ -101,7 +101,7 @@ class ControllerVisitor{
 						}
 						
 					}
-					
+					$jscript = "answers";
 					$pagetitle = 'Welcome back visitor';
 					$view='lastPage';
 					$controller = 'visitor';
