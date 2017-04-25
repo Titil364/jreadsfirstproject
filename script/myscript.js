@@ -465,6 +465,7 @@ function answers(event){
 
 		var customCheckbox = document.createElement('input');
 		customCheckbox.setAttribute('type', 'checkbox');
+		customCheckbox.setAttribute('id', 'checkbox'+id);
 		div.appendChild(customCheckbox);
 
 		$(customCheckbox).on('change',function(){customQuestion(customCheckbox, answerArea);}); //eventListener on (un)check
@@ -518,6 +519,7 @@ function customQuestion(customCheckbox, answerArea){
 
 		var name = document.createElement('input'); 
 		name.setAttribute("class","customCheckboxName");
+		name.setAttribute("id","title"+customCheckbox.id);
 		subdiv.appendChild(name);
 
 		div.appendChild(subdiv);
@@ -529,7 +531,7 @@ function customQuestion(customCheckbox, answerArea){
 			var span = $(answerAreadivs[i]).find("span")[0];	//finding the span of title
 
 			var customField = document.createElement('input'); //creating a input field
-			customField.setAttribute("class","customField");
+			customField.setAttribute("class","field"+customCheckbox.id);
 			customField.setAttribute("id","custom"+ span.id);
 			answerAreadivs[i].appendChild(customField);
 
@@ -727,7 +729,7 @@ function extractData(){
 			
 			
 			var idQ = questionsPre[y].id;
-			//console.log(idQ);
+
 			var qPreLabel = $("#"+idQ+"name").val();
 			if (qPreLabel === "") {
                 alert("At least one question has no name. Please check and add a name or delete the question");
@@ -737,7 +739,24 @@ function extractData(){
 			var qPreType = $("#"+idQ+" select").val();
 			//console.log(qType);
 			
-			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1));
+			var customAns = null;
+
+			if ($("#checkbox"+idQ).is(":checked")){
+
+				customAns = [];
+				var title = $("#titlecheckbox"+idQ)[0].value;
+				customAns.push(title);
+
+				var fieldList = $(".fieldcheckbox"+idQ);
+				for(var j = 0; j<fieldList.length; j++){
+					customAns.push(fieldList[j].value);
+				}
+
+			}
+
+			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1, customAns));
+
+
 		}
 		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
 		for(var y = 0; y < questionsPost.length; y++){
@@ -752,9 +771,24 @@ function extractData(){
 			}
 			//console.log(qPostLabel);
 			var qPostType = $("#"+idQ+" select").val();
+
+			var customAns = null;
+
+			if ($("#checkbox"+idQ).is(":checked")){
+
+				customAns = [];
+				var title = $("#titlecheckbox"+idQ)[0].value;
+				customAns.push(title);
+
+				var fieldList = $(".fieldcheckbox"+idQ);
+				for(var j = 0; j<fieldList.length; j++){
+					customAns.push(fieldList[j].value);
+				}
+
+			}
 			//console.log(qType);
 			
-			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0));
+			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
 	}
 	var info = extractInformation();

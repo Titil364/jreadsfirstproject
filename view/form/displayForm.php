@@ -18,10 +18,16 @@
         echo '<div id="userInformation">';
         foreach ($field_array as $field){
                 $fieldName = htmlspecialchars($field->getPersonnalInformationName());
-            echo '<div>';
-                echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
-                echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text">';
-            echo '</div>';
+			if(!$full){
+				echo '<div>';
+					echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
+					echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text">';
+				echo '</div>';
+			}else{
+				echo'<div>';
+					echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
+					echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text" value="'..' readonly>';
+			}
         }
         echo '</div>';
 	
@@ -69,7 +75,14 @@
 			if(!is_null($answers_array[0])){
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
+						if(!$full) echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
+						else echo "<textarea rows=\"5\" cols =\"50\"readonly>";
+						foreach($answer as $a){
+							if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
+								echo $a->getAnswer();
+							}
+						}
+						echo "</textarea>";
 						break;
 					/*case "yes" or "no":
 						echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
@@ -78,25 +91,52 @@
 					default :
 						$count = 0;
 						echo '<div class = "answerArea">';
+						foreach($answer as $a){
+							if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
+								$ret = $a->getAnswer();
+							}
+						}
 						foreach($answers_array as $a){
-							$answerName = htmlspecialchars($a['answerTypeName']);
-							$answerImage = htmlspecialchars($a['answerTypeImage']);
-							$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
-							$answerTypeId = htmlspecialchars($a['answerTypeId']);
-						
-							$id = "Applic".$i."question".$j.$answerName;
-							//Le nom d'un input radio permet de lier les radio button entre eux
-							//Ainsi si le boutton 1 est coché, et que tu coches le boutton 5
-							//Le bouton 5 se coche MAIS le boutton 1 se décoche. Principe des radios buttons. 
-							$name = "Applic".$i."question".$j;
-							echo '<div>';
-							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
-							//Si tu passes par la : les label permettent de link son block à un ID grâce à l'attribut FOR
-							//et non en mettant l'attribut ID. Il faut cela dit que le FOR soit associé à l'ID de ton input
-							//Le label est de plus la pour entouré du texte ou une image, mettre le nom $answerName en dehors
-							//Ne permet pas de cocher la case en cliquant sur le texte. 
-							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
-							echo '</div>';
+							if(!$full){
+								$answerName = htmlspecialchars($a['answerTypeName']);
+								$answerImage = htmlspecialchars($a['answerTypeImage']);
+								$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+								$answerTypeId = htmlspecialchars($a['answerTypeId']);
+							
+								$id = "Applic".$i."question".$j.$answerName;
+								//Le nom d'un input radio permet de lier les radio button entre eux
+								//Ainsi si le boutton 1 est coché, et que tu coches le boutton 5
+								//Le bouton 5 se coche MAIS le boutton 1 se décoche. Principe des radios buttons. 
+								$name = "Applic".$i."question".$j;
+								echo '<div>';
+								echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
+								//Si tu passes par la : les label permettent de link son block à un ID grâce à l'attribut FOR
+								//et non en mettant l'attribut ID. Il faut cela dit que le FOR soit associé à l'ID de ton input
+								//Le label est de plus la pour entouré du texte ou une image, mettre le nom $answerName en dehors
+								//Ne permet pas de cocher la case en cliquant sur le texte. 
+								echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
+								echo '</div>';
+							}else{
+								$answerName = htmlspecialchars($a['answerTypeName']);
+								$answerImage = htmlspecialchars($a['answerTypeImage']);
+								$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+								$answerTypeId = htmlspecialchars($a['answerTypeId']);
+								if($ret == $answerName){
+									$id = "Applic".$i."question".$j.$answerName;
+									$name = "Applic".$i."question".$j;
+									echo '<div>';
+									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" checked=\"checked\" readonly>";
+									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
+									echo '</div>';
+								} else{
+									$id = "Applic".$i."question".$j.$answerName;
+									$name = "Applic".$i."question".$j;
+									echo '<div>';
+									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\"readonly>";
+									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
+									echo '</div>';
+								}
+							}
 						}
 						echo '</div>';
 						break;
