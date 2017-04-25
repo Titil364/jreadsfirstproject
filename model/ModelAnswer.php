@@ -26,6 +26,29 @@ class ModelAnswer extends Model{
 			$this->answer = $ans;
         }
    }
+   
+	public static function getAnswerByVisitorId($visitorId){
+		try {
+			$sql = "SELECT * FROM Answer WHERE Answer.visitorId=:visitorId"; 
+			$prep = Model::$pdo->prepare($sql);
+			
+			$values = array(
+			"visitorId" => $visitorId,
+			);
 
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelAnswer');
+			
+			return $prep->fetchAll();
+		
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }
 

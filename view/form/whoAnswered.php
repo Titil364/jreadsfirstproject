@@ -17,30 +17,24 @@
 	else{
 //BODY
 		
+				
 		
-		$date = ModelDateComplete::getDateByVisitorAndForm("4",$formId);
-		$datePre = $date[0]->getDateCompletePre();
-		$questions = ModelAssocFormPI::getAssocFormPIByFormId($formId);
-		$array = array();
-		$i = 0;
 		echo "<thead>";
 		echo "<tr>";
 		echo "<td>Date Completed</td>";
 		foreach($questions as $q){
 			echo "<td>".$q->getPersonnalInformationName()."</td>";
-			$array[$i] = $q->getPersonnalInformationName();
-			$i++;
 		}
 		echo "<td>See</td>";
 		echo "</thead>";
 		echo "</tr>";
 		echo "<tbody>";
+		$i = 0;
 		foreach($visitor as $f){
 			echo "<tr>";
-			$date = ModelDateComplete::getDateByVisitorAndForm($f->getVisitorId(),$formId);
+			$date = $array[$i][0];
 			echo "<td>".$date[0]->getDateCompletePre()."</td>";
-			$information = ModelInformation::getInformationByVisitorId($f->getVisitorId());
-			//var_dump($information);
+			$information = $array[$i][1];
 			$j=0;
 			foreach($information as $a){
 				$secure = htmlspecialchars ($a->getInformationName());
@@ -49,8 +43,6 @@
 			echo "<td></td>";
 			echo "</tr>";
 		}
-		
-		
 		echo "</tbody>";
 //FOOTER
 	if(count($visitor) > 5){
