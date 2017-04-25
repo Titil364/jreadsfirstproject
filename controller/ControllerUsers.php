@@ -187,5 +187,28 @@ class ControllerUsers {
 		$return = json_encode($rep);
 		echo $return;
 	}
+	
+	public static function administrate(){
+		if(Session::is_admin()){
+			$view = 'administrationPanel';
+			$controller = 'users';
+			$pagetitle = 'Connect';
+
+			require File::build_path(array('view','view.php'));
+		}
+	}
+	public static function readAll(){
+		if(Session::is_admin()){
+			$view = 'seeAllUsers';
+			$controller = 'users';
+			$pagetitle = 'Connect';
+			
+			$jscript = "allUsers";
+			
+			$users = ModelUsers::selectAll();
+
+			require File::build_path(array('view','view.php'));
+		}
+	}
 }
 ?>

@@ -18,8 +18,6 @@ class ModelUsers extends Model{
 	
     public function getNonce(){return $this->userNonce;}
 	public function setNonce($nonce){$this->userNonce = $nonce;}
-    
-    public function getPassword(){return $this->userPassword;}
 	
 	
     public function getNickname(){return $this->userNickname;}

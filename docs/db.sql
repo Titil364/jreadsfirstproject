@@ -272,6 +272,7 @@ INSERT INTO AssocFormFS VALUES ('1', 'Most boring / Least boring');
 INSERT INTO PersonnalInformation VALUES ('Name', 1);
 INSERT INTO PersonnalInformation VALUES ('Age', 1);
 INSERT INTO PersonnalInformation VALUES ('Class', 1);
+INSERT INTO PersonnalInformation VALUES ('Groupe', 1);
 
 INSERT INTO AssocFormPI VALUES ('1','Name');
 INSERT INTO AssocFormPI VALUES ('1','Age');

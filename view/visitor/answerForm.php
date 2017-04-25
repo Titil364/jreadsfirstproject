@@ -67,10 +67,6 @@
 					case "textarea":
 						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\"></textarea>";
 						break;
-					/*case "yes" or "no":
-						echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
-						echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
-						break;*/
 					default :
 						echo '<div class = "answerArea">';
 
