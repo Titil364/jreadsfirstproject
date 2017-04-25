@@ -129,14 +129,14 @@
 									$id = "Applic".$i."question".$j.$answerName;
 									$name = "Applic".$i."question".$j;
 									echo '<div>';
-									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" checked=\"checked\" readonly>";
+									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" checked readonly>";
 									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 									echo '</div>';
 								} else{
 									$id = "Applic".$i."question".$j.$answerName;
 									$name = "Applic".$i."question".$j;
 									echo '<div>';
-									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\"readonly>";
+									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" disabled readonly>";
 									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 									echo '</div>';
 								}
@@ -208,7 +208,7 @@
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
-							$questionTypeId = htmlspecialchars($questionPost_array[$j]->getQuestionTypeName());
+							$questionTypeId = htmlspecialchars($questionPost_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
 						
 							$id = "Applic".$i."question".$j.$answerName;

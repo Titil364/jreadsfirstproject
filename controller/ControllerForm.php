@@ -79,9 +79,8 @@ class ControllerForm {
 			$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 		
 			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
-	
 			$applicationTable = ModelApplication::getApplicationByFormId($formId);
-            
+			
             $pagetitle = 'Form';
             $view='displayForm';
             $controller = 'form';
@@ -275,6 +274,7 @@ class ControllerForm {
 	public static function readAnswer(){
 		$controller = 'form';
 		$view = 'displayForm';
+		$jscript = "myScriptSheet";
 		
 		$visitorId = $_GET['visitorId'];
 		$pagetitle = 'Answer'.$visitorId;
@@ -292,6 +292,9 @@ class ControllerForm {
 		$field_array = [];
 		$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 		$informationTable = ModelInformation::getInformationByVisitorId($visitorId);
+		$applicationTable = ModelApplication::getApplicationByFormId($formId);
+		$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
 		
 		$questionsPre_array_list = [];
 		$questionsPost_array_list = [];

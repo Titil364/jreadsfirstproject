@@ -168,10 +168,9 @@ table{
 }
 table td{
 	text-align:center;
-}
-table td{	
 	border: 1px solid black;
 	height: 40px;
+	overflow: auto;
 }
 table th{
 	border: 2px solid black;
