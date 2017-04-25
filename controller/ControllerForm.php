@@ -27,6 +27,8 @@ class ControllerForm {
             $questionTypePre_list = [];
 			$questionTypePost_list = [];
             
+			$answer = [];
+			
             $field_array = [];
             //Personnal information
             $assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
@@ -255,6 +257,7 @@ class ControllerForm {
 		
 		$field_array = [];
 		$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+		$informationTable = ModelInformation::getInformationByVisitorId($visitorId);
 		
 		$questionsPre_array_list = [];
 		$questionsPost_array_list = [];
@@ -290,12 +293,6 @@ class ControllerForm {
                     $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
                     array_push($answersPre_array_list[$i], $answersPre_array);
                     array_push($questionTypePre_list[$i], $qType);
-					
-					foreach ($answer as $a){
-						if($a->getQuestionId() == '1Applic2Q1'){
-							//var_dump($a->getAnswer());
-						}
-					}
                 }                
             }
 			

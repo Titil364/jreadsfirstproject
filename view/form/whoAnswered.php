@@ -40,8 +40,10 @@
 				$secure = htmlspecialchars ($a->getInformationName());
 				echo "<td>$secure</td>";
 			}
-			echo "<td></td>";
+			$visitorId = $information[$i]->getVisitorId();
+			echo "<td><a href=\""."index.php?controller=form&action=readAnswer&formId=$formId&visitorId=$visitorId\">Answer</a></td>";
 			echo "</tr>";
+			$i++;
 		}
 		echo "</tbody>";
 //FOOTER
