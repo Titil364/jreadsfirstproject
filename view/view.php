@@ -37,8 +37,8 @@
 EOT;
 									if (Session::is_admin()) {
 										echo "<div class=\"menu-item\">";
-										echo "<a href='index.php'>";
-										echo "<button type=\"button\">See u soon</button></a>";
+										echo "<a href='index.php?controller=users&action=administrate'>";
+										echo "<button type=\"button\">Administration Panel</button></a>";
 										echo "</div>";
 									}
 					echo <<< EOT

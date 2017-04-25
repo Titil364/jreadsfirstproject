@@ -102,6 +102,7 @@ class ControllerForm {
 			$qPost = json_decode($_POST["questionsPost"], true);
 			$info = json_decode($_POST["information"], true);
 			$fs = json_decode($_POST["FSQuestions"], true);
+                        
 			//var_dump($q);	
 			$abort = false;
 			
@@ -143,6 +144,39 @@ class ControllerForm {
 							$abort = true;
 							break;
 						}
+                                                
+                                                if(isset($qPre[$i][$y]["customAns"])){
+                                                    $customAns = $qPre[$i][$y]["customAns"];
+                                                    
+                                                    $questionType = array(
+                                                        "questionTypeName" => $customAns[0],
+                                                        "userNickname" => $userNickname
+                                                    );
+                                                    if(!ModelQuestionType::save($questionType)){
+							$abort = true;
+							break;
+                                                    }                                                    
+                                                    
+                                                    $questionTypeId = ModelQuestionType::getLastInsert();
+                                                    $questionTypeName = $customAns[0];
+                                                    
+                                                    $original = ModelQuestionType::select($qPre[$i][$y]["type"]);
+                                                    $originalName = $original->getQuestionTypeName();
+                                                    
+                                                    for($j = 1; $j < sizeof($customAns); $j++){
+                                                        $answerType = array(
+                                                            "answerTypeName" => $customAns[$j],
+                                                            "answerTypeImage" => $originalName . $j ."image",
+                                                            "questionTypeId" => $questionTypeId
+
+                                                        );
+                                                    if(!ModelAnswerType::save($answerType)){
+							$abort = true;
+							break;
+                                                    }
+                                                    }
+                                                    
+                                                }
 					}
 
 					for($y = 0; $y < sizeof($qPost[$i]); $y++){
