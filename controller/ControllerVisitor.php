@@ -5,13 +5,13 @@ class ControllerVisitor{
     
     public static function read(){
 		$formId = $_GET['id'];
+		$pre = $_GET['pre'];
         $f = ModelForm::select($formId);
         if (!$f){
 			echo "This form doesn't exist";
 			// error page
         }else{
 			
-				$pre = $f->getFillable();
 				$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 
 				if($pre === '0'){

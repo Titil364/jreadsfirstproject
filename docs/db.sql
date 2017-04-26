@@ -108,7 +108,7 @@ CREATE TABLE AssocFormFS (
     FSQuestionName varchar(50),
     FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
     FOREIGN KEY (formId) REFERENCES Form(formId),
-    PRIMARY KEY (FSQuestionName, formId)
+    PRIMARY KEY (formId, FSQuestionName)
 )DEFAULT CHARSET=utf8;
     
 
@@ -276,11 +276,11 @@ INSERT INTO FSQuestion VALUES ('Learned the most / Learned the least', 1);
 INSERT INTO FSQuestion VALUES ('Most cool / Least cool', 1);
 INSERT INTO FSQuestion VALUES ('Most boring / Least boring', 1);
 
-INSERT INTO AssocFormFS VALUES ('1', 'Easy to do / Hard to do');
-INSERT INTO AssocFormFS VALUES ('1', 'Most fun / Least fun');
-INSERT INTO AssocFormFS VALUES ('1', 'Learned the most / Learned the least');
-INSERT INTO AssocFormFS VALUES ('1', 'Most cool / Least cool');
-INSERT INTO AssocFormFS VALUES ('1', 'Most boring / Least boring');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Easy to do / Hard to do');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most fun / Least fun');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Learned the most / Learned the least');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most cool / Least cool');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most boring / Least boring');
 
 
 INSERT INTO PersonnalInformation VALUES ('Name', 1);
@@ -288,6 +288,6 @@ INSERT INTO PersonnalInformation VALUES ('Age', 1);
 INSERT INTO PersonnalInformation VALUES ('Class', 1);
 INSERT INTO PersonnalInformation VALUES ('Groupe', 1);
 
-INSERT INTO AssocFormPI VALUES ('1','Name');
-INSERT INTO AssocFormPI VALUES ('1','Age');
-INSERT INTO AssocFormPI VALUES ('1','Class');
+INSERT INTO AssocFormPI VALUES ("FOMM0MA",'Name');
+INSERT INTO AssocFormPI VALUES ("FOMM0MA",'Age');
+INSERT INTO AssocFormPI VALUES ("FOMM0MA",'Class');
