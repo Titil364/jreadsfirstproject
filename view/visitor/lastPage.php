@@ -28,6 +28,7 @@
                 echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text" value="'.$valueInfo.'" readonly>';
             echo '</div>';
         }
+		echo '<input id="visitorId" value="'.$visitorId.'"type="hidden" readonly>';
         echo '</div>';
 	
 	//displaying tasks

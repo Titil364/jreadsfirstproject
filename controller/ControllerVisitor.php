@@ -5,7 +5,12 @@ class ControllerVisitor{
     
     public static function read(){
 		$formId = $_GET['id'];
-		$pre = $_GET['pre'];
+		if($_GET['visitorId'] == null){
+			$pre = 0;
+		}else{
+			$pre = 1;
+			$visitorId = $_GET['visitorId'];
+		}
         $f = ModelForm::select($formId);
         if (!$f){
 			echo "This form doesn't exist";
@@ -14,7 +19,7 @@ class ControllerVisitor{
 			
 				$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 
-				if($pre === '0'){
+				if($pre === 0){
 					$jscript = "answers";	
 					$visitor = true;
 					$folder = $f->getUserNickname();
@@ -57,7 +62,7 @@ class ControllerVisitor{
 					$pagetitle = 'Welcome visitor';
 					$view='answerForm';
 					$controller = 'visitor';				
-				} elseif($pre ==='1'){
+				} elseif($pre ===1){
 					
 					
 					$alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');

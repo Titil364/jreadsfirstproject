@@ -384,8 +384,8 @@ class ControllerForm {
 		$answers = json_decode($_POST['answers'], true);
 		$formId = $_POST['formId'];
 		$f = ModelForm::select($formId);
-		
-		if($f->getFillable() == 0){
+		$pre = $_POST('pre');
+		if($pre == 0){
 
 		//Create the visitor
 			$visitorInfo = json_decode($_POST['visitorInfo'], true);
@@ -408,6 +408,7 @@ class ControllerForm {
 			);
 			//var_dump($date);
 			ModelDateComplete::save($date);
+			echo($date['visitorId']);
 		}
 		else{
 			$date = array(

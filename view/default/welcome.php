@@ -35,8 +35,12 @@
 								<input type='hidden' name='action' value='read'>
 								<input type='hidden' name='controller' value='visitor'>
 								<div class="input">
-										<label class="input-item" for="nick_id">Form code : </label>
-										<input class="input-field" type="text" name="id" required/>
+										<label class="input-item" for="form">Form code : </label>
+										<input class="input-field" id="form" type="text" name="id" required/>
+								</div>
+								<div class="inputVisitorId">
+										<label class="input-item" for="visitor_id">Visitor Id (if applicable): </label>
+										<input class="input-field" id="visitor_id" type="text" name="visitorId"/>
 								</div>
 								<div>
 										<input class="input-field" type="submit"  value="Send"/>

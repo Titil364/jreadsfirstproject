@@ -1,6 +1,7 @@
 var applicationNumber;
 var applicationName;
 var formId;
+var visitorId;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -8,6 +9,15 @@ function getFormId(){
     var g = f[0].getAttribute("id");
     var split =  g.split("-");
    formId = split[1];
+}
+
+function getVisitorId(){
+    var f = document.getElementById("visitorId");
+    if (f==null) {
+        visitorId = 0;
+    }else{
+        visitorId = f.value;
+    }
 }
 function getApplication(b){
     $.get(
@@ -39,14 +49,14 @@ function getQuestionsName(a){
                 for (var k = 0; k <changeCss.length; k++) {
                    // changeCss[k].style.visibility = "hidden";
                 }
-                randomizeAA();
+               // randomizeAA();
                 return null;
             }
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
 			
-            randomizeAA();
+           // randomizeAA();
             randomizeFS();
         },
         "json"
@@ -88,10 +98,15 @@ function extractAnswers(){
 	}
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
-	send(f, personnalInfo, answers);
+    if (visitorId == 0) {
+        sendPre(f, personnalInfo, answers);
+    } else{
+        sendPost(f, personnalInfo, answers);
+    }
+	
 }
 
-function send(f, pi, a){
+function sendPre(f, pi, a){
 
 	$.post(
 		"index.php", // url
@@ -100,11 +115,38 @@ function send(f, pi, a){
 			"controller":"form",
 			"formId":f,
 			"visitorInfo":JSON.stringify(pi),
+            "pre":JSON.stringify(0),
 			"answers":JSON.stringify(a)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
 						$("#submit").unbind("click", extractAnswers);
+                        alert(res);
+						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					
+				}else{
+					console.log("Error when saving the answers");
+				}
+			},
+		"json" // type
+	);
+}
+function sendPost(f, pi, a){
+
+	$.post(
+		"index.php", // url
+		{
+			"action":"completeForm",
+			"controller":"form",
+			"formId":f,
+			"visitorInfo":JSON.stringify(pi),
+            "visitorId":JSON.stringify(visitorId),
+            "pre":JSON.stringify(1),
+			"answers":JSON.stringify(a)
+		},  //data
+		function(res){ //callback
+				if(res !== false){
+						$("#submit").unbind("click", extractAnswers);
+                        alert(res);
 						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					
 				}else{
 					console.log("Error when saving the answers");
@@ -155,7 +197,7 @@ function randomizeFS() {
          }
          makeFSDraggable();
 }
-function randomizeAA(){
+/*function randomizeAA(){
     var array = new Array();
     for (i = 0; i<applicationNumber;i++) {
         var a = Math.random()*applicationNumber;
@@ -186,7 +228,7 @@ function randomizeAA(){
         }
         table.appendChild(table_row);  
     }
-}
+}*/
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
     b = jQuery(b)[0]; 
@@ -231,6 +273,7 @@ function makeFSDraggable() {
 
 function init(){
     getFormId();
+    getVisitorId();
 	getApplication(formId);
 	$("#submit").click(extractAnswers);
 	
