@@ -410,7 +410,7 @@ class ControllerForm {
         ob_start(); 
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('ChiCI');
+        $pdf->SetAuthor('ChiCl');
         $pdf->SetTitle('exported form');
         $pdf->SetSubject('form');
         $pdf->SetKeywords('');
@@ -480,9 +480,9 @@ class ControllerForm {
 			$newFill = json_decode($_POST["newFill"], true);
 			
 			$selectForm = ModelForm::select($form);
-			var_dump($selectForm);
+			//var_dump($selectForm);
 			$selectForm->setFillable($newFill);
-			var_dump($selectForm);
+			//var_dump($selectForm);
 			$form = array(
 						"formId" => $selectForm->getFormId(),
 						"formName" => $selectForm->getFormName(),
@@ -490,9 +490,32 @@ class ControllerForm {
 						"completedForm" => $selectForm->getCompletedForm(),
 						"fillable" => $selectForm->getFillable()
 					);
-			ModelForm::update($form);
+			if(ModelForm::update($form)){
+				echo json_encode("Success");
+			}
+			else{
+				echo json_encode("Error");
+			}
 		}
 	}
+	public static function readAll(){
+		if(Session::is_admin()){
+			$view = 'displayAllMyForms';
+			$controller = 'users';
+			$pagetitle = 'All the user forms';
 			
+			$form = ModelForm::selectAll();
+			$tmp = ModelUsers::getCreatorUsers();
+			
+	
+			foreach($tmp as $u){
+				$readAll[$u->getNickname()] = $u->getForename() . " " . $u->getSurname();
+			}
+
+			require File::build_path(array('view','view.php'));	
+		}else{
+			ControllerDefault::welcome();
+		}
+	}
 }
 ?>

@@ -243,15 +243,5 @@ class ControllerUsers {
 		if(isset($_SESSION['users']))
 			unset($_SESSION['users']);
 	}
-	
-	public static function test(){
-			$view = 'displayAllMyForms';
-			$controller = 'users';
-			$pagetitle = 'All the forms';
-			
-			
-			
-			require File::build_path(array('view','view.php'));
-	}
 }
 ?>

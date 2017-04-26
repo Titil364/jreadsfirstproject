@@ -15,7 +15,7 @@
 		<fieldset>
 				<legend>Manage the forms</legend>
 				<div>
-					<a href='index.php?action=update&controller=users'>
+					<a href='index.php?action=readAll&controller=form'>
 						<button type="button">See all the forms</button>
 					</a>
 				</div>

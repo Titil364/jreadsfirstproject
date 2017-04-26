@@ -147,5 +147,24 @@ class ModelUsers extends Model{
 			return NULL;
 		}
     }
+	
+	public static function getCreatorUsers(){
+
+		try {
+			$query = "SELECT U.userNickname, U.userSurname, U.userForename FROM Users U JOIN Form F ON F.userNickname = U.userNickname;";
+			$prep = Model::$pdo->prepare($query);
+			$prep->execute();
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelUsers');
+			$res = $prep->fetchAll();
+			return $res;
+		} catch (PDOException $ex) {
+			if (Conf::getDebug()) {
+				echo $ex->getMessage();
+			} else {
+				echo "une erreur est survenue.";
+			}
+			return NULL;
+		}
+	}
 }
 ?>

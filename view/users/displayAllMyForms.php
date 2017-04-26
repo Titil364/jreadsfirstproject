@@ -5,12 +5,13 @@
 
 	<thead>
        <tr>
-           <th>FormID</th>
-           <th>Name of the form</th>
-           <th>Number of form completed</th>
-		   <th></th>
-		   <th>Who answered ?</th>
-		   <th>State </th>
+			<?php if(isset($readAll) && $readAll) echo "<th>User</th>";?>
+			<th>FormID</th>
+			<th>Name of the form</th>
+			<th>Number of form completed</th>
+			<th></th>
+			<th>Who answered ?</th>
+			<th>State </th>
        </tr>
 	</thead>
 
@@ -40,7 +41,12 @@
 					break;
 			}
 			
-			echo "<tr>";
+			echo "<tr id=\"$secureId\">";
+			if(isset($readAll) && $readAll){
+				$user = htmlspecialchars($f->getUserNickname());
+				echo "<td>$readAll[$user]</td>";
+				
+			}
 				echo "<td>$secureId</td>";
 				echo "<td>$secureName</td>";
 				echo "<td>$secureNbCompletedForm</td>";

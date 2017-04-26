@@ -1,6 +1,6 @@
 $('select').on('change',function(){
     
-  var formId =  $(this).parent().parent().children().get(0).textContent;
+  var formId =  this.parentNode.parentNode.id;
   var value = $(this).val();
   console.log("formId = "+formId);
   console.log("valueSelect = "+value);
