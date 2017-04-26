@@ -139,19 +139,7 @@ class ControllerForm {
 					}
 					//$q[$i] the array containing the question of the application $i
 					for($y = 0; $y < sizeof($qPre[$i]); $y++){
-						//chercher questionTypeId grace à $q[$i][$y]["questionType"]
-						//$qTypeId
-						$question = array(
-							"questionId" => $form['formId'] . $qPre[$i][$y]["id"],
-							"questionName" => $qPre[$i][$y]["label"],
-							"applicationId" => $application["applicationId"],
-							"questionTypeId" => $qPre[$i][$y]["type"],
-							"questionPre" => $qPre[$i][$y]["pre"]
-						);
-						if(!ModelQuestion::save($question)){
-							$abort = true;
-							break;
-						}
+
                                                 
                                                 if(isset($qPre[$i][$y]["customAns"])){
                                                     $customAns = $qPre[$i][$y]["customAns"];
@@ -183,7 +171,35 @@ class ControllerForm {
 							break;
                                                     }
                                                     }
+                                                    //chercher questionTypeId grace à $q[$i][$y]["questionType"]
+                                                    //$qTypeId
+                                                    $question = array(
+                                                            "questionId" => $form['formId'] . $qPre[$i][$y]["id"],
+                                                            "questionName" => $qPre[$i][$y]["label"],
+                                                            "applicationId" => $application["applicationId"],
+                                                            "questionTypeId" => $questionTypeId,
+                                                            "questionPre" => $qPre[$i][$y]["pre"]
+                                                    );
+                                                    if(!ModelQuestion::save($question)){
+                                                            $abort = true;
+                                                            break;
+                                                    }
                                                     
+                                                }else{
+                                                
+                                                    //chercher questionTypeId grace à $q[$i][$y]["questionType"]
+                                                    //$qTypeId
+                                                    $question = array(
+                                                            "questionId" => $form['formId'] . $qPre[$i][$y]["id"],
+                                                            "questionName" => $qPre[$i][$y]["label"],
+                                                            "applicationId" => $application["applicationId"],
+                                                            "questionTypeId" => $qPre[$i][$y]["type"],
+                                                            "questionPre" => $qPre[$i][$y]["pre"]
+                                                    );
+                                                    if(!ModelQuestion::save($question)){
+                                                            $abort = true;
+                                                            break;
+                                                    }
                                                 }
 					}
 
