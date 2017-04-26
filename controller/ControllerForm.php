@@ -384,7 +384,7 @@ class ControllerForm {
 		$answers = json_decode($_POST['answers'], true);
 		$formId = $_POST['formId'];
 		$f = ModelForm::select($formId);
-		$pre = $_POST('pre');
+		$pre = $_POST['pre'];
 		if($pre == 0){
 
 		//Create the visitor
@@ -411,6 +411,7 @@ class ControllerForm {
 			echo($date['visitorId']);
 		}
 		else{
+			$id = $_POST['visitorId'];
 			$date = array(
 				"dateCompletePost" => date('Y/m/d H:i:s'),
 				"visitorId" => $id,

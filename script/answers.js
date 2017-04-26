@@ -64,17 +64,9 @@ function getQuestionsName(a){
 }
 
 function extractAnswers(){
-	var answers=[], personnalInfo=[];
+	var answers=[];
 	var n = "", val = "";
-	var info = $("#userInformation input");
-	for(var i = 0; i < info.length; i++){
-		val = $(info[i]).val();
-		if(val === undefined | val === ""){
-			alert("Please answer to all the personnal questions. ");
-			return null;
-		}
-		personnalInfo.push(new Information(info[i].name, val));
-	}
+	
 
 	var shortcut = $(".shortcut");
 	for(var i = 0; i < shortcut.length; i++){
@@ -99,9 +91,22 @@ function extractAnswers(){
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
     if (visitorId == 0) {
+		var personnalInfo=[];
+		var info = $("#userInformation input");
+		for(var i = 0; i < info.length; i++){
+			val = $(info[i]).val();
+			if(val === undefined | val === ""){
+				alert("Please answer to all the personnal questions. ");
+				return null;
+			}
+			personnalInfo.push(new Information(info[i].name, val));
+		}
         sendPre(f, personnalInfo, answers);
     } else{
-        sendPost(f, personnalInfo, answers);
+		
+		
+		
+        sendPost(f, answers, fs);
     }
 	
 }
@@ -130,7 +135,7 @@ function sendPre(f, pi, a){
 		"json" // type
 	);
 }
-function sendPost(f, pi, a){
+function sendPost(f, a, fs){
 
 	$.post(
 		"index.php", // url
@@ -138,9 +143,9 @@ function sendPost(f, pi, a){
 			"action":"completeForm",
 			"controller":"form",
 			"formId":f,
-			"visitorInfo":JSON.stringify(pi),
-            "visitorId":JSON.stringify(visitorId),
-            "pre":JSON.stringify(1),
+            "visitorId":visitorId,
+			"fs": JSON.stringify(fs),
+            "pre":1,
 			"answers":JSON.stringify(a)
 		},  //data
 		function(res){ //callback
