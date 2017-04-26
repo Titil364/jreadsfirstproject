@@ -8,7 +8,8 @@ function getFormId(){
     var f = document.getElementsByClassName("formCss");
     var g = f[0].getAttribute("id");
     var split =  g.split("-");
-   formId = split[1];
+    formId = split[1];
+    getApplication(formId);
 }
 
 function getVisitorId(){
@@ -30,7 +31,7 @@ function getApplication(b){
         function(res){
             applicationName = res;
             applicationNumber = res.length;
-			getQuestionsName('1');
+			getQuestionsName(b);
         },
         "json"
     );
@@ -46,18 +47,18 @@ function getQuestionsName(a){
         function(res) {
             if (res.length ==0) {
                 var changeCss = $(".fsAndAa");
-                for (var k = 0; k <changeCss.length; k++) {
-                   // changeCss[k].style.visibility = "hidden";
+                if (visitorId !== 0) {
+                    randomizeAA();
                 }
-               // randomizeAA();
                 return null;
             }
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
-			
-           // randomizeAA();
-            randomizeFS();
+			if (visitorId !== 0) {
+                randomizeAA();
+                randomizeFS();
+            }
         },
         "json"
     );
@@ -202,7 +203,7 @@ function randomizeFS() {
          }
          makeFSDraggable();
 }
-/*function randomizeAA(){
+function randomizeAA(){
     var array = new Array();
     for (i = 0; i<applicationNumber;i++) {
         var a = Math.random()*applicationNumber;
@@ -233,7 +234,7 @@ function randomizeFS() {
         }
         table.appendChild(table_row);  
     }
-}*/
+}
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
     b = jQuery(b)[0]; 
@@ -279,7 +280,6 @@ function makeFSDraggable() {
 function init(){
     getFormId();
     getVisitorId();
-	getApplication(formId);
 	$("#submit").click(extractAnswers);
 	
 }
