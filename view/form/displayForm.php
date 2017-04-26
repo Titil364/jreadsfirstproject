@@ -53,7 +53,7 @@
 			echo '<div id="Applic'.$i.'Info">'; //app info div
 				$taskName = htmlspecialchars($application_array[$i]->getApplicationName());
 				$taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
-				$img =  "media/". $application_array[$i]->getApplicationId() . ".png";
+				$img =  "media/" . $folder . "/" . $application_array[$i]->getApplicationId() . "Img.png";
 	
 				echo "<h2>$taskName</h2>";
 				echo $taskDesc;

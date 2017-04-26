@@ -108,11 +108,10 @@ class ControllerForm {
 			
 			$userNickname = $_SESSION['nickname'];
 			
-			$formId = 
-			
+			/*
 			for($i = 0; $i < sizeof($a); $i++){
 				$formId = $formId . ucfirst(substr($a[$i]["name"], 0, 1));
-			}
+			}*/
 			
 			
 			$form = array(
