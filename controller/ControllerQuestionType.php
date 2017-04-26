@@ -15,5 +15,13 @@ class ControllerQuestionType {
 	
 		echo json_encode($placeholders);
 	}
+        
+        public static function existingQuestionType(){
+            $questionTypeTitle = $_POST['questionTypeTitle'];
+            $var = json_decode($questionTypeTitle);
+            $rep = ModelQuestionType::checkExistingQuestionType($var);
+            $return = json_encode($rep);
+            echo $return;
+        }
 }
 ?>

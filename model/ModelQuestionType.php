@@ -55,5 +55,38 @@ class ModelQuestionType extends Model{
         }
 	}
 	
+        public static function checkExistingQuestionType($questionTypeName){
+            try{
+                if(Session::is_connected()){
+                    
+                    $user = $_SESSION['nickname'];
+                    
+                    $sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
+                    $prep = Model::$pdo->prepare($sql);
+                    $values = array(
+                            "u" => $user,
+                            "q" =>$questionTypeName
+                            );
+
+                    $prep-> execute($values);
+                    $prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
+
+
+                    if (count($prep->fetchAll())!=0){ //maybe we will find a better syntax
+                        return true; 
+                    }else{
+                        return false;
+                    }
+                }
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return true;
+        }
+        }
 }
 
