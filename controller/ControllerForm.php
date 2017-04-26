@@ -389,7 +389,7 @@ class ControllerForm {
 
 		//Create the visitor
 			$visitorInfo = json_decode($_POST['visitorInfo'], true);
-			var_dump($visitorInfo);
+			//var_dump($visitorInfo);
 			$visitor = array(
 				"visitorSecretName" => $visitorInfo[2]["informationName"]
 			);

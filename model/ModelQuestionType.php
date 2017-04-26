@@ -57,28 +57,27 @@ class ModelQuestionType extends Model{
 	
         public static function checkExistingQuestionType($questionTypeName){
             try{
-                if(Session::is_connected()){
-                    
-                    $user = $_SESSION['nickname'];
-                    
-                    $sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
-                    $prep = Model::$pdo->prepare($sql);
-                    $values = array(
-                            "u" => $user,
-                            "q" =>$questionTypeName
-                            );
+				//Avoir une vérification de connexion ici n'a pas de sens. 
+				//Le model est juste la pour promouvoir l'accès aux informations
+				//C'est le controller qui vérifie si l'action peut être effectuée. 
+				$user = $_SESSION['nickname'];
+				
+				$sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
+				$prep = Model::$pdo->prepare($sql);
+				$values = array(
+						"u" => $user,
+						"q" =>$questionTypeName
+						);
 
-                    $prep-> execute($values);
-                    $prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
+				$prep-> execute($values);
+				$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
 
 
-                    if (count($prep->fetchAll())!=0){ //maybe we will find a better syntax
-                        return true; 
-                    }else{
-                        return false;
-                    }
-                }
-
+				if (count($prep->fetchAll())!=0){ //maybe we will find a better syntax
+					return true; 
+				}else{
+					return false;
+				}
 		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();

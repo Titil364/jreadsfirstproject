@@ -39,6 +39,7 @@ EOT;
 					echo "<option value=\"0\" ".($u->getNonce() == NULL? "selected":"")."> Active";
 					echo "<option value=\"1\" ".($u->getNonce() != NULL? "selected":"")."> Not active";
 				echo "</select></td>";
+				echo "<td><button class=\"deleteAccount\">Delete</button></td>";
 			echo "</tr>";
 			
 			$count++;
@@ -54,6 +55,7 @@ EOT;
 					<th>Mail</th>
 					<th>isAdmin</th>
 					<th>State</th>
+					<th></th>
 				</tr>
 		   </tfoot>
 EOT;

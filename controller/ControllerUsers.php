@@ -15,6 +15,25 @@ class ControllerUsers {
         require File::build_path(array('view', 'view.php'));
     }
 	
+	public static function delete() {
+		if(Session::is_connected() && Session::is_admin()){
+
+			if(isset($_GET['userId']) && isset($_SESSION['users'])){
+				$u = unserialize($_SESSION['users']);
+				if(ModelUsers::delete($u[$_GET["userId"]]->getNickname()))
+					echo "Success";	
+				else
+					echo "Error";
+			}
+			else{
+				echo "Error";
+			}
+
+		}else{
+			echo "You are not allowed to do this action. ";
+		}  
+    }
+	
     public static function create() {
         $view = 'updateUsers';
         $controller = 'users';
