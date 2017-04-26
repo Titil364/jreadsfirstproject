@@ -10,6 +10,7 @@ class ModelUsers extends Model{
     private $userForename;
     private $userNonce;
 	private $isAdmin;
+	private $numberCreatedForm;
     protected static $object = "Users";
     protected static $primary = 'userNickname';
 	
@@ -32,6 +33,7 @@ class ModelUsers extends Model{
     public function getMail(){return $this->userMail;}
 	public function setMail($mail){$this->userMail = $mail;}
     
+    public function getNumberCreatedForm(){return $this->numberCreatedForm;}
 
 
 	public function getIsAdmin(){return $this->isAdmin;}
@@ -42,8 +44,8 @@ class ModelUsers extends Model{
     public static function getSeed() {
         return self::$seed;
     }
-    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickname = NULL, $surname = NULL, $forename = NULL, $nonce = NULL, $isAdmin = NULL) {
-        if (!is_null($id) && !is_null($nickname) && !is_null($forename) && !is_null($surname) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin)) {
+    public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickname = NULL, $surname = NULL, $forename = NULL, $nonce = NULL, $isAdmin = NULL, $nb = NULL) {
+        if (!is_null($id) && !is_null($nickname) && !is_null($forename) && !is_null($surname) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin) && !is_null($nb)){
             $this->userId = $id;
 			$this->userNickname = $nickname;
             $this->userSurname= $surname;
@@ -52,6 +54,7 @@ class ModelUsers extends Model{
             $this->userPassword = $pwd;
             $this->userNonce = $nonce;
 			$this->isAdmin = $isAdmin;
+			$this->numberCreatedForm =$nb;
         }
     }
 	

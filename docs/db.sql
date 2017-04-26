@@ -25,7 +25,8 @@ CREATE TABLE Users (
   userMail varchar(20),
   userPassword varchar(250),
   userNonce varchar(64),
-  isAdmin int(1)
+  isAdmin int(1),
+  numberCreatedForm int(5)
 )DEFAULT CHARSET=utf8;
 
 
@@ -40,7 +41,7 @@ CREATE TABLE Visitor (
 
 
 CREATE TABLE Form (
-  formId int(11) PRIMARY KEY AUTO_INCREMENT,
+  formId varchar(20) PRIMARY KEY,
   formName varchar(20),
   userNickname varchar (20),
   completedForm int(11),
@@ -52,7 +53,7 @@ CREATE TABLE DateComplete (
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
   visitorId int(20),
-  formId int(11),
+  formId varchar(20),
   PRIMARY KEY (visitorId, formId),
   FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
   FOREIGN KEY (formId) REFERENCES Form(formId)
@@ -63,7 +64,7 @@ CREATE TABLE Application (
   applicationId varchar(20) PRIMARY KEY,
   applicationName varchar(30),
   applicationDescription varchar(80),
-  formId int(11),
+  formId varchar(20),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
@@ -103,7 +104,7 @@ CREATE TABLE FSQuestion (
 
 
 CREATE TABLE AssocFormFS (
-    formId int(11),
+    formId varchar(20),
     FSQuestionName varchar(50),
     FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
     FOREIGN KEY (formId) REFERENCES Form(formId),
@@ -136,7 +137,7 @@ CREATE TABLE Information (
 
 
 CREATE TABLE AssocFormPI (
-    formId int(11),
+    formId varchar(20),
     personnalInformationName varchar(20),
     PRIMARY KEY (formId, personnalInformationName),
     FOREIGN KEY (formId) REFERENCES Form(formId),
@@ -149,6 +150,7 @@ DROP TRIGGER IF EXISTS complete_form_insert;
 DROP TRIGGER IF EXISTS complete_form_delete;
 DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
 DROP TRIGGER IF EXISTS insert_assoc_fs;
+DROP TRIGGER IF EXISTS after_insert_form;
 	
 DELIMITER //
 
@@ -215,15 +217,26 @@ CREATE TRIGGER insert_assoc_fs BEFORE INSERT
 DELIMITER ;
 
 
+
+DELIMITER //
+
+CREATE TRIGGER after_insert_form AFTER INSERT
+	ON Form FOR EACH ROW
+	BEGIN
+		UPDATE Users SET numberCreatedForm = (numberCreatedForm+1) WHERE userNickname = NEW.userNickname;
+	END;//
+DELIMITER ;
+
+
 --
 -- Insert data
 
 -- mdp : 123456
-INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", NULL, 1);
-INSERT INTO Users Values("Me2", "22222e", "2222e", "222@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 0);
+INSERT INTO Users Values("Me", "MySurname", "MyForname", "me@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", NULL, 1, 1);
+INSERT INTO Users Values("Me2", "22222e", "2222e", "222@mail.com", "716cdc1e5e682a031f824d889778c3b1ee5f9d26871d15c1c8574029539919d2e75ad5a9e2545ea3b27a3491060738b23c2366e42c1e9d0d86410de792379411", "fad6e082cdeea610a7e3b4e04c12a501", 0, 0);
 
 INSERT INTO QuestionType VALUES(1, "textarea", NULL);
-INSERT INTO QuestionType VALUES(2, "thumbs", NULL);
+INSERT INTO QuestionType VALUES(2, "thumb", NULL);
 INSERT INTO QuestionType VALUES(3, "smiley", NULL);
 INSERT INTO QuestionType VALUES(4, "yesno", NULL);
 
@@ -241,7 +254,7 @@ INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 3);
 INSERT INTO AnswerType VALUES(12, "yes", "", 4);
 INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
-INSERT INTO Form VALUES(1, 'Manger ou boire', "Me", 0, 0);
+INSERT INTO Form VALUES("FOMM0MA", 'Manger ou boire', "Me", 0, 0);
 
 
 INSERT INTO Application VALUES('1Applic0', 'Manger', '', 1);

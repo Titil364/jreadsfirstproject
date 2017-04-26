@@ -848,7 +848,7 @@ function send(f, a, qPre, qPost, i, fs) {
 						}
 						alert("The form has been successfully registered ! (You will be redirected)");
 						$("#submit").unbind("click", extractData);
-						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
 					
 				}else{

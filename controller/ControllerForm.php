@@ -108,16 +108,25 @@ class ControllerForm {
 			
 			$userNickname = $_SESSION['nickname'];
 			
+			$formId = 
+			
+			for($i = 0; $i < sizeof($a); $i++){
+				$formId = $formId . ucfirst(substr($a[$i]["name"], 0, 1));
+			}
+			
+			
 			$form = array(
 						"formName" => json_decode($_POST["form"], true),
 						"userNickname" => $userNickname,
 						"completedForm" => 0,
 						"fillable" => -1
 					);
+			$form["formId"] = "FO". ucfirst(substr($_SESSION["surname"], 0, 1)) . ucfirst(substr($_SESSION["forename"], 0, 1)) . $_SESSION["numberCreatedForm"] . strtoupper(substr($form['formName'], 0, 2));
 			//ModelForm::beginTransaction();
 			//var_dump($form);
 			if(ModelForm::save($form)){
-				$form['formId'] = ModelForm::getLastInsert();
+				$_SESSION["numberCreatedForm"]++;
+				//$form['formId'] = ModelForm::getLastInsert();
 				for($i = 0; $i < sizeof($a); $i++){
 					$application = array(
 						"applicationId" => $form['formId'] . $a[$i]["id"],

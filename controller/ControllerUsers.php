@@ -45,7 +45,8 @@ class ControllerUsers {
 				"userSurname" => $_POST['userSurname'],
 				"userForename" => $_POST['userForename'],
 				"userNonce" => $nonce,
-				"isAdmin" => 0
+				"isAdmin" => 0,
+				"numberCreatedForm" => 0
 			);
 		if(ModelUsers::save($users)){
 			$path = "./media/".$users['userNickname'];
@@ -112,7 +113,7 @@ class ControllerUsers {
 			);
 			
 			ModelUsers::update($data);
-			Session::connect($nickname, $userForename, $userSurname, $userMail);
+			Session::connect($nickname, $userForename, $userSurname, $userMail, $_SESSION['numberCreatedForm']);
 			
 			require File::build_path(array('view', 'view.php'));
 		}
@@ -159,7 +160,8 @@ class ControllerUsers {
             $surname = $user->getSurname();
             $forename = $user->getForename();
             $mail = $user->getMail();
-            Session::connect($nickname, $forename, $surname, $mail);
+			$nb = $user->getNumberCreatedForm();
+            Session::connect($nickname, $forename, $surname, $mail, $nb);
 			ControllerDefault::welcome();
 
         } else {
