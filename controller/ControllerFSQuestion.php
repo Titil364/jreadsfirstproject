@@ -12,9 +12,10 @@ class ControllerFSQuestion {
         foreach($FSQuestion as $fs){
             $name = $fs->getFSQuestionName();
             $FSQuestionName[] = $name;
-        }        
+        }
         echo json_encode($FSQuestionName);
     }
+	
 	public static function predefinedFSQuestions(){
 		$var = ModelFSQuestion::getDefaultFSQuestion();
 		echo json_encode($var);
