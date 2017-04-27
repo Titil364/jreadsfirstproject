@@ -61,7 +61,7 @@ CREATE TABLE DateComplete (
 
 
 CREATE TABLE Application (
-  applicationId varchar(20) PRIMARY KEY,
+  applicationId varchar(30) PRIMARY KEY,
   applicationName varchar(30),
   applicationDescription varchar(80),
   formId varchar(20),
@@ -79,7 +79,7 @@ CREATE TABLE QuestionType (
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
   questionName varchar(60),
-  applicationId varchar(20),
+  applicationId varchar(30),
   questionTypeId int(20),
   questionPre int(1),
   FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
@@ -143,6 +143,25 @@ CREATE TABLE AssocFormPI (
     FOREIGN KEY (formId) REFERENCES Form(formId),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName)
 )DEFAULT CHARSET=utf8; 
+
+
+CREATE TABLE SortApplication (
+    visitorId varchar(20),
+    FSQuestionName varchar(50),
+	applicationOrder varchar(250),
+    FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
+    PRIMARY KEY (formId, FSQuestionName)
+)DEFAULT CHARSET=utf8;
+
+CREATE TABLE AgainAgain (
+    visitorId varchar(20),
+    applicationId varchar(30),
+	again varchar(250),
+    FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
+    PRIMARY KEY (formId, FSQuestionName)
+)DEFAULT CHARSET=utf8;
 
 -- Triggers
 	
