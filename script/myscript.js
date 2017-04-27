@@ -5,6 +5,8 @@ var predefInformation;
 var fsquestions;
 var qType = [];
 
+var customTitleState = []; //0 : not custom , 1 valid custom title, -1 invalid or empty custom title
+
 function addApplication(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
@@ -130,6 +132,8 @@ function addApplication(event){
 			});
 	
 	nbApplication++;
+
+	customTitleState.push([ [] , [] ]); // 1st : pre quest of app, 2 nde post quest
 }
 
 function displayImage(input, imgDisplayer){
@@ -286,6 +290,9 @@ function addQuestionPre(event, parent) {
 	var nbQuestions = application.children.length;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
+
+	var applicNumber = application.parentNode.id.split("Applic")[1];
+	customTitleState[applicNumber][0].push(0);
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
@@ -365,6 +372,9 @@ function addQuestionPost(event, parent) {
 	var nbQuestions = application.children.length;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
+
+	var applicNumber = application.parentNode.id.split("Applic")[1];
+	customTitleState[applicNumber][0].push(0);
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
@@ -504,7 +514,20 @@ function answers(event){
 }
 
 function customQuestion(customCheckbox, answerArea){
+	var customCheckboxId = customCheckbox.id;
+
+	var splittedId  = customCheckboxId.match(/[a-zA-Z]+|[0-9]+/g);
+
+	var numApp = splittedId[1];
+
+	var numQuest = splittedId[3];
+
+	var prepost = (splittedId[4]=="pre")?0:1; 
+
+
 	if ($(customCheckbox).is(':checked'))  { // ------- CHECKED
+
+		customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
 
 		div = customCheckbox.parentNode; 
 
@@ -521,6 +544,11 @@ function customQuestion(customCheckbox, answerArea){
 		name.setAttribute("class","customCheckboxName");
 		name.setAttribute("id","title"+customCheckbox.id);
 		subdiv.appendChild(name);
+
+		var msgRes  = document.createElement('p');
+		msgRes.setAttribute("id","msg"+customCheckbox.id);
+		subdiv.appendChild(msgRes);
+
 
 		div.appendChild(subdiv);
 
@@ -541,6 +569,8 @@ function customQuestion(customCheckbox, answerArea){
 
 
 	}else{									// ------- UNCHECKED
+
+		customTitleState[numApp][prepost][numQuest-1] = 0; //setting to state "not custom"
 
 		div = customCheckbox.parentNode; 
 
@@ -747,11 +777,25 @@ function extractData(){
 				var title = $("#titlecheckbox"+idQ)[0].value;
 				customAns.push(title);
 
+
 				var fieldList = $(".fieldcheckbox"+idQ);
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
 				}
 
+			}
+
+			///// verification of customFielState
+			
+			for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
+				for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
+					for (var questCpt = 0; questCpt < customTitleState[appCpt][prePostCpt].length; questCpt ++ ){
+						if (customTitleState[appCpt][prePostCpt][questCpt] == -1){
+							alert("at least one customFieldTitle is incorrect");
+							return null;
+						} 
+					}
+				}
 			}
 
 			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1, customAns));
@@ -859,6 +903,59 @@ function send(f, a, qPre, qPost, i, fs) {
 	);
 	//alert("done");
 }
+
+function isCustomTitleFree(event){
+	var isFree;// = false;
+	var field = event.target;
+	var fieldID = field.id;
+
+	var title = field.value;
+	var parentDiv = field.parentNode;
+	var msgZone = $(parentDiv).find(":last-child")[0];
+
+
+	var splittedId  = fieldID.match(/[a-zA-Z]+|[0-9]+/g);
+
+	var numApp = splittedId[1];
+	var numQuest = splittedId[3];
+	var prepost = (splittedId[4]=="pre")?0:1; 
+
+
+
+	if (title =="") {
+		msgZone.style.color = "red";
+		msgZone.innerHTML = "Title needed." 
+         console.log("pas de titre");         
+         customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
+    }else{
+		$.post(
+			"index.php", // url cible
+			{
+				"action":JSON.stringify("existingQuestionType"),
+				"controller":JSON.stringify("questionType"),
+				"questionTypeTitle":JSON.stringify(title)
+			}, // données envoyées
+			function(res){ // le callback
+				var message = res;
+				if (!message) { //if false
+				console.log("free");					
+					msgZone.style.color = "green";
+					msgZone.innerHTML = "title available." 
+					customTitleState[numApp][prepost][numQuest-1] = 1; //setting to state "valid custom title"
+				}
+				
+				else { // if true
+					msgZone.style.color = "red";
+					msgZone.innerHTML = "Title already used." 
+					customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
+				}
+			},
+			"json"
+		);
+	}
+
+}
+
 
 
 //function which return an array of the name of the checked default information	
@@ -1106,6 +1203,8 @@ function init(){
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
+
+	$(document).on("change",".customCheckboxName",isCustomTitleFree)
 }
 
 
