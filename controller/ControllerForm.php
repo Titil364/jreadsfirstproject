@@ -203,6 +203,52 @@ class ControllerForm {
 					}
 
 					for($y = 0; $y < sizeof($qPost[$i]); $y++){
+                                                if(isset($qPost[$i][$y]["customAns"])){
+                                                    $customAns = $qPost[$i][$y]["customAns"];
+                                                    
+                                                    $questionType = array(
+                                                        "questionTypeName" => $customAns[0],
+                                                        "userNickname" => $userNickname
+                                                    );
+                                                    if(!ModelQuestionType::save($questionType)){
+							$abort = true;
+							break;
+                                                    }                                                    
+                                                    
+                                                    $questionTypeId = ModelQuestionType::getLastInsert();
+                                                    $questionTypeName = $customAns[0];
+                                                    
+                                                    $original = ModelQuestionType::select($qPost[$i][$y]["type"]);
+                                                    $originalName = $original->getQuestionTypeName();
+                                                    
+                                                    for($j = 1; $j < sizeof($customAns); $j++){
+                                                        $answerType = array(
+                                                            "answerTypeName" => $customAns[$j],
+                                                            "answerTypeImage" => $originalName . $j ."image",
+                                                            "questionTypeId" => $questionTypeId
+
+                                                        );
+                                                    if(!ModelAnswerType::save($answerType)){
+							$abort = true;
+							break;
+                                                    }
+                                                    }
+                                                    //chercher questionTypeId grace à $q[$i][$y]["questionType"]
+                                                    //$qTypeId
+                                                    $question = array(
+                                                            "questionId" => $form['formId'] . $qPost[$i][$y]["id"],
+                                                            "questionName" => $qPost[$i][$y]["label"],
+                                                            "applicationId" => $application["applicationId"],
+                                                            "questionTypeId" => $questionTypeId,
+                                                            "questionPre" => $qPost[$i][$y]["pre"]
+                                                    );
+                                                    if(!ModelQuestion::save($question)){
+                                                            $abort = true;
+                                                            break;
+                                                    }
+                                                    
+                                                }else{
+                                                
 						//chercher questionTypeId grace à $q[$i][$y]["questionType"]
 						//$qTypeId
 						$question = array(
@@ -216,6 +262,9 @@ class ControllerForm {
 							$abort = true;
 							break;
 						}
+                                                }
+                                                
+
 					}
 				}
 				if($info){
