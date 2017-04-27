@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS DateComplete;
 DROP TABLE IF EXISTS Form;
 DROP TABLE IF EXISTS Visitor;
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS SortApplication;
+DROP TABLE IF EXISTS AgainAgain;
 
 
 
@@ -41,7 +43,7 @@ CREATE TABLE Form (
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE Visitor (
-  visitorId varchar(20) PRIMARY KEY,
+  visitorId varchar(40) PRIMARY KEY,
   visitorSecretName varchar(20),
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
@@ -78,7 +80,7 @@ CREATE TABLE Question (
 
 
 CREATE TABLE Answer (
-   visitorId  varchar(20),
+   visitorId varchar(30),
    questionId  varchar(20),
    answer varchar(255),
    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
@@ -120,7 +122,7 @@ CREATE TABLE PersonnalInformation (
 CREATE TABLE Information (
     personnalInformationName varchar(30),
     informationName varchar(30),
-	visitorId varchar(20),
+	visitorId varchar(40),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName),
     FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId)
 )DEFAULT CHARSET=utf8;
@@ -136,21 +138,21 @@ CREATE TABLE AssocFormPI (
 
 
 CREATE TABLE SortApplication (
-    visitorId varchar(20),
+    visitorId varchar(40),
     FSQuestionName varchar(50),
 	applicationOrder varchar(250),
     FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
     FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
-    PRIMARY KEY (formId, FSQuestionName)
+    PRIMARY KEY (visitorId, FSQuestionName)
 )DEFAULT CHARSET=utf8;
 
 CREATE TABLE AgainAgain (
-    visitorId varchar(20),
+    visitorId varchar(40),
     applicationId varchar(30),
 	again varchar(250),
-    FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
+    FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
     FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
-    PRIMARY KEY (formId, FSQuestionName)
+    PRIMARY KEY (applicationId, visitorId)
 )DEFAULT CHARSET=utf8;
 
 -- Triggers

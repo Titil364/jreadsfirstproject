@@ -39,3 +39,16 @@ class Information{
 		this.informationName = info;
 	}
 }
+class AA{
+	constructor(name, ans){
+		this.applicationId = name;
+		this.again = ans;
+	}
+}
+
+class FSQ{
+	constructor(a, t){
+		this.name = a;
+		this.tab = t;
+	}
+}

@@ -3,6 +3,10 @@ require_once File::build_path(array('model', 'ModelForm.php'));
 
 require_once File::build_path(array('model', 'ModelDateComplete.php'));
 
+require_once File::build_path(array('model', 'ModelAgainAgain.php'));
+
+require_once File::build_path(array('model', 'ModelSortApplication.php'));
+
 
 class ControllerForm {
     
@@ -418,14 +422,38 @@ class ControllerForm {
 				"formId" => $formId
 			);
 			//var_dump($date);
-			ModelDateComplete::update($date);
+			//ModelDateComplete::update($date);
+			
+			$fs = json_decode($_POST['fs'], true);
+			//var_dump($fs);
+			foreach($fs as $f){
+				$data = array(
+					"visitorId" => $id,
+					"FSQuestionName" => $f["name"],
+					"applicationOrder" => json_encode($f["tab"])
+				);
+				ModelSortApplication::save($data);
+			}
+			$aa = json_decode($_POST['aa'], true);
+			$answer = ["No", "Maybe", "Yes"];
+			var_dump($aa);
+			foreach($aa as $a){
+				$test = $formId."Applic".$a["applicationId"];
+				echo $test;
+				$data = array(
+					"visitorId" => $id,
+					"applicationId" => $test,
+					"again" => $answer[$a["again"]]
+				);
+				ModelAgainAgain::save($data);
+			}
 		}
 		
 		for($i = 0; $i < count($answers); $i++){
 			$ans = $answers[$i];
 			$ans['visitorId'] = $id;
 			//var_dump($ans);
-			ModelAnswer::save($ans);
+			//ModelAnswer::save($ans);
 		}
 	}
 

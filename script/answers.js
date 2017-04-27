@@ -106,39 +106,45 @@ function extractAnswers(){
     } else{
 		//Extracting the aa datas
 		var tr = $("#aa tbody tr");
-		var aa = new Array(), td, name;
+		var aa = [], td, name, val;
 		for(var i = 0; i < tr.length; i++){
 			td = $(tr[i]).children();
-			name = td[0].innerHTML;
+		 	//console.log(tr[i]);
+			//console.log(tr[i].id);
+			name = tr[i].id.slice(3, tr[i].id.length);
 
-			aa[name] = $("input[name=radio"+i+"]:checked").val();
-			if(aa[name] === undefined){
+			val = $("input[name=radio"+i+"]:checked").val();
+			if(val === undefined){
 				alert("Please answer the again again table. ");
 				return null;
 			}
+			aa.push(new AA(name, val));
 		}
 		
 		//console.log(aa);
+		//console.log(JSON.stringify(aa));
 		
 		
 		//Extracting the funsorter data
 		var tr = $("#FunSorter tbody tr");
-		var fs = new Array(), td, name;
+		var fs = [], td, name, tab;
 		for(var i = 0; i < tr.length; i++){
+			tab = [];
 			td = $(tr[i]).children();
 			name = td[0].innerHTML + "/" + td[td.length-1].innerHTML;
-			console.log(name);
-			fs[name] = [];
+			//console.log(name);
 			for(var y = 1; y < td.length-1; y++){
-				fs[name].push($(td[y]).children()[0].innerHTML);
+				tab.push($(td[y]).children()[0].innerHTML);
 			}
+			fs.push(new FSQ(name, tab));
 		}
 		
 		//console.log(fs);
+		//console.log(JSON.stringify(fs));
 		
 
 		
-        //sendPost(f, answers, fs, aa);
+        sendPost(f, answers, fs, aa);
     }
 	
 }
@@ -266,7 +272,7 @@ function randomizeAA(){
             button.setAttribute("type","radio");
             button.setAttribute("class","radioButtonFS");            
             button.setAttribute("name","radio"+i);
-            button.setAttribute("value", i);
+            button.setAttribute("value", j);
             td.appendChild(button);
             table_row.appendChild(td);
         }
