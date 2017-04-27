@@ -21,7 +21,7 @@ class ModelVisitor extends Model{
     }
 	
     public function getDateCompletePre(){
-		return $his->dateCompletePre;
+		return $this->dateCompletePre;
 	}
 	
 	public function getDateCompletePost(){

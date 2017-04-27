@@ -67,8 +67,7 @@ class ModelForm extends Model{
 	
 	public static function getVisitorsByFormId($formId){
 		try{
-			$sql  = "SELECT V.visitorId, V.visitorGroupId, V.visitorSecretName, V.visitorAge, V.visitorClass FROM Visitor V ";
-			$sql = $sql . "JOIN DateComplete d ON d.visitorId = V.visitorId WHERE d.formId=:formId;";
+			$sql  = "SELECT * FROM Visitor WHERE Visitor.formId=:formId";
 			$prep = Model::$pdo->prepare($sql);
 
 			$values = array(

@@ -155,7 +155,7 @@ class ControllerUsers {
 		}
         require File::build_path(array('view', 'view.php'));
     }
-	
+
 	public static function connect(){
 		$view = 'connect';
         $controller = 'users';
@@ -260,6 +260,8 @@ class ControllerUsers {
 		}
 		
 	}
+	
+	
 	public static function deleteSessionUser(){
 		if(isset($_SESSION['users']))
 			unset($_SESSION['users']);
