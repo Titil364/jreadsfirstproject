@@ -30,15 +30,6 @@ CREATE TABLE Users (
 )DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE Visitor (
-  visitorId int(20) PRIMARY KEY AUTO_INCREMENT,
-  visitorGroupId int(11),
-  visitorSecretName varchar(20),
-  visitorSchool varchar(20),
-  visitorAge int(11),
-  visitorClass varchar(20)
-)DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE Form (
   formId varchar(20) PRIMARY KEY,
@@ -49,13 +40,12 @@ CREATE TABLE Form (
   FOREIGN KEY (userNickname) REFERENCES Users(userNickname)
 )DEFAULT CHARSET=utf8;
 
-CREATE TABLE DateComplete (
+CREATE TABLE Visitor (
+  visitorId varchar(20) PRIMARY KEY,
+  visitorSecretName varchar(20),
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
-  visitorId int(20),
   formId varchar(20),
-  PRIMARY KEY (visitorId, formId),
-  FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
@@ -88,7 +78,7 @@ CREATE TABLE Question (
 
 
 CREATE TABLE Answer (
-   visitorId  int(20),
+   visitorId  varchar(20),
    questionId  varchar(20),
    answer varchar(255),
    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
@@ -130,7 +120,7 @@ CREATE TABLE PersonnalInformation (
 CREATE TABLE Information (
     personnalInformationName varchar(30),
     informationName varchar(30),
-	visitorId int(20),
+	visitorId varchar(20),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName),
     FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId)
 )DEFAULT CHARSET=utf8;
@@ -155,7 +145,7 @@ DROP TRIGGER IF EXISTS after_insert_form;
 DELIMITER //
 
 CREATE TRIGGER complete_form_insert AFTER INSERT
-	ON DateComplete FOR EACH ROW
+	ON Visitor FOR EACH ROW
 	BEGIN
 			UPDATE Form SET completedForm = (completedForm+1) WHERE NEW.formId = formId;
 	END;//
@@ -167,7 +157,7 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER complete_form_delete AFTER DELETE
-	ON DateComplete FOR EACH ROW
+	ON Visitor FOR EACH ROW
 	BEGIN
 			UPDATE Form SET completedForm = (completedForm-1)WHERE OLD.formId = formId;
 	END;//

@@ -4,60 +4,46 @@ require_once File::build_path(array('model', 'Model.php'));
 
 class ModelVisitor extends Model{
 	private $visitorId;
-	private $visitorGroupId;
-	private $visitorName;
 	private $visitorSecretName;
-	private $visitorSchool;
-	private $visitorAge;
-	private $visitorClass;
+	private $dateCompletePre;
+	private $dateCompletePost;
+	private $formId;
 
     protected static $object = "Visitor";
-    protected static $primary = 'visitorSecretName';
+    protected static $primary = 'visitorId';
 
     public function getVisitorId() {
    		return $this->visitorId;
     }
-
-    public function getVisitorGroupId() {
-   		return $this->visitorGroupId;
-    }
-
-    public function getVisitorName(){
-    	return $this->visitorName;
-    }
-
+	
     public function getVisitorSecretName(){
     	return $this->visitorSecretName;
     }
 	
-    public function getVisitorSchool(){
-    	return $this->visitorSchool;
-    }
+    public function getDateCompletePre(){
+		return $his->dateCompletePre;
+	}
 	
-    public function getVisitorAge(){
-    	return $this->visitorAge;
-    }
-
-    public function getVisitorClass(){
-    	return $this->visitorClass;
-    }
+	public function getDateCompletePost(){
+		return $this->dateCompletePost;
+	}
+	
+	public function getFormId(){
+		return $this->formId;
+	}
 	
 	public function getVisitorA($a){
 		switch ($a){
 			case "Id":
 				return $this->visitorId;
-			case "GroupId":
-				return $this->visitorGroupId;
-			case "Name":
-				return $this->visitorName;
 			case "SecretName":
 				return $this->visitorSecretName;
-			case "School":
-				return $this->visitorSchool;
-			case "Age":
-				return $this->visitorAge;
-			case "Class":
-				return $this->visitorClass;
+			case "dateCompletePre":
+				return $this->dateCompletePre;
+			case "dateCompletePost":
+				return $this->dateCompletePost;
+			case "formId":
+				return $this->formId;
 		}
 	}
 
@@ -65,39 +51,30 @@ class ModelVisitor extends Model{
    		$this->visitorId = $visitorId ;
     }
 
-    public function setVisitorGroupId($visitorGroupId) {
-   		$this->visitorGroupId = $visitorGroupId ;
-    }
-
-    public function setVisitorName($visitorName){
-    	$this->visitorName = $visitorName ;
-    }
-
     public function setVisitorSecretName($visitorSecretName){
     	$this->visitorSecretName = $visitorSecretName ;
     }
 	
-    public function setVisitorSchool($visitorSchool){
-    	$this->visitorSchool = $visitorSchool ;
+    public function setDateCompletePre($dateCompletePre){
+    	$this->dateCompletePre = $dateCompletePre ;
     }
 	
-    public function setVisitorAge($visitorAge){
-    	$this->visitorAge = $visitorAge ;
+    public function setDateCompletePost($dateCompletePost){
+    	$this->dateCompletePost = $dateCompletePost ;
     }
 
-    public function setVisitorClass($visitorClass){
-    	$this->visitorClass = $visitorClass ;
+    public function setFormId($formId){
+    	$this->formId = $formId ;
     }
 
-    public function __construct( $visitorGroupId= NULL, $visitorName = NULL, $visitorSecretName = NULL, $visitorSchool = NULL, $visitorAge = NULL, $visitorClass = NULL) {
-        if (!is_null($visitorGroupId) && !is_null($visitorName) && !is_null($visitorSecretName) && !is_null($visitorSchool) && !is_null($visitorAge) && !is_null($visitorClass)) {
+    public function __construct($visitorId = NULL, $visitorSecretName = NULL, $dateCompletePre = NULL, $dateCompletePost = NULL, $formId = NULL) {
+        if (!is_null($visitorId) && !is_null($visitorSecretName) && !is_null($dateCompletePre) && !is_null($dateCompletePost) && !is_null($formId)) {
 
-        	$this->visitorGroupId = $visitorGroupId;
-			$this->visitorName = $visitorName;
+			$this->visitorId = $visitorId;
 			$this->visitorSecretName = $visitorSecretName;
-			$this->visitorSchool = $visitorSchool;
-			$this->visitorAge = $visitorAge;
-			$this->visitorClass = $visitorClass;        	
+			$this->dateCompletePre = $dateCompletePre;
+			$this->dateCompletePost =$dateCompletePost;
+			$this->formId =$formId;
         }
     }
 
