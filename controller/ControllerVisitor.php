@@ -116,5 +116,15 @@ class ControllerVisitor{
 		}
     }
 	
+	public static function addVisitor(){
+		$visitorId = json_decode($_POST['visitorId']); 
+		$formId = json_decode($_POST['formId']);
+		$data = array(
+				"visitorId" => $visitorId,
+				"formId" => $formId
+			);
+		ModelVisitor::save($data);
+	}
+	
 }
 ?>

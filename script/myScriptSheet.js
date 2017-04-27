@@ -225,7 +225,7 @@ function sleep(milliseconds) {
     }
   }
 }
-
+document.getElementById("formId").value
 
 //create pdf
 

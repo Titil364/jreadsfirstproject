@@ -11,7 +11,6 @@
 			<th>Number of form completed</th>
 			<th></th>
 			<th>Who answered ?</th>
-			<th>State </th>
        </tr>
 	</thead>
 
@@ -52,27 +51,7 @@
 				echo "<td>$secureNbCompletedForm</td>";
 				echo "<td><a href=\"index.php?controller=form&action=read&id=$protectedId\" >See the form</a></td>";
 				echo "<td><a href=\"index.php?controller=form&action=whoAnswered&id=$protectedId\" >Answers</a></td>";
-				echo "<td>";
-				echo "<select name=\"fill\" size = \"1\">";
-				switch ($fillable){
-					case -1:
-						echo "<option selected value=\"-1\"> Nothing available";
-						echo "<option value=\"0\"> PreForm available";
-						echo "<option value=\"1\"> PostForm available";
-						break;
-					case 0:
-						echo "<option value=\"-1\"> Nothing available";
-						echo "<option selected value=\"0\"> PreForm available";
-						echo "<option value=\"1\"> PostForm available";
-						break;
-					case 1:
-						echo "<option value=\"-1\"> Nothing available";
-						echo "<option value=\"0\"> PreForm available";
-						echo "<option selected value=\"1\"> PostForm available";
-						break;
-				}
-				echo "</select>";
-				echo "</td>";
+				
 			echo "</tr>";
 		}
 		

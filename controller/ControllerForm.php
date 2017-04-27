@@ -1,7 +1,6 @@
 <?php
 require_once File::build_path(array('model', 'ModelForm.php'));
 
-require_once File::build_path(array('model', 'ModelDateComplete.php'));
 
 
 class ControllerForm {
@@ -277,6 +276,7 @@ class ControllerForm {
 	public static function whoAnswered(){
 		$controller ='form';
 		$view = 'whoAnswered';
+		$jscript = "whoAnswered";
 		
 		$formId = $_GET['id'];
 		$pagetitle='Who answered '.$formId;
@@ -288,8 +288,10 @@ class ControllerForm {
 			$array = array();
 			$i = 0;
 			foreach($visitor as $v){
-				$array[$i][0] = ModelDateComplete::getDateByVisitorAndForm($v->getVisitorId(),$formId);
+				$array[$i][0] = $v->getDateCompletePre();
 				$array[$i][1] = ModelInformation::getInformationByVisitorId($v->getVisitorId());
+				$array[$i][2] = $v->getVisitorSecretName();
+				$array[$i][3] = $v->getVisitorId();
 				$i++;
 			}
 		}
