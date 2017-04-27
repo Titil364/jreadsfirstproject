@@ -270,17 +270,17 @@ INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 
 INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 3, 1);
 
 
-INSERT INTO FSQuestion VALUES ('Easy to do / Hard to do', 1);
-INSERT INTO FSQuestion VALUES ('Most fun / Least fun', 1);
-INSERT INTO FSQuestion VALUES ('Learned the most / Learned the least', 1);
-INSERT INTO FSQuestion VALUES ('Most cool / Least cool', 1);
-INSERT INTO FSQuestion VALUES ('Most boring / Least boring', 1);
+INSERT INTO FSQuestion VALUES ('Easy to do/Hard to do', 1);
+INSERT INTO FSQuestion VALUES ('Most fun/Least fun', 1);
+INSERT INTO FSQuestion VALUES ('Learned the most/Learned the least', 1);
+INSERT INTO FSQuestion VALUES ('Most cool/Least cool', 1);
+INSERT INTO FSQuestion VALUES ('Most boring/Least boring', 1);
 
-INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Easy to do / Hard to do');
-INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most fun / Least fun');
-INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Learned the most / Learned the least');
-INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most cool / Least cool');
-INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most boring / Least boring');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Easy to do/Hard to do');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most fun/Least fun');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Learned the most/Learned the least');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most cool/Least cool');
+INSERT INTO AssocFormFS VALUES ("FOMM0MA", 'Most boring/Least boring');
 
 
 INSERT INTO PersonnalInformation VALUES ('Name', 1);

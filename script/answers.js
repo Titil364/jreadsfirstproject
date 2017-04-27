@@ -73,20 +73,20 @@ function extractAnswers(){
 	for(var i = 0; i < shortcut.length; i++){
 		n = shortcut[i].name;
 		val = $("input[name="+n+"]:checked").val();
-		if(val === undefined | val === ""){
+		/*if(val === undefined | val === ""){
 			alert("Please answer to all the questions. ");
 			return null;
-		}
+		}*/
 		answers.push(new Answer(n, val));
 	}
 	var textarea = $("textarea");
 		
 	for(var i = 0; i < textarea.length; i++){
 		val = $(textarea[i]).val();
-		if(val === undefined | val === ""){
+		/*if(val === undefined | val === ""){
 			alert("Please answer to all the questions. aaa ");
 			return null;
-		}
+		}*/
 		answers.push(new Answer(textarea[i].name, val));
 	}
 	
@@ -104,10 +104,41 @@ function extractAnswers(){
 		}
         sendPre(f, personnalInfo, answers);
     } else{
+		//Extracting the aa datas
+		var tr = $("#aa tbody tr");
+		var aa = new Array(), td, name;
+		for(var i = 0; i < tr.length; i++){
+			td = $(tr[i]).children();
+			name = td[0].innerHTML;
+
+			aa[name] = $("input[name=radio"+i+"]:checked").val();
+			if(aa[name] === undefined){
+				alert("Please answer the again again table. ");
+				return null;
+			}
+		}
+		
+		//console.log(aa);
 		
 		
+		//Extracting the funsorter data
+		var tr = $("#FunSorter tbody tr");
+		var fs = new Array(), td, name;
+		for(var i = 0; i < tr.length; i++){
+			td = $(tr[i]).children();
+			name = td[0].innerHTML + "/" + td[td.length-1].innerHTML;
+			console.log(name);
+			fs[name] = [];
+			for(var y = 1; y < td.length-1; y++){
+				fs[name].push($(td[y]).children()[0].innerHTML);
+			}
+		}
 		
-        sendPost(f, answers, fs);
+		//console.log(fs);
+		
+
+		
+        //sendPost(f, answers, fs, aa);
     }
 	
 }
@@ -136,7 +167,7 @@ function sendPre(f, pi, a){
 		"json" // type
 	);
 }
-function sendPost(f, a, fs){
+function sendPost(f, a, fs, aa){
 
 	$.post(
 		"index.php", // url
@@ -146,6 +177,7 @@ function sendPost(f, a, fs){
 			"formId":f,
             "visitorId":visitorId,
 			"fs": JSON.stringify(fs),
+			"aa": JSON.stringify(aa),
             "pre":1,
 			"answers":JSON.stringify(a)
 		},  //data
@@ -223,17 +255,24 @@ function randomizeAA(){
         var text = document.createTextNode(applicationName[array[i]]);
         td.appendChild(text);
         table_row.appendChild(td);
-        for (j = 0; j<3; j++){
+        for (j = 2; j>=0; j--){
+			/* Value : 
+			 * 2 = yes
+			 * 1 = maybe
+			 * 0 = no
+			 */
             var td = document.createElement('td');
             var button = document.createElement("input");
             button.setAttribute("type","radio");
             button.setAttribute("class","radioButtonFS");            
             button.setAttribute("name","radio"+i);
+            button.setAttribute("value", i);
             td.appendChild(button);
             table_row.appendChild(td);
         }
-        table.appendChild(table_row);  
+        tbody.appendChild(table_row);  
     }
+	table.appendChild(tbody);
 }
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
