@@ -436,36 +436,37 @@ class ControllerForm {
 		$formId = $_POST['formId'];
 		$f = ModelForm::select($formId);
 		$pre = $_POST['pre'];
+		$secretName = json_decode($_POST['secretName']);
+		$visitorId = json_decode($_POST['visitorId']);
+		var_dump( $visitorId);
 		if($pre == 0){
 
 		//Create the visitor
 			$visitorInfo = json_decode($_POST['visitorInfo'], true);
 			//var_dump($visitorInfo);
 			$visitor = array(
-				"visitorSecretName" => $visitorInfo[2]["informationName"]
+				"visitorId"=> $visitorId,
+				"visitorSecretName" => $secretName
 			);
-			ModelVisitor::save($visitor);
-			$id = ModelVisitor::getLastInsert();
+			ModelVisitor::update($visitor);
 			
 			foreach($visitorInfo as $f){
-				$f["visitorId"] = $id;
+				$f["visitorId"] = $visitorId;
 				ModelInformation::save($f);
 			}
 			
 			$date = array(
 				"dateCompletePre" => date('Y/m/d H:i:s'),
-				"visitorId" => $id,
-				"formId" => $formId
+				"visitorId" => $visitorId
 			);
 			//var_dump($date);
-			ModelDateComplete::save($date);
-			echo($date['visitorId']);
+			ModelVisitor::update($date);
 		}
 		else{
 			$id = $_POST['visitorId'];
 			$date = array(
 				"dateCompletePost" => date('Y/m/d H:i:s'),
-				"visitorId" => $id,
+				"visitorId" => $visitorId,
 				"formId" => $formId
 			);
 			//var_dump($date);
@@ -474,7 +475,7 @@ class ControllerForm {
 		
 		for($i = 0; $i < count($answers); $i++){
 			$ans = $answers[$i];
-			$ans['visitorId'] = $id;
+			$ans['visitorId'] = $visitorId;
 			//var_dump($ans);
 			ModelAnswer::save($ans);
 		}

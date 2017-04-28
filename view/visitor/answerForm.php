@@ -7,12 +7,14 @@
 	//opening form
 	echo '<div id ="form-'.$formId.'" class= "formCss">';
 	//call this view with $f the form to display
+	echo '<input type="hidden" id="visitorId" value="'.$_GET['visitorId'].'">';
 	
 	$formName = htmlspecialchars($f->getFormName());
 	
 	//displaying form  informations
 	echo "<h1> $formName </h1>";
-        
+        echo '<label for="secretName"> SecretName : </label>';
+		echo '<input id="secretName" name="secretName" type="text">';
         //displaying fields
         echo '<div id="userInformation">';
         foreach ($field_array as $field){

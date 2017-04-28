@@ -21,11 +21,11 @@
 		
 		echo "<thead>";
 		echo "<tr>";
-		echo "<td>Date Completed</td>";
+		echo "<th>Date Completed</th>";
 		foreach($questions as $q){
-			echo "<td>".$q->getPersonnalInformationName()."</td>";
+			echo "<th>".$q->getPersonnalInformationName()."</th>";
 		}
-		echo "<td>See</td>";
+		echo "<th>See</th>";
 		echo "</thead>";
 		echo "</tr>";
 		echo "<tbody>";
@@ -35,7 +35,7 @@
 			if($sName !== null){
 				$date = $array[$i][0];
 				echo "<tr>";			
-				echo "<td>".$date[0]->getDateCompletePre()."</td>";
+				echo "<td>".$date."</td>";
 				$information = $array[$i][1];
 				$j=0;
 				foreach($information as $a){
@@ -50,7 +50,7 @@
 		}
 		echo "</tbody>";
 //FOOTER
-	if(count($visitor) > 5){
+	/*if(count($visitor) > 5){
 		echo <<< EOT
 			<tfoot>
 				<tr>
@@ -59,13 +59,14 @@
 					<th>Number of form completed</th>
 					<th>Code POST</th>
 				</tr>
-		   </tfoot>
-EOT;
-	}
+		   </tfoot>*/
+//EOT;
+	//}
 	}
 	?>
 
 	</table>
+	<input type="number" id="numberVisitor" value="1">
 	<input type="button" id="addUser" value="Add Visitor">
 	<?php
 		echo '<input type="hidden" id="formId" value="'.$formId.'">'
