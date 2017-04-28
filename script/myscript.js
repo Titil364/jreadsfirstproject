@@ -785,18 +785,6 @@ function extractData(){
 
 			}
 
-			///// verification of customFielState
-			
-			for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
-				for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
-					for (var questCpt = 0; questCpt < customTitleState[appCpt][prePostCpt].length; questCpt ++ ){
-						if (customTitleState[appCpt][prePostCpt][questCpt] == -1){
-							alert("at least one customFieldTitle is incorrect");
-							return null;
-						} 
-					}
-				}
-			}
 
 			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1, customAns));
 
@@ -834,7 +822,33 @@ function extractData(){
 			
 			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
+
+
 	}
+
+	////verification  of cutomField answers
+	var allCustomfields = $(".answerArea input");
+	for (var customFieldsCount = 0; customFieldsCount < allCustomfields.length; customFieldsCount++ ){
+		if (allCustomfields[customFieldsCount].value == ""){
+			alert("At least one custom answers is empty");
+			return null;
+		}
+	}
+
+
+	///// verification of customFielState
+	
+	for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
+		for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
+			for (var questCpt = 0; questCpt < customTitleState[appCpt][prePostCpt].length; questCpt ++ ){
+				if (customTitleState[appCpt][prePostCpt][questCpt] == -1){
+					alert("at least one customFieldTitle is incorrect");
+					return null;
+				} 
+			}
+		}
+	}
+
 	var info = extractInformation();
 	var fs = extractFSQuestions();
 	send(formName, a, qPre, qPost, info, fs);
