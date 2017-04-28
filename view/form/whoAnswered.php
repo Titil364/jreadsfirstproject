@@ -3,7 +3,6 @@
 	<table>
 	<caption>All my delicious answers</caption>
 
-	
 <?php
 	
 	
@@ -83,9 +82,9 @@
 			$i = 0;
 			foreach($visitor as $f){
 				if ($array[$i][2] === null){
-					$used = "No";
+					$used = '<img src="docs/No.png" width=40px height=30px alt="No">';
 				} else {
-					$used="Yes";
+					$used = '<img src="docs/Yes.png" width=40px height=30px alt="Yes">';
 				}
 				$tdNum = $i+1;
 				echo '<tr id="'.$tdNum.'">';

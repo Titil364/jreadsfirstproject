@@ -125,7 +125,7 @@ class ControllerVisitor{
 				"visitorId" => $visitorId,
 				"formId" => $formId
 			);
-		ModelVisitor::save($data);
+		echo json_encode(ModelVisitor::save($data));
 	}
 	
 	public static function getFormIdByVisitor(){
