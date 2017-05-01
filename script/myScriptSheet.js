@@ -225,7 +225,8 @@ function sleep(milliseconds) {
     }
   }
 }
-document.getElementById("formId").value
+//document.getElementById("formId").value;
+//This line as been put as a commentary, it was breaking the AATable and the FS
 
 //create pdf
 

@@ -28,7 +28,6 @@ function getSecretName() {
             "visitorId":JSON.stringify(visitorId),
         },
         function(res) {
-            console.log(res);
             if (res==true) {
                 secretName = true;
             } else{
@@ -81,6 +80,8 @@ function getQuestionsName(a){
         "json"
     );
 }
+
+
 
 function extractAnswers(){
 	var answers=[];
@@ -336,12 +337,65 @@ function makeFSDraggable() {
     }
 }
 
+function add(){
+    var tabAnwersArea = document.getElementsByClassName("question");
+    for (j=0;j<tabAnwersArea.length;j++) {
+        var tab =tabAnwersArea[j].children;
+        for(i = 0;i<tab.length;i++){
+            tab[i].addEventListener("change",function(){
+                var select = $(this);
+                reaction(select);
+            });
+        }
+    }
+}
+
+function reaction (select){    
+    var g = select.children();
+    if (g === undefined) {
+        console.log(select.parent().prop("id"));
+        console.log(select.val());
+    } else{
+        console.log(select.parent().prop("id"));
+        for(i = 1; i<g.length;i++){
+            var f = g[i];
+            var x = f.children;
+            var c = x[0];
+            if (c.checked) {
+                var name = c.id;
+                var h = name.split('m');
+                console.log("sm"+h[1]);
+            }
+        }
+    }
+}
+
+function saveSecretName(){
+    var val = $("#secretName").val();
+    console.log(val);
+    $.post(
+		"index.php", // url
+		{
+			"action":"createVisitor",
+			"controller":"form",
+            "formId" : JSON.stringify(formId),
+            "visitorId" : JSON.stringify(visitorId),
+			"secretName" : JSON.stringify(val)
+		},
+        function (res){
+            
+        },
+        "json"
+    );
+    
+}
 
 function init(){
     getFormId();
     getVisitorId();
+    document.getElementById("secretName").addEventListener("change",saveSecretName);
 	$("#submit").click(extractAnswers);
-	
+    add();	
 }
 
 

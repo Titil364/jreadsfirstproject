@@ -7,7 +7,11 @@ function getFormId(){
 function getCpt(){
     var select = $("#users>tr");
     var f = select[select.length-1];
-    cpt = f.id;
+    if (f===undefined) {
+        cpt = 0;
+    } else{
+        cpt = f.id;
+    }
 }
 
 function addUser(event){
