@@ -57,7 +57,7 @@ class ControllerUsers {
 		$hashpass = Security::encrypt($_POST['userPassword']);
         $nonce = Security::generateRandomHex();
 		
-		$users = array(
+		$user = array(
 				"userMail" => $_POST['userMail'],
 				"userPassword" => $hashpass,
 				"userNickname" => $_POST['userNickname'],
@@ -67,11 +67,31 @@ class ControllerUsers {
 				"isAdmin" => 0,
 				"numberCreatedForm" => 0
 			);
-		if(ModelUsers::save($users)){
-			$path = "./media/".$users['userNickname'];
+		
+		//Double format validation for the mail. 
+		if(!filter_var($user["userMail"], FILTER_VALIDATE_EMAIL)){
+			echo "Error, the email is not valid. ";
+			return null;
+		}
+			
+		if(ModelUsers::checkExistingUser($user["userNickname"]) == 1){
+			echo "Error, the user exist";
+			return null;
+		}
+
+		if(ModelUsers::save($user)){
+			//Creation of the user's folder which will store the image he uploads
+			$path = "./media/".$user['userNickname'];
 			if (!mkdir($path, 0777)) {
 				die('The creation of the user folder failed. ');
 			}
+			
+			//Sending the mail to activate the account
+			$secureNick = rawurldecode($user["userNickname"]);
+			$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}";
+			echo $actual_link;
+            $mail = "<!DOCTYPE html><body><a href={$actual_link}?action=validate&controller=users&userNickname={$secureNick}&nonce=$nonce>Please click on thelink to active your account. </a></body>";
+            mail($user["userMail"], "Please confirm your email", $mail);
 		}
 		
 		require File::build_path(array('view', 'view.php'));
@@ -265,6 +285,75 @@ class ControllerUsers {
 	public static function deleteSessionUser(){
 		if(isset($_SESSION['users']))
 			unset($_SESSION['users']);
+	}
+	
+	public static function validate() {
+        $login = $_GET['userNickname'];
+        $nonce = $_GET['nonce'];
+        $user = ModelUsers::select($login);
+        if($user != false){
+            if($user->getNonce() == $nonce){
+                $data = array(
+				"userNickname" => $login,
+				"userNonce" => "");
+                
+                ModelUsers::update($data);
+				
+                $view = 'validated';
+                $controller = 'users';
+                $pagetitle = 'Bienvenue';
+                require_once(File::build_path(array('view','view.php')));
+            }else{
+				$data = array();
+				$data['error'] = "Problème de confirmation du mail";
+				$data['view'] = 'error';
+				$data['controller'] = 'default';
+				ControllerDefault::error($data);
+            }
+        }else{
+			$data = array();
+			$data['error'] = "FATAL ERROR";
+			$data['view'] = 'error';
+			$data['controller'] = 'default';
+			ControllerDefault::error($data);
+        }
+    }
+	
+	public static function retrieveAccount(){
+		
+		$nonce = Security::generateRandomHex();
+		$user = array(
+			"userNickname" => $_POST['userNickname'],
+			"nonce" => $nonce
+		);
+		$u = ModelUsers::select($user["userNickname"]);
+		if(!$u){
+			return null;
+		}
+		$user["userMail"] = $u->ggetMail();
+		if(ModelUsers::update($user)){
+			$secureNick = rawurldecode($user["userNickname"]);
+			$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}";
+			echo $actual_link;
+			$mail = "<!DOCTYPE html><body><a href={$actual_link}?action=validate&controller=users&userNickname={$secureNick}&nonce=$nonce>Click here to reset your password. </a></body>";
+			mail($user["userMail"], "Password forgot", $mail);	
+		}
+	}
+	
+	public static function changePassword(){
+		$login = $_GET['userNickname'];
+        $nonce = $_GET['nonce'];		
+		$user = ModelUsers::select($login);
+        if($user != false){
+			
+			$login = htmlspecialchars($login);
+			$nonce = htmlspecialchars($nonce);
+			
+			$view = 'changePassword';
+			$controller = 'users';
+			$pagetitle = 'Retrieve password';
+			require_once(File::build_path(array('view','view.php')));
+		}
 	}
 }
 ?>

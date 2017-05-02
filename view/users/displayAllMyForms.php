@@ -27,19 +27,7 @@
 			
 			$protectedId = rawurlencode($f->getFormId());
 			$fillable = htmlspecialchars($f->getFillable());
-			
-			switch ($fillable){
-				case -1:
-					$fillWrite = "Nothing available";
-					break;
-				case 0:
-					$fillWrite = "PreForm available";
-					break;
-				case 1:
-					$fillWrite = "PostForm available";
-					break;
-			}
-			
+						
 			echo "<tr id=\"$secureId\">";
 			if(isset($readAll) && $readAll){
 				$user = htmlspecialchars($f->getUserNickname());
@@ -58,7 +46,7 @@
 		
 		echo "</tbody>";
 //FOOTER
-	if(count($form) > 5){
+	/*if(count($form) > 5){
 		echo <<< EOT
 			<tfoot>
 			   <tr>
@@ -70,7 +58,7 @@
 			   </tr>
 		   </tfoot>
 EOT;
-	}
+	}*/
 	}
 	?>
 

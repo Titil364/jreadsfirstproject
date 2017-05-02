@@ -2,6 +2,7 @@ var applicationNumber;
 var applicationName;
 var formId;
 var visitorId;
+var secretName;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -14,11 +15,28 @@ function getFormId(){
 
 function getVisitorId(){
     var f = document.getElementById("visitorId");
-    if (f==null) {
-        visitorId = 0;
-    }else{
-        visitorId = f.value;
-    }
+    visitorId = f.value;
+    getSecretName();
+}
+
+function getSecretName() {
+    $.post(
+        "index.php",
+        {
+            "action":"getVisitorSecretName",
+            "controller":"visitor",
+            "visitorId":JSON.stringify(visitorId),
+        },
+        function(res) {
+            console.log(res);
+            if (res==true) {
+                secretName = true;
+            } else{
+                secretName = false;
+            }
+        },
+        "json"
+    );
 }
 function getApplication(b){
     $.get(
@@ -48,7 +66,7 @@ function getQuestionsName(a){
             if (res.length ==0) {
                 var changeCss = $(".fsAndAa");
                 if (visitorId !== 0) {
-                    randomizeAA();
+                  //  randomizeAA();
                 }
                 return null;
             }
@@ -56,8 +74,8 @@ function getQuestionsName(a){
             length = tabName.length;
             var name = tabName[0].split("/");
 			if (visitorId !== 0) {
-                randomizeAA();
-                randomizeFS();
+              // randomizeAA();
+              //  randomizeFS();
             }
         },
         "json"
@@ -68,7 +86,8 @@ function extractAnswers(){
 	var answers=[];
 	var n = "", val = "";
 	
-
+    var newSecretName = $("#secretName").val();
+   
 	var shortcut = $(".shortcut");
 	for(var i = 0; i < shortcut.length; i++){
 		n = shortcut[i].name;
@@ -91,7 +110,7 @@ function extractAnswers(){
 	}
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
-    if (visitorId == 0) {
+    if (secretName == false) {
 		var personnalInfo=[];
 		var info = $("#userInformation input");
 		for(var i = 0; i < info.length; i++){
@@ -102,7 +121,7 @@ function extractAnswers(){
 			}
 			personnalInfo.push(new Information(info[i].name, val));
 		}
-        sendPre(f, personnalInfo, answers);
+        sendPre(f, personnalInfo, answers, newSecretName);
     } else{
 		//Extracting the aa datas
 		var tr = $("#aa tbody tr");
@@ -149,7 +168,7 @@ function extractAnswers(){
 	
 }
 
-function sendPre(f, pi, a){
+function sendPre(f, pi, a, sn){
 
 	$.post(
 		"index.php", // url
@@ -159,7 +178,9 @@ function sendPre(f, pi, a){
 			"formId":f,
 			"visitorInfo":JSON.stringify(pi),
             "pre":JSON.stringify(0),
-			"answers":JSON.stringify(a)
+            "visitorId":JSON.stringify(visitorId),
+			"answers":JSON.stringify(a),
+            "secretName":JSON.stringify(sn)
 		},  //data
 		function(res){ //callback
 				if(res !== false){

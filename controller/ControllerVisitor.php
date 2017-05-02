@@ -4,19 +4,21 @@ require_once File::build_path(array('model', 'ModelVisitor.php'));
 class ControllerVisitor{
     
     public static function read(){
-		$formId = $_GET['id'];
-		if($_GET['visitorId'] == null){
+		$formId = $_GET['formId'];
+		$visitorId = $_GET['visitorId'];
+		$visitor = ModelVisitor::Select($visitorId);
+		if($visitor->getVisitorSecretName() == null){
 			$pre = 0;
 		}else{
 			$pre = 1;
-			$visitorId = $_GET['visitorId'];
+		
 		}
         $f = ModelForm::select($formId);
         if (!$f){
 			echo "This form doesn't exist";
 			// error page
-        }else{
-			
+        }else{		
+				
 				$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 
 				if($pre === 0){
@@ -123,8 +125,23 @@ class ControllerVisitor{
 				"visitorId" => $visitorId,
 				"formId" => $formId
 			);
-		ModelVisitor::save($data);
+		echo json_encode(ModelVisitor::save($data));
 	}
 	
+	public static function getFormIdByVisitor(){
+		$visitorId = json_decode($_POST['visitorId']);
+		echo json_encode(ModelVisitor::Select($visitorId)->getformId());
+	}
+	
+	//I wrote this function but i'm not sure if it will be usefull or not
+	public static function getVisitorSecretName(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$s = ModelVisitor::Select($visitorId)->getVisitorSecretName();
+		if ($s == null){
+			echo json_encode(false);
+		} else {
+		echo json_encode(true);
+		}
+	}
 }
 ?>

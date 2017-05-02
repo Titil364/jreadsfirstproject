@@ -31,19 +31,17 @@
 				<button class="return">Return</button>
 				<form class="formCss" method="GET" action="index.php">
 						<fieldset>
-								<legend>Please enter the form code : </legend>
+								<legend>Please enter your Id : </legend>
 								<input type='hidden' name='action' value='read'>
 								<input type='hidden' name='controller' value='visitor'>
 								<div class="input">
-										<label class="input-item" for="form">Form code : </label>
-										<input class="input-field" id="form" type="text" name="id" required/>
 								</div>
 								<div class="inputVisitorId">
-										<label class="input-item" for="visitor_id">Visitor Id (if applicable): </label>
+										<label class="input-item" for="visitor_id" required>Visitor Id : </label>
 										<input class="input-field" id="visitor_id" type="text" name="visitorId"/>
 								</div>
 								<div>
-										<input class="input-field" type="submit"  value="Send"/>
+										<input class="input-field" type="button" id="submit" value="Send"/>
 								</div>
 						</fieldset> 
 				</form>
