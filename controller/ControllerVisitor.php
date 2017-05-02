@@ -23,9 +23,11 @@ class ControllerVisitor{
 
 				if($pre === 0){
 					$jscript = "answers";	
-					$visitor = true;
+					//$visitor = true;
 					$folder = $f->getUserNickname();
 					$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+					
+					$secretName = $visitor->getVisitorSecretName();
 					
 					$questionsPre_array_list = [];
 						

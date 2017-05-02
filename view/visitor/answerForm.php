@@ -14,7 +14,7 @@
 	//displaying form  informations
 	echo "<h1> $formName </h1>";
         echo '<label for="secretName"> SecretName : </label>';
-		echo '<input id="secretName" name="secretName" type="text">';
+		echo '<input id="secretName" name="secretName" type="text" value="'.$secretName.'">';
         //displaying fields
         echo '<div id="userInformation">';
         foreach ($field_array as $field){

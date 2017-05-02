@@ -125,7 +125,8 @@ CREATE TABLE Information (
     informationName varchar(30),
 	visitorId varchar(40),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName),
-    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId)
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
+    PRIMARY KEY (personnalInformationName, visitorId)
 )DEFAULT CHARSET=utf8;
 
 

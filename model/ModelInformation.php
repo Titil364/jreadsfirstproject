@@ -8,7 +8,7 @@ class ModelInformation extends Model{
 	private $visitorId;
 	
     protected static $object = "Information";
-    protected static $primary = "presonnalInformationName";
+    protected static $primary = "personnalInformationName";
     
     public function getPersonnalInformationName(){return $this->personnalInformationName;}
         public function setInformationId($personnalInformationName){$this->informationId = $personnalInformationName;}
