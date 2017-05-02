@@ -40,7 +40,16 @@ function init(){
 	$("#user").click(connection);
 	document.getElementById("submit").addEventListener("click",getFormIdByVisitor);
 	who();
+
+ 
+
 }
 
 
 $(init);
+	// $("#userImg").on( "mouseenter", function(){alert("toto");});
+	
+	// $("#userImg").mouseleave(function(){this.src = "media/chicismile";});
+
+	// $("#visitorImg").mouseover(function(){this.src = "media/chicismilehappy";});
+	// $("#visitorImg").mouseout(function(){this.src = "media/chicismile";});

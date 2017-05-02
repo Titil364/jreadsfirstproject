@@ -1,10 +1,11 @@
 body{
 	padding:0;
 	margin:0;
+	font-family: 'Roboto', sans-serif;
 }
 main{	
 	padding:1%;
-    background-color: #eccd69;
+    background-color: #4abdac;
     height:100%;
 }
 #existing{
@@ -119,11 +120,11 @@ main{
 #passwordVerif,#nicknameVerif{
 	font-size: 75%;
 }
-
+/*
 img{
 	max-height:112px;
 	max-width:112px;
-}
+}*/
 
 /* FOOTER */
 
@@ -195,3 +196,4 @@ table th{
 .radioButtonFS{
 	width: 30px;
 }
+
