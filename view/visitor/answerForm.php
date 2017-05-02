@@ -14,15 +14,17 @@
 	//displaying form  informations
 	echo "<h1> $formName </h1>";
         echo '<label for="secretName"> SecretName : </label>';
-		echo '<input id="secretName" name="secretName" type="text" value="'.$secretName.'">';
+		echo '<input id="secretName" name="secretName" type="text" value="'.htmlspecialchars($secretName).'">';
         //displaying fields
         echo '<div id="userInformation">';
+		$i = 0;
         foreach ($field_array as $field){
                 $fieldName = htmlspecialchars($field->getPersonnalInformationName());
             echo '<div>';
                 echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
-                echo '<input id="field'.$fieldName.'" name="'.$fieldName.'"  type="text">';
+				echo '<input id="field'.$fieldName.'" name="'.$fieldName.'" value="'.htmlspecialchars($infoFilled[$i]).'" type="text">';
             echo '</div>';
+			$i++;
         }
         echo '</div>';
 	
@@ -30,6 +32,7 @@
 	
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 	echo"<div id=\"applications\">"; // div of all app
+	$p = 0;
 	for($i=0; $i < count($application_array);$i++){
 		//dispalying task informations
 		echo '<div id="Applic'.$i.'" class="application" >'; // current app div
@@ -51,7 +54,7 @@
 	
 		
 		$question_array = $questionsPre_array_list[$i];
-	for($j=0; $j < count($question_array);$j++){
+		for($j=0; $j < count($question_array);$j++){
 					//displaying questions
 				$idAppli = 'Applic'.$i.'Q'.$j;
 			echo "<div id=\"$idAppli\" class = \"question\">"; //question div, id example : "Applic0Q1" for app 0 question 1
@@ -62,26 +65,37 @@
 			
 			$qType = $questionTypePre_list[$i][$j]->getQuestionTypeName();
 			$answers_array = $answersPre_array_list[$i][$j];
-
 			if(!is_null($answers_array[0])){
+				$qId = $answersFilled[$p]['questionId'];
+				$answerValue = $answersFilled[$p]['answer'];
+				$p++;
 				$name = $question_array[$j]->getQuestionId();
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\"></textarea>";
+						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\">";						
+						if($qId== $name){
+							echo $answerValue;
+						}
+						echo "</textarea>";
 						break;
 					default :
 						echo '<div class = "answerArea">';
 
 						echo "<input class=\"shortcut\" type =\"radio\" name=\"$name\" style=\"display:none\">";
+						
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
 							$questionTypeId = htmlspecialchars($question_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
-
+							
 							$id = "Applic".$i."question".$j.$answerName;
 							echo '<div>';
-							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
+							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\"";
+							if($answerName == $answerValue){
+								echo "checked";
+							}
+							echo " id=\"$id\">" ;
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 							echo '</div>';
 						}

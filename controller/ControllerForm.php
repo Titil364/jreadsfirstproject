@@ -480,7 +480,7 @@ class ControllerForm {
 			"informationName" => $informationName,
 			"visitorId" => $visitorId
 		);
-		var_dump($info);
+		//var_dump($info);
 		ModelInformation::update($info);
 	}
 	
@@ -495,6 +495,14 @@ class ControllerForm {
 			"answer" => $answer
 		);
 		ModelAnswer::update($data);
+	}
+	public static function completedPre(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$dataV = array(
+			"visitorId" => $visitorId,
+			"dateCompletePre" => date('Y/m/d H:i:s')
+		);
+		ModelVisitor::update($dataV);
 	}
 	
 	public static function completeForm(){

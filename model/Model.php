@@ -52,6 +52,7 @@ class Model {
             return false;
         }
     }
+	
     public static function selectAll() {
         try {
             $table_name = static::$object;
