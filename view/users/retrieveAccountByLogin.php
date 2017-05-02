@@ -1,0 +1,1 @@
+<h2> An e-mail with a reset code will be send to you, please check your e-mail box </h2>
