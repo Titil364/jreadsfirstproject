@@ -24,7 +24,7 @@ CREATE TABLE Users (
   userNickname varchar (20) PRIMARY KEY,
   userSurname varchar(20),
   userForename varchar(20),
-  userMail varchar(20),
+  userMail varchar(60),
   userPassword varchar(250),
   userNonce varchar(64),
   isAdmin int(1),
@@ -35,7 +35,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Form (
   formId varchar(20) PRIMARY KEY,
-  formName varchar(20),
+  formName varchar(30),
   userNickname varchar (20),
   completedForm int(11),
   fillable int(1),
@@ -71,7 +71,7 @@ CREATE TABLE QuestionType (
 
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
-  questionName varchar(60),
+  questionName varchar(100),
   applicationId varchar(30),
   questionTypeId int(20),
   questionPre int(1),
