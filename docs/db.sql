@@ -47,6 +47,7 @@ CREATE TABLE Visitor (
   visitorSecretName varchar(20),
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
+  preDone int(1),
   formId varchar(20),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;

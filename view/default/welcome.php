@@ -22,6 +22,10 @@
 					<a href="index.php?controller=users&action=create">
 						<button type="button">Sign in</button>
 					</a>
+				</div><div class="none">
+					<a href="index.php?controller=users&action=retrieveAccount">
+						<button type="button">Password forgot ?</button>
+					</a>
 				</div>
 			</fieldset> 
 		</form>

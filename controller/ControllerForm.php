@@ -356,84 +356,109 @@ class ControllerForm {
 		$jscript = "myScriptSheet";
 		
 		$visitorId = $_GET['visitorId'];
+		$formId = $_GET['formId'];
 		$pagetitle = 'Answer'.$visitorId;
 		$full = true;
 		
 		$answer = ModelAnswer::getAnswerByVisitorId($visitorId);
-		
-		$toSplit = $answer[0]->getQuestionId();	
-		$f = explode("A",$toSplit);
-		$formId = $f[0];
-		$f = ModelForm::select($formId);
-		
-		$folder = $f->getUserNickname();
-		
-		$field_array = [];
-		$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
-		$informationTable = ModelInformation::getInformationByVisitorId($visitorId);
-		$applicationTable = ModelApplication::getApplicationByFormId($formId);
-		$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-
-		
-		$questionsPre_array_list = [];
-		$questionsPost_array_list = [];
+		if($answer == null){
+			echo "page vide";
+		}else {
+			$toSplit = $answer[0]->getQuestionId();	
+			$f = explode("A",$toSplit);
+			$f = ModelForm::select($formId);
 			
-        $answersPre_array_list = [];
-		$answersPost_array_list = [];
+			$folder = $f->getUserNickname();
 			
-        $questionTypePre_list = [];
-		$questionTypePost_list = [];
-		
-		//Personnal information
-            $assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
-            foreach ($assoc_array as $assoc){
-                $perso_inf_id = $assoc->getPersonnalInformationName();
-                $perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
-                
-                array_push($field_array, $perso_inf);
-            }
-            
-            //PRE Questions
-            for($i=0; $i < count($application_array);$i++){
-                $questionAndAnswer = [];
-                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"1");
-                array_push($questionsPre_array_list, $questions_arrayFromModel);
-                
-                array_push($answersPre_array_list, []);
-                array_push($questionTypePre_list, []);
-                
-				$reponses = array();
-                for($j=0; $j < count($questions_arrayFromModel);$j++){
-					
-					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
-                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
-                    array_push($answersPre_array_list[$i], $answersPre_array);
-                    array_push($questionTypePre_list[$i], $qType);
-                }                
-            }
-			
-			//POST Questions
-			for($i=0; $i < count($application_array);$i++){
-                $questionAndAnswer = [];
-                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"0");
-                array_push($questionsPost_array_list, $questions_arrayFromModel);
-                
-                array_push($answersPost_array_list, []);
-                array_push($questionTypePost_list, []);
-                
-                for($j=0; $j < count($questions_arrayFromModel);$j++){
-					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
-										
-                    $answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
-                    
-                    array_push($answersPost_array_list[$i], $answersPost_array);
-                    array_push($questionTypePost_list[$i], $qType);  
-                }                
-            }
-		
-		require File::build_path(array('view', 'view.php'));
-	}
+			$field_array = [];
+			$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+			$informationTable = ModelInformation::getInformationByVisitorId($visitorId);
+			$applicationTable = ModelApplication::getApplicationByFormId($formId);
+			$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 	
+			
+			$questionsPre_array_list = [];
+			$questionsPost_array_list = [];
+				
+			$answersPre_array_list = [];
+			$answersPost_array_list = [];
+				
+			$questionTypePre_list = [];
+			$questionTypePost_list = [];
+			
+			//Personnal information
+				$assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
+				foreach ($assoc_array as $assoc){
+					$perso_inf_id = $assoc->getPersonnalInformationName();
+					$perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+					
+					array_push($field_array, $perso_inf);
+				}
+				
+				//PRE Questions
+				for($i=0; $i < count($application_array);$i++){
+					$questionAndAnswer = [];
+					$questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"1");
+					array_push($questionsPre_array_list, $questions_arrayFromModel);
+					
+					array_push($answersPre_array_list, []);
+					array_push($questionTypePre_list, []);
+					
+					$reponses = array();
+					for($j=0; $j < count($questions_arrayFromModel);$j++){
+						
+						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+						$answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+						array_push($answersPre_array_list[$i], $answersPre_array);
+						array_push($questionTypePre_list[$i], $qType);
+					}                
+				}
+				
+				//POST Questions
+				for($i=0; $i < count($application_array);$i++){
+					$questionAndAnswer = [];
+					$questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"0");
+					array_push($questionsPost_array_list, $questions_arrayFromModel);
+					
+					array_push($answersPost_array_list, []);
+					array_push($questionTypePost_list, []);
+					
+					for($j=0; $j < count($questions_arrayFromModel);$j++){
+						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+											
+						$answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+						
+						array_push($answersPost_array_list[$i], $answersPost_array);
+						array_push($questionTypePost_list[$i], $qType);  
+					}                
+				}
+			
+			require File::build_path(array('view', 'view.php'));
+		}
+	}
+	/*public static function completeFormBis(){
+		
+	}*/
+	public function createVisitor(){
+		$secretName = json_decode($_POST['secretName']);
+		$visitorId = json_decode($_POST['visitorId']);
+		$formId = json_decode($_POST['formId']);
+		$visitor = array(
+				"visitorId"=> $visitorId,
+				"visitorSecretName" => $secretName
+			);
+		ModelVisitor::update($visitor);
+		$form = ModelForm::select($formId);
+		$applications = ModelApplication::getApplicationByFormId($formId);
+		foreach($applications as $a){
+			$questions = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+			foreach ($questions as $q){
+				var_dump($q);
+			}
+		}
+		
+		
+	}
 	public static function completeForm(){
 		
 		$answers = json_decode($_POST['answers'], true);
@@ -448,11 +473,11 @@ class ControllerForm {
 		//Create the visitor
 			$visitorInfo = json_decode($_POST['visitorInfo'], true);
 			//var_dump($visitorInfo);
-			$visitor = array(
+		/*	$visitor = array(
 				"visitorId"=> $visitorId,
 				"visitorSecretName" => $secretName
 			);
-			ModelVisitor::update($visitor);
+			ModelVisitor::update($visitor);*/
 			
 			foreach($visitorInfo as $f){
 				$f["visitorId"] = $visitorId;

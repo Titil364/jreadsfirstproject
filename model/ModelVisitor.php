@@ -7,6 +7,7 @@ class ModelVisitor extends Model{
 	private $visitorSecretName;
 	private $dateCompletePre;
 	private $dateCompletePost;
+	private $preDone;
 	private $formId;
 
     protected static $object = "Visitor";
@@ -30,6 +31,9 @@ class ModelVisitor extends Model{
 	
 	public function getFormId(){
 		return $this->formId;
+	}
+	public function getPreDone(){
+		return $this->preDone;
 	}
 	
 	public function getVisitorA($a){
@@ -66,15 +70,20 @@ class ModelVisitor extends Model{
     public function setFormId($formId){
     	$this->formId = $formId ;
     }
+	public function setPreDone($preDone){
+    	$this->preDone= $preDone;
+    }
+	
 
-    public function __construct($visitorId = NULL, $visitorSecretName = NULL, $dateCompletePre = NULL, $dateCompletePost = NULL, $formId = NULL) {
-        if (!is_null($visitorId) && !is_null($visitorSecretName) && !is_null($dateCompletePre) && !is_null($dateCompletePost) && !is_null($formId)) {
+    public function __construct($visitorId = NULL, $visitorSecretName = NULL, $dateCompletePre = NULL, $dateCompletePost = NULL, $formId = NULL, $preDone = NULL) {
+        if (!is_null($visitorId) && !is_null($visitorSecretName) && !is_null($dateCompletePre) && !is_null($dateCompletePost) && !is_null($formId) && !is_null($preDone)) {
 
 			$this->visitorId = $visitorId;
 			$this->visitorSecretName = $visitorSecretName;
 			$this->dateCompletePre = $dateCompletePre;
 			$this->dateCompletePost =$dateCompletePost;
 			$this->formId =$formId;
+			$this->preDone= $preDone;
         }
     }
 

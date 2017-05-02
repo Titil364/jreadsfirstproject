@@ -320,38 +320,77 @@ class ControllerUsers {
     }
 	
 	public static function retrieveAccount(){
+		$view = 'retrieveAccount';
+		$controller = 'users';
+		$pagetitle = 'Bienvenue';
+		require_once(File::build_path(array('view','view.php')));
+	}
+	
+	public static function retrieveAccountByLogin(){
 		
 		$nonce = Security::generateRandomHex();
 		$user = array(
 			"userNickname" => $_POST['userNickname'],
-			"nonce" => $nonce
+			"userNonce" => $nonce
 		);
 		$u = ModelUsers::select($user["userNickname"]);
 		if(!$u){
+			echo "Error, the use doesn't exist. ";
 			return null;
 		}
-		$user["userMail"] = $u->ggetMail();
+		$user["userMail"] = $u->getMail();
 		if(ModelUsers::update($user)){
 			$secureNick = rawurldecode($user["userNickname"]);
 			$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}";
 			echo $actual_link;
-			$mail = "<!DOCTYPE html><body><a href={$actual_link}?action=validate&controller=users&userNickname={$secureNick}&nonce=$nonce>Click here to reset your password. </a></body>";
+			$mail = "<!DOCTYPE html><body><a href={$actual_link}?action=changePassword&controller=users&userNickname={$secureNick}&nonce=$nonce>Click here to reset your password. </a></body>";
 			mail($user["userMail"], "Password forgot", $mail);	
+			
+			$view = 'retrieveAccountByLogin';
+			$controller = 'users';
+			$pagetitle = 'Bienvenue';
+			require_once(File::build_path(array('view','view.php')));
+			
+		}else{
+			echo "Error in the DB";
 		}
 	}
 	
 	public static function changePassword(){
-		$login = $_GET['userNickname'];
+		$nick = $_GET['userNickname'];
         $nonce = $_GET['nonce'];		
-		$user = ModelUsers::select($login);
-        if($user != false){
+		$user = ModelUsers::select($nick);
+        if($user != false && $nonce == $user->getNonce()){
 			
-			$login = htmlspecialchars($login);
+			$nick = htmlspecialchars($nick);
 			$nonce = htmlspecialchars($nonce);
 			
 			$view = 'changePassword';
 			$controller = 'users';
 			$pagetitle = 'Retrieve password';
+			require_once(File::build_path(array('view','view.php')));
+		}
+	}
+	
+	public static function changedPassword(){
+		$nick = $_POST['userNickname'];
+        $nonce = $_POST['nonce'];		
+		$user = ModelUsers::select($nick);
+        if($user != false && $nonce == $user->getNonce()){
+			
+			$hashpass = Security::encrypt($_POST['userPassword']);
+			
+			$data =  array(
+				"userNickname" => $nick,
+				"userPassword" => $hashpass,
+				"userNonce" => ""
+			);
+			
+			ModelUsers::update($data);
+			
+			$view = 'changedPassword';
+			$controller = 'users';
+			$pagetitle = 'Password changed';
 			require_once(File::build_path(array('view','view.php')));
 		}
 	}

@@ -7,7 +7,7 @@ class ControllerVisitor{
 		$formId = $_GET['formId'];
 		$visitorId = $_GET['visitorId'];
 		$visitor = ModelVisitor::Select($visitorId);
-		if($visitor->getVisitorSecretName() == null){
+		if($visitor->getPreDone() == null){
 			$pre = 0;
 		}else{
 			$pre = 1;
