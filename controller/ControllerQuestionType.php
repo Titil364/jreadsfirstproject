@@ -21,6 +21,7 @@ class ControllerQuestionType {
 				$questionTypeTitle = $_POST['questionTypeTitle'];
 				$var = json_decode($questionTypeTitle);
 				$rep = ModelQuestionType::checkExistingQuestionType($var);
+                                $user = $_SESSION['nickname'];
 				echo json_encode($rep);
 			}
         }

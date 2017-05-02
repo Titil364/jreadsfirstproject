@@ -57,10 +57,6 @@ class ModelQuestionType extends Model{
 	
         public static function checkExistingQuestionType($questionTypeName){
             try{
-				//Avoir une vérification de connexion ici n'a pas de sens. 
-				//Le model est juste la pour promouvoir l'accès aux informations
-				//C'est le controller qui vérifie si l'action peut être effectuée. 
-				$user = $_SESSION['nickname'];
 				
 				$sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
 				$prep = Model::$pdo->prepare($sql);
