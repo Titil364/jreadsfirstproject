@@ -453,12 +453,58 @@ class ControllerForm {
 		foreach($applications as $a){
 			$questions = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
 			foreach ($questions as $q){
-				var_dump($q);
+				$questionSave = array (
+					"visitorId" => $visitorId,
+					"questionId" => $q->getQuestionId()
+				);
+				ModelAnswer::save($questionSave);
 			}
 		}
-		
-		
+		$information = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+		foreach($information as $i){
+			$info = array(
+				"personnalInformationName"=>$i->getPersonnalInformationName(),
+				"informationName" =>null,
+				"visitorId" => $visitorId
+			);
+			ModelInformation::save($info);
+		}		
 	}
+	
+	public static function saveInformation(){
+		$personnalInformationName = json_decode($_POST['personnalInformationName']);
+		$visitorId = json_decode($_POST['visitorId']);
+		$informationName = json_decode($_POST['informationName']);
+		$info = array(
+			"personnalInformationName" => $personnalInformationName,
+			"informationName" => $informationName,
+			"visitorId" => $visitorId
+		);
+		//var_dump($info);
+		ModelInformation::update($info);
+	}
+	
+	public static function saveAnswer(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$questionId = json_decode($_POST['questionId']);
+		$answer = json_decode($_POST['answer']);
+		
+		$data = array(
+			"visitorId" => $visitorId,
+			"questionId" => $questionId,
+			"answer" => $answer
+		);
+		ModelAnswer::update($data);
+	}
+	public static function completedPre(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$dataV = array(
+			"visitorId" => $visitorId,
+			"dateCompletePre" => date('Y/m/d H:i:s')
+		);
+		ModelVisitor::update($dataV);
+	}
+	
 	public static function completeForm(){
 		
 		$answers = json_decode($_POST['answers'], true);

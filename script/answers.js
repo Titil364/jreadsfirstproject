@@ -3,6 +3,7 @@ var applicationName;
 var formId;
 var visitorId;
 var secretName;
+var pre;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -17,6 +18,15 @@ function getVisitorId(){
     var f = document.getElementById("visitorId");
     visitorId = f.value;
     getSecretName();
+}
+
+function getPre(){
+    var f = document.getElementById("aa");
+    if (f == null) {
+        pre = 1;
+    } else {
+        pre = 0;
+    }
 }
 
 function getSecretName() {
@@ -93,25 +103,25 @@ function extractAnswers(){
 	for(var i = 0; i < shortcut.length; i++){
 		n = shortcut[i].name;
 		val = $("input[name="+n+"]:checked").val();
-		/*if(val === undefined | val === ""){
+		if(val === undefined | val === ""){
 			alert("Please answer to all the questions. ");
 			return null;
-		}*/
-		answers.push(new Answer(n, val));
+		}
+		
 	}
 	var textarea = $("textarea");
 		
 	for(var i = 0; i < textarea.length; i++){
 		val = $(textarea[i]).val();
-		/*if(val === undefined | val === ""){
+		if(val === undefined | val === ""){
 			alert("Please answer to all the questions. aaa ");
 			return null;
-		}*/
-		answers.push(new Answer(textarea[i].name, val));
+		}
+		
 	}
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
-    if (secretName == false) {
+    if (pre == 1) {
 		var personnalInfo=[];
 		var info = $("#userInformation input");
 		for(var i = 0; i < info.length; i++){
@@ -120,9 +130,9 @@ function extractAnswers(){
 				alert("Please answer to all the personnal questions. ");
 				return null;
 			}
-			personnalInfo.push(new Information(info[i].name, val));
 		}
-        sendPre(f, personnalInfo, answers, newSecretName);
+        sendPre(visitorId);
+       
     } else{
 		//Extracting the aa datas
 		var tr = $("#aa tbody tr");
@@ -164,24 +174,20 @@ function extractAnswers(){
 		
 
 		
-        sendPost(f, answers, fs, aa);
+        //sendPost(f, answers, fs, aa);
     }
 	
 }
 
-function sendPre(f, pi, a, sn){
+function sendPre(visitor){
 
 	$.post(
 		"index.php", // url
 		{
-			"action":"completeForm",
+			"action":"completedPre",
 			"controller":"form",
-			"formId":f,
-			"visitorInfo":JSON.stringify(pi),
-            "pre":JSON.stringify(0),
-            "visitorId":JSON.stringify(visitorId),
-			"answers":JSON.stringify(a),
-            "secretName":JSON.stringify(sn)
+			//"formId":JSON.stringify(form),
+            "visitorId":JSON.stringify(visitor)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
@@ -344,41 +350,68 @@ function makeFSDraggable() {
 }
 
 function add(){
-    var tabAnwersArea = document.getElementsByClassName("question");
-    for (j=0;j<tabAnwersArea.length;j++) {
-        var tab =tabAnwersArea[j].children;
-        for(i = 0;i<tab.length;i++){
-            tab[i].addEventListener("change",function(){
-                var select = $(this);
-                reaction(select);
-            });
-        }
+    var shortcut = document.getElementsByClassName("shortcut");
+    for (i = 0; i<shortcut.length; i++ ) {
+        var parent = shortcut[i].parentElement;
+        parent.addEventListener("change", function(){
+            saveShortcut($(this));
+        });                                
+    }
+    
+    var textarea = $("textarea");
+	for(var i = 0; i < textarea.length; i++){
+		textarea[i].addEventListener("change", function(){
+            saveTextarea($(this));    
+        });
     }
 }
 
-function reaction (select){    
-    var g = select.children();
-    if (g === undefined) {
-        console.log(select.parent().prop("id"));
-        console.log(select.val());
-    } else{
-        console.log(select.parent().prop("id"));
-        for(i = 1; i<g.length;i++){
-            var f = g[i];
-            var x = f.children;
-            var c = x[0];
-            if (c.checked) {
-                var name = c.id;
-                var h = name.split('m');
-                console.log("sm"+h[1]);
-            }
-        }
-    }
+function saveTextarea(select){
+    var questionId = select.attr("name");
+    //console.log(select.attr("name"));
+    var answer = select.val();
+    //console.log(select.val());
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveAnswer",
+			"controller":"form",
+            "visitorId" : JSON.stringify(visitorId),
+            "questionId" : JSON.stringify(questionId),            
+			"answer" : JSON.stringify(answer)
+		},
+        function (res){
+            
+        },
+        "json"
+    ); 
+}
+
+function saveShortcut (select){    
+    var children = select.children();
+    var questionId = children[0].name;
+    //console.log(children[0].name);
+    //console.log($("input[name="+questionId+"]:checked").val());
+    var answer = $("input[name="+questionId+"]:checked").val();
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveAnswer",
+			"controller":"form",
+            "visitorId" : JSON.stringify(visitorId),
+            "questionId" : JSON.stringify(questionId),            
+			"answer" : JSON.stringify(answer)
+		},
+        function (res){
+            
+        },
+        "json"
+    ); 
 }
 
 function saveSecretName(){
     var val = $("#secretName").val();
-    console.log(val);
+    //console.log(val);
     $.post(
 		"index.php", // url
 		{
@@ -392,14 +425,45 @@ function saveSecretName(){
             
         },
         "json"
-    );
-    
+    );    
+}
+
+function saveInformation(r) {
+    data = r.val();
+    name = r.attr("name");
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveInformation",
+			"controller":"form",
+            "personnalInformationName" : JSON.stringify(name),
+            "visitorId" : JSON.stringify(visitorId),
+			"informationName" : JSON.stringify(data)
+		},
+        function (res){
+            
+        },
+        "json"
+    );  
+}
+function addEventInfo(){
+    var fields= $("#userInformation input");
+    for (i = 0; i<fields.length; i++) {
+        fields[i].addEventListener("change", function(){
+            var select = $(this);
+            saveInformation(select);
+            });
+    }
 }
 
 function init(){
     getFormId();
     getVisitorId();
-    document.getElementById("secretName").addEventListener("change",saveSecretName);
+    getPre();
+    if (pre ==1 ) {
+        document.getElementById("secretName").addEventListener("change",saveSecretName);
+        addEventInfo();
+    }   
 	$("#submit").click(extractAnswers);
     add();	
 }

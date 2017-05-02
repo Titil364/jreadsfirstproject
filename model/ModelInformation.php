@@ -8,7 +8,8 @@ class ModelInformation extends Model{
 	private $visitorId;
 	
     protected static $object = "Information";
-    protected static $primary = "presonnalInformationName";
+    protected static $primary1 = "personnalInformationName";
+	protected static $primary2 = "visitorId";
     
     public function getPersonnalInformationName(){return $this->personnalInformationName;}
         public function setInformationId($personnalInformationName){$this->informationId = $personnalInformationName;}
@@ -50,4 +51,30 @@ class ModelInformation extends Model{
             return false;
         }
 	}
+	
+	public static function update($data) {
+        try {
+            $table_name = static::$object;
+            $class_name = 'Model' . $table_name;
+			
+            $sql = "UPDATE $table_name SET ";
+            foreach ($data as $cle => $valeur) {
+                $sql = $sql . $cle . "=:" . $cle . ", ";
+            }
+            $sql = rtrim($sql, ' ,');
+			$primary_key1 = static::$primary1;
+			$primary_key2 = static::$primary2;
+            $sql = $sql . " WHERE $primary_key1=:$primary_key1 AND $primary_key2=:$primary_key2;";
+            $req_prep = Model::$pdo->prepare($sql);
+            $req_prep->execute($data);
+            return true;
+        } catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "une erreur est survenue lors de la mise à jour de l'objet.";
+            }
+            return false;
+        }
+    }
 }

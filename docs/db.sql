@@ -24,7 +24,7 @@ CREATE TABLE Users (
   userNickname varchar (20) PRIMARY KEY,
   userSurname varchar(20),
   userForename varchar(20),
-  userMail varchar(20),
+  userMail varchar(60),
   userPassword varchar(250),
   userNonce varchar(64),
   isAdmin int(1),
@@ -35,7 +35,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Form (
   formId varchar(20) PRIMARY KEY,
-  formName varchar(20),
+  formName varchar(30),
   userNickname varchar (20),
   completedForm int(11),
   fillable int(1),
@@ -47,7 +47,6 @@ CREATE TABLE Visitor (
   visitorSecretName varchar(20),
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
-  preDone int(1),
   formId varchar(20),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
@@ -71,7 +70,7 @@ CREATE TABLE QuestionType (
 
 CREATE TABLE Question (
   questionId varchar(20) PRIMARY KEY,
-  questionName varchar(60),
+  questionName varchar(100),
   applicationId varchar(30),
   questionTypeId int(20),
   questionPre int(1),
@@ -125,7 +124,8 @@ CREATE TABLE Information (
     informationName varchar(30),
 	visitorId varchar(40),
     FOREIGN KEY (personnalInformationName) REFERENCES PersonnalInformation(personnalInformationName),
-    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId)
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
+    PRIMARY KEY (personnalInformationName, visitorId)
 )DEFAULT CHARSET=utf8;
 
 
