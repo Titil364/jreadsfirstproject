@@ -7,7 +7,7 @@ class ControllerVisitor{
 		$formId = $_GET['formId'];
 		$visitorId = $_GET['visitorId'];
 		$visitor = ModelVisitor::Select($visitorId);
-		if($visitor->getPreDone() == null){
+		if($visitor->getDateCompletePre() == null){
 			$pre = 0;
 		}else{
 			$pre = 1;
@@ -29,6 +29,38 @@ class ControllerVisitor{
 					
 					$secretName = $visitor->getVisitorSecretName();
 					
+					$information = ModelInformation::getInformationByVisitorId($visitorId);
+					$informationEmpty = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+					$infoFilled = [];
+					
+					$answersFilled = [];
+					$answers = ModelAnswer::getAnswerByVisitorId($visitorId);
+					$applicationsEmpty = ModelApplication::getApplicationByFormId($formId);
+					$answersEmpty =[];
+					foreach($applicationsEmpty as $app){
+						$questionsEmpty = ModelQuestion::getQuestionByApplicationId($app->getApplicationId());
+						array_push($answersEmpty,$questionsEmpty);
+					}
+					
+					if($secretName != null){					
+						foreach($information as $i){
+							array_push($infoFilled,$i->getInformationName());
+						}
+						foreach($answers as $a){
+							$ans = array(
+								"questionId" => $a->getQuestionId(),
+								"answer" => $a->getAnswer()
+							);
+							array_push($answersFilled, $ans);
+						}
+					} else {
+						foreach($informationEmpty as $i){
+							array_push($infoFilled,null);
+						}
+						foreach($answersEmpty as $ae){
+							array_push($answersFilled, null);
+						}
+					}
 					$questionsPre_array_list = [];
 						
 					$answersPre_array_list = [];

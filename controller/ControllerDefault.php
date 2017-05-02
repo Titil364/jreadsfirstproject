@@ -14,11 +14,25 @@ class ControllerDefault {
 		}
     }
 	
-	public static function error($data){
-		$view = $data['view'];
-		$controller = $data['controller'];
-		$view = $view.'.php';
-		require File::build_path(array('view',$controller,$view));
+	public static function message($data){
+		$view = "message";
+		$controller = "default";
+		$pagetitle = $data["pagetitle"];
+		
+		$message = htmlspecialchars($data["message"]);
+		
+		if(!isset($data["url"])){
+			$data["url"] = "index.php";
+		}
+		
+		if(!isset($data["button"])){
+			$data["button"] = "Return to the home page";
+		}
+		
+		$url = htmlspecialchars($data["url"]);
+		$button = htmlspecialchars($data["button"]);
+		
+		require File::build_path(array('view', 'view.php'));
 	}
 	
 }

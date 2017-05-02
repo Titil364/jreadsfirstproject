@@ -3,6 +3,7 @@ var applicationName;
 var formId;
 var visitorId;
 var secretName;
+var pre;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -17,6 +18,15 @@ function getVisitorId(){
     var f = document.getElementById("visitorId");
     visitorId = f.value;
     getSecretName();
+}
+
+function getPre(){
+    var f = document.getElementById("aa");
+    if (f == null) {
+        pre = 1;
+    } else {
+        pre = 0;
+    }
 }
 
 function getSecretName() {
@@ -93,25 +103,25 @@ function extractAnswers(){
 	for(var i = 0; i < shortcut.length; i++){
 		n = shortcut[i].name;
 		val = $("input[name="+n+"]:checked").val();
-		/*if(val === undefined | val === ""){
+		if(val === undefined | val === ""){
 			alert("Please answer to all the questions. ");
 			return null;
-		}*/
-		answers.push(new Answer(n, val));
+		}
+		
 	}
 	var textarea = $("textarea");
 		
 	for(var i = 0; i < textarea.length; i++){
 		val = $(textarea[i]).val();
-		/*if(val === undefined | val === ""){
+		if(val === undefined | val === ""){
 			alert("Please answer to all the questions. aaa ");
 			return null;
-		}*/
-		answers.push(new Answer(textarea[i].name, val));
+		}
+		
 	}
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
-    if (secretName == false) {
+    if (pre == 1) {
 		var personnalInfo=[];
 		var info = $("#userInformation input");
 		for(var i = 0; i < info.length; i++){
@@ -120,9 +130,9 @@ function extractAnswers(){
 				alert("Please answer to all the personnal questions. ");
 				return null;
 			}
-			personnalInfo.push(new Information(info[i].name, val));
 		}
-        sendPre(f, personnalInfo, answers, newSecretName);
+        sendPre(visitorId);
+       
     } else{
 		//Extracting the aa datas
 		var tr = $("#aa tbody tr");
@@ -164,24 +174,20 @@ function extractAnswers(){
 		
 
 		
-        sendPost(f, answers, fs, aa);
+        //sendPost(f, answers, fs, aa);
     }
 	
 }
 
-function sendPre(f, pi, a, sn){
+function sendPre(visitor){
 
 	$.post(
 		"index.php", // url
 		{
-			"action":"completeForm",
+			"action":"completedPre",
 			"controller":"form",
-			"formId":f,
-			"visitorInfo":JSON.stringify(pi),
-            "pre":JSON.stringify(0),
-            "visitorId":JSON.stringify(visitorId),
-			"answers":JSON.stringify(a),
-            "secretName":JSON.stringify(sn)
+			//"formId":JSON.stringify(form),
+            "visitorId":JSON.stringify(visitor)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
@@ -453,8 +459,11 @@ function addEventInfo(){
 function init(){
     getFormId();
     getVisitorId();
-    document.getElementById("secretName").addEventListener("change",saveSecretName);
-    addEventInfo();
+    getPre();
+    if (pre ==1 ) {
+        document.getElementById("secretName").addEventListener("change",saveSecretName);
+        addEventInfo();
+    }   
 	$("#submit").click(extractAnswers);
     add();	
 }
