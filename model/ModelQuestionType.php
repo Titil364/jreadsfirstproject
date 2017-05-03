@@ -55,7 +55,7 @@ class ModelQuestionType extends Model{
         }
 	}
 	
-        public static function checkExistingQuestionType($questionTypeName){
+        public static function checkExistingQuestionType($questionTypeName,$user){
             try{
 				
 				$sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";

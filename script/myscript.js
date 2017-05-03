@@ -7,6 +7,10 @@ var qType = [];
 
 var customTitleState = []; //0 : not custom , 1 valid custom title, -1 invalid or empty custom title
 
+/**
+* [Form Creation] Add an application to the DOM
+*
+*/
 function addApplication(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
@@ -279,6 +283,11 @@ function refreshQuestion(parent){
 	}
 }
 
+/**
+* [Form Creation] Add a pre question to the DOM
+*@param event the event
+*@param parent the parent application
+*/
 function addQuestionPre(event, parent) {
     //console.log(button);
 	//console.log(button.parentElement);
@@ -361,6 +370,12 @@ function addQuestionPre(event, parent) {
 			$(cWrapper).bind("change", answers);
 		$(cWrapper).trigger("change");
 }
+
+/**
+* [Form Creation] Add a post question to the DOM
+*@param event the event
+*@param parent the parent application
+*/
 function addQuestionPost(event, parent) {
     //console.log(button);
 	//console.log(button.parentElement);
@@ -442,7 +457,10 @@ function addQuestionPost(event, parent) {
 			$(cWrapper).bind("change", answers);
 		$(cWrapper).trigger("change");
 }
-
+/**
+* [Form Creation] change the answer area depending on questionType
+*@param event the event
+*/
 function answers(event){
 
 	var id = event.target.parentElement.parentElement.id; 
@@ -478,7 +496,7 @@ function answers(event){
 		customCheckbox.setAttribute('id', 'checkbox'+id);
 		div.appendChild(customCheckbox);
 
-		$(customCheckbox).on('change',function(){customQuestion(customCheckbox, answerArea);}); //eventListener on (un)check
+		$(customCheckbox).on('change',function(){customQuestion(customCheckbox, answerArea);}); //eventListener on custom option (un)check
 
 	}
 				
@@ -488,44 +506,27 @@ function answers(event){
 	for(var ans in questionType){
 		if(questionType[ans]["answerTypeImage"] !== "")
 			makeLabelImage(questionType[ans]["answerTypeName"],id,folder+questionType[ans]["answerTypeImage"]+ext, answerArea);
-	}/*
-	switch(){
-		case 'smiley':
-			//emojis http://emojipedia.org/emoji-one/
-			//console.log("smiley");
-			makeInputImage("smiley1",id,"media/smiley1image.png", answerArea);
-			makeInputImage("smiley2",id,"media/smiley2image.png", answerArea);
-			makeInputImage("smiley3",id,"media/smiley3image.png", answerArea);
-			makeInputImage("smiley4",id,"media/smiley4image.png", answerArea);
-			makeInputImage("smiley5",id,"media/smiley5image.png", answerArea);
-			break;
-		case 'textArea':
-			console.log("textArea"); 
-			break;
-		case 'thumbs':
-			//console.log("thumbs");
-			makeInputImage("thumbs1",id,"media/thumb1image.png", answerArea);
-			makeInputImage("thumbs2",id,"media/thumb2image.png", answerArea);
-			makeInputImage("thumbs3",id,"media/thumb3image.png", answerArea);
-			makeInputImage("thumbs4",id,"media/thumb4image.png", answerArea);
-			makeInputImage("thumbs5",id,"media/thumb5image.png", answerArea);
-			break;
-	}*/
+	}
 }
 
+/**
+* makes (dis)appear custom fields on (un)checking the custom checkbox
+*@customCheckbox the custom checkbox that had triggered the function
+*@answerArea the answer area that will ce modified
+*/
 function customQuestion(customCheckbox, answerArea){
 	var customCheckboxId = customCheckbox.id;
 
-	var splittedId  = customCheckboxId.match(/[a-zA-Z]+|[0-9]+/g);
+	var splittedId  = customCheckboxId.match(/[a-zA-Z]+|[0-9]+/g); //separating numbers and characters into an array ex : "Applic1Q5pre"
 
-	var numApp = splittedId[1];
+	var numApp = splittedId[1]; // in ex will be 1
 
-	var numQuest = splittedId[3];
+	var numQuest = splittedId[3]; //in ex will be 5
 
-	var prepost = (splittedId[4]=="pre")?0:1; 
+	var prepost = (splittedId[4]=="pre")?0:1; //in ex pre -> 0
 
 
-	if ($(customCheckbox).is(':checked'))  { // ------- CHECKED
+	if ($(customCheckbox).is(':checked'))  { // ------- CHECKED : creating fields, collapsing titles
 
 		customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
 
@@ -535,7 +536,7 @@ function customQuestion(customCheckbox, answerArea){
 		var subdiv = document.createElement("div");
 		subdiv.setAttribute("class","divCustomTitle");
 
-		var label = document.createElement("label"); //aski,ng yser for custom field title
+		var label = document.createElement("label"); //asking yser for custom field title
 		label.setAttribute("for", ""); 
 		label.innerHTML ="Title : ";
 		subdiv.appendChild(label);
@@ -568,7 +569,7 @@ function customQuestion(customCheckbox, answerArea){
 		}
 
 
-	}else{									// ------- UNCHECKED
+	}else{									// ------- UNCHECKED : deleting all fields, setting visibility back for titles
 
 		customTitleState[numApp][prepost][numQuest-1] = 0; //setting to state "not custom"
 
@@ -587,6 +588,11 @@ function customQuestion(customCheckbox, answerArea){
 		}
 	}
 }
+
+/**
+* add field for custom information
+*@event the event
+*/
 function addField(event){
     
     //wrapper creation
@@ -618,7 +624,12 @@ function addField(event){
 }
 
 
-
+/**
+* make radio button
+*@name the radio button name
+*@value its value
+*@text the text inside the button
+*/
 function makeRadioButton(name, value, text){
 
     var label = document.createElement("label");
@@ -632,6 +643,12 @@ function makeRadioButton(name, value, text){
     return label;
 }
 
+/**
+* make a image with a 
+*@name the radio button name
+*@value its value
+*@text the text inside the button
+*/
 function makeInputImage(name, value, imageAdr, parent){
 	var id = value+name;
 	
@@ -917,7 +934,12 @@ function send(f, a, qPre, qPost, i, fs) {
 	);
 	//alert("done");
 }
-
+/**
+*Check if the cutsomTitle is free in DB
+*upadate the customTitleState global array 
+*@event the event from the modified title field
+*
+*/
 function isCustomTitleFree(event){
 	var isFree;// = false;
 	var field = event.target;
@@ -928,7 +950,7 @@ function isCustomTitleFree(event){
 	var msgZone = $(parentDiv).find(":last-child")[0];
 
 
-	var splittedId  = fieldID.match(/[a-zA-Z]+|[0-9]+/g);
+	var splittedId  = fieldID.match(/[a-zA-Z]+|[0-9]+/g); //splitting id by numbers and char
 
 	var numApp = splittedId[1];
 	var numQuest = splittedId[3];
@@ -936,29 +958,29 @@ function isCustomTitleFree(event){
 
 
 
-	if (title =="") {
+	if (title =="") { // if empty
 		msgZone.style.color = "red";
 		msgZone.innerHTML = "Title needed." 
          console.log("pas de titre");         
          customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
     }else{
-		$.post(
-			"index.php", // url cible
+		$.post( //making async request to the serv
+			"index.php", //target url
 			{
 				"action":JSON.stringify("existingQuestionType"),
 				"controller":JSON.stringify("questionType"),
 				"questionTypeTitle":JSON.stringify(title)
-			}, // données envoyées
-			function(res){ // le callback
-				var message = res;
-				if (!message) { //if false
+			}, 
+			function(res){ //callback
+				var existing = res;
+				if (!existing) { //if not existing in DB : title possible
 				console.log("free");					
 					msgZone.style.color = "green";
 					msgZone.innerHTML = "title available." 
 					customTitleState[numApp][prepost][numQuest-1] = 1; //setting to state "valid custom title"
 				}
 				
-				else { // if true
+				else { // if already existing : not available 
 					msgZone.style.color = "red";
 					msgZone.innerHTML = "Title already used." 
 					customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
@@ -1218,6 +1240,7 @@ function init(){
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
 
+	//Trigger on every change on every customCheckboxName
 	$(document).on("change",".customCheckboxName",isCustomTitleFree)
 }
 

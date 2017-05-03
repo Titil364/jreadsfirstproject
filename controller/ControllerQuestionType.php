@@ -25,12 +25,16 @@ class ControllerQuestionType {
 
 	}
         
+        /* desc Check if the questionTypeTitle is already used by the current user
+         * return : true if existing, false else
+         */
+        
         public static function existingQuestionType(){
 			if(Session::is_connected()){
 				$questionTypeTitle = $_POST['questionTypeTitle'];
 				$var = json_decode($questionTypeTitle);
-				$rep = ModelQuestionType::checkExistingQuestionType($var);
                                 $user = $_SESSION['nickname'];
+				$rep = ModelQuestionType::checkExistingQuestionType($var,$user);                                
 				echo json_encode($rep);
 			}
         }

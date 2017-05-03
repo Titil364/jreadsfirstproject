@@ -1,0 +1,4 @@
+===== Smileys and thumbs =====
+Smileys and thumbs are open source from http://emojipedia.org/emoji-one/
+
+the multiple thumbs are modified version from the original 
