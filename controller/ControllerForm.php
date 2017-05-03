@@ -472,28 +472,7 @@ class ControllerForm {
 				"visitorId"=> $visitorId,
 				"visitorSecretName" => $secretName
 			);
-		ModelVisitor::update($visitor);
-		$form = ModelForm::select($formId);
-		$applications = ModelApplication::getApplicationByFormId($formId);
-		foreach($applications as $a){
-			$questions = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
-			foreach ($questions as $q){
-				$questionSave = array (
-					"visitorId" => $visitorId,
-					"questionId" => $q->getQuestionId()
-				);
-				ModelAnswer::save($questionSave);
-			}
-		}
-		$information = ModelAssocFormPI::getAssocFormPIByFormId($formId);
-		foreach($information as $i){
-			$info = array(
-				"personnalInformationName"=>$i->getPersonnalInformationName(),
-				"informationName" =>null,
-				"visitorId" => $visitorId
-			);
-			ModelInformation::save($info);
-		}		
+		ModelVisitor::update($visitor);		
 	}
 	
 	
@@ -531,9 +510,21 @@ class ControllerForm {
 			"questionId" => $questionId,
 			"answer" => $answer
 		);
-		ModelAnswer::update($data);
+		echo json_encode(ModelAnswer::update($data));
 	}
 	
+	public static function saveAA(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$applicationId = json_decode($_POST['applicationId']);
+		$value = json_decode($_POST['value']);
+		
+		$data = array(
+			"visitorId" => $visitorId,
+			"applicationId" => $applicationId,
+			"again" => $value
+		);
+		echo json_encode(ModelAgainAgain::update($data));
+	}
 	//JSON
 	/* desc Update the visitor dateCompletePre filling it with the current date
 	 * trigger Click on the submit button on the completed form page
@@ -545,7 +536,7 @@ class ControllerForm {
 			"visitorId" => $visitorId,
 			"dateCompletePre" => date('Y/m/d H:i:s')
 		);
-		ModelVisitor::update($dataV);
+		echo json_encode(ModelVisitor::update($dataV));
 	}
 	
 	public static function completeForm(){

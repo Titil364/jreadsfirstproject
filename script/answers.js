@@ -116,8 +116,7 @@ function extractAnswers(){
 		if(val === undefined | val === ""){
 			alert("Please answer to all the questions. aaa ");
 			return null;
-		}
-		
+		}		
 	}
 	
 	var f = $("div[id^=form]")[0].id.split("-")[1];
@@ -143,7 +142,7 @@ function extractAnswers(){
 			//console.log(tr[i].id);
 			name = tr[i].id.slice(3, tr[i].id.length);
 
-			val = $("input[name=radio"+i+"]:checked").val();
+			val = $("input[name=radio"+i+"]:checked").val();    
 			if(val === undefined){
 				alert("Please answer the again again table. ");
 				return null;
@@ -186,15 +185,16 @@ function sendPre(visitor){
 		{
 			"action":"completedPre",
 			"controller":"form",
-			//"formId":JSON.stringify(form),
             "visitorId":JSON.stringify(visitor)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
+                        console.log("bonjour");
 						$("#submit").unbind("click", extractAnswers);
-                        alert(res);
+                        //Where are we supposed to redirect the visitor ? 
 						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					
 				}else{
+                    console.log("salut");
 					console.log("Error when saving the answers");
 				}
 			},
@@ -456,14 +456,50 @@ function addEventInfo(){
     }
 }
 
-function init(){
+function addAAFS(){
+    var select =$("#aa tbody tr");
+    for (i = 0; i<select.length; i++) {
+        select[i].addEventListener("change", function(){
+           var tmp = $(this);
+           saveAA(tmp);
+        });
+    }
+}
+
+function saveAA(tmp){
+    var id = tmp.prop("id");
+    var split = id.split("");
+    var appliId = formId + "Applic"+split[3];
+    val = $("#"+id+" td input:checked").val();
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveAA",
+			"controller":"form",
+            "visitorId" : JSON.stringify(visitorId),
+            "applicationId" : JSON.stringify(appliId),
+			"value" : JSON.stringify(val)
+		},
+        function (res){
+            
+        },
+        "json"
+    ); 
+}
+
+function init(){    
+    getApplication(formId);
     getFormId();
     getVisitorId();
     getPre();
     if (pre ==1 ) {
         document.getElementById("secretName").addEventListener("change",saveSecretName);
         addEventInfo();
-    }   
+    } else {
+        setTimeout(function(){ randomizeAA(); }, 1000);
+        setTimeout(function(){ randomizeFS(); }, 1000);
+        setTimeout(function(){ addAAFS(); }, 1500);
+    }
 	$("#submit").click(extractAnswers);
     add();	
 }

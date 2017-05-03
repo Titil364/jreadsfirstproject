@@ -42,27 +42,18 @@ class ControllerVisitor{
 					foreach($applicationsEmpty as $app){
 						$questionsEmpty = ModelQuestion::getQuestionByApplicationId($app->getApplicationId());
 						array_push($answersEmpty,$questionsEmpty);
+					}									
+					foreach($information as $i){
+						array_push($infoFilled,$i->getInformationName());
+					}
+					foreach($answers as $a){
+						$ans = array(
+							"questionId" => $a->getQuestionId(),
+							"answer" => $a->getAnswer()
+						);
+						array_push($answersFilled, $ans);
 					}
 					
-					if($secretName != null){					
-						foreach($information as $i){
-							array_push($infoFilled,$i->getInformationName());
-						}
-						foreach($answers as $a){
-							$ans = array(
-								"questionId" => $a->getQuestionId(),
-								"answer" => $a->getAnswer()
-							);
-							array_push($answersFilled, $ans);
-						}
-					} else {
-						foreach($informationEmpty as $i){
-							array_push($infoFilled,null);
-						}
-						foreach($answersEmpty as $ae){
-							array_push($answersFilled, null);
-						}
-					}
 					$questionsPre_array_list = [];
 						
 					$answersPre_array_list = [];
@@ -101,8 +92,24 @@ class ControllerVisitor{
 					$view='answerForm';
 					$controller = 'visitor';				
 				} elseif($pre ===1){
+					// ==================================================
+					$answersFilled = [];
+					$answers = ModelAnswer::getAnswerByVisitorId($visitorId);
+					$applicationsEmpty = ModelApplication::getApplicationByFormId($formId);
+					$answersEmpty =[];
+					foreach($applicationsEmpty as $app){
+						$questionsEmpty = ModelQuestion::getQuestionByApplicationId($app->getApplicationId());
+						array_push($answersEmpty,$questionsEmpty);
+					}
+					foreach($answers as $a){
+						$ans = array(
+							"questionId" => $a->getQuestionId(),
+							"answer" => $a->getAnswer()
+						);
+						array_push($answersFilled, $ans);
+					}
 					
-					
+					// ==================================================
 					$alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 					$applicationTable = ModelApplication::getApplicationByFormId($formId);
 					
@@ -155,13 +162,50 @@ class ControllerVisitor{
     }
 	
 	public static function addVisitor(){
+		$return = true;
 		$visitorId = json_decode($_POST['visitorId']); 
 		$formId = json_decode($_POST['formId']);
 		$data = array(
 				"visitorId" => $visitorId,
 				"formId" => $formId
 			);
-		echo json_encode(ModelVisitor::save($data));
+		if(!(ModelVisitor::save($data))){
+			$return = false;
+		}
+		
+		$form = ModelForm::select($formId);
+		$applications = ModelApplication::getApplicationByFormId($formId);
+		foreach($applications as $a){
+			$questions = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+			foreach ($questions as $q){
+				$questionSave = array (
+					"visitorId" => $visitorId,
+					"questionId" => $q->getQuestionId()
+				);
+				if(!(ModelAnswer::save($questionSave) == 1)){
+					$return = false;
+				}
+			}
+		}
+		$information = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+		foreach($information as $i){
+			$info = array(
+				"personnalInformationName"=>$i->getPersonnalInformationName(),
+				"informationName" =>null,
+				"visitorId" => $visitorId
+			);
+			if(!(ModelInformation::save($info))){
+				$return = false;
+			}			
+		}
+		foreach($applications as $app){
+			$datAA = array(
+				"visitorId" => $visitorId,
+				"applicationId" => $app->getApplicationId()
+			);
+			ModelAgainAgain::save($datAA);
+		}
+		echo json_encode($return);
 	}
 	
 	public static function getFormIdByVisitor(){

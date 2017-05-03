@@ -19,11 +19,11 @@ function addUser(event){
     if (f===null) {
         f = 1;
     }
-    console.log(f);
+    //console.log(f);
     for (i=0; i<f; i++){
         cpt++;
         var visitorId = formId+cpt;
-        console.log(visitorId);
+        //console.log(visitorId);
         send(visitorId, formId);
     }
 }
@@ -44,7 +44,7 @@ function send(v, f) {
                 var tableDId = document.createElement('td');
                 var tableDUsed = document.createElement('td');
                 var visitorId = v;
-                console.log(visitorId);
+                //console.log(visitorId);
                 var textId = document.createTextNode(visitorId);
                 var textUse = document.createElement("img");
                     textUse.setAttribute('src', 'docs/No.png');

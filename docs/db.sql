@@ -266,20 +266,21 @@ INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 3);
 INSERT INTO AnswerType VALUES(12, "yes", "", 4);
 INSERT INTO AnswerType VALUES(13, "no", "", 4);
 
-INSERT INTO Form VALUES("FOMM0MA", 'Manger ou boire', "Me", 0, 0);
+INSERT INTO Form VALUES("FOMM0MA", 'Eat or drink', "Me", 0, 0);
 
 
-INSERT INTO Application VALUES('1Applic0', 'Manger', '', "FOMM0MA");
-INSERT INTO Application VALUES('1Applic1', 'Boire', 'L\'alcool c\'est bon pour la santé', "FOMM0MA");
-INSERT INTO Application VALUES('1Applic2', 'Manger au toilette', 'Exprimez vous', "FOMM0MA");
+INSERT INTO Application VALUES('FOMM0MAApplic0', 'Eat', '', "FOMM0MA");
+INSERT INTO Application VALUES('FOMM0MAApplic1', 'Drink', '', "FOMM0MA");
+INSERT INTO Application VALUES('FOMM0MAApplic2', 'Both', '', "FOMM0MA");
 
-INSERT INTO Question VALUES('1Applic0Q1', 'Manger une banane', '1Applic0', 3, 1);
-INSERT INTO Question VALUES('1Applic0Q2', 'J\'aime la merguez', '1Applic0', 2, 1);
-INSERT INTO Question VALUES('1Applic0Q3', 'Manger des choux', '1Applic0', 3, 1);
-INSERT INTO Question VALUES('1Applic1Q1', 'Boire de l\'eau', '1Applic1', 3, 1);
-INSERT INTO Question VALUES('1Applic1Q2', 'J\'aime la vodka', '1Applic1', 2, 1);
-INSERT INTO Question VALUES('1Applic2Q1', 'Des chips au toilette ', '1Applic2', 1, 1);
-INSERT INTO Question VALUES('1Applic2Q2', 'Du popcorn au toilette', '1Applic2', 3, 1);
+
+
+INSERT INTO Question VALUES('FOMM0MAApplic0Q1pre', 'Eat a Banana', 'FOMM0MAApplic0', 3, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic0Q1post', 'Eat a Banana', 'FOMM0MAApplic0', 3, 0);
+INSERT INTO Question VALUES('FOMM0MAApplic1Q1pre', 'Drink tap', 'FOMM0MAApplic1', 3, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic1Q1post', 'Drink tap', 'FOMM0MAApplic1', 3, 0);
+INSERT INTO Question VALUES('FOMM0MAApplic2Q1pre', 'Both together', 'FOMM0MAApplic2', 2, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic2Q1post', 'Both together', 'FOMM0MAApplic2', 2, 0);
 
 
 INSERT INTO FSQuestion VALUES ('Easy to do/Hard to do', 1);

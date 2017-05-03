@@ -55,7 +55,7 @@
 		//displaying questions
 	
 		
-		$question_array = $questionsPost_array_list[$i];
+	$question_array = $questionsPost_array_list[$i];
 	for($j=0; $j < count($question_array);$j++){
 					//displaying questions
 				$idAppli = 'Applic'.$i.'Q'.$j;
@@ -63,16 +63,21 @@
 			echo "<h3> ";
 			echo htmlspecialchars($question_array[$j]->getQuestionName());
 			echo " </h3>";
-	
-			
+				
 			$qType = $questionTypePost_list[$i][$j]->getQuestionTypeName();
 			$answers_array = $answersPost_array_list[$i][$j];
-
+	
 			if(!is_null($answers_array[0])){
 				$name = $question_array[$j]->getQuestionId();
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\"></textarea>";
+						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\">";
+						foreach($answers as $a){
+							if ($a->getQuestionId() == $name){
+								echo $a->getAnswer();
+							}
+						}
+						echo "</textarea>";
 						break;
 					/*case "yes" or "no":
 						echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
@@ -82,6 +87,7 @@
 						echo '<div class = "answerArea">';
 
 						echo "<input class=\"shortcut\" type =\"radio\" name=\"$name\" style=\"display:none\">";
+						
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
@@ -90,19 +96,23 @@
 
 							$id = "Applic".$i."question".$j.$answerName;
 							echo '<div>';
-							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
+							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\"";
+							foreach($answers as $a){
+								if ($a->getQuestionId() == $name){
+									if($a->getAnswer() == $answerName){
+										echo "checked";
+									}
+								}
+							}
+							echo " id=\"$id\">" ;
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 							echo '</div>';
 						}
 						echo '</div>';
 						break;
 				}
-				
 			}
-			
-			
-		  echo '</div>'; //closing current question div  
-			
+		  echo '</div>'; //closing current question div
 		}
 		echo '</div>'; //closing current application div
 	}

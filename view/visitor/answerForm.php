@@ -32,7 +32,6 @@
 	
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 	echo"<div id=\"applications\">"; // div of all app
-	$p = 0;
 	for($i=0; $i < count($application_array);$i++){
 		//dispalying task informations
 		echo '<div id="Applic'.$i.'" class="application" >'; // current app div
@@ -61,20 +60,19 @@
 			echo "<h3> ";
 			echo htmlspecialchars($question_array[$j]->getQuestionName());
 			echo " </h3>";
-	
-			
+				
 			$qType = $questionTypePre_list[$i][$j]->getQuestionTypeName();
 			$answers_array = $answersPre_array_list[$i][$j];
+			
 			if(!is_null($answers_array[0])){
-				$qId = $answersFilled[$p]['questionId'];
-				$answerValue = $answersFilled[$p]['answer'];
-				$p++;
 				$name = $question_array[$j]->getQuestionId();
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
 						echo "<textarea name=\"$name\" rows=\"5\" cols =\"50\">";						
-						if($qId== $name){
-							echo $answerValue;
+						foreach($answers as $a){
+							if ($a->getQuestionId() == $name){
+								echo $a->getAnswer();
+							}
 						}
 						echo "</textarea>";
 						break;
@@ -92,8 +90,12 @@
 							$id = "Applic".$i."question".$j.$answerName;
 							echo '<div>';
 							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\"";
-							if($answerName == $answerValue){
-								echo "checked";
+							foreach($answers as $a){
+								if ($a->getQuestionId() == $name){
+									if($a->getAnswer() == $answerName){
+										echo "checked";
+									}
+								}
 							}
 							echo " id=\"$id\">" ;
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
