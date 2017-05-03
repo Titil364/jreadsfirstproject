@@ -213,6 +213,20 @@ class ControllerVisitor{
 		echo json_encode(ModelVisitor::Select($visitorId)->getformId());
 	}
 	
+	public static function getAgainAgainByVisitorId(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$AA = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+		$return = [];
+		foreach($AA as $a){
+			$data = array(
+				"applicationId" => $a->getApplicationId(),
+				"again" => $a->getAgain()
+			);
+			array_push($return, $data);
+		}
+		echo json_encode($return);
+	}
+	
 	//I wrote this function but i'm not sure if it will be usefull or not
 	public static function getVisitorSecretName(){
 		$visitorId = json_decode($_POST['visitorId']);

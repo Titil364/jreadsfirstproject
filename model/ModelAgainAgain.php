@@ -54,4 +54,30 @@ class ModelAgainAgain extends Model{
             return false;
         }
     }
+	
+	public static function getAgainAgainByVisitorId($visitorId){
+		try{
+			$sql  = "SELECT * FROM AgainAgain WHERE visitorId=:visitorId";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"visitorId" => $visitorId
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelAgainAgain');
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }

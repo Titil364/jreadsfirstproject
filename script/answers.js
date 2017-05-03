@@ -4,6 +4,7 @@ var formId;
 var visitorId;
 var secretName;
 var pre;
+var AAfilled;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -27,6 +28,23 @@ function getPre(){
     } else {
         pre = 0;
     }
+}
+
+function getAAFilled(visitorId){
+    $.post(
+        "index.php",
+        {
+            "action":"getAgainAgainByVisitorId",
+            "controller":"visitor",
+            "visitorId":JSON.stringify(visitorId)
+        },
+        function(res){
+            if (res!=null) {
+               AAfilled = res;
+            }
+        },
+        "json"
+    );
 }
 
 function getSecretName() {
@@ -284,7 +302,7 @@ function randomizeAA(){
     var tbody = document.createElement("tbody");
     for (i=0; i<applicationNumber;i++){
         var table_row = document.createElement('tr');
-            table_row.id = "trA"+array[i];
+            table_row.id= formId + "Applic"+array[i];
         var td = document.createElement('td');
         var text = document.createTextNode(applicationName[array[i]]);
         td.appendChild(text);
@@ -301,6 +319,11 @@ function randomizeAA(){
             button.setAttribute("class","radioButtonFS");            
             button.setAttribute("name","radio"+i);
             button.setAttribute("value", j);
+            for(c =0; c<AAfilled.length; c++){
+                if (AAfilled[c]['applicationId'] === table_row.id && AAfilled[c]['again']===j.toString()) {
+                    button.setAttribute("checked",true);
+                }
+            }
             td.appendChild(button);
             table_row.appendChild(td);
         }
@@ -464,12 +487,18 @@ function addAAFS(){
            saveAA(tmp);
         });
     }
+    var tr = $("#FunSorter tbody tr");
+    for (j = 0;j<tr.length;j++){
+        tr[j].addEventListener("change", function(){
+            var tmp = $(this);
+            saveFS(tmp);
+        });
+    }
 }
 
 function saveAA(tmp){
     var id = tmp.prop("id");
-    var split = id.split("");
-    var appliId = formId + "Applic"+split[3];
+    console.log(id);
     val = $("#"+id+" td input:checked").val();
     $.post(
 		"index.php", // url
@@ -477,7 +506,7 @@ function saveAA(tmp){
 			"action":"saveAA",
 			"controller":"form",
             "visitorId" : JSON.stringify(visitorId),
-            "applicationId" : JSON.stringify(appliId),
+            "applicationId" : JSON.stringify(id),
 			"value" : JSON.stringify(val)
 		},
         function (res){
@@ -496,6 +525,7 @@ function init(){
         document.getElementById("secretName").addEventListener("change",saveSecretName);
         addEventInfo();
     } else {
+        getAAFilled(visitorId);
         setTimeout(function(){ randomizeAA(); }, 1000);
         setTimeout(function(){ randomizeFS(); }, 1000);
         setTimeout(function(){ addAAFS(); }, 1500);
