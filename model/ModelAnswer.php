@@ -6,28 +6,32 @@ class ModelAnswer extends Model{
 	private $visitorId;
 	private $questionId;
 	private $answer;
-	
-    protected static $object = "Answer";
-    protected static $primary1 = "questionId";
+
+	protected static $object = "Answer";
+	protected static $primary1 = "questionId";
 	protected static $primary2 = "visitorId";
-    
-    public function getVisitorId(){return $this->visitorId;}
+
+	public function getVisitorId(){return $this->visitorId;}
 	public function setVisitorId($visitorId){$this->visitorId = $visitorId;}
 
-    public function getQuestionId(){return $this->questionId;}    
+	public function getQuestionId(){return $this->questionId;}    
 	public function setQuestionId($questionId){$this->questionId = $questionId;}
 
-    public function getAnswer(){return $this->answer;}
+	public function getAnswer(){return $this->answer;}
 	public function setAnswer($answer){$this->answer = $answer;}
-	
-    public function __construct($atId = NULL, $atIm = NULL, $ans = NULL){
-        if (!is_null($atId) && !is_null($atIm) && !is_null($ans)){
-        	$this->visitorId = $atId;
-        	$this->questionId = $atIm;
+
+	public function __construct($atId = NULL, $atIm = NULL, $ans = NULL){
+		if (!is_null($atId) && !is_null($atIm) && !is_null($ans)){
+			$this->visitorId = $atId;
+			$this->questionId = $atIm;
 			$this->answer = $ans;
-        }
-   }
-   
+		}
+	}
+
+    /* desc Return the form quesiton's answer of a visitor
+	 * param visitorId The id of the visitor 
+	 *
+	 */
 	public static function getAnswerByVisitorId($visitorId){
 		try {
 			$sql = "SELECT * FROM Answer WHERE Answer.visitorId=:visitorId"; 
@@ -43,15 +47,19 @@ class ModelAnswer extends Model{
 			return $prep->fetchAll();
 		
 		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return false;
-        }
+			if (Conf::getDebug()) {
+				echo $ex->getMessage();
+			} else {
+				echo "Error";
+			}
+			return false;
+		}
 	}
 	
+	/* desc This update replaces the generic update because this table has a two-component primary key
+	 * param data This shall be an array containing as key exactly the same name as the column in the data ase
+	 *
+	 */
 	public static function update($data) {
         try {
             $table_name = static::$object;

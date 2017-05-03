@@ -24,7 +24,7 @@ class ModelAssocFormFS extends Model{
         }
     }
     
-        public static function getAssocFormFSByFormId($id){
+	public static function getAssocFormFSByFormId($id){
 		try{
 			$sql  = "SELECT * FROM AssocFormFS WHERE formId=:id";
 			$prep = Model::$pdo->prepare($sql);

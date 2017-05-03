@@ -29,6 +29,10 @@ class ModelAgainAgain extends Model{
         }
     }
 	
+	/* desc This update replaces the generic update because this table has a two-component primary key
+	 * param data This shall be an array containing as key exactly the same name as the column in the data ase
+	 *
+	 */
 	public static function update($data) {
         try {
             $table_name = static::$object;

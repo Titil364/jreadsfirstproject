@@ -31,6 +31,10 @@ class ModelQuestionType extends Model{
     }
 	
 	//FAUX TO FIX
+	/* desc Return the default question type and the question type previously created by the user 
+	 * param user The nickname of the current user
+	 *
+	 */
 	public static function getQuestionTypeForUser($user){
 		try{
 			$sql  = "SELECT * FROM QuestionType WHERE userNickname=:u OR userNickname IS NULL;";
@@ -55,33 +59,33 @@ class ModelQuestionType extends Model{
         }
 	}
 	
-        public static function checkExistingQuestionType($questionTypeName,$user){
-            try{
-				
-				$sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
-				$prep = Model::$pdo->prepare($sql);
-				$values = array(
-						"u" => $user,
-						"q" =>$questionTypeName
-						);
+	public static function checkExistingQuestionType($questionTypeName, $user){
+		try{
+			
+			$sql  = "SELECT * FROM QuestionType WHERE questionTypeName=:q AND (userNickname=:u OR userNickname IS NULL);";
+			$prep = Model::$pdo->prepare($sql);
+			$values = array(
+					"u" => $user,
+					"q" =>$questionTypeName
+					);
 
-				$prep-> execute($values);
-				$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestionType');
 
 
-				if (count($prep->fetchAll())!=0){ //maybe we will find a better syntax
-					return true; 
-				}else{
-					return false;
-				}
+			if (count($prep->fetchAll())!=0){ //maybe we will find a better syntax
+				return true; 
+			}else{
+				return false;
+			}
 		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return true;
-        }
-        }
+			if (Conf::getDebug()) {
+				echo $ex->getMessage();
+			} else {
+				echo "Error";
+			}
+			return true;
+		}
+	}
 }
 

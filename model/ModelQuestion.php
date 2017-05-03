@@ -41,6 +41,11 @@ class ModelQuestion extends Model{
         }
     }
 
+	
+	/* desc Return all the questions of the application no matter if the question is a post or a pre question
+	 * param id The id of the application
+	 *
+	 */
     public static function getQuestionByApplicationId($id){
 		try{
 			$sql  = "SELECT * FROM Question WHERE applicationId=:id";
@@ -67,6 +72,12 @@ class ModelQuestion extends Model{
         }
     }
 	
+	
+	/* desc Return all the pre or post questions of the application
+	 * param id The id of the application
+	 * param pre Nature of the question (0 for pre and 1 for post)
+	 *
+	 */
 	public static function getQuestionByApplicationIdAndPre($id, $pre){
 		try{
 			$sql  = "SELECT * FROM Question WHERE applicationId=:id AND questionPre=:pre";

@@ -36,6 +36,10 @@ class ModelAnswerType extends Model{
         }
     }
 
+	/* Return all the possible answer type of a question type
+	 * param id The id of the question type
+	 *
+	 */
     public static function getAnswerTypeByQuestionId($id){
 		try{
 			$sql  = "SELECT * FROM AnswerType WHERE questionTypeId=:id";

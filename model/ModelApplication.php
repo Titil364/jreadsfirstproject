@@ -45,32 +45,11 @@ class ModelApplication extends Model{
   	
         }
     }
-/* The generic model will provide this functin
-    public function getApplicationById($id){
-		try{
-			$sql  = "SELECT * FROM Application WHERE formId=:id";
-			$prep = Model::$pdo->prepare($sql);
 
-			$values = array(
-				"id" => $id,
-				);
-
-			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelApplication');
-			$application_array = $prep->fetchAll();
-			
-			return $application_array[0];
-
-		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return false;
-        }
-    }
-*/
+	/* desc Return all the applications associated with the form
+	 * param formId The id of the form
+	 *
+	 */
     public static function getApplicationByFormId($formId){
 		try{
 			$sql  = "SELECT * FROM Application WHERE formId=:id";

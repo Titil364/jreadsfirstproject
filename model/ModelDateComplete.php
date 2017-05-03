@@ -1,4 +1,10 @@
 <?php
+
+/*
+ * Ce fichier peut être supprimer
+ *
+ *
+ */
 require_once File::build_path(array('model', 'Model.php'));
 
 class ModelDateComplete extends Model{

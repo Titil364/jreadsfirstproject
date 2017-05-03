@@ -29,6 +29,9 @@ class ModelInformation extends Model{
         }
     }
 	
+	/* desc Return the information the visitor gave through the form
+	 * param visitorId The id of the visitor
+	 */
 	public static function getInformationByVisitorId($visitorId){
 		try{
 			$sql = "Select * From Information Where Information.visitorId=:visitorId";

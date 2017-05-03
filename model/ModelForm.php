@@ -39,14 +39,17 @@ class ModelForm extends Model{
 			$this->fillable = $fillable;
         }
     }
-
+	
+    /* desc Return all the form created by the user 
+	 * param userId The nickname of the user
+	 */
     public function getFormByUserId($userId){
 		try{
-			$sql  = "SELECT * FROM Form WHERE userId=:userId";
+			$sql  = "SELECT * FROM Form WHERE userNickname=:userNickname";
 			$prep = Model::$pdo->prepare($sql);
 
 			$values = array(
-				"userId" => $userId,
+				"userNickname" => $userId,
 				);
 
 			$prep-> execute($values);
@@ -64,7 +67,9 @@ class ModelForm extends Model{
         }
     }
 	
-	
+	/* desc Return all the visitor of the form
+	 * param formId tThe id of the form
+	 */
 	public static function getVisitorsByFormId($formId){
 		try{
 			$sql  = "SELECT * FROM Visitor WHERE Visitor.formId=:formId";

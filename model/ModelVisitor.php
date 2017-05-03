@@ -86,7 +86,10 @@ class ModelVisitor extends Model{
 			$this->preDone= $preDone;
         }
     }
-
+	/* desc Return if a visitor already exists (checking if the secret name is already in the database)
+	 *
+	 * return 1 if the visitor exists, else 0
+	 */
 	public static function checkExistingVisitor($visitorSecretName){
 		try{	
 			$sql = "SELECT COUNT(*) FROM Visitors WHERE visitorSecretName=:visitorSecretName";

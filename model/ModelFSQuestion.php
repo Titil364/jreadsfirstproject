@@ -17,7 +17,10 @@ class ModelFSQuestion extends Model{
 			$this->defaultFSQuestion = $fs;
         }
     }
-    
+	
+    /* desc Return all the FS questions associated to the form 
+	 * param formId The id of the form
+	 */
     public static function getFSQuestionByFormId($formId){
 		try{
 			$sql  = "SELECT * FROM FSQuestion, AssocFormFS WHERE AssocFormFS.formId=:formId AND FSQuestion.FSQuestionName = AssocFormFS.FSQuestionName ";
@@ -41,6 +44,10 @@ class ModelFSQuestion extends Model{
             return false;
         }
 	}
+	
+    /* desc Return the default FS questions (predefined FS questions) when creating the form
+	 * 
+	 */
 	public static function getDefaultFSQuestion(){
 		try{
 			$sql  = "SELECT FSQuestionName FROM FSQuestion WHERE defaultFSQuestion=:d";

@@ -40,10 +40,7 @@ class ModelUsers extends Model{
     public function setIsAdmin($isAdmin){$this->isAdmin = $isAdmin;}
     
 
-	
-    public static function getSeed() {
-        return self::$seed;
-    }
+
     public function __construct($id = NULL, $mail = NULL, $pwd = NULL, $nickname = NULL, $surname = NULL, $forename = NULL, $nonce = NULL, $isAdmin = NULL, $nb = NULL) {
         if (!is_null($id) && !is_null($nickname) && !is_null($forename) && !is_null($surname) && !is_null($mail)&& !is_null($pwd) && !is_null($nonce) && !is_null($isAdmin) && !is_null($nb)){
             $this->userId = $id;
@@ -57,7 +54,10 @@ class ModelUsers extends Model{
 			$this->numberCreatedForm =$nb;
         }
     }
-	
+	/* desc Return if the user already exists or not (checking if the nickname is already in the database)
+	 * param nickname The nickname of the user
+	 * return 1 if the nickname already exists, else 0
+	 */
 	public static function checkExistingUser($nickname){
 		try{	
 			$sql = "SELECT COUNT(*) FROM Users WHERE userNickname=:nickname";

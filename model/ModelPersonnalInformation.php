@@ -21,6 +21,9 @@ class ModelPersonnalInformation extends Model{
         }
     }
 	
+	/* desc Return the default personnal information the user (predefined fields when creating the form)
+	 *
+	 */
 	public static function getDefaultPersonnalInformation(){
 		try{
 			$sql  = "SELECT personnalInformationName FROM PersonnalInformation WHERE defaultPersonnalInformation=:d";
