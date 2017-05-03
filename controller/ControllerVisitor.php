@@ -15,8 +15,10 @@ class ControllerVisitor{
 		}
         $f = ModelForm::select($formId);
         if (!$f){
-			echo "This form doesn't exist";
-			// error page
+			$data["message"] = "This form doesn't exist. ";
+			$data["pagetitle"] = "Read form error";
+			
+			ControllerDefault::message($data);	
         }else{		
 				
 				$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);

@@ -4,16 +4,25 @@ require_once File::build_path(array('model', 'ModelQuestionType.php'));
 
 class ControllerQuestionType {
 
+	/* desc Send what ?
+	 * trigger Onload when creating a form
+	 * additional information Use for what ?
+	 */
 	public static function answersPlaceholder(){
 		
-		$questionType = ModelQuestionType::getQuestionTypeForUser($_SESSION["nickname"]);
-		$placeholders = array();
-		foreach($questionType as $q){
-			$name = $q->getQuestionTypeName();
-			$placeholders[$name] = ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId());
+		if(Session::is_connected()){
+			$questionType = ModelQuestionType::getQuestionTypeForUser($_SESSION["nickname"]);
+			$placeholders = array();
+			foreach($questionType as $q){
+				$name = $q->getQuestionTypeName();
+				$placeholders[$name] = ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId());
+			}
+		
+			echo json_encode($placeholders);			
+		}else{
+			echo json_encode("Not connected");
 		}
-	
-		echo json_encode($placeholders);
+
 	}
         
         public static function existingQuestionType(){

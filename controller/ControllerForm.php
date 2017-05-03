@@ -15,8 +15,10 @@ class ControllerForm {
 		$jscript = "myScriptSheet";
 		$full = false;
         if (!$f){
-			echo "Error the form doesn't exist. ";
-            // error page
+			$data["message"] = "The form doesn't exist. ";
+			$data["pagetitle"] = "Read form error";
+			
+			ControllerDefault::message($data);	
         }else{
 			$folder = $f->getUserNickname();
             $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
@@ -91,12 +93,15 @@ class ControllerForm {
         }
     }
     
+	
 	public static function create(){
         $view = 'createForm';
         $controller = 'form';
         $pagetitle = 'Create Form';
         require File::build_path(array('view', 'view.php'));
 	}
+	
+	
 	public static function created(){
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);
@@ -321,21 +326,28 @@ class ControllerForm {
 		
 		require File::build_path(array('view', 'view.php'));
 	}
+	/* desc Send the formId passed throught the url
+	 * trigger Use when ?
+	 * additional information Use for what ?
+	 */
 	public static function returnFormId(){
 		$formId = json_decode($_GET['formId']);
 		echo json_encode($formId);
-		
 	}
+	
+	/* desc Display a page containing all the persons who answered to the form (as a tab) and all the visitorID available
+	 * 
+	 * additional information 
+	 */
 	public static function whoAnswered(){
-		$controller ='form';
-		$view = 'whoAnswered';
-		$jscript = "whoAnswered";
-		
-		$formId = $_GET['id'];
-		$pagetitle='Who answered '.$formId;
-		
-
 		if(Session::is_connected()){
+			
+			$controller ='form';
+			$view = 'whoAnswered';
+			$jscript = "whoAnswered";
+			
+			$formId = $_GET['id'];
+			$pagetitle='Who answered '.$formId;
 			$visitor = ModelForm::getVisitorsByFormId($formId);
 			$questions = ModelAssocFormPI::getAssocFormPIByFormId($formId);
 			$array = array();
@@ -347,9 +359,19 @@ class ControllerForm {
 				$array[$i][3] = $v->getVisitorId();
 				$i++;
 			}
+			require File::build_path(array('view', 'view.php'));
+		}else{
+			$data["message"] = "Please log in to have access to this action. ";
+			$data["pagetitle"] = "Not connectied";
+			
+			ControllerDefault::message($data);	
 		}
-		require File::build_path(array('view', 'view.php'));
 	}
+	
+	/* desc Display the form with the answer of the visitor
+	 * 
+	 * additional information Display the pre and post questions, and all the tabs
+	 */
 	public static function readAnswer(){
 		$controller = 'form';
 		$view = 'displayForm';
@@ -362,7 +384,10 @@ class ControllerForm {
 		
 		$answer = ModelAnswer::getAnswerByVisitorId($visitorId);
 		if($answer == null){
-			echo "page vide";
+			$data["message"] = "The visitor hasn't answer to the form yet. ";
+			$data["pagetitle"] = "No answer available";
+			
+			ControllerDefault::message($data);	
 		}else {
 			$toSplit = $answer[0]->getQuestionId();	
 			$f = explode("A",$toSplit);
@@ -471,6 +496,12 @@ class ControllerForm {
 		}		
 	}
 	
+	
+	//JSON
+	/* desc Save the personnal information
+	 * trigger <<onchange>> event on each personnal information input (text)
+	 * additional information An information is automaticly saved with the <<onchange>> event
+	 */
 	public static function saveInformation(){
 		$personnalInformationName = json_decode($_POST['personnalInformationName']);
 		$visitorId = json_decode($_POST['visitorId']);
@@ -484,6 +515,12 @@ class ControllerForm {
 		ModelInformation::update($info);
 	}
 	
+	
+	//JSON
+	/* desc Save the answer of a question 
+	 * trigger <<onchange>> event on each question input (text, radiobutton)
+	 * additional information An answer is automaticly saved with the <<onchange>> event
+	 */
 	public static function saveAnswer(){
 		$visitorId = json_decode($_POST['visitorId']);
 		$questionId = json_decode($_POST['questionId']);
@@ -496,6 +533,12 @@ class ControllerForm {
 		);
 		ModelAnswer::update($data);
 	}
+	
+	//JSON
+	/* desc Update the visitor dateCompletePre filling it with the current date
+	 * trigger Click on the submit button on the completed form page
+	 * additional information It means that the visitor has completed the PRE form and submit ALL the answers (and that he clicked on the submit button)
+	 */
 	public static function completedPre(){
 		$visitorId = json_decode($_POST['visitorId']);
 		$dataV = array(
@@ -673,10 +716,15 @@ class ControllerForm {
 			else{
 				echo json_encode("Error");
 			}
+		}else{
+			echo json_encode("Error, not connected. ");
 		}
 	}
+	/* desc Display a page containing all the forms created by any users for the admin
+	 *
+	 */
 	public static function readAll(){
-		if(Session::is_admin()){
+		if(Session::is_connected() && Session::is_admin()){
 			$view = 'displayAllMyForms';
 			$controller = 'users';
 			$pagetitle = 'All the user forms';
@@ -684,14 +732,17 @@ class ControllerForm {
 			$form = ModelForm::selectAll();
 			$tmp = ModelUsers::getCreatorUsers();
 			
-	
+			//Create an associative array with the nickname of the creator as key and a concatenation of the forename and the surname as value
 			foreach($tmp as $u){
 				$readAll[$u->getNickname()] = $u->getForename() . " " . $u->getSurname();
 			}
 
 			require File::build_path(array('view','view.php'));	
 		}else{
-			ControllerDefault::welcome();
+			$data["message"] = "Regular users are not allowed to see all the user forms. ";
+			$data["pagetitle"] = "Persmission denied";
+			
+			ControllerDefault::message($data);	
 		}
 	}
 }

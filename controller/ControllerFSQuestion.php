@@ -16,6 +16,10 @@ class ControllerFSQuestion {
         echo json_encode($FSQuestionName);
     }
 	
+	/* desc Send the list of FS Question already existing by default
+	 * trigger <<onload>> when creating a form 
+	 * additional information Use to give to the creator FSQuestions that already exist. He doesn't need to create it, he just needs to tick the box
+	 */
 	public static function predefinedFSQuestions(){
 		$var = ModelFSQuestion::getDefaultFSQuestion();
 		echo json_encode($var);

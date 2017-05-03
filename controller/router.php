@@ -51,7 +51,7 @@ else{
 }
 
 
-
+//Checking if the controller or the action is in JSON format just in case
 if(File::isJson($controller) && File::isJson($action)){
 	$controller = json_decode($controller);
 	$action = json_decode($action);
@@ -67,10 +67,16 @@ if(class_exists($controllerClass)){
 		$controllerClass::$action();
 	}
 	else{
-		//The action doesn't exist
+		$data["message"] = "The action doesn't exist. ";
+		$data["pagetitle"] = "Action not found";
+		
+		ControllerDefault::message($data);	
 	}
 }else{
-	//The controller doesn't exist
+	$data["message"] = "The controller doesn't exist. ";
+	$data["pagetitle"] = "Controller not found";
+	
+	ControllerDefault::message($data);	
 }
 
 ?>
