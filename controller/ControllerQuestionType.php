@@ -33,8 +33,8 @@ class ControllerQuestionType {
 			if(Session::is_connected()){
 				$questionTypeTitle = $_POST['questionTypeTitle'];
 				$var = json_decode($questionTypeTitle);
-				$rep = ModelQuestionType::checkExistingQuestionType($var);
                                 $user = $_SESSION['nickname'];
+				$rep = ModelQuestionType::checkExistingQuestionType($var,$user);                                
 				echo json_encode($rep);
 			}
         }
