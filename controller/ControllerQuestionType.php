@@ -25,6 +25,10 @@ class ControllerQuestionType {
 
 	}
         
+        /* desc Check if the questionTypeTitle is already used by the current user
+         * return : true if existing, false else
+         */
+        
         public static function existingQuestionType(){
 			if(Session::is_connected()){
 				$questionTypeTitle = $_POST['questionTypeTitle'];

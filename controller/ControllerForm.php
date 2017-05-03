@@ -8,7 +8,10 @@ require_once File::build_path(array('model', 'ModelSortApplication.php'));
 
 
 class ControllerForm {
-    
+    /*
+     * desc Prepare the display of the fillable form
+     * additional information Getting all data from DB into arrays 
+     */
     public static function read(){
 		$formId = $_GET['id'];
         $f = ModelForm::select($formId);
@@ -47,7 +50,7 @@ class ControllerForm {
             //PRE Questions
             for($i=0; $i < count($application_array);$i++){
                 $questionAndAnswer = [];
-                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"1");
+                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"1"); // getting questions
                 array_push($questionsPre_array_list, $questions_arrayFromModel);
                 
                 array_push($answersPre_array_list, []);
@@ -56,7 +59,7 @@ class ControllerForm {
                 for($j=0; $j < count($questions_arrayFromModel);$j++){
 					
 					$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
-                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId()); //getting answers
                     array_push($answersPre_array_list[$i], $answersPre_array);
                     array_push($questionTypePre_list[$i], $qType);
                 }                
@@ -93,7 +96,9 @@ class ControllerForm {
         }
     }
     
-	
+	/*desc Opening creation view
+         * 
+         */
 	public static function create(){
         $view = 'createForm';
         $controller = 'form';
@@ -101,6 +106,9 @@ class ControllerForm {
         require File::build_path(array('view', 'view.php'));
 	}
 	
+        /*desc getting post info from filled form, save them into DB
+         * 
+         */
 	
 	public static function created(){
 		if(Session::is_connected()){
@@ -149,11 +157,12 @@ class ControllerForm {
 					for($y = 0; $y < sizeof($qPre[$i]); $y++){
 
                                                 
-                                                if(isset($qPre[$i][$y]["customAns"])){
+                                                if(isset($qPre[$i][$y]["customAns"])){ 
+                                                // if the question has custom answers, saving them + corresponding new QuestionType
                                                     $customAns = $qPre[$i][$y]["customAns"];
                                                     
                                                     $questionType = array(
-                                                        "questionTypeName" => $customAns[0],
+                                                        "questionTypeName" => $customAns[0], //title choose by user
                                                         "userNickname" => $userNickname
                                                     );
                                                     if(!ModelQuestionType::save($questionType)){
@@ -161,16 +170,18 @@ class ControllerForm {
 							break;
                                                     }                                                    
                                                     
-                                                    $questionTypeId = ModelQuestionType::getLastInsert();
+                                                    $questionTypeId = ModelQuestionType::getLastInsert(); //answerType will be linked to the qType juste created
                                                     $questionTypeName = $customAns[0];
                                                     
-                                                    $original = ModelQuestionType::select($qPre[$i][$y]["type"]);
+                                                    //getting questionType which new questionType is based on
+                                                    //its name will be used to construct image name to have same images
+                                                    $original = ModelQuestionType::select($qPre[$i][$y]["type"]); 
                                                     $originalName = $original->getQuestionTypeName();
                                                     
                                                     for($j = 1; $j < sizeof($customAns); $j++){
                                                         $answerType = array(
                                                             "answerTypeName" => $customAns[$j],
-                                                            "answerTypeImage" => $originalName . $j ."image",
+                                                            "answerTypeImage" => $originalName . $j ."image", //construction of image name ex : smiley2image
                                                             "questionTypeId" => $questionTypeId
 
                                                         );
@@ -179,7 +190,7 @@ class ControllerForm {
 							break;
                                                     }
                                                     }
-                                                    //chercher questionTypeId grace à $q[$i][$y]["questionType"]
+                                                    //searching questionTypeId with $q[$i][$y]["questionType"]
                                                     //$qTypeId
                                                     $question = array(
                                                             "questionId" => $form['formId'] . $qPre[$i][$y]["id"],
@@ -195,7 +206,7 @@ class ControllerForm {
                                                     
                                                 }else{
                                                 
-                                                    //chercher questionTypeId grace à $q[$i][$y]["questionType"]
+                                                    //searching questionTypeId with $q[$i][$y]["questionType"]
                                                     //$qTypeId
                                                     $question = array(
                                                             "questionId" => $form['formId'] . $qPre[$i][$y]["id"],
@@ -210,7 +221,7 @@ class ControllerForm {
                                                     }
                                                 }
 					}
-
+                                        //same for post questions
 					for($y = 0; $y < sizeof($qPost[$i]); $y++){
                                                 if(isset($qPost[$i][$y]["customAns"])){
                                                     $customAns = $qPost[$i][$y]["customAns"];
