@@ -110,7 +110,6 @@ class ControllerVisitor{
 				$view='answerForm';
 				$controller = 'visitor';				
 			} elseif($pre ===1){
-				// ==================================================
 				$answersFilled = [];
 				$answers = ModelAnswer::getAnswerByVisitorId($visitorId);
 				$applicationsEmpty = ModelApplication::getApplicationByFormId($formId);
@@ -127,7 +126,6 @@ class ControllerVisitor{
 					array_push($answersFilled, $ans);
 				}
 				
-				// ==================================================
 				$alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 				$applicationTable = ModelApplication::getApplicationByFormId($formId);
 				
