@@ -4,7 +4,8 @@ body{
 	font-family: 'Roboto', sans-serif;
 }
 main{	
-	padding:1%;
+	padding-left:6%;
+	padding-right:6%;
     background-color: #4abdac;
     height:100%;
 }
@@ -13,9 +14,11 @@ main{
     padding:2%;
 }
 .formCss{
-    background-color: #e5ba2d;
+    background-color: white;
     padding:2%;
-	border: 2px solid black;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.4);
+	/*! border: 2px solid black; */
+    border-radius: 10px;
 }
 #newTask{
     background-color: #e0ae0b;
@@ -44,27 +47,24 @@ main{
 
 
 .application{
-	border:1px solid #777;
+	/*! border:1px solid #777; */
 	border-radius:16px;
 	padding:7px;
-	margin:25px;
-	background-color:#FF9900; 
+	/*! margin:25px; */
+	/*! background-color:#FF9900; */ 
 }
 .questionPre, .questionPost, .FSQuestionCustom{
-	border:1px solid #333;
-	border-radius:16px;
 	padding:7px;
 	margin-bottom: 5px;
-	background-color:#D79B28;
-	width: 70%;
+	width: 100%;
 }
 .application > div{
 	margin-bottom: 5px;
 }
 #applications{
-	border:1px solid #333;
+	/*! border:1px solid #333; */
 	border-radius:16px;
-	padding : 7px;
+	/*! padding : 7px; */
 	margin-bottom: 5px;
 }
 
@@ -197,3 +197,66 @@ table th{
 	width: 30px;
 }
 
+/*last add*/
+
+.application > div{
+	display: flex;
+	flex-direction: column;
+
+}
+
+.question{
+	display: flex;
+	flex-direction: column;
+}
+
+.application h2 {
+	align-self: center;
+	/*! border-top : solid black 1px; */
+	/*! border-bottom : solid black 2px; */
+	width: 105%;
+	background-color: #0084FF;
+	color : white;
+	text-indent: 2%;
+	
+	border-radius: 7px;
+}
+
+#userInformation{
+	display: flex;
+	flex-direction: column;	
+}
+
+#userInformation >div{
+	margin :10px;
+	
+}
+
+/*create form properties*/
+.appCreationTitle{
+  align-self: center;
+width: 100%;
+background-color: #0084FF;
+color: white;
+text-indent: 2%;
+border-radius: 7px;
+box-shadow: 0px 19px 22px -11px rgba(0,0,0,0.57);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-bottom: 25px
+}
+
+.questionPreDiv, .questionPostDiv {
+	border-top: solid 2px #0084FF;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+
+.questionPre:not(:last-child){
+	border-bottom: dashed 1px #0084FF;
+	
+}
+
+.addQuestionButton{
+	width: 300px;
+}

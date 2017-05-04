@@ -38,6 +38,7 @@ function addApplication(event){
 	
 		//The label of the application's name
 	var nameWrapper = document.createElement("div");
+	nameWrapper.setAttribute('class','appCreationTitle')
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", applicationName+"Name");
 			applicationNameLabel.innerHTML ="Name of the application : ";
@@ -106,6 +107,9 @@ function addApplication(event){
 	//Creation of the add question button
 	var wrapQuestionPre = document.createElement("div");
 		wrapQuestionPre.setAttribute("class", "questionPreDiv");
+	var titlePre = document.createElement('h3');
+	titlePre.innerHTML="Pre questions :";
+	wrapQuestionPre.appendChild(titlePre);
 	var buttonQuestion = document.createElement("button");
 		buttonQuestion.setAttribute("class", "addQuestionButton");
 		buttonQuestion.type = "button";
@@ -117,6 +121,9 @@ function addApplication(event){
 	
 	var wrapQuestionPost = document.createElement("div");
 		wrapQuestionPost.setAttribute("class", "questionPostDiv");
+	var titlePost = document.createElement('h3');
+	titlePost.innerHTML="Post questions :";
+	wrapQuestionPost.appendChild(titlePost);
 	var buttonQuestionPost = document.createElement("button");
 		buttonQuestionPost.setAttribute("class", "addQuestionButton");
 		buttonQuestionPost.type = "button";
@@ -296,7 +303,7 @@ function addQuestionPre(event, parent) {
 		//the button is in a wrapper but we need to climb up to the application container
 	var application = parent;
 		//
-	var nbQuestions = application.children.length;
+	var nbQuestions = application.children.length-1;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
 
@@ -384,7 +391,7 @@ function addQuestionPost(event, parent) {
 		//the button is in a wrapper but we need to climb up to the application container
 	var application = parent;
 		//
-	var nbQuestions = application.children.length;
+	var nbQuestions = application.children.length-1;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
 
