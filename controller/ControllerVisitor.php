@@ -230,7 +230,7 @@ class ControllerVisitor{
 				"visitorId" => $visitorId,
 				"FSQuestionName" => $f->getFSQuestionName()
 			);
-			if(!(ModelSortApplication::save($datFS))){
+			if(!(ModelSortApplication::save($dataFS))){
 				$return = false;
 			}
 		}

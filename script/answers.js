@@ -268,42 +268,37 @@ function sendPost(f, a, fs, aa){
 
 function randomizeFS() {
     var alphabeta = Array(applicationNumber);
-    if (FSfilled.length === 0) {
-        for(i = 0; i<applicationNumber; i++){
-            alphabeta[i] = alphabet[i];
-        }
-    } else{
-        console.log("wait");
-    }
     
     var array = new Array();
-     for(i = 0; i < length; i++){
-         var a = Math.random()*length;
-         var b = Math.ceil(a);
-         while (array.includes(b-1)){
-             a = Math.random()*length;
-             b = Math.ceil(a);
-         }
-        array[i] = b-1;
-     }
-     var table = document.getElementById("fs"); 
-     var tbody = document.createElement("tbody"); //Create tbody 
-     table.appendChild(tbody); //Add tbody to the table
-     for (i = 0; i<length; i++) {
+    for(i = 0; i < length; i++){
+        var a = Math.random()*length;
+        var b = Math.ceil(a);
+        while (array.includes(b-1)){
+            a = Math.random()*length;
+            b = Math.ceil(a);
+        }
+       array[i] = b-1;
+    }
+    var table = document.getElementById("fs"); 
+    var tbody = document.createElement("tbody"); //Create tbody 
+    table.appendChild(tbody); //Add tbody to the table
+    for (i = 0; i<length; i++) {
+        for(k = 0; k<length; k++){
+            alphabeta[k] = alphabet[k];
+        }
         var table_row = document.createElement('tr'); //create a table row
         table_row.id = "tr"+array[i]; //Add id to the table row
-        if (FSfilled.length === 0) {
-            for(i = 0; i<applicationNumber; i++){
-                alphabeta[i] = alphabet[i];
-            }
-        } else {
-           /* for(c = 0; c<length; c++){
-                if (tabNamearray[i] === FSfilled[c]['FSQuestionName']) {
-                    console.log(c);
-                    console.log(tabNamearray[i]);
-                    console.log(FSfilled[c]['FSQuestionName']);
+        
+        for(c = 0; c<FSfilled.length; c++){
+            if (tabName[array[i]] === FSfilled[c]['FSQuestionName']){
+                var toSplit = FSfilled[c]['applicationOrder'];
+                if(toSplit !== null){
+                    var splited = toSplit.split("");
+                    for(t = 0; t<splited.length; t++){
+                        alphabeta[t] = splited[t];
+                    }
                 }
-            }*/
+            }
         }
         
         var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
@@ -316,7 +311,7 @@ function randomizeFS() {
             var td = document.createElement('td');
             var div = document.createElement('div');
                 div.setAttribute("class","FSmove"+array[i]);
-            var textDiv = document.createTextNode(alphabet[j]);
+            var textDiv = document.createTextNode(alphabeta[j]);
             div.appendChild(textDiv);
             td.appendChild(div);
             table_row.appendChild(td);
