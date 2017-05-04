@@ -5,6 +5,8 @@ var visitorId;
 var secretName;
 var pre;
 var AAfilled;
+var FSfilled;
+var length;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -46,6 +48,24 @@ function getAAFilled(visitorId){
         "json"
     );
 }
+
+function getFSFilled(visitorId){
+    $.post(
+        "index.php",
+        {
+            "action":"getFSByVisitorId",
+            "controller":"visitor",
+            "visitorId":JSON.stringify(visitorId)
+        },
+        function(res){
+            if (res!=null) {
+               FSfilled = res;
+            }
+        },
+        "json"
+    );
+}
+
 
 function getSecretName() {
     $.post(
@@ -247,45 +267,67 @@ function sendPost(f, a, fs, aa){
 }
 
 function randomizeFS() {
-        var array = new Array();
-         for(i = 0; i < length; i++){
-             var a = Math.random()*length;
-             var b = Math.ceil(a);
-             while (array.includes(b-1)){
-                 a = Math.random()*length;
-                 b = Math.ceil(a);
-             }
-            array[i] = b-1;
+    var alphabeta = Array(applicationNumber);
+    if (FSfilled.length === 0) {
+        for(i = 0; i<applicationNumber; i++){
+            alphabeta[i] = alphabet[i];
+        }
+    } else{
+        console.log("wait");
+    }
+    
+    var array = new Array();
+     for(i = 0; i < length; i++){
+         var a = Math.random()*length;
+         var b = Math.ceil(a);
+         while (array.includes(b-1)){
+             a = Math.random()*length;
+             b = Math.ceil(a);
          }
-         var table = document.getElementById("fs"); 
-         var tbody = document.createElement("tbody"); //Create tbody 
-         table.appendChild(tbody); //Add tbody to the table
-         for (i = 0; i<length; i++) {
-            var table_row = document.createElement('tr'); //create a table row
-            table_row.id = "tr"+array[i]; //Add id to the table row
-             
-            var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
-            var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
-            var textRight = document.createTextNode(name[1]); //And the second one, the right part
-            var td = document.createElement('td'); //Create TD 
-                td.appendChild(textLeft);       //Add left text to the Td
-                table_row.appendChild(td);      //Add td to the TR
-            for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
-                var td = document.createElement('td');
-                var div = document.createElement('div');
-                    div.setAttribute("class","FSmove"+array[i]);
-                var textDiv = document.createTextNode(alphabet[j]);
-                div.appendChild(textDiv);
-                td.appendChild(div);
-                table_row.appendChild(td);
+        array[i] = b-1;
+     }
+     var table = document.getElementById("fs"); 
+     var tbody = document.createElement("tbody"); //Create tbody 
+     table.appendChild(tbody); //Add tbody to the table
+     for (i = 0; i<length; i++) {
+        var table_row = document.createElement('tr'); //create a table row
+        table_row.id = "tr"+array[i]; //Add id to the table row
+        if (FSfilled.length === 0) {
+            for(i = 0; i<applicationNumber; i++){
+                alphabeta[i] = alphabet[i];
             }
-            var td2 = document.createElement('td');
-                td2.appendChild(textRight);
-                table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
-             
-             tbody.appendChild(table_row);      //Add tr to the table
-         }
-         makeFSDraggable();
+        } else {
+           /* for(c = 0; c<length; c++){
+                if (tabNamearray[i] === FSfilled[c]['FSQuestionName']) {
+                    console.log(c);
+                    console.log(tabNamearray[i]);
+                    console.log(FSfilled[c]['FSQuestionName']);
+                }
+            }*/
+        }
+        
+        var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
+        var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
+        var textRight = document.createTextNode(name[1]); //And the second one, the right part
+        var td = document.createElement('td'); //Create TD 
+            td.appendChild(textLeft);       //Add left text to the Td
+            table_row.appendChild(td);      //Add td to the TR
+        for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
+            var td = document.createElement('td');
+            var div = document.createElement('div');
+                div.setAttribute("class","FSmove"+array[i]);
+            var textDiv = document.createTextNode(alphabet[j]);
+            div.appendChild(textDiv);
+            td.appendChild(div);
+            table_row.appendChild(td);
+        }
+        var td2 = document.createElement('td');
+            td2.appendChild(textRight);
+            table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
+         
+         tbody.appendChild(table_row);      //Add tr to the table
+     }
+     makeFSDraggable();
 }
 function randomizeAA(){
     var array = new Array();
@@ -489,13 +531,42 @@ function addAAFS(){
     }
     var tr = $("#FunSorter tbody tr");
     for (j = 0;j<tr.length;j++){
-        tr[j].addEventListener("change", function(){
+        tr[j].addEventListener("mouseup", function(){
             var tmp = $(this);
-            saveFS(tmp);
+            setTimeout(function(){ saveFS(tmp); }, 500);
         });
     }
 }
 
+function saveFS(tmp){
+    children = tmp.children();
+    var FSQuestionName = children[0].textContent +"/"+ children[applicationNumber+1].textContent;
+    var stringRes = "";
+    for (i=1; i<=applicationNumber; i++){
+        child = children[i];
+        grandChild = child.childNodes;
+        stringRes += grandChild[0].textContent;
+    }
+    //console.log(FSQuestionName);
+    //console.log(stringRes);
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveFS",
+			"controller":"form",
+            "visitorId" : JSON.stringify(visitorId),
+            "FSQuestionName" : JSON.stringify(FSQuestionName),
+			"applicationOrder" : JSON.stringify(stringRes)
+		},
+        function (res){
+            
+        },
+        "json"
+    );
+    
+       
+    //console.log(applicationNumber);
+}
 function saveAA(tmp){
     var id = tmp.prop("id");
     console.log(id);
@@ -526,12 +597,14 @@ function init(){
         addEventInfo();
     } else {
         getAAFilled(visitorId);
+        getFSFilled(visitorId);
         setTimeout(function(){ randomizeAA(); }, 1000);
         setTimeout(function(){ randomizeFS(); }, 1000);
         setTimeout(function(){ addAAFS(); }, 1500);
+        
     }
 	$("#submit").click(extractAnswers);
-    add();	
+    add();
 }
 
 

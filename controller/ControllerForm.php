@@ -536,6 +536,20 @@ class ControllerForm {
 		);
 		echo json_encode(ModelAgainAgain::update($data));
 	}
+	
+	public static function saveFS(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$FSQuestionName = json_decode($_POST['FSQuestionName']);
+		$applicationOrder = json_decode($_POST['applicationOrder']);
+		
+		$data = array (
+			"visitorId" => $visitorId,
+			"FSQuestionName" => $FSQuestionName,
+			"applicationOrder" => $applicationOrder
+		);
+		var_dump($data);
+		echo json_encode(ModelSortApplication::update($data));
+	}
 	//JSON
 	/* desc Update the visitor dateCompletePre filling it with the current date
 	 * trigger Click on the submit button on the completed form page

@@ -219,7 +219,20 @@ class ControllerVisitor{
 				"visitorId" => $visitorId,
 				"applicationId" => $app->getApplicationId()
 			);
-			ModelAgainAgain::save($datAA);
+			if(!(ModelAgainAgain::save($datAA))){
+				$return = false;
+			}
+		}
+		//////////////////////////////
+		$FSQ = ModelFSQuestion::getFSQuestionByFormId($formId);
+		foreach($FSQ as $f){
+			$dataFS = array (
+				"visitorId" => $visitorId,
+				"FSQuestionName" => $f->getFSQuestionName()
+			);
+			if(!(ModelSortApplication::save($datFS))){
+				$return = false;
+			}
 		}
 		echo json_encode($return);
 	}
@@ -237,6 +250,20 @@ class ControllerVisitor{
 			$data = array(
 				"applicationId" => $a->getApplicationId(),
 				"again" => $a->getAgain()
+			);
+			array_push($return, $data);
+		}
+		echo json_encode($return);
+	}
+	
+	public static function getFSByVisitorId(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$AA = ModelSortApplication::getFSByVisitorId($visitorId);
+		$return = [];
+		foreach($AA as $a){
+			$data = array(
+				"FSQuestionName" => $a->getFSQuestionName(),
+				"applicationOrder" => $a->getApplicationOrder()
 			);
 			array_push($return, $data);
 		}
