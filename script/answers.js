@@ -43,6 +43,7 @@ function getAAFilled(visitorId){
         function(res){
             if (res!=null) {
                AAfilled = res;
+               randomizeAA();
             }
         },
         "json"
@@ -58,9 +59,13 @@ function getFSFilled(visitorId){
             "visitorId":JSON.stringify(visitorId)
         },
         function(res){
+           // console.log(FSfilled);
             if (res!=null) {
                FSfilled = res;
+              // console.log(FSfilled);
             }
+            randomizeFS()
+            ;
         },
         "json"
     );
@@ -120,9 +125,10 @@ function getQuestionsName(a){
             tabName = res;
             length = tabName.length;
             var name = tabName[0].split("/");
-			if (visitorId !== 0) {
-              // randomizeAA();
-              //  randomizeFS();
+			if (pre === 0) {
+                //console.log("trying to get");
+                getFSFilled(visitorId);
+                getAAFilled(visitorId);
             }
         },
         "json"
@@ -321,8 +327,9 @@ function randomizeFS() {
             table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
          
          tbody.appendChild(table_row);      //Add tr to the table
-     }
-     makeFSDraggable();
+    }
+    makeFSDraggable();
+    addFS();
 }
 function randomizeAA(){
     var array = new Array();
@@ -367,6 +374,7 @@ function randomizeAA(){
         tbody.appendChild(table_row);  
     }
 	table.appendChild(tbody);
+    addAA();
 }
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
@@ -516,7 +524,7 @@ function addEventInfo(){
     }
 }
 
-function addAAFS(){
+function addAA(){
     var select =$("#aa tbody tr");
     for (i = 0; i<select.length; i++) {
         select[i].addEventListener("change", function(){
@@ -524,6 +532,8 @@ function addAAFS(){
            saveAA(tmp);
         });
     }
+}
+function addFS() {
     var tr = $("#FunSorter tbody tr");
     for (j = 0;j<tr.length;j++){
         tr[j].addEventListener("mouseup", function(){
@@ -582,20 +592,15 @@ function saveAA(tmp){
     ); 
 }
 
-function init(){    
-    getApplication(formId);
+function init(){
     getFormId();
     getVisitorId();
+
     getPre();
     if (pre ==1 ) {
         document.getElementById("secretName").addEventListener("change",saveSecretName);
         addEventInfo();
     } else {
-        getAAFilled(visitorId);
-        getFSFilled(visitorId);
-        setTimeout(function(){ randomizeAA(); }, 1000);
-        setTimeout(function(){ randomizeFS(); }, 1000);
-        setTimeout(function(){ addAAFS(); }, 1500);
         
     }
 	$("#submit").click(extractAnswers);
