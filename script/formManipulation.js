@@ -5,7 +5,6 @@ var fsquestions;
 var qType = [];
 
 var customTitleState = []; //0 : not custom , 1 valid custom title, -1 invalid or empty custom title
-
 /**
 * [Form Creation] Add an application to the DOM
 *
@@ -134,11 +133,11 @@ function addApplication(event){
 		    
 		//Add the event for adding the question
 			buttonQuestion.addEventListener("click", function(event){
-				addQuestionPre(event, wrapQuestionPre);
+				addQuestion(event, wrapQuestionPre, "pre");
 			});
 		//Add the event for adding the question
 			buttonQuestionPost.addEventListener("click", function(event){
-				addQuestionPost(event, wrapQuestionPost);
+				addQuestion(event, wrapQuestionPost, "post");
 			});
 	
 	nbApplication++;
@@ -294,10 +293,12 @@ function refreshQuestion(parent){
 *@param event the event
 *@param parent the parent application
 */
-function addQuestionPre(event, parent) {
+function addQuestion(event, parent, preOrPost) {
     //console.log(button);
 	//console.log(button.parentElement);
 	
+	var p = preOrPost;
+	var P = preOrPost.capitalizeFirstLetter();
 	//Recovery of the application associated with the question (button's parent)
 		//the button is in a wrapper but we need to climb up to the application container
 	var application = parent;
@@ -311,8 +312,8 @@ function addQuestionPre(event, parent) {
 	
 	//Creation of the question wrapper
 	var qWrapper = document.createElement("div");
-	qWrapper.setAttribute("id", questionName+"pre");
-	qWrapper.setAttribute("class", "questionPre");
+	qWrapper.setAttribute("id", questionName+p);
+	qWrapper.setAttribute("class", "question"+P);
 	application.appendChild(qWrapper);
 	
 	//Creation of the childs
@@ -321,14 +322,14 @@ function addQuestionPre(event, parent) {
 	var questionInfoWrapper = document.createElement("div");
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", questionName+"Name");
-			applicationNameLabel.innerHTML ="Question Pre n°"+nbQuestions+" : ";
+			applicationNameLabel.innerHTML ="Question "+P+" n°"+nbQuestions+" : ";
 			questionInfoWrapper.appendChild(applicationNameLabel);
 			
 			
 			//The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
-			inputQuestion.id= questionName+"prename";
+			inputQuestion.id= questionName+p+"name";
 			inputQuestion.name= questionName+"Name";
 			inputQuestion.placeholder="Do you like carrots ?";
 			questionInfoWrapper.appendChild(inputQuestion);	
@@ -376,92 +377,6 @@ function addQuestionPre(event, parent) {
 		$(cWrapper).trigger("change");
 }
 
-/**
-* [Form Creation] Add a post question to the DOM
-*@param event the event
-*@param parent the parent application
-*/
-function addQuestionPost(event, parent) {
-    //console.log(button);
-	//console.log(button.parentElement);
-	
-	//Recovery of the application associated with the question (button's parent)
-		//the button is in a wrapper but we need to climb up to the application container
-	var application = parent;
-		//
-	var nbQuestions = application.children.length-1;
-	
-	var questionName = application.parentNode.id+"Q"+nbQuestions;
-
-	var applicNumber = application.parentNode.id.split("Applic")[1];
-	customTitleState[applicNumber][0].push(0);
-	
-	//Creation of the question wrapper
-	var qWrapper = document.createElement("div");
-	qWrapper.setAttribute("id", questionName+"post");
-	qWrapper.setAttribute("class", "questionPost");
-	application.appendChild(qWrapper);
-	
-	//Creation of the childs
-		
-		//The label of the question
-	var questionInfoWrapper = document.createElement("div");
-		var applicationNameLabel = document.createElement("label");
-			applicationNameLabel.setAttribute("for", questionName+"Name");
-			applicationNameLabel.innerHTML ="Question Post n°"+nbQuestions+" : ";
-			questionInfoWrapper.appendChild(applicationNameLabel);
-			
-			
-			//The input of the application's name
-		var inputQuestion = document.createElement("input");
-			inputQuestion.type = "text";
-			inputQuestion.id= questionName+"postname";
-			inputQuestion.name= questionName+"Name";
-			inputQuestion.placeholder="Do you like carrots ?";
-			questionInfoWrapper.appendChild(inputQuestion);	
-			
-			
-			//Creation of the remove question button
-		var removeQButton = document.createElement("button");
-			removeQButton.setAttribute("class", "removeButton");
-			removeQButton.type="button";
-			removeQButton.value= "Remove the question";
-			removeQButton.innerHTML ="Remove the question";
-			questionInfoWrapper.appendChild(removeQButton);
-			
-			//Add the event for removing the application
-				removeQButton.addEventListener("click", function(event){
-					removeMe(event, qWrapper);
-				});
-	qWrapper.appendChild(questionInfoWrapper);
-			
-	//Add evalutation choices
-	
-	
-		//Add a choice wrapper
-		var cWrapper  = document.createElement("select");
-			questionInfoWrapper.appendChild(cWrapper);
-
-		
-		for(var name in placeholders){
-		var option = document.createElement('option');
-			option.setAttribute('required', 'required');
-			option.setAttribute('value', name);
-			option.setAttribute('id', name+questionName);
-			option.innerHTML = name;
-			cWrapper.appendChild(option); 
-		}
-		
-
-		//Add the answer area (ex : the area where the smileys will be displayed)
-		var answerArea = document.createElement("div");
-			answerArea.setAttribute("class","answerArea");
-			qWrapper.appendChild(answerArea);
-
-			//add listener on radio changement
-			$(cWrapper).bind("change", answers);
-		$(cWrapper).trigger("change");
-}
 /**
 * [Form Creation] change the answer area depending on questionType
 *@param event the event
@@ -513,7 +428,6 @@ function answers(event){
 			makeLabelImage(questionType[ans]["answerTypeName"],id,folder+questionType[ans]["answerTypeImage"]+ext, answerArea);
 	}
 }
-
 /**
 * makes (dis)appear custom fields on (un)checking the custom checkbox
 *@customCheckbox the custom checkbox that had triggered the function
@@ -699,391 +613,6 @@ function makeLabelImage(name, value, imageAdr, parent){
 	parent.appendChild(wrapper);
 }
 
-function extractInformation(){
-	var predef = $(".defaultInformation:checked");
-	var info = [];
-	for(var i = 0; i < predef.length; i++){
-		info.push(predef[i].id);
-	}
-	var custom = $(".fieldInput");
-	for(var i = 0; i < custom.length; i++){
-		if($(custom[i]).val() === "" ){
-			
-		}else{
-			info.push($(custom[i]).val());			
-		}
-	}
-	console.log("extractInfoDone");
-	return (info.length == 0? false : info);
-}
-
-function extractFSQuestions(){
-	var predefs = $(".defaultFSQuestion:checked");
-	var FSQuestions = [];
-	for (var i = 0; i < predefs.length; i++) {
-		FSQuestions.push(predefs[i].id);
-    }
-	var customFS = $(".FSQuestionCustom");
-	for (var i = 0; i<customFS.length; i++){	
-		var left = $($(".questionInputLeft")[i]).val();
-		var right = $($(".questionInputRight")[i]).val();
-		if (left==="" |right==="") {
-        }else{
-			var FSQuestionName =left+"/"+right;
-			FSQuestions.push(FSQuestionName);
-			if (FSQuestionName.length>50) {
-                alert("trop grand");
-				return null;
-            }
-		}
-	}
-	console.log("extractFSdone");
-	return (FSQuestions.length == 0? false : FSQuestions);
-}
-
-
-
-
-function extractData(){
-	//Liste of application in the form
-	var formName = $("#formName").val();
-	if(formName === ""){
-		alert("Please enter the name of the form. ");
-		return null;
-	}
-	var applications = $(".application");
-	
-	var a = [];
-	var qPre = [];
-	var qPost = [];
-		
-	for(var i = 0; i < applications.length; i++){
-		var id = applications[i].id;
-		var applicationName = $("#"+id+"Name").val();
-		//console.log("Task : "+applicationName);
-		var applicationDesc = $("#"+id+"Desc").val();
-		//console.log("Description : "+applicationDesc);
-		var applicationImg = id+"Img";
-		//console.log("Image : "+applicationImg);
-		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
-		qPre.push([]);
-		qPost.push([]);
-		//console.log("desc "+applicationDesc);
-		//console.log("img "+applicationImg);
-		
-		if(applicationName === "" | (applicationDesc === "" & $("#"+applicationImg).val() === "")){
-			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
-			return null;
-		}
-		var questionsPre =  $("#"+id+" > .questionPreDiv > .questionPre");
-		for(var y = 0; y < questionsPre.length; y++){
-			//Dig out the type of the question (the radio button checked)
-			
-			
-			var idQ = questionsPre[y].id;
-
-			var qPreLabel = $("#"+idQ+"name").val();
-			if (qPreLabel === "") {
-                alert("At least one question has no name. Please check and add a name or delete the question");
-				return null;
-			}
-			//console.log("label pre = "+qPreLabel);
-			var qPreType = $("#"+idQ+" select").val();
-			//console.log(qType);
-			
-			var customAns = null;
-
-			if ($("#checkbox"+idQ).is(":checked")){
-
-				customAns = [];
-				var title = $("#titlecheckbox"+idQ)[0].value;
-				customAns.push(title);
-
-
-				var fieldList = $(".fieldcheckbox"+idQ);
-				for(var j = 0; j<fieldList.length; j++){
-					customAns.push(fieldList[j].value);
-				}
-
-			}
-
-
-			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1, customAns));
-
-
-		}
-		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
-		for(var y = 0; y < questionsPost.length; y++){
-			//Dig out the type of the question (the radio button checked)
-			
-			var idQ = questionsPost[y].id;
-			//console.log(idQ);
-			var qPostLabel = $("#"+idQ+"name").val();
-			if (qPostLabel === "") {
-                alert("At least one question has no name. Please check and add a name or delete the question");
-				return null;
-			}
-			//console.log(qPostLabel);
-			var qPostType = $("#"+idQ+" select").val();
-
-			var customAns = null;
-
-			if ($("#checkbox"+idQ).is(":checked")){
-
-				customAns = [];
-				var title = $("#titlecheckbox"+idQ)[0].value;
-				customAns.push(title);
-
-				var fieldList = $(".fieldcheckbox"+idQ);
-				for(var j = 0; j<fieldList.length; j++){
-					customAns.push(fieldList[j].value);
-				}
-
-			}
-			//console.log(qType);
-			
-			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
-		}
-
-
-	}
-
-	////verification  of cutomField answers
-	var allCustomfields = $(".answerArea input");
-	for (var customFieldsCount = 0; customFieldsCount < allCustomfields.length; customFieldsCount++ ){
-		if (allCustomfields[customFieldsCount].value == ""){
-			alert("At least one custom answers is empty");
-			return null;
-		}
-	}
-
-
-	///// verification of customFielState
-	
-	for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
-		for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
-			for (var questCpt = 0; questCpt < customTitleState[appCpt][prePostCpt].length; questCpt ++ ){
-				if (customTitleState[appCpt][prePostCpt][questCpt] == -1){
-					alert("at least one customFieldTitle is incorrect");
-					return null;
-				} 
-			}
-		}
-	}
-
-	var info = extractInformation();
-	var fs = extractFSQuestions();
-	send(formName, a, qPre, qPost, info, fs);
-}
-
-
-function send(f, a, qPre, qPost, i, fs) {
-
-	//console.log(JSON.stringify(a));
-	//console.log(JSON.stringify(q));
-	//normalement les données seront envoyés en post
-	$.post(
-		"index.php", // url
-		{
-			"action":"created",
-			"controller":"form",
-			"form":JSON.stringify(f),
-			"applications":JSON.stringify(a),
-			"questionsPre":JSON.stringify(qPre),
-			"questionsPost":JSON.stringify(qPost),
-			"information":JSON.stringify(i),
-			"FSQuestions":JSON.stringify(fs)
-		},  //data
-		function(res){ //callback
-				console.log("Le resultat = "+res);
-					//res is supposed to send the id of the form
-					//We need this form ID to save the image
-				if(res !== false){
-					var re = /(?:\.([^.]+))?$/;
-					var ext = "";
-					for(var i = 0; i < a.length; i++){
-						var name = a[i]['img'];
-
-						var file_data = $("#"+name).prop("files")[0];
-		
-						if(file_data !== undefined){
-							ext = re.exec(file_data.name)[1];
-							var form_data = new FormData();
-
-							form_data.append("file", file_data, res+name+"."+ext);
-								$.ajax({
-									url: "index.php?controller=application&action=saveImg",
-									cache: false,
-									contentType: false,
-									processData: false,
-									data: form_data,                  
-									type: 'post',
-									success: function(result){
-											  //console.log(result);
-											},
-									error: function(){
-											  console.log("Error while downloading the file. ");
-									}   
-								});  
-						}
-						alert("The form has been successfully registered ! (You will be redirected)");
-						$("#submit").unbind("click", extractData);
-						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
-					}
-					
-				}else{
-					console.log("Error when saving the form. ");
-				}
-			},
-		"json" // type
-	);
-	//alert("done");
-}
-/**
-*Check if the cutsomTitle is free in DB
-*upadate the customTitleState global array 
-*@event the event from the modified title field
-*
-*/
-function isCustomTitleFree(event){
-	var isFree;// = false;
-	var field = event.target;
-	var fieldID = field.id;
-
-	var title = field.value;
-	var parentDiv = field.parentNode;
-	var msgZone = $(parentDiv).find(":last-child")[0];
-
-
-	var splittedId  = fieldID.match(/[a-zA-Z]+|[0-9]+/g); //splitting id by numbers and char
-
-	var numApp = splittedId[1];
-	var numQuest = splittedId[3];
-	var prepost = (splittedId[4]=="pre")?0:1; 
-
-
-
-	if (title =="") { // if empty
-		msgZone.style.color = "red";
-		msgZone.innerHTML = "Title needed." 
-         console.log("pas de titre");         
-         customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
-    }else{
-		$.post( //making async request to the serv
-			"index.php", //target url
-			{
-				"action":JSON.stringify("existingQuestionType"),
-				"controller":JSON.stringify("questionType"),
-				"questionTypeTitle":JSON.stringify(title)
-			}, 
-			function(res){ //callback
-				var existing = res;
-				if (!existing) { //if not existing in DB : title possible
-				console.log("free");					
-					msgZone.style.color = "green";
-					msgZone.innerHTML = "title available." 
-					customTitleState[numApp][prepost][numQuest-1] = 1; //setting to state "valid custom title"
-				}
-				
-				else { // if already existing : not available 
-					msgZone.style.color = "red";
-					msgZone.innerHTML = "Title already used." 
-					customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
-				}
-			},
-			"json"
-		);
-	}
-
-}
-
-
-
-//function which return an array of the name of the checked default information	
-//Il y a plus simple, tu récupères par className
-function checkDefaultInformations(){
-	var checkBoxes = document.getElementById("defaultInfCheckboxes").children;
-	var infoArray = [];
-
-	for (var i = checkBoxes.length - 1; i >= 0; i--) {
-		if (checkBoxes[i].type === "checkbox" && checkBoxes[i].checked){
-			infoArray.push(checkBoxes[i].value);
-		}
-
-	}
-	return infoArray;
-}
-
-//Changement de l'ordre des questions
-//Drag and drop to switch
-jQuery.fn.swap = function(b){ 
-    // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
-    b = jQuery(b)[0]; 
-    var a = this[0]; 
-    var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
-    b.parentNode.insertBefore(a, b); 
-    t.parentNode.insertBefore(b, t); 
-    t.parentNode.removeChild(t); 
-    return this; 
-};
-
-
-function makeDraggbleQuestion(event) {
-	$( ".questionPre, .questionPost" ).draggable({containment : "parent", revert: true, helper: "clone" });
-
-	$( ".questionPre, .questionPost" ).droppable({
-		accept: ".question",
-		drop: function( event, ui ) {
-
-			var draggable = ui.draggable, droppable = $(this),
-				dragPos = draggable.position(), dropPos = droppable.position();
-			
-			
-			draggable.css({
-				left: dropPos.left+'px',
-				top: dropPos.top+'px'
-			});
-	
-			droppable.css({
-				left: dragPos.left+'px',
-				top: dragPos.top+'px'
-			});
-			draggable.swap(droppable);
-			
-			refreshQuestion(droppable.parent()[0]);
-		}
-	});
-		
-}
-
-function makeDraggbleApplication(event) {
-	$( ".application" ).draggable({containment : "parent", revert: true, helper: "clone" });
-
-	$( ".application" ).droppable({
-		accept: ".application",
-		drop: function( event, ui ) {
-
-			var draggable = ui.draggable, droppable = $(this),
-				dragPos = draggable.position(), dropPos = droppable.position();
-			
-			
-			draggable.css({
-				left: dropPos.left+'px',
-				top: dropPos.top+'px'
-			});
-	
-			droppable.css({
-				left: dragPos.left+'px',
-				top: dragPos.top+'px'
-			});
-			draggable.swap(droppable);
-			
-			refreshApplication();
-		}
-	});
-}
-
-
 
 function answersPlaceholder(){
 	$.get(
@@ -1101,6 +630,7 @@ function answersPlaceholder(){
 		"json" // type
 	);
 }
+
 
 
 function showInformation(id, type, tab){
@@ -1180,35 +710,82 @@ function addFSQuestion(event) {
 		customInfo.appendChild(wrapper);
 }
 
-function saveQuestion(event) {
-    var questions = $(".question");
-	for(i = 0; i<questions.length;i++){
-		var left = questions[i].getElementsByClassName("questionInputLeft")[0];
-		var right = questions[i].getElementsByClassName("questionInputRight")[0];
-		if (left.value==="" || right.value==="") {
-            alert("A question is empty, fill it or delete it.");
-        } else {
-			console.log("Question " +i +" left : "+left.value);
-			console.log("Question " +i +" right : "+right.value);
+
+//Changement de l'ordre des questions
+//Drag and drop to switch
+jQuery.fn.swap = function(b){ 
+    // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
+    b = jQuery(b)[0]; 
+    var a = this[0]; 
+    var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
+    b.parentNode.insertBefore(a, b); 
+    t.parentNode.insertBefore(b, t); 
+    t.parentNode.removeChild(t); 
+    return this; 
+};
+
+
+function makeDraggbleQuestion(event) {
+	$( ".questionPre, .questionPost" ).draggable({containment : "parent", revert: true, helper: "clone" });
+
+	$( ".questionPre, .questionPost" ).droppable({
+		accept: ".question",
+		drop: function( event, ui ) {
+
+			var draggable = ui.draggable, droppable = $(this),
+				dragPos = draggable.position(), dropPos = droppable.position();
+			
+			
+			draggable.css({
+				left: dropPos.left+'px',
+				top: dropPos.top+'px'
+			});
+	
+			droppable.css({
+				left: dragPos.left+'px',
+				top: dragPos.top+'px'
+			});
+			draggable.swap(droppable);
+			
+			refreshQuestion(droppable.parent()[0]);
 		}
-	}
+	});
+		
 }
 
+function makeDraggbleApplication(event) {
+	$( ".application" ).draggable({containment : "parent", revert: true, helper: "clone" });
 
-String.prototype.capitalizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+	$( ".application" ).droppable({
+		accept: ".application",
+		drop: function( event, ui ) {
+
+			var draggable = ui.draggable, droppable = $(this),
+				dragPos = draggable.position(), dropPos = droppable.position();
+			
+			
+			draggable.css({
+				left: dropPos.left+'px',
+				top: dropPos.top+'px'
+			});
+	
+			droppable.css({
+				left: dragPos.left+'px',
+				top: dragPos.top+'px'
+			});
+			draggable.swap(droppable);
+			
+			refreshApplication();
+		}
+	});
 }
-
 
 
 function init(){
-	
-	$("#submit").click(extractData);
 	answersPlaceholder();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
 	//Adding one application
 	addApplication();
-	//uploadImage$("#test").click(uploadImage);
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
@@ -1220,3 +797,25 @@ function init(){
 
 
 $(init);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

@@ -58,13 +58,9 @@ EOT;
 		<script src="script/jquery1.10.2.min.js"></script>
 		
 		
-       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src ="script/object.js"></script>
-		<?php 
-			if(isset($jscript)){
-				echo "<script src=\"script/$jscript.js\"></script>";
-			}
-		?>
+
                 <?php
                 $filepath = File::build_path(array('view', $controller, $view . ".php"));
                 require $filepath;
@@ -73,6 +69,10 @@ EOT;
             <div> I am a footer NOTICE ME PLEASE </div>
         </footer> -->
 
-
+		<?php 
+			if(isset($jscript)){
+				echo "<script src=\"script/$jscript.js\"></script>";
+			}
+		?>
     </body>
 </html>

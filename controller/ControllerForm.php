@@ -99,15 +99,16 @@ class ControllerForm {
         }
     }
     
-	/*desc Opening creation view
-         * 
-         */
+	/* desc Opening creation view
+     * 
+     */
 	public static function create(){
 		
 		if(Session::is_connected()){
 			$view = 'createForm';
 			$controller = 'form';
 			$pagetitle = 'Create Form';
+			$jscript = "createForm";
 			
 			$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
 			$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
@@ -124,22 +125,20 @@ class ControllerForm {
 		
 		if(isset($_GET["id"])){
 			$formId = $_GET["id"];
-			
 			$form = ModelForm::select($formId);
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
 				$view = 'createForm';
 				$controller = 'form';
 				$pagetitle = 'Update Form ' . $formId;
+				$jscript = "updateForm";
 				
 				$create = false;
 				
-				//Collect the personnal information
-					//getPersonnalInformationName()
-
+				//Collect the personnal information (default and custom)
 				$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
 				$personnalInformation = ModelAssocFormPI::getAssocFormPIByFormId($formId);
 				
-				
+				//Collect the FS questions (default and custom)
 				$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
 				$fsQuestion = ModelFSQuestion::getFSQuestionByFormId($formId);
 				

@@ -49,7 +49,7 @@
 								echo "<div class=\"field\">";
 								echo "<input class=\"fieldInput\" type=\"text\" placeholder=\"Your Field name\" value=\"$protectedName\">";
 								//il va falloir link le button à la suppression du parent
-								echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Field\">Remove the Field</button>";
+								echo "<button class=\"removeButtonAE\" type=\"button\" value=\"Remove the Field\">Remove the Field</button>";
 								echo "</div>";
 							}	
 						}
@@ -99,31 +99,35 @@
 					<button type="button" id="addFSQuestion">Add a new question</button>
 					
 					<?php
-						foreach($fsQuestion as $fs){
-							$names = explode("/", $fs->getFSQuestionName());
-							$names[0] = htmlspecialchars($names[0]);
-							$names[1] = htmlspecialchars($names[1]);
-							echo "<div class=\"FSQuestionCustom\">";
-								echo "<table><tr><td>";
-									echo "<input class=\"questionInputLeft\" type=\"text\" placeholder=\"First part\" value=\"$names[0]\">";
-								echo "</td><td>";
-									echo "<input type=\"text\" placeholder=\"Fake part\" style=\"visibility: hidden;\">";
-								echo "</td><td>";
-									echo "<input class=\"questionInputRight\" type=\"text\" placeholder=\"Second part\" value=\"$names[1]\">";
-								echo "</td></tr></table>";
-								
-								//Link le bouton au parent
-								echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Question\">Remove the Question</button>";
-							echo "</div>";
+						if(!$create){
+							foreach($fsQuestion as $fs){
+								$names = explode("/", $fs->getFSQuestionName());
+								$names[0] = htmlspecialchars($names[0]);
+								$names[1] = htmlspecialchars($names[1]);
+								echo "<div class=\"FSQuestionCustom\">";
+									echo "<table><tr><td>";
+										echo "<input class=\"questionInputLeft\" type=\"text\" placeholder=\"First part\" value=\"$names[0]\">";
+									echo "</td><td>";
+										echo "<input type=\"text\" placeholder=\"Fake part\" style=\"visibility: hidden;\">";
+									echo "</td><td>";
+										echo "<input class=\"questionInputRight\" type=\"text\" placeholder=\"Second part\" value=\"$names[1]\">";
+									echo "</td></tr></table>";
+									
+									//Link le bouton au parent
+									echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Question\">Remove the Question</button>";
+								echo "</div>";
+							}
 						}
 					?>
 			</div>
 		
 	</div>
-	<button type="button" id="submit">Create the form</button>
-	<button type="button" id="preview">Preview the full Form</button>
+	<?php 
+		($create?$c="Create":$c="Update");
+		echo "<button type=\"button\" id=\"submit\">$c the form</button>";
+	?>
 	
-
+	<button type="button" id="preview">Preview the full Form</button>
 </main>
 
-<script src ="script/myscript.js"></script>
+<script src="script/formManipulation.js"></script>
