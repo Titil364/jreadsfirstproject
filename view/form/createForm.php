@@ -1,14 +1,8 @@
 
-
- 
 <main>
 	<h1>Welcome on the form creation page</h1>	
-	<!-- we don't need this for the moment
-	<div id="existing">
-		<p>Existing forms</p>
-	</div>-->
+
 	<div id="newForm" class="formCss">
-		<!-- <button type="button">Add a new Form</button>-->
 			<div id="surveyInformations">
 					<label for="formName">Name of the form : </label>
 					<input id="formName" type="text"  name ="formName" placeholder="Form's Title">
@@ -24,15 +18,48 @@
 					<input id=""> <label for=""> </label>
 				</div>
 				-->
+				<?php 
+					foreach($defaultInfo as $di){
+						$checked = "";
+						$name = $di->getPersonnalInformationName();
+						if(!$create){
+							for($i = 0; $i < count($personnalInformation); $i++){
+								if($name == $personnalInformation[$i]->getPersonnalInformationName()){
+									$checked = "checked";
+									array_splice($personnalInformation, $i, 1);
+									break;
+								}
+							}	
+						}
+
+						$protectedName = htmlspecialchars($name);
+						echo "<div>";
+						echo "<input type=\"checkbox\" name=\"informaton\" class=\"defaultInformation\" id=\"$protectedName\" $checked>";
+						echo "<label for=\"$protectedName\"> $protectedName</label>";
+						echo "</div>";
+					}
+				?>
 				</div>
 				<div id="customInformation">
+					<?php
+						if(!$create){
+							foreach($personnalInformation as $pi){
+								$protectedName = htmlspecialchars($pi->getPersonnalInformationName());
+								
+								echo "<div class=\"field\">";
+								echo "<input class=\"fieldInput\" type=\"text\" placeholder=\"Your Field name\" value=\"$protectedName\">";
+								//il va falloir link le button à la suppression du parent
+								echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Field\">Remove the Field</button>";
+								echo "</div>";
+							}	
+						}
+					?>
 					<button type="button" id="addField">Add a new field</button>
 				</div>
 			</div> 
 			
 
-			<!-- We don't need this for the moment
-			<p> Existing applications for this form</p>-->
+			<!--                      -->
 			<div id="applications">
 				<div>
 					<button type="button" id="addApplication">Add a new Application</button>
@@ -45,12 +72,52 @@
 			<div id="funSorterInformation">
 				<p>Choose your required questions for the fun sorter</p>
 				<p><h3>Predefined questions</h3></p>
+				<?php 
+					foreach($defaultFS as $fs){
+						$checked = "";
+						$name = $fs->getFSQuestionName();
+						if(!$create){
+							for($i = 0; $i < count($fsQuestion); $i++){
+								if($name == $fsQuestion[$i]->getFSQuestionName()){
+									$checked = "checked";
+									array_splice($fsQuestion, $i, 1);
+									break;
+								}
+							}
+						}
+						$protectedName = htmlspecialchars($name);
+						$protectedFS = htmlspecialchars($fs->getFSQuestionName());
+						echo "<div>";
+						echo "<input type=\"checkbox\" name=\"FSQuestion\" class=\"defaultFSQuestion\" id=\"$protectedFS\" $checked>";
+						echo "<label for=\"$protectedFS\"> $protectedFS</label>";
+						echo "</div>";
+					}				
+				?>
 
 			</div>
 			<div id="customQuestion">
 					<button type="button" id="addFSQuestion">Add a new question</button>
+					
+					<?php
+						foreach($fsQuestion as $fs){
+							$names = explode("/", $fs->getFSQuestionName());
+							$names[0] = htmlspecialchars($names[0]);
+							$names[1] = htmlspecialchars($names[1]);
+							echo "<div class=\"FSQuestionCustom\">";
+								echo "<table><tr><td>";
+									echo "<input class=\"questionInputLeft\" type=\"text\" placeholder=\"First part\" value=\"$names[0]\">";
+								echo "</td><td>";
+									echo "<input type=\"text\" placeholder=\"Fake part\" style=\"visibility: hidden;\">";
+								echo "</td><td>";
+									echo "<input class=\"questionInputRight\" type=\"text\" placeholder=\"Second part\" value=\"$names[1]\">";
+								echo "</td></tr></table>";
+								
+								//Link le bouton au parent
+								echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Question\">Remove the Question</button>";
+							echo "</div>";
+						}
+					?>
 			</div>
-			<button type="button" id="saveQuestion">Save questions</button>
 		
 	</div>
 	<button type="button" id="submit">Create the form</button>

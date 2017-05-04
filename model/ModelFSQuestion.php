@@ -50,7 +50,7 @@ class ModelFSQuestion extends Model{
 	 */
 	public static function getDefaultFSQuestion(){
 		try{
-			$sql  = "SELECT FSQuestionName FROM FSQuestion WHERE defaultFSQuestion=:d";
+			$sql  = "SELECT * FROM FSQuestion WHERE defaultFSQuestion=:d";
 			$prep = Model::$pdo->prepare($sql);
                         
 			$values = array(
@@ -58,7 +58,7 @@ class ModelFSQuestion extends Model{
 				);
                         
 			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_NUM);
+			$prep->setFetchMode(PDO::FETCH_CLASS, "ModelFSQuestion");
                         
 			$default_info = $prep->fetchAll();
 

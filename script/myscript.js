@@ -1,7 +1,6 @@
 var b = document.body;
 var nbApplication = 0;
 var placeholders;
-var predefInformation;
 var fsquestions;
 var qType = [];
 
@@ -358,13 +357,12 @@ function addQuestionPre(event, parent) {
 
 		
 		for(var name in placeholders){
-
-		var option = document.createElement('option');
-			option.setAttribute('required', 'required');
-			option.setAttribute('value', name);
-			option.setAttribute('id', name+questionName);
-			option.innerHTML = name;
-			cWrapper.appendChild(option); 
+			var option = document.createElement('option');
+				option.setAttribute('required', 'required');
+				option.setAttribute('value', name);
+				option.setAttribute('id', name+questionName);
+				option.innerHTML = name;
+				cWrapper.appendChild(option); 
 		}
 		
 
@@ -1103,36 +1101,7 @@ function answersPlaceholder(){
 		"json" // type
 	);
 }
-function predefinedInformation(){
-	$.get(
-		"index.php", // url
-		{
-			"action":"predefinedInformation",
-			"controller":"personnalInformation",
-		},  //data
-		function(res){ //callback
-				predefInformation = res;
-				if(predefInformation.length > 0)
-					showInformation("predefinedInformation", "information", predefInformation);
-			},
-		"json" // type
-	);	
-}
-function predefinedFSQuestion(){
-	$.get(
-		"index.php", // url
-		{
-			"action":"predefinedFSQuestions",
-			"controller":"FSQuestion",
-		},  //data
-		function(res){ //callback
-				fsquestions = res;
-				if(fsquestions.length > 0)
-					showInformation("funSorterInformation", "FSQuestion", fsquestions);
-			},
-		"json" // type
-	);	
-}
+
 
 function showInformation(id, type, tab){
 	var infoWrapper = $("#"+id)[0];
@@ -1236,8 +1205,6 @@ function init(){
 	
 	$("#submit").click(extractData);
 	answersPlaceholder();
-	predefinedInformation();
-	predefinedFSQuestion();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
 	//Adding one application
 	addApplication();

@@ -30,13 +30,15 @@ class ControllerVisitor{
 			$data["pagetitle"] = "Read form error";
 			
 			ControllerDefault::message($data);	
-        }else{		
+        }else{
+			
 			if($visitor->getDateCompletePre() == null){
 				$pre = 0;
 			}else{
 				$pre = 1;
 			
 			}
+			
 			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 
 			if($pre === 0){

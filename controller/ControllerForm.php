@@ -23,6 +23,9 @@ class ControllerForm {
 			
 			ControllerDefault::message($data);	
         }else{
+			
+			$visitorId = $formId . "Example";
+			
 			$folder = $f->getUserNickname();
             $application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
             
@@ -100,16 +103,69 @@ class ControllerForm {
          * 
          */
 	public static function create(){
-        $view = 'createForm';
-        $controller = 'form';
-        $pagetitle = 'Create Form';
-        require File::build_path(array('view', 'view.php'));
+		
+		if(Session::is_connected()){
+			$view = 'createForm';
+			$controller = 'form';
+			$pagetitle = 'Create Form';
+			
+			$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
+			$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
+			
+			
+			$create = true;
+			
+			require File::build_path(array('view', 'view.php'));	
+		}
+
 	}
 	
-        /*desc getting post info from filled form, save them into DB
-         * 
-         */
+	public static function update(){
+		
+		if(isset($_GET["id"])){
+			$formId = $_GET["id"];
+			
+			$form = ModelForm::select($formId);
+			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
+				$view = 'createForm';
+				$controller = 'form';
+				$pagetitle = 'Update Form ' . $formId;
+				
+				$create = false;
+				
+				//Collect the personnal information
+					//getPersonnalInformationName()
+
+				$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
+				$personnalInformation = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+				
+				
+				$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
+				$fsQuestion = ModelFSQuestion::getFSQuestionByFormId($formId);
+				
 	
+				
+				require File::build_path(array('view', 'view.php'));
+			}else{
+				$data["message"] = "You are not the owner of the form. ";
+				$data["pagetitle"] = "Owner error";
+				
+				ControllerDefault::message($data);
+			}
+			
+
+		}else{
+			$data["message"] = "The form doesn't exist. ";
+			$data["pagetitle"] = "Form error";
+			
+			ControllerDefault::message($data);
+		}
+
+	}
+	
+	/*desc getting post info from filled form, save them into DB
+	 * 
+	 */
 	public static function created(){
 		if(Session::is_connected()){
 			$a = json_decode($_POST["applications"], true);

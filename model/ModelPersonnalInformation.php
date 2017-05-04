@@ -24,6 +24,7 @@ class ModelPersonnalInformation extends Model{
 	/* desc Return the default personnal information the user (predefined fields when creating the form)
 	 *
 	 */
+	 /*
 	public static function getDefaultPersonnalInformation(){
 		try{
 			$sql  = "SELECT personnalInformationName FROM PersonnalInformation WHERE defaultPersonnalInformation=:d";
@@ -35,6 +36,31 @@ class ModelPersonnalInformation extends Model{
                         
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_NUM);
+                        
+			$default_info = $prep->fetchAll();
+
+			return $default_info;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}	*/
+	public static function getDefaultPersonnalInformation(){
+		try{
+			$sql  = "SELECT * FROM PersonnalInformation WHERE defaultPersonnalInformation=:d";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"d" => 1
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS, "ModelPersonnalInformation");
                         
 			$default_info = $prep->fetchAll();
 

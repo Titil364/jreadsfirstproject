@@ -168,7 +168,9 @@ DELIMITER //
 CREATE TRIGGER complete_form_insert AFTER INSERT
 	ON Visitor FOR EACH ROW
 	BEGIN
+		IF(NEW.dateCompletePost IS NOT NULL) THEN 
 			UPDATE Form SET completedForm = (completedForm+1) WHERE NEW.formId = formId;
+		END IF;
 	END;//
 	
 DELIMITER ;
@@ -180,7 +182,9 @@ DELIMITER //
 CREATE TRIGGER complete_form_delete AFTER DELETE
 	ON Visitor FOR EACH ROW
 	BEGIN
-			UPDATE Form SET completedForm = (completedForm-1)WHERE OLD.formId = formId;
+		IF(OLD.dateCompletePost IS NOT NULL) THEN 
+			UPDATE Form SET completedForm = (completedForm-1) WHERE OLD.formId = formId;
+		END IF;
 	END;//
 	
 DELIMITER ;
