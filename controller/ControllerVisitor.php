@@ -223,7 +223,6 @@ class ControllerVisitor{
 				$return = false;
 			}
 		}
-		//////////////////////////////
 		$FSQ = ModelFSQuestion::getFSQuestionByFormId($formId);
 		foreach($FSQ as $f){
 			$dataFS = array (

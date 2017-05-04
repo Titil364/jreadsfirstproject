@@ -564,7 +564,7 @@ function saveFS(tmp){
 }
 function saveAA(tmp){
     var id = tmp.prop("id");
-    console.log(id);
+    //console.log(id);
     val = $("#"+id+" td input:checked").val();
     $.post(
 		"index.php", // url

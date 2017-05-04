@@ -3,8 +3,11 @@ var length;
 var applicationNumber;
 var applicationName;
 var printable = false;
+var AAfilled;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 var formId;
+var visitorId;
+var FSfilled;
 
 function getApplication(b){
     $.get(
@@ -22,7 +25,48 @@ function getApplication(b){
         "json"
     );
 }
+
+function getVisitorId(){
+    var f = document.getElementById("visitorId");
+    visitorId = f.value;
+}
+
+function getAAFilled(visitorId){
+    $.post(
+        "index.php",
+        {
+            "action":"getAgainAgainByVisitorId",
+            "controller":"visitor",
+            "visitorId":JSON.stringify(visitorId)
+        },
+        function(res){
+            if (res!=null) {
+               AAfilled = res;
+            }
+        },
+        "json"
+    );
+}
+
+function getFSFilled(visitorId){
+    $.post(
+        "index.php",
+        {
+            "action":"getFSByVisitorId",
+            "controller":"visitor",
+            "visitorId":JSON.stringify(visitorId)
+        },
+        function(res){
+            if (res!=null) {
+               FSfilled = res;
+            }
+        },
+        "json"
+    );
+}
+
 function randomizeAA(){
+    console.log(AAfilled);
     var array = new Array();
     for (i = 0; i<applicationNumber;i++) {
         var a = Math.random()*applicationNumber;
@@ -37,17 +81,23 @@ function randomizeAA(){
     var tbody = document.createElement("tbody");
     for (i=0; i<applicationNumber;i++){
         var table_row = document.createElement('tr');
-            table_row.id = "trA"+array[i];
+            table_row.id = formId + "Applic"+array[i];
         var td = document.createElement('td');
         var text = document.createTextNode(applicationName[array[i]]);
         td.appendChild(text);
         table_row.appendChild(td);
-        for (j = 0; j<3; j++){
+        for (j = 2; j>=0; j--){
             var td = document.createElement('td');
             var button = document.createElement("input");
+            button.setAttribute("readonly",true);
             button.setAttribute("type","radio");
             button.setAttribute("class","radioButtonFS");            
             button.setAttribute("name","radio"+i);
+            for(c =0; c<AAfilled.length; c++){  
+                if (AAfilled[c]['applicationId'] === table_row.id && AAfilled[c]['again']===j.toString()) {
+                    button.setAttribute("checked",true);
+                }
+            }
             td.appendChild(button);
             table_row.appendChild(td);
         }
@@ -56,46 +106,61 @@ function randomizeAA(){
 }
 
 function randomizeFS() {
-        var array = new Array();
-         for(i = 0; i < length; i++){
-             var a = Math.random()*length;
-             var b = Math.ceil(a);
-             while (array.includes(b-1)){
-                 a = Math.random()*length;
-                 b = Math.ceil(a);
-             }
-            array[i] = b-1;
-         }
-         var table = document.getElementById("fs"); 
-         var tbody = document.createElement("tbody"); //Create tbody 
-         table.appendChild(tbody); //Add tbody to the table
-         for (i = 0; i<length; i++) {
-            var table_row = document.createElement('tr'); //create a table row
-            table_row.id = "tr"+array[i]; //Add id to the table row
-             
-            var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
-            var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
-            var textRight = document.createTextNode(name[1]); //And the second one, the right part
-            var td = document.createElement('td'); //Create TD 
-                td.appendChild(textLeft);       //Add left text to the Td
-                table_row.appendChild(td);      //Add td to the TR
-            for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
-                var td = document.createElement('td');
-                var div = document.createElement('div');
-                    div.setAttribute("class","FSmove"+array[i]);
-                var textDiv = document.createTextNode(alphabet[j]);
-                div.appendChild(textDiv);
-                td.appendChild(div);
-                table_row.appendChild(td);
+    var alphabeta = Array(applicationNumber);
+    var array = new Array();
+    for(i = 0; i < length; i++){
+        var a = Math.random()*length;
+        var b = Math.ceil(a);
+        while (array.includes(b-1)){
+            a = Math.random()*length;
+            b = Math.ceil(a);
+        }
+       array[i] = b-1;
+    }
+    var table = document.getElementById("fs"); 
+    var tbody = document.createElement("tbody"); //Create tbody 
+    table.appendChild(tbody); //Add tbody to the table
+    for (i = 0; i<length; i++) {
+        for(k = 0; k<length; k++){
+            alphabeta[k] = alphabet[k];
+        }
+        var table_row = document.createElement('tr'); //create a table row
+        table_row.id = "tr"+array[i]; //Add id to the table row
+        
+        for(c = 0; c<FSfilled.length; c++){
+            if (tabName[array[i]] === FSfilled[c]['FSQuestionName']){
+                var toSplit = FSfilled[c]['applicationOrder'];
+                if(toSplit !== null){
+                    var splited = toSplit.split("");
+                    for(t = 0; t<splited.length; t++){
+                        alphabeta[t] = splited[t];
+                    }
+                }
             }
-            var td2 = document.createElement('td');
-                td2.appendChild(textRight);
-                table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
-             
-             tbody.appendChild(table_row);      //Add tr to the table
-         }
-         makeFSDraggable();
-     }
+        }
+        
+        var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
+        var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
+        var textRight = document.createTextNode(name[1]); //And the second one, the right part
+        var td = document.createElement('td'); //Create TD 
+            td.appendChild(textLeft);       //Add left text to the Td
+            table_row.appendChild(td);      //Add td to the TR
+        for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
+            var td = document.createElement('td');
+            var div = document.createElement('div');
+                div.setAttribute("class","FSmove"+array[i]);
+            var textDiv = document.createTextNode(alphabeta[j]);
+            div.appendChild(textDiv);
+            td.appendChild(div);
+            table_row.appendChild(td);
+        }
+        var td2 = document.createElement('td');
+            td2.appendChild(textRight);
+            table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
+         
+         tbody.appendChild(table_row);      //Add tr to the table
+    }
+ }
 
 function getQuestionsName(a){
     $.get(
@@ -138,35 +203,6 @@ jQuery.fn.swap = function(b){
     return this; 
 };
 
-
-function makeFSDraggable() {
-    for (k =0; k < length; k++){
-        var select = ".FSmove"+k;
-        $( select ).draggable({containment : $(select).parent().parent(), revert: true, helper: "clone" });
-    
-        $( select ).droppable({
-            accept: select,
-            drop: function( event, ui) {
-    
-                var draggable = ui.draggable, droppable = $(this),
-                    dragPos = draggable.position(), dropPos = droppable.position();
-
-            
-                draggable.css({
-                    left: dropPos.left+'px',
-                    //top: dropPos.top+'px'
-                });
-                
-        
-                droppable.css({
-                    left: dropPos.left+'px',
-                    //top: dropPos.top+'px'
-                });
-                draggable.swap(droppable);                
-            }
-        });
-    }
-}
 
 function makePrintable(event){
     if (!printable) {
@@ -266,7 +302,10 @@ function getFormId() {
 
 function init(){
     getFormId();
+    getVisitorId();
     getApplication(formId);
+    getAAFilled(visitorId);
+    getFSFilled(visitorId);
     var print = document.getElementById("print");
 	if(print){
 		print.addEventListener("click",makePrintable);

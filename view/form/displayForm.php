@@ -13,6 +13,7 @@
 	
 	//displaying form  informations
 	echo "<h1> $formName </h1>";
+	echo '<input id="visitorId" value="'.$visitorId.'"type="hidden" readonly>';
         
         //displaying fields
         echo '<div id="userInformation">';
@@ -273,8 +274,12 @@
 	   </div>
 	   </div>
 	</div>
-	<div>
-		   <input type ="button" id="print" value="Printable">
-	   </div>
+	<?php
+	if(!($full)){
+		echo '<div>
+			   <input type ="button" id="print" value="Printable">
+		</div>';
+	}
+	?>
 	</div>
 </main>

@@ -468,6 +468,9 @@ class ControllerForm {
 						array_push($questionTypePost_list[$i], $qType);  
 					}                
 				}
+				
+				//AATable
+				
 			
 			require File::build_path(array('view', 'view.php'));
 		}
