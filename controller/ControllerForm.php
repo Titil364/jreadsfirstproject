@@ -582,7 +582,7 @@ class ControllerForm {
 		echo json_encode(ModelAnswer::update($data));
 	}
 	
-	public static function saveAA(){
+	public static function saveAA(){ //Function called on change of AATable
 		$visitorId = json_decode($_POST['visitorId']);
 		$applicationId = json_decode($_POST['applicationId']);
 		$value = json_decode($_POST['value']);
@@ -595,7 +595,7 @@ class ControllerForm {
 		echo json_encode(ModelAgainAgain::update($data));
 	}
 	
-	public static function saveFS(){
+	public static function saveFS(){	//Function called on change of the funsorter
 		$visitorId = json_decode($_POST['visitorId']);
 		$FSQuestionName = json_decode($_POST['FSQuestionName']);
 		$applicationOrder = json_decode($_POST['applicationOrder']);
@@ -622,7 +622,17 @@ class ControllerForm {
 		echo json_encode(ModelVisitor::update($dataV));
 	}
 	
-	public static function completeForm(){
+	public static function completedPost(){
+		$visitorId = json_decode($_POST['visitorId']);
+		$dataV = array(
+			"visitorId" => $visitorId,
+			"dateCompletePost" => date('Y/m/d H:i:s')
+		);
+		echo json_encode(ModelVisitor::update($dataV));
+	}
+	
+	//This function is now outdated with the saveOnchange functions
+	/*public static function completeForm(){
 		
 		$answers = json_decode($_POST['answers'], true);
 		$formId = $_POST['formId'];
@@ -636,11 +646,11 @@ class ControllerForm {
 		//Create the visitor
 			$visitorInfo = json_decode($_POST['visitorInfo'], true);
 			//var_dump($visitorInfo);
-		/*	$visitor = array(
+			$visitor = array(
 				"visitorId"=> $visitorId,
 				"visitorSecretName" => $secretName
 			);
-			ModelVisitor::update($visitor);*/
+			ModelVisitor::update($visitor);
 			
 			foreach($visitorInfo as $f){
 				$f["visitorId"] = $visitorId;
@@ -695,7 +705,7 @@ class ControllerForm {
 			//var_dump($ans);
 			//ModelAnswer::save($ans);
 		}
-	}
+	} */
 
     public static function toPDF(){
         
