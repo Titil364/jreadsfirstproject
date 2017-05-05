@@ -279,5 +279,151 @@ class ControllerVisitor{
 		echo json_encode(true);
 		}
 	}
+	public static function read2(){
+		if(!isset($_GET['visitorId'])){
+			$data["message"] = "There are not enough information.  ";
+			$data["pagetitle"] = "Read form error";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		
+		$visitorId = $_GET['visitorId'];
+		$visitor = ModelVisitor::select($visitorId);
+		
+		if(!$visitor){
+			$data["message"] = "Your id doesn't exist. Please try make sure your id is valid. ";
+			$data["pagetitle"] = "Read form error";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		$formId = $visitor->getFormId();
+		
+		//Collecting the form from the bd
+        $f = ModelForm::select($formId);
+		
+		//The form doesn't exist
+        if (!$f){
+			$data["message"] = "This form doesn't exist. ";
+			$data["pagetitle"] = "Read form error";
+			
+			ControllerDefault::message($data);	
+        }
+		//The form does exist
+		else{
+			//Collection the list of applications
+			$applications = ModelApplication::getApplicationByFormId($formId);
+			//Collecting the name of the creator, name of the folder where the img might have beend saved
+			$folder = $f->getUserNickname();
+			
+			
+			//$jscript = "";
+			$stylesheet = "welcomeVisitorApplication";
+			$pagetitle = 'Welcome on board';
+			//Le nom sera a changé, je ne savais pas comment appeler cette page
+			$view='welcome';
+			$controller = 'visitor';
+
+            require File::build_path(array('view','view.php'));
+		}
+	}
+	public static function answerApplication(){
+		if(!isset($_GET['visitorId']) || !isset($_GET['applicationId']) || !isset($_GET['formId'])){
+			$data["message"] = "There are not enough information. ";
+			$data["pagetitle"] = "Information missing";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		
+		$formId = $_GET['formId'];
+		$f = ModelForm::select($formId);
+		if(!$f){
+			$data["message"] = "The form doesn't exist. ";
+			$data["pagetitle"] = "Unknown form";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		
+		$visitorId = $_GET['visitorId'];
+		//Checking if the visitor exists
+		$visitor = ModelVisitor::select($visitorId);
+		if(!$visitor){
+			$data["message"] = "The visitor doesn't exist. ";
+			$data["pagetitle"] = "Anonymous visitor";
+			
+			ControllerDefault::message($data);
+			return null;	
+		}
+		if($visitor->getFormId() != $formId){
+			$data["message"] = "The visitor doesn't belong to this form";
+			$data["pagetitle"] = "Wrong form";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		
+		
+		
+		$applicationId = $_GET['applicationId'];
+		//Checking if the application does exist in the database
+		$application = ModelApplication::select($applicationId);
+		
+		if(!$application){
+			$data["message"] = "The application does exist. ";
+			$data["pagetitle"] = "Information missing";
+			
+			ControllerDefault::message($data);
+			return null;
+		}else{
+			//Checking the application is from the formId
+			if($application->getFormId() == $formId){
+				//If there is a date in the dateCompletePre field that means the visitor has already 
+				//answer the pre
+				$pre = ($visitor->getDateCompletePre() != "" ? 0:1);
+				$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
+				
+				//This array will contain the answer of the question
+				$question_answers = [];
+				
+				//This array will contain the answer of the visitor
+				$visitorAnswers = [];
+				
+				foreach($questions as $q){
+					array_push($question_answers, ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId()));
+					$data = array(
+						"visitorId" => $visitorId,
+						"questionId" => $q->getQuestionId()
+					);
+					array_push($visitorAnswers, ModelAnswer::select($data));
+				}
+				var_dump($visitorAnswers);
+				
+				
+				
+				
+				$folder = $f->getUserNickname();
+				
+				$jscript = "answerApplication";
+				$stylesheet = "answerApplication";
+				$pagetitle = 'Welcome on board';
+				//Le nom sera a changé, je ne savais pas comment appeler cette page
+				$view='answerApplication';
+				$controller = 'visitor';
+
+				require File::build_path(array('view','view.php'));
+			}else{
+				$data["message"] = "The application doesnt belong to this form. ";
+				$data["pagetitle"] = "Application lost";
+
+				ControllerDefault::message($data);
+				return null;
+			}
+		}
+
+		
+	}
 }
 ?>

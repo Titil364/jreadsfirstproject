@@ -162,6 +162,8 @@ DROP TRIGGER IF EXISTS complete_form_delete;
 DROP TRIGGER IF EXISTS insert_assoc_personnal_info;
 DROP TRIGGER IF EXISTS insert_assoc_fs;
 DROP TRIGGER IF EXISTS after_insert_form;
+
+DROP TRIGGER IF EXISTS update_answer;
 	
 DELIMITER //
 
@@ -240,6 +242,24 @@ CREATE TRIGGER after_insert_form AFTER INSERT
 	BEGIN
 		UPDATE Users SET numberCreatedForm = (numberCreatedForm+1) WHERE userNickname = NEW.userNickname;
 	END;//
+DELIMITER ;
+
+
+
+DROP TRIGGER IF EXISTS update_answer;
+DELIMITER //
+
+CREATE TRIGGER update_answer BEFORE UPDATE
+	ON Answer FOR EACH ROW
+	BEGIN
+
+		-- If answer hasn't been created yet
+		-- Let's insert the association and set the answer as null
+		if(OLD.questionId IS NULL and OLD.visitorId IS NULL) THEN
+			INSERT INTO Answer VALUES(NEW.visitorId, NEW.questionId, NULL);
+		END IF;
+	END;//
+	
 DELIMITER ;
 
 

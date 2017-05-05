@@ -11,31 +11,21 @@ class ModelApplication extends Model{
     protected static $object = "Application";
     protected static $primary = 'applicationId';
 
-    public function getApplicationId() {
-   		return $this->applicationId;
-    }    
+    public function getApplicationId(){return $this->applicationId;}    
+    public function setApplicationId($applicationId){$this->applicationId = $applicationId;}    
+	
+    
+	public function getApplicationName(){return $this->applicationName;}       
+    public function setApplicationName($applicationName){$this->applicationName = $applicationName;}
 
-    public function getApplicationName() {
-   		return $this->applicationName;
-    }       
+	
+    public function getApplicationDescription(){return $this->applicationDescription;}
+    public function setApplicationDescription($applicationDescription){$this->applicationDescription ->$applicationDescription;}
 
-    public function setApplicationId($applicationId) {
-   		$this->applicationId = $applicationId;
-    }    
-
-    public function setApplicationName($applicationName){
-   		$this->applicationName = $applicationName;
-    }
-
-    public function getApplicationDescription(){
-    	return $this->applicationDescription;
-    }
-
-    public function setApplicationDescription($applicationDescription){
-    	$this->applicationDescription ->$applicationDescription;
-    }
-
-
+	public function getFormId(){return $this->formId;}    
+    public function setFormId($formId){$this->formId = $formId;}    
+	
+	
     public function __construct( $applicationId= NULL, $applicationName = NULL, $applicationDescription = NULL, $formId = NULL) {
         if (!is_null($applicationId) && !is_null($applicationName) && !is_null($applicationDescription) && !is_null($formId)) {
         	$this->applicationId = $applicationId;

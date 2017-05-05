@@ -421,10 +421,12 @@ function add(){
     var shortcut = document.getElementsByClassName("shortcut");
     for (i = 0; i<shortcut.length; i++ ) {
         var parent = shortcut[i].parentElement;
+		console.log(parent);
         parent.addEventListener("change", function(){
             saveShortcut($(this));
         });                                
     }
+	
     
     var textarea = $("textarea");
 	for(var i = 0; i < textarea.length; i++){
@@ -455,7 +457,7 @@ function saveTextarea(select){
     ); 
 }
 
-function saveShortcut (select){    
+function saveShortcut(select){    
     var children = select.children();
     var questionId = children[0].name;
     //console.log(children[0].name);

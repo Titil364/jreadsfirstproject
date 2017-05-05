@@ -79,11 +79,36 @@ class ModelAnswer extends Model{
         } catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();
-            } else {
-                echo "une erreur est survenue lors de la mise à jour de l'objet.";
             }
             return false;
         }
     }
+	
+	public static function select($data){
+		        try {
+            $table_name = static::$object;
+            $class_name = 'Model' . $table_name;
+
+			$primary_key1 = static::$primary1;
+			$primary_key2 = static::$primary2;
+			
+            $sql = "SELECT * FROM Answer WHERE $primary_key1=:$primary_key1 AND $primary_key2=:$primary_key2;";
+
+            $req_prep = Model::$pdo->prepare($sql);
+            $req_prep->execute($data);
+            $req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+            $tab_p = $req_prep->fetchAll();
+			
+            if(empty($tab_p)){
+                return false;
+            }
+            return $tab_p[0];
+        } catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            }
+            return false;
+        }
+	}
 }
 

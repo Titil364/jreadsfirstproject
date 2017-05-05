@@ -58,7 +58,7 @@ EOT;
 		<script src="script/jquery1.10.2.min.js"></script>
 		
 		
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="script/jquery.ui.1.12.1.js"></script>
 		<script src ="script/object.js"></script>
 
                 <?php
