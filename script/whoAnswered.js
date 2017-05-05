@@ -16,15 +16,15 @@ function getCpt(){
 
 function addUser(event){
     var f = document.getElementById("numberVisitor").value;
-    if (f===null) {
+    if (f === null) {
         f = 1;
     }
-    //console.log(f);
+    
     for (i=0; i<f; i++){
         cpt++;
         var visitorId = formId+cpt;
         //console.log(visitorId);
-        send(visitorId, formId);
+        send(visitorId, formId, cpt, f);
     }
 }
 

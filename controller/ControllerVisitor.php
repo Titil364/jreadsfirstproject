@@ -1,5 +1,6 @@
 <?php
 require_once File::build_path(array('model', 'ModelVisitor.php'));
+require_once File::build_path(array('model', 'ModelApplicationDateComplete.php'));
 
 class ControllerVisitor{
     
@@ -181,18 +182,42 @@ class ControllerVisitor{
 		$return = true;
 		$visitorId = json_decode($_POST['visitorId']); 
 		$formId = json_decode($_POST['formId']);
+		
+		$form = ModelForm::select($formId);
+		$applications = ModelApplication::getApplicationByFormId($formId);
+		
+		$applicationOrder = [];
+		$nbApplications = count($applications);
+		while($nbApplications != 0 ){
+		  $nombre = mt_rand(0, count($applications)-1);
+		  if( !in_array($nombre, $applicationOrder) )
+		  {
+			$applicationOrder[] = $nombre;
+			$nbApplications--;
+		  }
+		}
+		
 		$data = array(
 				"visitorId" => $visitorId,
-				"formId" => $formId
+				"formId" => $formId,
+				"applicationOrder" => json_encode($applicationOrder)
 			);
+			
 		if(!(ModelVisitor::save($data))){
 			$return = false;
 		}
 		
-		$form = ModelForm::select($formId);
-		$applications = ModelApplication::getApplicationByFormId($formId);
+		
 		foreach($applications as $a){
-			$questions = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+			$applicationId = $a->getApplicationId();
+			$questions = ModelQuestion::getQuestionByApplicationId($applicationId);
+			$data = array(
+					"visitorId" => $visitorId,
+					"applicationId" => $applicationId
+			);
+			if(!ModelApplicationDateComplete::save($data)){
+				$return = false;
+			}
 			foreach ($questions as $q){
 				$questionSave = array (
 					"visitorId" => $visitorId,
@@ -203,6 +228,8 @@ class ControllerVisitor{
 				}
 			}
 		}
+		
+		
 		$information = ModelAssocFormPI::getAssocFormPIByFormId($formId);
 		foreach($information as $i){
 			$info = array(
@@ -262,7 +289,7 @@ class ControllerVisitor{
 		foreach($AA as $a){
 			$data = array(
 				"FSQuestionName" => $a->getFSQuestionName(),
-				"applicationOrder" => $a->getApplicationOrder()
+				"applicationRatingOrder" => $a->getApplicationOrder()
 			);
 			array_push($return, $data);
 		}
@@ -314,6 +341,8 @@ class ControllerVisitor{
 		else{
 			//Collection the list of applications
 			$applications = ModelApplication::getApplicationByFormId($formId);
+			$applicationOrder = json_decode($visitor->getApplicationOrder());
+			
 			//Collecting the name of the creator, name of the folder where the img might have beend saved
 			$folder = $f->getUserNickname();
 			
@@ -382,7 +411,7 @@ class ControllerVisitor{
 			if($application->getFormId() == $formId){
 				//If there is a date in the dateCompletePre field that means the visitor has already 
 				//answer the pre
-				$pre = ($visitor->getDateCompletePre() != "" ? 0:1);
+				$pre = $visitor->getApplicationPreOrPost($applicationId);
 				$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
 				
 				//This array will contain the answer of the question
@@ -399,7 +428,7 @@ class ControllerVisitor{
 					);
 					array_push($visitorAnswers, ModelAnswer::select($data));
 				}
-				var_dump($visitorAnswers);
+				//var_dump($visitorAnswers);
 				
 				
 				
@@ -421,9 +450,24 @@ class ControllerVisitor{
 				ControllerDefault::message($data);
 				return null;
 			}
-		}
+		}	
+	}
+	
+	public static function sendAnswer(){
+		$applicationId = $_POST['applicationId'];
+		$visitorId = $_POST['visitorId'];
+		$post = ($_POST['post'] == 0?"pre":($_POST['post'] == 1?"post":"null"));
 
-		
+		$data = array(
+				"visitorId" => $visitorId,
+				"applicationId" => $applicationId, 
+				"applicationDateComplete" . ucfirst($post) => date('Y/m/d H:i:s')
+		);
+		$return = true;
+		if(!ModelApplicationDateComplete::update($data)){
+			$return = false;
+		}	
+		echo json_encode($return);
 	}
 }
 ?>

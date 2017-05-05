@@ -14,6 +14,10 @@
 		$img =  htmlspecialchars("media/" . $folder . "/" . $application->getApplicationId() . "Img.png");
 		
 		$secureApplicationId = rawurlencode($application->getApplicationId());
+		$protectedApplicationId = htmlspecialchars($application->getApplicationId());
+		
+		echo "<input type=\"hidden\" id=\"applicationId\" value=\"$protectedApplicationId\">";
+		echo "<input type=\"hidden\" id=\"post\" value=\"$pre\">";
 		
 		//center pourra être remplacé par du css
 		echo "<center><legend>$protectedFormName</legend></center>";

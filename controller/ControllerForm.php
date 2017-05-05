@@ -603,7 +603,7 @@ class ControllerForm {
 		$data = array (
 			"visitorId" => $visitorId,
 			"FSQuestionName" => $FSQuestionName,
-			"applicationOrder" => $applicationOrder
+			"applicationRatingOrder" => $applicationOrder
 		);
 		var_dump($data);
 		echo json_encode(ModelSortApplication::update($data));

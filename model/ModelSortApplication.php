@@ -5,7 +5,7 @@ class ModelSortApplication extends Model{
         
 	private $visitorId;
 	private $FSQuestionName;
-	private $applicationOrder;
+	private $applicationRatingOrder;
 	
     protected static $object = "SortApplication";
     protected static $primary1 = "visitorId"; //temporary
@@ -14,8 +14,8 @@ class ModelSortApplication extends Model{
     public function getVisitorId(){return $this->visitorId;}
         public function setVisitorId($visitorId){$this->visitorId = $visitorId;}
 	
-	public function getApplicationOrder(){return $this->applicationOrder;}
-        public function setApplicationOrder($applicationOrder){$this->applicationOrder = $applicationOrder;}
+	public function getApplicationRatingOrder(){return $this->applicationRatingOrder;}
+        public function setApplicationRatingOrder($applicationOrder){$this->applicationRatingOrder = $applicationOrder;}
 
     public function getFSQuestionName(){return $this->FSQuestionName;}
         public function setFSQuestionName($FSQuestionName){$this->FSQuestionName= $FSQuestionName;}
@@ -25,7 +25,7 @@ class ModelSortApplication extends Model{
         if (!is_null($visitorId) && !is_null($FSQuestionName) &&!is_null($ao)) {
 			$this->visitorId = $visitorId;
         	$this->FSQuestionName = $FSQuestionName;
-			$this->applicationOrder = $ao;
+			$this->applicationRatingOrder = $ao;
         }
     }
 	

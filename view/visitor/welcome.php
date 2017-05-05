@@ -7,8 +7,8 @@
 		//center pourra être remplacé par du css
 		echo "<center><h1>$protectedFormName</h1><center>";
 		
-		foreach($applications as $a){
-			
+		foreach($applicationOrder as $order){
+			$a = $applications[$order];
 			$protectedName = htmlspecialchars($a->getApplicationName());
 			$protectedDesc = htmlspecialchars($a->getApplicationDescription());
 			$img =  "media/" . $folder . "/" . $a->getApplicationId() . "Img.png";

@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS Visitor;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS SortApplication;
 DROP TABLE IF EXISTS AgainAgain;
+DROP TABLE IF EXISTS ApplicationDateComplete;
 
 
 
@@ -47,6 +48,7 @@ CREATE TABLE Visitor (
   dateCompletePre varchar(19),
   dateCompletePost varchar(19),
   formId varchar(20),
+  applicationOrder varchar(60),
   FOREIGN KEY (formId) REFERENCES Form(formId)
 )DEFAULT CHARSET=utf8;
 
@@ -140,7 +142,7 @@ CREATE TABLE AssocFormPI (
 CREATE TABLE SortApplication (
     visitorId varchar(40),
     FSQuestionName varchar(50),
-	applicationOrder varchar(250),
+	applicationRatingOrder varchar(250),
     FOREIGN KEY (FSQuestionName) REFERENCES FSQuestion(FSQuestionName),
     FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
     PRIMARY KEY (visitorId, FSQuestionName)
@@ -155,6 +157,18 @@ CREATE TABLE AgainAgain (
     PRIMARY KEY (applicationId, visitorId)
 )DEFAULT CHARSET=utf8;
 
+CREATE TABLE ApplicationDateComplete (
+    applicationDateCompletePre varchar(19),
+    applicationDateCompletePost varchar(19),
+	visitorId varchar(40),
+    applicationId varchar(30),
+    FOREIGN KEY (applicationId) REFERENCES Application(applicationId),
+    FOREIGN KEY (visitorId) REFERENCES Visitor(visitorId),
+    PRIMARY KEY (applicationId, visitorId)
+)DEFAULT CHARSET=utf8;
+
+
+
 -- Triggers
 	
 DROP TRIGGER IF EXISTS complete_form_insert;
@@ -167,7 +181,7 @@ DROP TRIGGER IF EXISTS update_answer;
 	
 DELIMITER //
 
-CREATE TRIGGER complete_form_insert AFTER INSERT
+CREATE TRIGGER complete_form_udpate AFTER UPDATE
 	ON Visitor FOR EACH ROW
 	BEGIN
 		IF(NEW.dateCompletePost IS NOT NULL) THEN 
