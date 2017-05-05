@@ -24,7 +24,7 @@ function getVisitorId(){
 }
 
 function getPre(){
-    var f = document.getElementById("aa");
+    var f = document.getElementById("aa"); //If there is an AA table that means that we're in the postForm and not the PreForm
     if (f == null) {
         pre = 1;
     } else {
@@ -32,7 +32,7 @@ function getPre(){
     }
 }
 
-function getAAFilled(visitorId){
+function getAAFilled(visitorId){ //Getting answers filled in the AA table for this visitorID
     $.post(
         "index.php",
         {
@@ -43,14 +43,14 @@ function getAAFilled(visitorId){
         function(res){
             if (res!=null) {
                AAfilled = res;
-               randomizeAA();
+               randomizeAA();       
             }
         },
         "json"
     );
 }
 
-function getFSFilled(visitorId){
+function getFSFilled(visitorId){ //Getting answers filled in the FunSorter for this visitorID
     $.post(
         "index.php",
         {
@@ -72,7 +72,7 @@ function getFSFilled(visitorId){
 }
 
 
-function getSecretName() {
+function getSecretName() { //Get the secretName to fill the secret Name field
     $.post(
         "index.php",
         {
@@ -90,7 +90,7 @@ function getSecretName() {
         "json"
     );
 }
-function getApplication(b){
+function getApplication(b){ //Getting the applications for the given formId 
     $.get(
         "index.php",
         {
@@ -99,14 +99,14 @@ function getApplication(b){
             "formId":JSON.stringify(b),
         },
         function(res){
-            applicationName = res;
-            applicationNumber = res.length;
+            applicationName = res;              
+            applicationNumber = res.length;     
 			getQuestionsName(b);
         },
         "json"
     );
 }
-function getQuestionsName(a){
+function getQuestionsName(a){       //Getting the FS questions for the given formId 
     $.get(
         "index.php",
         {
@@ -124,10 +124,9 @@ function getQuestionsName(a){
             }
             tabName = res;
             length = tabName.length;
-            var name = tabName[0].split("/");
-			if (pre === 0) {
+			if (pre === 0) {            //If we are in the postForm we send the following functions
                 //console.log("trying to get");
-                getFSFilled(visitorId);
+                getFSFilled(visitorId);     
                 getAAFilled(visitorId);
             }
         },
@@ -137,7 +136,7 @@ function getQuestionsName(a){
 
 
 
-function extractAnswers(){
+function extractAnswers(){      //Since the answers are saved onchange, this function is only used to verify if all the fields are filled when submit is pressed.
 	var answers=[];
 	var n = "", val = "";
 	
@@ -174,7 +173,7 @@ function extractAnswers(){
 				return null;
 			}
 		}
-        sendPre(visitorId);
+        sendPre();
        
     } else{
 		//Extracting the aa datas
@@ -217,52 +216,44 @@ function extractAnswers(){
 		
 
 		
-        //sendPost(f, answers, fs, aa);
+        sendPost();
     }
 	
 }
 
-function sendPre(visitor){
-
+function sendPre(){      //Function used when submit in PreForm pressed, it will save the field dateCompletedPre
 	$.post(
 		"index.php", // url
 		{
 			"action":"completedPre",
 			"controller":"form",
-            "visitorId":JSON.stringify(visitor)
+            "visitorId":JSON.stringify(visitorId)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
-                        console.log("bonjour");
-						$("#submit").unbind("click", extractAnswers);
+                        //console.log("bonjour");
+						$("#submit").unbind("click", extractAnswers);       //It worked, then the button is no longer usable
                         //Where are we supposed to redirect the visitor ? 
 						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					
 				}else{
-                    console.log("salut");
 					console.log("Error when saving the answers");
 				}
 			},
 		"json" // type
 	);
 }
-function sendPost(f, a, fs, aa){
-
+function sendPost(){    //Function used when submit in PostForm pressed, it will save the field dateCompletedPost
 	$.post(
 		"index.php", // url
 		{
-			"action":"completeForm",
+			"action":"completedPost",
 			"controller":"form",
-			"formId":f,
-            "visitorId":visitorId,
-			"fs": JSON.stringify(fs),
-			"aa": JSON.stringify(aa),
-            "pre":1,
-			"answers":JSON.stringify(a)
+            "visitorId":JSON.stringify(visitorId)
 		},  //data
 		function(res){ //callback
 				if(res !== false){
 						$("#submit").unbind("click", extractAnswers);
-                        alert(res);
+                        //alert(res);
 						//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);					
 				}else{
 					console.log("Error when saving the answers");
@@ -272,7 +263,7 @@ function sendPost(f, a, fs, aa){
 	);
 }
 
-function randomizeFS() {
+function randomizeFS() {      
     var alphabeta = Array(applicationNumber);
     
     var array = new Array();
@@ -417,13 +408,13 @@ function makeFSDraggable() {
     }
 }
 
-function add(){
+function add(){     //This function addEventListener on answers of shortcut and textarea class, addEventListener which calls a function the pressed element as parameter
     var shortcut = document.getElementsByClassName("shortcut");
     for (i = 0; i<shortcut.length; i++ ) {
-        var parent = shortcut[i].parentElement;
-		console.log(parent);
-        parent.addEventListener("change", function(){
-            saveShortcut($(this));
+        var parent = shortcut[i].parentElement;     //We get the parentNode of the shortCut class element.
+		//console.log(parent);
+        parent.addEventListener("change", function(){       //On which we add the eventListener
+            saveShortcut($(this));     //Call the saveShortcut function with the pressed element as parameter
         });                                
     }
 	
@@ -431,15 +422,15 @@ function add(){
     var textarea = $("textarea");
 	for(var i = 0; i < textarea.length; i++){
 		textarea[i].addEventListener("change", function(){
-            saveTextarea($(this));    
+            saveTextarea($(this));    //Call the saveShortcut function with the changed element as parameter
         });
     }
 }
 
-function saveTextarea(select){
-    var questionId = select.attr("name");
+function saveTextarea(select){      //Send to the controller the textArea content and the right parameters to be able to save it
+    var questionId = select.attr("name"); //Getting the questionId of the textArea
     //console.log(select.attr("name"));
-    var answer = select.val();
+    var answer = select.val();      //Getting the content of the textArea which has changed.
     //console.log(select.val());
     $.post(
 		"index.php", // url
@@ -457,12 +448,12 @@ function saveTextarea(select){
     ); 
 }
 
-function saveShortcut(select){    
-    var children = select.children();
-    var questionId = children[0].name;
+function saveShortcut(select){
+    var children = select.children();   //An element with shortcut class in made of 6 children
+    var questionId = children[0].name;  //The first child is an hidden input which has as name the questionId
     //console.log(children[0].name);
     //console.log($("input[name="+questionId+"]:checked").val());
-    var answer = $("input[name="+questionId+"]:checked").val();
+    var answer = $("input[name="+questionId+"]:checked").val(); //we are looking for the input which is named as questionId and which is checked
     $.post(
 		"index.php", // url
 		{
@@ -516,7 +507,7 @@ function saveInformation(r) {
         "json"
     );  
 }
-function addEventInfo(){
+function addEventInfo(){        //Add eventlistener on each input of  <div #userInformation>
     var fields= $("#userInformation input");
     for (i = 0; i<fields.length; i++) {
         fields[i].addEventListener("change", function(){
@@ -526,8 +517,8 @@ function addEventInfo(){
     }
 }
 
-function addAA(){
-    var select =$("#aa tbody tr");
+function addAA(){           //Add eventListener on each table Row of the AA table
+    var select =$("#aa tbody tr");      
     for (i = 0; i<select.length; i++) {
         select[i].addEventListener("change", function(){
            var tmp = $(this);
@@ -535,24 +526,24 @@ function addAA(){
         });
     }
 }
-function addFS() {
+function addFS() {          //Add EventListenr on each table Row of the fun sorter
     var tr = $("#FunSorter tbody tr");
     for (j = 0;j<tr.length;j++){
-        tr[j].addEventListener("mouseup", function(){
+        tr[j].addEventListener("mouseup", function(){       //The event is the mouseup, so the function is thrown when the user drop the item
             var tmp = $(this);
-            setTimeout(function(){ saveFS(tmp); }, 500);
+            setTimeout(function(){ saveFS(tmp); }, 500);        //The function is delayed to give some time to the html to update
         });
     }
 }
 
-function saveFS(tmp){
-    children = tmp.children();
-    var FSQuestionName = children[0].textContent +"/"+ children[applicationNumber+1].textContent;
+function saveFS(tmp){       //Save the 
+    children = tmp.children();          //Each row is made of FirstPartOfFSQuestion / Appli1 / Appli2/ ... / Appli*/SecondPartOfTheFSQuestion
+    var FSQuestionName = children[0].textContent +"/"+ children[applicationNumber+1].textContent; //To write the FSQuestionName on the table, we split, so here, to find back the FSQuestion name, which is the primaryKey,we concatenate
     var stringRes = "";
-    for (i=1; i<=applicationNumber; i++){
+    for (i=1; i<=applicationNumber; i++){ //Form the Second <td> to the before last <td> (=for eachapplication)
         child = children[i];
         grandChild = child.childNodes;
-        stringRes += grandChild[0].textContent;
+        stringRes += grandChild[0].textContent; //We add each HTML to the stringRes, to build the string which will be saved
     }
     //console.log(FSQuestionName);
     //console.log(stringRes);
@@ -577,7 +568,7 @@ function saveFS(tmp){
 function saveAA(tmp){
     var id = tmp.prop("id");
     //console.log(id);
-    val = $("#"+id+" td input:checked").val();
+    val = $("#"+id+" td input:checked").val();  //Looking for the checked item with the given id
     $.post(
 		"index.php", // url
 		{
@@ -599,14 +590,12 @@ function init(){
     getVisitorId();
 
     getPre();
-    if (pre ==1 ) {
-        document.getElementById("secretName").addEventListener("change",saveSecretName);
-        addEventInfo();
-    } else {
-        
-    }
+    if (pre ==1 ) { //If we are in the preForm
+        document.getElementById("secretName").addEventListener("change",saveSecretName); //AddEventListener on Secret name 
+        addEventInfo();     //And add event Listener on the head information
+    } //Else the randomizeAA and randomizeFS are called in callback of getAAFilled and getFSFilled
 	$("#submit").click(extractAnswers);
-    add();
+    add(); //AddEventListener on each answerInput
 }
 
 

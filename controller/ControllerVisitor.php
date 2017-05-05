@@ -179,6 +179,14 @@ class ControllerVisitor{
     }
 	
 	public static function addVisitor(){
+		/* When a visitor is created, everything about him is created on the dataBase's tables
+		 * -Visitor
+		 * -Answers
+		 * -Information
+		 * -AgainAgainAnswers
+		 * -FSQuestionsAnswers(SortApplication Table)
+		 * Doing like this, nothing has to be created when you wanna save somethink, just to update, knowing the prmiary key(s)
+		 */
 		$return = true;
 		$visitorId = json_decode($_POST['visitorId']); 
 		$formId = json_decode($_POST['formId']);
@@ -269,6 +277,7 @@ class ControllerVisitor{
 	}
 	
 	public static function getAgainAgainByVisitorId(){
+		//Return an array made of applicactionId and the related answer for a given visitorId
 		$visitorId = json_decode($_POST['visitorId']);
 		$AA = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
 		$return = [];
@@ -283,6 +292,7 @@ class ControllerVisitor{
 	}
 	
 	public static function getFSByVisitorId(){
+		//Return an array made of FSQuestionName and the related answer for a given visitorId
 		$visitorId = json_decode($_POST['visitorId']);
 		$AA = ModelSortApplication::getFSByVisitorId($visitorId);
 		$return = [];
@@ -297,7 +307,8 @@ class ControllerVisitor{
 	}
 	
 	//I wrote this function but i'm not sure if it will be usefull or not
-	public static function getVisitorSecretName(){
+	//Now I am pretty sure it is useless
+	/*public static function getVisitorSecretName(){
 		$visitorId = json_decode($_POST['visitorId']);
 		$s = ModelVisitor::Select($visitorId)->getVisitorSecretName();
 		if ($s == null){
@@ -305,7 +316,8 @@ class ControllerVisitor{
 		} else {
 		echo json_encode(true);
 		}
-	}
+	}*/
+	
 	public static function read2(){
 		if(!isset($_GET['visitorId'])){
 			$data["message"] = "There are not enough information.  ";
