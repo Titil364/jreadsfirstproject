@@ -845,6 +845,13 @@ class ControllerForm {
 			
 			$folder = $f->getUserNickname();
 			
+			$complete = ModelForm::getCompletedFormByForm($formId);
+			if(sizeof($complete) !=0){
+				$completed = $complete[0]['nb'];
+			} else {
+				$completed = 0;
+			}
+			
 			$questionsTable = ModelQuestion::getQuestionByFormId($formId);
 			/*For each question we create a table (named TypesOfAnswers) composed of
 			 *questionId
@@ -855,9 +862,15 @@ class ControllerForm {
 			 *answer5 (if applicable)
 			Depending on the answerType of the question		
 			*/
-			$typesOfAnswers =[];
+			$allAnswers =[];
 			foreach($questionsTable as $qt){
-				$questionId = $qt->getQuestionId();
+				$answers = $qt->getAnswerArrayByQuestionId();
+				$allAnswers[$qt->getQuestionId()] = $answers;
+				$qaz = ModelAnswer::getAnswerByQuestionId($qt->getQuestionId());
+				$allAnswers[$qt->getQuestionId()]["nb"] = sizeof($qaz);
+			}
+			//var_dump($allAnswers["FOMM0MAApplic0Q1post"]);
+				/*$questionId = $qt->getQuestionId();
 				$answersOfAQuestion =  array(
 					"questionId" => $questionId
 				);
@@ -885,7 +898,7 @@ class ControllerForm {
 					$answersOfAQuestion[$answerTypeName] = $cpt;
 				}
 				array_push($typesOfAnswers,$answersOfAQuestion);
-			}
+			}*/
 			//var_dump($typesOfAnswers);
 			/*$cpt = 0;
 			foreach($typesOfAnswers as $toa){

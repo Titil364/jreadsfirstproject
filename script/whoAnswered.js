@@ -82,7 +82,7 @@ function init() {
     document.getElementById("addUser").addEventListener("click", addUser);
     if (ans) {
         document.getElementById("analytics").addEventListener("click", function(){
-            window.location = "index.php?controller=form&action=analytics&id=FOMM0MA";  
+            window.location = "index.php?controller=form&action=analytics&id="+formId;  
         });
     } else {
         document.getElementById("analytics").addEventListener("click", function(){
