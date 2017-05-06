@@ -56,6 +56,31 @@ class ModelAnswer extends Model{
 		}
 	}
 	
+	public static function getAnswerByQuestionId($questionId){
+		try {
+			$sql = "SELECT answer FROM Answer WHERE questionId=:questionId";
+			$prep = Model::$pdo->prepare($sql);
+			
+			$values = array(
+			"questionId" => $questionId,
+			);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_BOTH);
+			
+			return $prep->fetchAll();
+		
+		}catch (PDOException $ex) {
+			if (Conf::getDebug()) {
+				echo $ex->getMessage();
+			} else {
+				echo "Error";
+			}
+			return false;
+		}
+		
+	}
+	
 	/* desc This update replaces the generic update because this table has a two-component primary key
 	 * param data This shall be an array containing as key exactly the same name as the column in the data ase
 	 *

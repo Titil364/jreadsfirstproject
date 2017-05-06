@@ -1,9 +1,12 @@
 var formId;
 var cpt;
+var ans;
 
 function getFormId(){
     formId = document.getElementById("formId").value;
+    getAns();
 }
+
 function getCpt(){
     var select = $("#users>tr");
     var f = select[select.length-1];
@@ -11,6 +14,15 @@ function getCpt(){
         cpt = 0;
     } else{
         cpt = f.id;
+    }
+}
+
+function getAns(){
+    var select = document.getElementById("noAns");
+    if (select === null) {
+        ans = true;   
+    } else {
+        ans = false;
     }
 }
 
@@ -63,10 +75,20 @@ function send(v, f) {
     );
 }
 
+
 function init() {
     getFormId();
     getCpt();
     document.getElementById("addUser").addEventListener("click", addUser);
+    if (ans) {
+        document.getElementById("analytics").addEventListener("click", function(){
+            window.location = "index.php?controller=form&action=analytics&id=FOMM0MA";  
+        });
+    } else {
+        document.getElementById("analytics").addEventListener("click", function(){
+            alert("No one answered the form");
+        });
+    }
 }
 
 $(init);

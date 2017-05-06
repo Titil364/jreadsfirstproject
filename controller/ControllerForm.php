@@ -829,5 +829,148 @@ class ControllerForm {
 			ControllerDefault::message($data);	
 		}
 	}
+	
+	public static function analytics(){
+		if(Session::is_connected()){
+			$view = 'displayAnalytics';
+			$controller = 'form';
+			//$jscript = "myScriptSheet";
+		
+			
+			$formId = $_GET['id'];
+			$pagetitle = 'Answer anaylics';
+			$full = true;
+			
+			$f = ModelForm::select($formId);
+			
+			$folder = $f->getUserNickname();
+			
+			$questionsTable = ModelQuestion::getQuestionByFormId($formId);
+			/*For each question we create a table (named TypesOfAnswers) composed of
+			 *questionId
+			 *answer1
+			 *answer2
+			 *answer3 (if applicable)
+			 *answer4 (if applicable)
+			 *answer5 (if applicable)
+			Depending on the answerType of the question		
+			*/
+			$typesOfAnswers =[];
+			foreach($questionsTable as $qt){
+				$questionId = $qt->getQuestionId();
+				$answersOfAQuestion =  array(
+					"questionId" => $questionId
+				);
+				$answerType = ModelAnswerType::getAnswerTypeByQuestionId($qt->getQuestionTypeId());
+				//var_dump($answerType);
+				$ans  = ModelAnswer::getAnswerByQuestionId($questionId);
+				//printf($questionId);
+				
+				$finalAnswers =[];
+				$i =0;
+				foreach ($ans as $an){
+					array_push($finalAnswers, $ans[$i]["answer"]);
+					$i++;
+				}
+				foreach($answerType as $at){
+					$answerTypeName = $at['answerTypeName'];
+					$cpt = 0;
+					$i = 0;
+					foreach($finalAnswers as $a){
+						if($a == $answerTypeName && $a!= null){
+							$cpt++;
+							//print("c'est egal");
+						}
+					}
+					$answersOfAQuestion[$answerTypeName] = $cpt;
+				}
+				array_push($typesOfAnswers,$answersOfAQuestion);
+			}
+			//var_dump($typesOfAnswers);
+			/*$cpt = 0;
+			foreach($typesOfAnswers as $toa){
+				$qId = $typesOfAnswers[$cpt]["questionId"];
+				$ans = ModelAnswer::getAnswerByQuestionId($qId);
+				var_dump($typesOfAnswers[1]);
+				$cpt++;
+			}*/
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			$field_array = [];
+			$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+			$applicationTable = ModelApplication::getApplicationByFormId($formId);
+			$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+	
+			
+			$questionsPre_array_list = [];
+			$questionsPost_array_list = [];
+				
+			$answersPre_array_list = [];
+			$answersPost_array_list = [];
+				
+			$questionTypePre_list = [];
+			$questionTypePost_list = [];
+			
+			//Personnal information
+				$assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
+				foreach ($assoc_array as $assoc){
+					$perso_inf_id = $assoc->getPersonnalInformationName();
+					$perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+					
+					array_push($field_array, $perso_inf);
+				}
+				
+				//PRE Questions
+				for($i=0; $i < count($application_array);$i++){
+					$questionAndAnswer = [];
+					$questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"1");
+					array_push($questionsPre_array_list, $questions_arrayFromModel);
+					
+					array_push($answersPre_array_list, []);
+					array_push($questionTypePre_list, []);
+					
+					$reponses = array();
+					for($j=0; $j < count($questions_arrayFromModel);$j++){
+						
+						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+						$answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+						array_push($answersPre_array_list[$i], $answersPre_array);
+						array_push($questionTypePre_list[$i], $qType);
+					}                
+				}
+				
+				//POST Questions
+				for($i=0; $i < count($application_array);$i++){
+					$questionAndAnswer = [];
+					$questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(),"0");
+					array_push($questionsPost_array_list, $questions_arrayFromModel);
+					
+					array_push($answersPost_array_list, []);
+					array_push($questionTypePost_list, []);
+					
+					for($j=0; $j < count($questions_arrayFromModel);$j++){
+						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+											
+						$answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+						
+						array_push($answersPost_array_list[$i], $answersPost_array);
+						array_push($questionTypePost_list[$i], $qType);  
+					}                
+				}
+				
+				//AATable
+				
+			
+			require File::build_path(array('view', 'view.php'));
+		}
+	}
 }
 ?>

@@ -1,4 +1,7 @@
 <main>
+	<div>
+		<input type="button" id="analytics" value="See Form Analytics">
+	</div>
 
 	<table>
 	<caption>All my delicious answers</caption>
@@ -8,10 +11,15 @@
 	
 ?>
 
-	<?php 
-	
-	if(!isset($visitor) || count($visitor) == 0){
-		echo "<tr><td colspan=4>Nobody has answered the form. </td></tr>";
+	<?php
+	$visitorSN = false;
+	foreach($visitor as $v){
+		if($v->getVisitorSecretName()!=null){
+			$visitorSN = true;
+		}
+	}
+	if(!isset($visitor) || $visitorSN == false){
+		echo "<tr id=\"noAns\"><td colspan=4>Nobody has answered the form. </td></tr>";
 	}
 	else{
 //BODY

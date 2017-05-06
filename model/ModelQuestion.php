@@ -104,5 +104,17 @@ class ModelQuestion extends Model{
             return false;
         }
     }
+	
+	public static function getQuestionByFormId($formId){
+		$app = ModelApplication::getApplicationByFormId($formId);
+		$questionTable=[];
+		foreach($app as $a){
+			$question = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+			foreach($question as $q){
+				array_push($questionTable, $q);
+			}
+		}
+		return $questionTable;
+	}
 }
 
