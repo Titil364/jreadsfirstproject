@@ -87,7 +87,7 @@
                             }
 							echo $nb;
 							echo '</br>';
-							$percentage = $nb/$total*100;
+							$percentage = ($total!=0)?($nb/$total*100):0; //to avoid division by 0 if nbdy answered
 							echo $percentage."%";
                             echo '</div>';
                             echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
@@ -178,7 +178,7 @@
                             }
 							echo $nb;
 							echo '</br>';
-							$percentage = $nb/$total*100;
+							$percentage = ($total!=0)?($nb/$total*100):0; //to avoid division by 0 if nbdy answered
 							echo $percentage."%"; 
                             echo '</div>';
                             echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
@@ -236,16 +236,31 @@
 						}
 					}
 					$tot =  $varM+$varN+$varY;
-					echo '<td>'.$varY;
-					echo '</br>'.round($varY/$tot*100,2)."%";
-					echo '</td>';
-					echo '<td>'.$varM;
-					echo '</br>'.round($varM/$tot*100,2)."%";
-					echo '</td>';
-					echo '<td>'.$varN;
-					echo '</br>'.round($varN/$tot*100,2)."%";
-					echo '</td>';
-					echo '</tr>';
+                                        
+                                        if($tot!=0){
+                                            echo '<td>'.$varY;
+                                            echo '</br>'.round($varY/$tot*100,2)."%";
+                                            echo '</td>';
+                                            echo '<td>'.$varM;
+                                            echo '</br>'.round($varM/$tot*100,2)."%";
+                                            echo '</td>';
+                                            echo '<td>'.$varN;
+                                            echo '</br>'.round($varN/$tot*100,2)."%";
+                                            echo '</td>';
+                                            echo '</tr>';
+                                        }else{
+                                            echo '<td>'.$varY;
+                                            echo '</br>'."0%";
+                                            echo '</td>';
+                                            echo '<td>'.$varM;
+                                            echo '</br>'."0%";
+                                            echo '</td>';
+                                            echo '<td>'.$varN;
+                                            echo '</br>'."0%";
+                                            echo '</td>';
+                                            echo '</tr>';
+                                        }
+
 				}
 			?>
 			   </tbody>
