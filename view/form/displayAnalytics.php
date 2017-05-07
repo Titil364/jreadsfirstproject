@@ -212,6 +212,43 @@
 					  <th>No</th>
 				  </tr>
 			   </thead>
+			   <tbody>
+			<?php
+				foreach($applicationTable as $at){
+					echo '<tr>';
+					echo '<td>';
+					echo $at->getApplicationName();
+					echo '</td>';
+					$appliId = $at->getApplicationId();
+					$varY = 0;
+					$varM = 0;
+					$varN = 0;
+					//var_dump($appResults);
+					foreach($appResults[$appliId] as $aid){					
+						if($aid["again"] == "0"){
+							$varN+= $aid["nbAnswer"];
+						}
+						if($aid["again"] == "1"){
+							$varM+= $aid["nbAnswer"];
+						}
+						if($aid["again"] == "2"){
+							$varY+= $aid["nbAnswer"];
+						}
+					}
+					$tot =  $varM+$varN+$varY;
+					echo '<td>'.$varY;
+					echo '</br>'.round($varY/$tot*100,2)."%";
+					echo '</td>';
+					echo '<td>'.$varM;
+					echo '</br>'.round($varM/$tot*100,2)."%";
+					echo '</td>';
+					echo '<td>'.$varN;
+					echo '</br>'.round($varN/$tot*100,2)."%";
+					echo '</td>';
+					echo '</tr>';
+				}
+			?>
+			   </tbody>
 		   </table>
 	   </div>
 	   <p></p>

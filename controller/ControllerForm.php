@@ -895,15 +895,6 @@ class ControllerForm {
 			}
 			
 			$questionsTable = ModelQuestion::getQuestionByFormId($formId);
-			/*For each question we create a table (named TypesOfAnswers) composed of
-			 *questionId
-			 *answer1
-			 *answer2
-			 *answer3 (if applicable)
-			 *answer4 (if applicable)
-			 *answer5 (if applicable)
-			Depending on the answerType of the question		
-			*/
 			$allAnswers =[];
 			foreach($questionsTable as $qt){
 				$answers = $qt->getAnswerArrayByQuestionId();
@@ -911,46 +902,16 @@ class ControllerForm {
 				$qaz = ModelAnswer::getAnswerByQuestionId($qt->getQuestionId());
 				$allAnswers[$qt->getQuestionId()]["nb"] = sizeof($qaz);
 			}
-			//var_dump($allAnswers["FOMM0MAApplic0Q1post"]);
-				/*$questionId = $qt->getQuestionId();
-				$answersOfAQuestion =  array(
-					"questionId" => $questionId
-				);
-				$answerType = ModelAnswerType::getAnswerTypeByQuestionId($qt->getQuestionTypeId());
-				//var_dump($answerType);
-				$ans  = ModelAnswer::getAnswerByQuestionId($questionId);
-				//printf($questionId);
-				
-				$finalAnswers =[];
-				$i =0;
-				foreach ($ans as $an){
-					array_push($finalAnswers, $ans[$i]["answer"]);
-					$i++;
-				}
-				foreach($answerType as $at){
-					$answerTypeName = $at['answerTypeName'];
-					$cpt = 0;
-					$i = 0;
-					foreach($finalAnswers as $a){
-						if($a == $answerTypeName && $a!= null){
-							$cpt++;
-							//print("c'est egal");
-						}
-					}
-					$answersOfAQuestion[$answerTypeName] = $cpt;
-				}
-				array_push($typesOfAnswers,$answersOfAQuestion);
-			}*/
-			//var_dump($typesOfAnswers);
-			/*$cpt = 0;
-			foreach($typesOfAnswers as $toa){
-				$qId = $typesOfAnswers[$cpt]["questionId"];
-				$ans = ModelAnswer::getAnswerByQuestionId($qId);
-				var_dump($typesOfAnswers[1]);
-				$cpt++;
-			}*/
 			
+			$applicationTable = ModelApplication::getApplicationByFormId($formId);
+			$appResults=[];
+			foreach($applicationTable as $at){
+				$appId = $at->getApplicationId();
+				$appResults[$appId]= ModelAgainAgain::getAgainAgainByApplicationId($appId);
+			}
+			//var_dump($appResults);
 			
+		
 			
 			
 			
@@ -961,7 +922,7 @@ class ControllerForm {
 			
 			$field_array = [];
 			$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
-			$applicationTable = ModelApplication::getApplicationByFormId($formId);
+			
 			$alphabet = array('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 	
 			

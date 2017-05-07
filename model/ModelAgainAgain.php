@@ -84,4 +84,30 @@ class ModelAgainAgain extends Model{
             return false;
         }
 	}
+	
+	public static function getAgainAgainByApplicationId($applicationId){
+		try{
+			$sql = "SELECT applicationId, again, count(again) as 'nbAnswer' FROM AgainAgain WHERE applicationId=:applicationId AND again is not null Group By (again)";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"applicationId" => $applicationId
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_ASSOC);
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }
