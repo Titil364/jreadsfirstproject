@@ -470,9 +470,12 @@ function extractData(){
 	}
 		console.log(a);
 		console.log(q);
+		
+		var pi = extractPersonnalInfo(), fs = extractFSQuestion(), formId = getFormId();
+		send(formId, a, q, pi, fs);
 }
 
-function extractFSData(){
+function extractFSQuestion(){
 	var fs = [], def = $("input.defaultFSQuestion:checked");
 	
 	//Pushing the defautFSQuestion not already checked in the list
@@ -506,12 +509,63 @@ function extractPersonnalInfo(){
 	return pInfo;
 }
 
-function send(formId, a, q, pInfo, fs){
-	
-	var ptd = JSON.stringify(persoInfoToDelete);
-	var ftd= JSON.stringify(FSToDelete);
-	console.log(ptd);
-	console.log(ftd);
+function send(formId, a, q, pInfo, fs){	
+	$.post(
+		"index.php", // url
+		{
+			"action":"updated",
+			"controller":"form",
+			"form":formId,
+			"applications":JSON.stringify(a),
+			"questions":JSON.stringify(q),
+			"information":JSON.stringify(pInfo),
+			"FSQuestions":JSON.stringify(fs),
+			"informationToDelete": JSON.stringify(persoInfoToDelete),
+			"fsToDelete": JSON.stringify(FSToDelete)
+		},  //data
+		function(res){ //callback
+				console.log("Le resultat = "+res);
+					//res is supposed to send the id of the form
+					//We need this form ID to save the image
+				if(res !== false){
+					var re = /(?:\.([^.]+))?$/;
+					var ext = "";
+					for(var i = 0; i < a.length; i++){
+						var name = a[i]['img'];
+
+						var file_data = $("#"+name).prop("files")[0];
+		
+						if(file_data !== undefined){
+							ext = re.exec(file_data.name)[1];
+							var form_data = new FormData();
+
+							form_data.append("file", file_data, res+name+"."+ext);
+								$.ajax({
+									url: "index.php?controller=application&action=saveImg",
+									cache: false,
+									contentType: false,
+									processData: false,
+									data: form_data,                  
+									type: 'post',
+									success: function(result){
+											  //console.log(result);
+											},
+									error: function(){
+											  console.log("Error while downloading the file. ");
+									}   
+								});  
+						}
+						alert("The form has been successfully registered ! (You will be redirected)");
+						$("#submit").unbind("click", extractData);
+						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+					}
+					
+				}else{
+					console.log("Error when saving the form. ");
+				}
+			},
+		"json" // type
+	);
 }
 
 function init2(){
