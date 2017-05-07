@@ -110,6 +110,8 @@ class ControllerForm {
 			$pagetitle = 'Create Form';
 			$jscript = "createForm";
 			
+			$formId = "newForm";
+			
 			$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
 			$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
 			
@@ -127,6 +129,7 @@ class ControllerForm {
 			$formId = $_GET["id"];
 			$form = ModelForm::select($formId);
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
+				$formName = $form->getFormName();
 				$view = 'createForm';
 				$controller = 'form';
 				$pagetitle = 'Update Form ' . $formId;

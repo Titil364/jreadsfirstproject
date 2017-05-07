@@ -1,13 +1,14 @@
 <?php
-require_once File::build_path(array('model', 'Model.php'));
+require_once File::build_path(array('model', 'ModelAssoc.php'));
 
-class ModelAssocFormPI extends Model{
+class ModelAssocFormPI extends ModelAssoc{
         
 	private $formId;
 	private $personnalInformationName;
 	
     protected static $object = "AssocFormPI";
-    protected static $primary = "formId"; //temporary
+    protected static $primary1 = "formId"; 
+    protected static $primary2 = "personnalInformationName"; 
     
     public function getFormId(){return $this->formId;}
         public function setFormId($formId){$this->formId = $formId;}

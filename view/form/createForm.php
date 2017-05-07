@@ -2,10 +2,10 @@
 <main>
 	<h1>Welcome on the form creation page</h1>	
 
-	<div id="newForm" class="formCss">
+	<div id="<?php echo htmlspecialchars($formId)?>" class="formCss">
 			<div id="surveyInformations">
 					<label for="formName">Name of the form : </label>
-					<input id="formName" type="text"  name ="formName" placeholder="Form's Title">
+					<input id="formName" type="text"  name ="formName" placeholder="Form's Title" value="<?php echo (isset($formName)?htmlspecialchars($formName):"")?>">
 			</div>
 			
 			<div id="userInformation">
@@ -33,28 +33,29 @@
 						}
 
 						$protectedName = htmlspecialchars($name);
+						$class = ($checked == "checked" ? "defaultInformationAlreadyChecked":"defaultInformation");
 						echo "<div>";
-						echo "<input type=\"checkbox\" name=\"informaton\" class=\"defaultInformation\" id=\"$protectedName\" $checked>";
+						echo "<input type=\"checkbox\" name=\"informaton\" class=\"$class\" id=\"$protectedName\" $checked>";
 						echo "<label for=\"$protectedName\"> $protectedName</label>";
 						echo "</div>";
 					}
 				?>
 				</div>
 				<div id="customInformation">
+					<button type="button" id="addField">Add a new field</button>
 					<?php
 						if(!$create){
 							foreach($personnalInformation as $pi){
 								$protectedName = htmlspecialchars($pi->getPersonnalInformationName());
 								
 								echo "<div class=\"field\">";
-								echo "<input class=\"fieldInput\" type=\"text\" placeholder=\"Your Field name\" value=\"$protectedName\">";
+								echo "<input class=\"fieldInputCustom\" type=\"text\" placeholder=\"Your Field name\" value=\"$protectedName\">";
 								//il va falloir link le button à la suppression du parent
-								echo "<button class=\"removeButtonAE\" type=\"button\" value=\"Remove the Field\">Remove the Field</button>";
+								echo "<button class=\"removeButtonAECustom\" type=\"button\" value=\"Remove the Field\">Remove the Field</button>";
 								echo "</div>";
 							}	
 						}
 					?>
-					<button type="button" id="addField">Add a new field</button>
 				</div>
 			</div> 
 			
@@ -87,8 +88,9 @@
 						}
 						$protectedName = htmlspecialchars($name);
 						$protectedFS = htmlspecialchars($fs->getFSQuestionName());
+						$class = ($checked == "checked"? "defaultFSQuestionAlreadyChecked": "defaultFSQuestion");
 						echo "<div>";
-						echo "<input type=\"checkbox\" name=\"FSQuestion\" class=\"defaultFSQuestion\" id=\"$protectedFS\" $checked>";
+						echo "<input type=\"checkbox\" name=\"FSQuestion\" class=\"$class\" id=\"$protectedFS\" $checked>";
 						echo "<label for=\"$protectedFS\"> $protectedFS</label>";
 						echo "</div>";
 					}				
@@ -106,15 +108,15 @@
 								$names[1] = htmlspecialchars($names[1]);
 								echo "<div class=\"FSQuestionCustom\">";
 									echo "<table><tr><td>";
-										echo "<input class=\"questionInputLeft\" type=\"text\" placeholder=\"First part\" value=\"$names[0]\">";
+										echo "<input class=\"questionInputLeftCustom\" type=\"text\" placeholder=\"First part\" value=\"$names[0]\">";
 									echo "</td><td>";
 										echo "<input type=\"text\" placeholder=\"Fake part\" style=\"visibility: hidden;\">";
 									echo "</td><td>";
-										echo "<input class=\"questionInputRight\" type=\"text\" placeholder=\"Second part\" value=\"$names[1]\">";
+										echo "<input class=\"questionInputRightCustom\" type=\"text\" placeholder=\"Second part\" value=\"$names[1]\">";
 									echo "</td></tr></table>";
 									
 									//Link le bouton au parent
-									echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the Question\">Remove the Question</button>";
+									echo "<button class=\"removeButtonFS\" type=\"button\" value=\"Remove the Question\">Remove the Question</button>";
 								echo "</div>";
 							}
 						}

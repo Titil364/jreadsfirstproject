@@ -779,13 +779,68 @@ function makeDraggbleApplication(event) {
 		}
 	});
 }
+/**
+*Check if the cutsomTitle is free in DB
+*upadate the customTitleState global array 
+*@event the event from the modified title field
+*
+*/
+function isCustomTitleFree(event){
+	var isFree;// = false;
+	var field = event.target;
+	var fieldID = field.id;
+
+	var title = field.value;
+	var parentDiv = field.parentNode;
+	var msgZone = $(parentDiv).find(":last-child")[0];
+
+
+	var splittedId  = fieldID.match(/[a-zA-Z]+|[0-9]+/g); //splitting id by numbers and char
+
+	var numApp = splittedId[1];
+	var numQuest = splittedId[3];
+	var prepost = (splittedId[4]=="pre")?0:1; 
+
+
+
+	if (title =="") { // if empty
+		msgZone.style.color = "red";
+		msgZone.innerHTML = "Title needed." 
+         console.log("pas de titre");         
+         customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
+    }else{
+		$.post( //making async request to the serv
+			"index.php", //target url
+			{
+				"action":JSON.stringify("existingQuestionType"),
+				"controller":JSON.stringify("questionType"),
+				"questionTypeTitle":JSON.stringify(title)
+			}, 
+			function(res){ //callback
+				var existing = res;
+				if (!existing) { //if not existing in DB : title possible
+				console.log("free");					
+					msgZone.style.color = "green";
+					msgZone.innerHTML = "title available." 
+					customTitleState[numApp][prepost][numQuest-1] = 1; //setting to state "valid custom title"
+				}
+				
+				else { // if already existing : not available 
+					msgZone.style.color = "red";
+					msgZone.innerHTML = "Title already used." 
+					customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
+				}
+			},
+			"json"
+		);
+	}
+
+}
 
 
 function init(){
 	answersPlaceholder();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
-	//Adding one application
-	addApplication();
 	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
 	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
