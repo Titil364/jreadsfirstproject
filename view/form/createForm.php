@@ -67,6 +67,116 @@
 					<button type="button" id="makeMoveableApplication">Make applications moveable</button>
 					<button type="button" id="makeMoveableQuestion">Make questions moveable</button>
 				</div>
+				<?php 
+				if(!$create){
+					$count = 0;
+					foreach($applications as $a){
+						$appliId = $a->getApplicationId();
+						$protectedAppliId = htmlspecialchars($a->getApplicationId());
+						$protectedAppliName = htmlspecialchars($a->getApplicationName());
+						$protectedAppliDesc = htmlspecialchars($a->getApplicationDescription());
+						
+						$img =  "media/" . $folder . "/" . $appliId . "Img.png";
+						$src = "";
+						if(file_exists($img)){
+							$src = $img;
+						}
+						
+						//Application wrapper
+						echo "<div class=\"application\" id=\"$protectedAppliId\">";
+							//application info wrapper
+							$info = $protectedAppliId . "Info";
+							echo "<div id=\"$info\">";
+								//application img displayer
+								echo "<img class=\"imgDisplayer\"src=\"$src\">";
+								//application title/name
+								echo "<div class=\"appCreationTitle\">";
+								$appliName = $protectedAppliId . "Name";
+									echo "<label for=\"$appliName\">Name of the application : </label>";
+									echo "<input type=\"text\" id=\"$appliName\" name=\"$appliName\" placeholder=\"Application's Title\" value=\"$protectedAppliName\">";
+									echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the application\">Remove the application</button>";
+								echo "</div>";
+								//application description
+								echo "<div>";
+								$desc = $protectedAppliId . "Desc";
+								echo "<label for=\"$desc\">Describe your application : </label>";
+								echo "<textarea id=\"$desc\" name=\"$desc\" placeholder=\"Describe me\">$protectedAppliDesc</textarea>";
+								echo "</div>";
+								//application image input
+								echo "<div>";
+									$i = $protectedAppliId . "Img";
+									$text = ($src != ""?"(only if you want to change)":"");
+									echo "<label for=\"$i\">Image of the application $text : </label>";
+									echo "<input type=\"file\" id=\"$i\" name=\"Applic3Img\" accept=\"image/*\">";
+								echo "</div>";
+							echo "</div>";
+							//application questionPre wrapper
+							echo "<div class=\"questionPreDiv\"><h3>Pre questions : </h3>";
+								echo "<button class=\"addQuestionButton\" type=\"button\" value=\"Add Pre Question\">Add a Pre question</button>";
+								$countQ = 1;
+								foreach($questions_pre[$appliId] as $q){
+									$idQuestion = htmlspecialchars($q->getQUestionId());
+									$protectedQuestion = htmlspecialchars($q->getQuestionName());
+									$type = $q->getQuestionTypeId();
+									$qName = $idQuestion . "Name";
+										echo "<div id=\"$idQuestion\" class=\"questionPre\"><div>";
+										echo "<label for=\"$qName\">Question Pre n°$countQ : </label>";
+										echo "<input type=\"text\" id=\"$qName\" name=\"$qName\" placeholder=\"Do you like carrots ?\" value=\"$protectedQuestion\">";
+										echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the question\">Remove the question</button>";
+										echo "<select>";
+										foreach($selectPlaceholders as $p){
+											$selected = "";
+											if($p->getQuestionTypeId() == $type){
+												$selected = "selected";
+											}
+											$qTypeName = htmlspecialchars($p->getQuestionTypeName());
+											$qTypeId = htmlspecialchars($qTypeName . idQuestion);
+											echo "<option required=\"required\" value=\"$qTypeName\" id=\"$qTypeId\" $selected>$qTypeName</option> ";
+										}
+										echo "</select></div>";
+										echo "<div class=\"answerArea\"></div>";
+									echo "</div>";
+									$countQ++;
+								}
+
+							echo "</div>";
+							
+							//application questionPost wrapper
+							echo "<div class=\"questionPostDiv\"><h3>Post questions : </h3>";
+								echo "<button class=\"addQuestionButton\" type=\"button\" value=\"Add Post Question\">Add a Post question</button>";
+								$countQ = 1;
+								foreach($questions_post[$appliId] as $q){
+									$idQuestion = htmlspecialchars($q->getQUestionId());
+									$protectedQuestion = htmlspecialchars($q->getQuestionName());
+									$type = $q->getQuestionTypeId();
+									$qName = $idQuestion . "Name";
+										echo "<div id=\"$idQuestion\" class=\"questionPost\"><div>";
+										echo "<label for=\"$qName\">Question Post n°$countQ : </label>";
+										echo "<input type=\"text\" id=\"$qName\" name=\"$qName\" placeholder=\"Do you like carrots ?\" value=\"$protectedQuestion\">";
+										echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the question\">Remove the question</button>";
+										echo "<select>";
+										foreach($selectPlaceholders as $p){
+											$selected = "";
+											if($p->getQuestionTypeId() == $type){
+												$selected = "selected";
+											}
+											$qTypeName = htmlspecialchars($p->getQuestionTypeName());
+											$qTypeId = htmlspecialchars($qTypeName . $idQuestion);
+											echo "<option required=\"required\" value=\"$qTypeName\" id=\"$qTypeId\" $selected>$qTypeName</option> ";
+										}
+										echo "</select></div>";
+										echo "<div class=\"answerArea\"></div>";
+									echo "</div>";
+									$countQ++;
+								}
+							echo "</div>";
+						echo "</div>";
+						
+						
+						$count++;
+					}
+				}
+				?>
 			</div>
 			
 			

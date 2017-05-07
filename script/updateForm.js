@@ -114,12 +114,20 @@ function addEventDelete(){
 		
 		$(parent).find("button").switchClass("removeButtonFS", "removeButton");
 	});
+	
+	//Add question 
+	$("select").bind("change", answers);
+	
 }
-
+function countApplications(){
+	return $(".application").length;
+}
 
 function init2(){
 	addEventDelete();
+	nbApplication = countApplications();
 	$("#submit").click();
+	
 
 }
 

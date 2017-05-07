@@ -75,7 +75,7 @@ class ModelQuestion extends Model{
 	
 	/* desc Return all the pre or post questions of the application
 	 * param id The id of the application
-	 * param pre Nature of the question (0 for pre and 1 for post)
+	 * param pre Nature of the question (1 for pre and 0 for post)
 	 *
 	 */
 	public static function getQuestionByApplicationIdAndPre($id, $pre){

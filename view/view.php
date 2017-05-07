@@ -18,9 +18,8 @@
 				if(Session::is_connected()){
 					echo <<< EOT
 						<a class='menu-logo' href="index.php">
-							<img class='menu-logo-img' src='media/logo.png' alt='logo'>
 							<div class='menu-logo-content'>
-								Chici
+								<img class='menu-logo-img' src='media/chicilogo.png' alt='chici logo' style="max-width:150px;max-height:100px">
 							</div>
 						</a>
 						<div class='menu-buttons'>

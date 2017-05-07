@@ -626,6 +626,7 @@ function answersPlaceholder(){
 				for(var key in placeholders){
 					qType[key] = placeholders[key][0]["questionTypeId"];
 				}
+				$("select").trigger("change");
 			},
 		"json" // type
 	);
@@ -852,20 +853,6 @@ function init(){
 
 
 $(init);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

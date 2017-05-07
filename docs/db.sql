@@ -312,12 +312,12 @@ INSERT INTO Application VALUES('FOMM0MAApplic2', 'Both', '', "FOMM0MA");
 
 
 
-INSERT INTO Question VALUES('FOMM0MAApplic0Q1pre', 'Eat a Banana', 'FOMM0MAApplic0', 3, 1);
-INSERT INTO Question VALUES('FOMM0MAApplic0Q1post', 'Eat a Banana', 'FOMM0MAApplic0', 3, 0);
-INSERT INTO Question VALUES('FOMM0MAApplic1Q1pre', 'Drink tap', 'FOMM0MAApplic1', 3, 1);
-INSERT INTO Question VALUES('FOMM0MAApplic1Q1post', 'Drink tap', 'FOMM0MAApplic1', 3, 0);
-INSERT INTO Question VALUES('FOMM0MAApplic2Q1pre', 'Both together', 'FOMM0MAApplic2', 2, 1);
-INSERT INTO Question VALUES('FOMM0MAApplic2Q1post', 'Both together', 'FOMM0MAApplic2', 2, 0);
+INSERT INTO Question VALUES('FOMM0MAApplic0Q1pre', 'Eat a Banana PRE', 'FOMM0MAApplic0', 3, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic0Q1post', 'Eat a Banana POST', 'FOMM0MAApplic0', 3, 0);
+INSERT INTO Question VALUES('FOMM0MAApplic1Q1pre', 'Drink tap PRE', 'FOMM0MAApplic1', 3, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic1Q1post', 'Drink tap POST', 'FOMM0MAApplic1', 3, 0);
+INSERT INTO Question VALUES('FOMM0MAApplic2Q1pre', 'Both together PRE', 'FOMM0MAApplic2', 2, 1);
+INSERT INTO Question VALUES('FOMM0MAApplic2Q1post', 'Both together POST', 'FOMM0MAApplic2', 2, 0);
 
 
 INSERT INTO FSQuestion VALUES ('Easy to do/Hard to do', 1);

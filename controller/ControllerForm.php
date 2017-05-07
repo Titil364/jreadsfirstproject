@@ -128,6 +128,13 @@ class ControllerForm {
 		if(isset($_GET["id"])){
 			$formId = $_GET["id"];
 			$form = ModelForm::select($formId);
+			if(!$form){
+			$data["message"] = "The form doesn't exist. ";
+			$data["pagetitle"] = "Form error";
+			
+			ControllerDefault::message($data);
+			return null;
+			}
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
 				$formName = $form->getFormName();
 				$view = 'createForm';
@@ -136,6 +143,9 @@ class ControllerForm {
 				$jscript = "updateForm";
 				
 				$create = false;
+				$folder = $_SESSION['nickname'];
+				
+				$selectPlaceholders = ModelQuestionType::getQuestionTypeForUser($form->getUserNickname());
 				
 				//Collect the personnal information (default and custom)
 				$defaultInfo = ModelPersonnalInformation::getDefaultPersonnalInformation();
@@ -145,6 +155,35 @@ class ControllerForm {
 				$defaultFS = ModelFSQuestion::getDefaultFSQuestion();
 				$fsQuestion = ModelFSQuestion::getFSQuestionByFormId($formId);
 				
+				//Collect the applications
+				$applications = ModelApplication::getApplicationByFormId($formId);
+				
+				//Collect the questions pre and post by applications
+				$questions_pre = [];
+				$questions_post = [];
+				$answer_pre = [];
+				$answer_post = [];
+				foreach($applications as $a){
+					$appliId = $a->getApplicationId();
+					$questions_pre[$appliId] = ModelQuestion::getQuestionByApplicationIdAndPre($appliId, 1);
+					$questions_post[$appliId] = ModelQuestion::getQuestionByApplicationIdAndPre($appliId, 0);
+					
+					//Collect the answer for the pre questions
+					//foreach question of the application 
+					/*foreach($questions_pre[$appliId] as $q){
+						$questionId = $q->getQuestionId();
+						$questionTypeId = $q->getQuestionTypeId();
+						//$answer_pre[$appliId][$questionId] = ModelAnswerType::getAnswerTypeByQuestionId($questionTypeId);
+					}*/
+					//Collect the answer for the post questions
+					//foreach question of the application 
+					/*foreach($questions_post[$appliId] as $q){
+						$questionId = $q->getQuestionId();
+						$questionTypeId = $q->getQuestionTypeId();
+						//$answer_post[$appliId][$questionId] = ModelAnswerType::getAnswerTypeByQuestionId($questionTypeId, 1);
+					}*/
+					
+				}
 	
 				
 				require File::build_path(array('view', 'view.php'));

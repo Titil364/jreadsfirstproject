@@ -40,7 +40,7 @@ class ModelAnswerType extends Model{
 	 * param id The id of the question type
 	 *
 	 */
-    public static function getAnswerTypeByQuestionId($id){
+    public static function getAnswerTypeByQuestionId($id, $isObject = NULL){
 		try{
 			$sql  = "SELECT * FROM AnswerType WHERE questionTypeId=:id";
 			$prep = Model::$pdo->prepare($sql);
@@ -49,9 +49,13 @@ class ModelAnswerType extends Model{
 				);
                         
 			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_ASSOC);
-                        
-			$answerType_array = $prep->fetchAll();
+			
+			if(is_null($isObject)){
+				$prep->setFetchMode(PDO::FETCH_ASSOC);
+			}else{
+				$prep->setFetchMode(PDO::FETCH_CLASS, "ModelAnswerType");
+			}
+			$answerType_array = $prep->fetchAll();	
 
 			return $answerType_array;
 
