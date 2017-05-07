@@ -58,7 +58,7 @@ class ModelAnswer extends ModelAssoc{
 	
 	public static function getAnswerByQuestionId($questionId){
 		try {
-			$sql = "SELECT answer FROM Answer WHERE questionId=:questionId";
+			$sql = "SELECT answer FROM Answer WHERE questionId=:questionId AND answer is not null";
 			$prep = Model::$pdo->prepare($sql);
 			
 			$values = array(

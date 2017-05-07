@@ -116,5 +116,31 @@ class ModelQuestion extends Model{
 		}
 		return $questionTable;
 	}
+	
+	public function getAnswerArrayByQuestionId(){
+		try{
+			$sql = "SELECT answer, count(answer) as \"nbAnswer\" FROM Answer WHERE questionId=:questionId Group By (answer)";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"questionId" => $this->questionId
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_ASSOC);
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
 }
 

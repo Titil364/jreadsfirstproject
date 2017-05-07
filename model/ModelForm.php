@@ -67,6 +67,30 @@ class ModelForm extends Model{
         }
     }
 	
+	public function getApplicationNumberByFormId($formId){
+		try{
+			$sql = "SELECT count(*) FROM Application WHERE Application.formId=:formId";
+			$prep = Model::$pdo->prepare($sql);
+
+			$values = array(
+				"formId" => $formId,
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_NUM);
+			
+			return $prep->fetchAll();
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
+	
 	/* desc Return all the visitor of the form
 	 * param formId tThe id of the form
 	 */
@@ -81,6 +105,33 @@ class ModelForm extends Model{
 
 			$prep-> execute($values);
 			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelVisitor');
+			
+			return $prep->fetchAll();
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
+	
+	public static function getCompletedFormByForm($formId){
+		try{
+			$sql  = "SELECT ApplicationDateComplete.visitorId, count(ApplicationDateComplete.visitorId)=:applicationNumber as 'nb' FROM Application, ApplicationDateComplete WHERE Application.applicationId =ApplicationDateComplete.applicationId AND Application.formId=:formId AND ApplicationDateComplete.applicationDateCompletePost is not null GROUP BY (ApplicationDateComplete.visitorId)";
+			$prep = Model::$pdo->prepare($sql);
+
+			
+			$appNumber =  ModelForm::getApplicationNumberByFormId($formId);
+			$values = array(
+				"applicationNumber" => $appNumber[0][0],
+				"formId" => $formId
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_ASSOC);
 			
 			return $prep->fetchAll();
 
