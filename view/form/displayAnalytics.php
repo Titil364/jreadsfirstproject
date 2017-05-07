@@ -3,6 +3,7 @@
     <h1>Answers Analytics</h1>
     <?php
         $formName = htmlspecialchars($f->getFormName());
+        echo '<div class="formCss">';
         echo "<h1> $formName </h1>";
 		echo "Answers completed for the from : ";
 		echo $completed;
@@ -267,5 +268,6 @@
 		   </table>
 	   </div>
 	   <p></p>
+</div>
 </main>
     
