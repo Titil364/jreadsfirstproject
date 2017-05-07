@@ -418,9 +418,7 @@ function answers(event){
 
 		$(customCheckbox).on('change',function(){customQuestion(customCheckbox, answerArea);}); //eventListener on custom option (un)check
 
-	}
-				
-		
+	}	
 
 
 	for(var ans in questionType){
@@ -474,7 +472,7 @@ function customQuestion(customCheckbox, answerArea){
 
 
 		var answerAreadivs = $(answerArea).find("div"); //finding answers div
-		console.log(answerAreadivs);
+		//console.log(answerAreadivs);
 		for (var i = 0; i<answerAreadivs.length; i++ ){ //for each one
 			var span = $(answerAreadivs[i]).find("span")[0];	//finding the span of title
 

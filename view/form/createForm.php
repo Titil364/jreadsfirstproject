@@ -78,17 +78,19 @@
 						
 						$img =  "media/" . $folder . "/" . $appliId . "Img.png";
 						$src = "";
+						$class = "";
 						if(file_exists($img)){
 							$src = $img;
+							$class = " displayed";
 						}
 						
 						//Application wrapper
-						echo "<div class=\"application\" id=\"$protectedAppliId\">";
+						echo "<div class=\"application formerApplication\" id=\"$protectedAppliId\">";
 							//application info wrapper
 							$info = $protectedAppliId . "Info";
 							echo "<div id=\"$info\">";
 								//application img displayer
-								echo "<img class=\"imgDisplayer\"src=\"$src\">";
+								echo "<img class=\"imgDisplayer$class\"src=\"$src\">";
 								//application title/name
 								echo "<div class=\"appCreationTitle\">";
 								$appliName = $protectedAppliId . "Name";
@@ -108,6 +110,7 @@
 									$text = ($src != ""?"(only if you want to change)":"");
 									echo "<label for=\"$i\">Image of the application $text : </label>";
 									echo "<input type=\"file\" id=\"$i\" name=\"Applic3Img\" accept=\"image/*\">";
+									echo "<button class=\"removeImage\" type=\"button\" value=\"Remove image\">Remove the image</button>";
 								echo "</div>";
 							echo "</div>";
 							//application questionPre wrapper
@@ -119,7 +122,7 @@
 									$protectedQuestion = htmlspecialchars($q->getQuestionName());
 									$type = $q->getQuestionTypeId();
 									$qName = $idQuestion . "Name";
-										echo "<div id=\"$idQuestion\" class=\"questionPre\"><div>";
+										echo "<div id=\"$idQuestion\" class=\"questionPre formerPreQuestion\"><div>";
 										echo "<label for=\"$qName\">Question Pre n°$countQ : </label>";
 										echo "<input type=\"text\" id=\"$qName\" name=\"$qName\" placeholder=\"Do you like carrots ?\" value=\"$protectedQuestion\">";
 										echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the question\">Remove the question</button>";
@@ -150,7 +153,7 @@
 									$protectedQuestion = htmlspecialchars($q->getQuestionName());
 									$type = $q->getQuestionTypeId();
 									$qName = $idQuestion . "Name";
-										echo "<div id=\"$idQuestion\" class=\"questionPost\"><div>";
+										echo "<div id=\"$idQuestion\" class=\"questionPost formerPostQuestion\"><div>";
 										echo "<label for=\"$qName\">Question Post n°$countQ : </label>";
 										echo "<input type=\"text\" id=\"$qName\" name=\"$qName\" placeholder=\"Do you like carrots ?\" value=\"$protectedQuestion\">";
 										echo "<button class=\"removeButton\" type=\"button\" value=\"Remove the question\">Remove the question</button>";
