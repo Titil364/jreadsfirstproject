@@ -41,7 +41,7 @@ class ModelAssoc extends Model {
 			$primary_key1 = static::$primary1;
 			$primary_key2 = static::$primary2;
 			
-            $sql = "SELECT * FROM Answer WHERE $primary_key1=:$primary_key1 AND $primary_key2=:$primary_key2;";
+            $sql = "SELECT * FROM $table_name WHERE $primary_key1=:$primary_key1 AND $primary_key2=:$primary_key2;";
 
             $req_prep = Model::$pdo->prepare($sql);
             $req_prep->execute($data);

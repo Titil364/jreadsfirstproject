@@ -426,6 +426,7 @@ function extractData(){
 		alert("Please enter the name of the form. ");
 		return null;
 	}
+	form = new Form(getFormId(), formName, null);
 	var applications = $(".application"), a=[], pre = [], post = [], q=[];
 	
 	for(var i = 0; i < applications.length; i++){
@@ -440,8 +441,9 @@ function extractData(){
 		var img = $("#"+id+"Img").val();
 		if(img === "" && $("#"+id+" .displayed").length > 0){
 			//false -> to delete
-			//console.log($("#"+id+" .displayed").attr("src"));
-			img = ($("#"+id+" .displayed").attr("src") != "" ?"NotDelete":"ToDelete");
+			img = ($("#"+id+" .displayed").attr("src") != "" ?id+"Img":"ToDelete");
+		}else{
+			img = id+"Img";
 		}
 		
 		if(desc === "" && img === ""){
@@ -451,11 +453,11 @@ function extractData(){
 		a.push(new Application(id, name, desc, img));
 		
 		pre = $(applic).find(".questionPre");
-		console.log(pre)
+
 		for(var y = 0; y < pre.length; y++){
 			qId = pre[y].id;
 			qLabel = $("#"+qId+"Name").val();
-			qType = $(pre[y]).find("select").val();
+			qqType = $(pre[y]).find("select").val();
 			qPre = 1;
 
 			var customAns = null;
@@ -471,17 +473,15 @@ function extractData(){
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
 				}
-
 			}
 			
-			q.push(new Question(qId, qLabel, qType, qPre, customAns));
+			q.push(new Question(qId, qLabel, qType[qqType], qPre, customAns, id));
 		}		
 		post = $(applic).find(".questionPost");
-		console.log(post)
 		for(var y = 0; y < 	post.length; y++){
 			qId = post[y].id;
 			qLabel = $("#"+qId+"Name").val();
-			qType = $(pre[y]).find("select").val();
+			qqType = $(post[y]).find("select").val();
 			qPre = 0;
 
 			var customAns = null;
@@ -499,15 +499,14 @@ function extractData(){
 				}
 
 			}
-			
-			q.push(new Question(qId, qLabel, qType, qPre, customAns));
+			q.push(new Question(qId, qLabel, qType[qqType], qPre, customAns, id));
 		}
 	}
-		console.log(a);
-		console.log(q);
+	//	console.log(a);
+	//	console.log(q);
 		
-		var pi = extractPersonnalInfo(), fs = extractFSQuestion(), formId = getFormId();
-		send(formId, a, q, pi, fs);
+	var pi = extractPersonnalInfo(), fs = extractFSQuestion();
+	send(form, a, q, pi, fs);
 }
 
 function extractFSQuestion(){
@@ -544,13 +543,13 @@ function extractPersonnalInfo(){
 	return pInfo;
 }
 
-function send(formId, a, q, pInfo, fs){	
+function send(form, a, q, pInfo, fs){	
 	$.post(
 		"index.php", // url
 		{
 			"action":"updated",
 			"controller":"form",
-			"form":formId,
+			"form":JSON.stringify(form),
 			"applications":JSON.stringify(a),
 			"questions":JSON.stringify(q),
 			"information":JSON.stringify(pInfo),
@@ -567,16 +566,19 @@ function send(formId, a, q, pInfo, fs){
 					var ext = "";
 					for(var i = 0; i < a.length; i++){
 						var name = a[i]['img'];
-
-						var file_data = $("#"+name).prop("files")[0];
-		
+						
+						if(name !== "NotDelete")
+							var file_data = $("#"+name).prop("files")[0];
+						else
+							var file_data = undefined;
+						console.log(file_data);
 						if(file_data !== undefined){
 							ext = re.exec(file_data.name)[1];
 							var form_data = new FormData();
 
-							form_data.append("file", file_data, res+name+"."+ext);
+							form_data.append("file", file_data, name+"."+ext);
 								$.ajax({
-									url: "index.php?controller=application&action=saveImg",
+									url: "index.php?controller=application&action=saveImg&formId="+form['id'],
 									cache: false,
 									contentType: false,
 									processData: false,
@@ -590,10 +592,10 @@ function send(formId, a, q, pInfo, fs){
 									}   
 								});  
 						}
-						alert("The form has been successfully registered ! (You will be redirected)");
-						$("#submit").unbind("click", extractData);
-						setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					}
+					alert("The form has been successfully registered ! (You will be redirected)");
+					//$("#submit").unbind("click", extractData);
+					//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					
 				}else{
 					console.log("Error when saving the form. ");

@@ -104,17 +104,31 @@ class ModelQuestion extends Model{
             return false;
         }
     }
-	
+
 	public static function getQuestionByFormId($formId){
-		$app = ModelApplication::getApplicationByFormId($formId);
-		$questionTable=[];
-		foreach($app as $a){
-			$question = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
-			foreach($question as $q){
-				array_push($questionTable, $q);
-			}
-		}
-		return $questionTable;
+		try{
+			$sql  = "SELECT Q.questionId, Q.questionName, Q.applicationId, Q.questionTypeId, Q.questionPre FROM Question Q JOIN Application A ON A.applicationId = Q.applicationId WHERE A.formId=:id";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"id" => $formId
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelQuestion');
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
 	}
 	
 	public function getAnswerArrayByQuestionId(){

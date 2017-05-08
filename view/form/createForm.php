@@ -215,6 +215,7 @@
 					
 					<?php
 						if(!$create){
+							
 							foreach($fsQuestion as $fs){
 								$names = explode("/", $fs->getFSQuestionName());
 								$names[0] = htmlspecialchars($names[0]);
