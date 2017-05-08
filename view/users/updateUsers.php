@@ -1,3 +1,4 @@
+<main>
 <form class ="formCss" id="userForm" method="post" <?php if($create){echo "action=\"index.php?action=created&controller=users\">";} else {echo "action=\"index.php?action=updated&controller=users\">";}?>
 	<fieldset>
 		<p>
@@ -38,3 +39,4 @@
 		</p>
 	</fieldset>
 </form>
+</main>

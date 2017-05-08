@@ -1,5 +1,5 @@
 <main>
-
+    <div class="adminPage">
 	<table>
 	<caption>All of my delicious forms</caption>
 
@@ -63,5 +63,6 @@ EOT;
 	?>
 
 	</table>
+    </div>
 </main>
 <script src ="script/scriptAllForms.js"></script>

@@ -1,3 +1,4 @@
+<main>
 <div class="formCss">
 		<fieldset>
 				<legend>Your information</legend>
@@ -28,3 +29,4 @@
 		<button type="button"> Update your Account </button>	
     </a>
 </div>
+</main>

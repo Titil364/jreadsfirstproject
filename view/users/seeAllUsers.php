@@ -1,5 +1,5 @@
 <main>
-
+    <div class="adminPage">
 	<table>
 	<caption>Manage users</caption>
 
@@ -63,4 +63,5 @@ EOT;
 	?>
 
 	</table>
+    </div>
 </main>

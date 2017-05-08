@@ -854,6 +854,7 @@ class ControllerForm {
 			$view = 'displayAllMyForms';
 			$controller = 'users';
 			$pagetitle = 'All the user forms';
+                        $stylesheet = 'admin';
 			
 			$form = ModelForm::selectAll();
 			$tmp = ModelUsers::getCreatorUsers();

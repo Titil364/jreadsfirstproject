@@ -2,10 +2,12 @@
 
 require_once File::build_path(array('model', 'ModelUsers.php'));
 
+
 class ControllerUsers {
 	/* desc Display a tab containing all the current user form
 	 * 
 	 */
+         
 	public static function readAllMyForm() {
 
 		
@@ -13,6 +15,8 @@ class ControllerUsers {
 			$view = 'displayAllMyForms';
 			$controller = 'users';
 			$pagetitle = 'Create Form';
+                        $stylesheet = 'admin';
+
 			
 			//Collect all the current user form
 			$form = ModelUsers::getMyForms($_SESSION['nickname']);
@@ -90,6 +94,7 @@ class ControllerUsers {
         $view = 'updateUsers';
         $controller = 'users';
         $pagetitle = 'Sign in';
+        $stylesheet = 'admin';
 		$jscript = "myScriptSignin";
 		$create = true;
 		
@@ -188,6 +193,7 @@ class ControllerUsers {
             $view = 'updateUsers';
             $pagetitle = 'Update';
             $controller = 'users';
+            $stylesheet = 'admin';
 			$jscript = "myScriptSignin";
 			$create	= false; 
 			
@@ -221,7 +227,8 @@ class ControllerUsers {
             $view = 'userProfil';
 
             $pagetitle = 'Updated';
-            $controller = 'users';		
+            $controller = 'users';
+            $stylesheet = 'admin';
 			
 			$nickname = $_POST['userNickname'];
 			$userForename = $_POST['userForename'];
@@ -259,6 +266,7 @@ class ControllerUsers {
 			$view = 'userProfil';
 			$controller = 'users';
 			$pagetitle = 'Profil';
+                        $stylesheet = 'admin';
 			$data = array(
 				"userNickname" => $_SESSION['nickname'],
 				"userSurname" =>  $_SESSION['surname'],
@@ -357,6 +365,7 @@ class ControllerUsers {
 			$view = 'administrationPanel';
 			$controller = 'users';
 			$pagetitle = 'Administration';
+                        $stylesheet = 'admin';
 
 			require File::build_path(array('view','view.php'));
 		}else{
@@ -377,6 +386,7 @@ class ControllerUsers {
 			$view = 'seeAllUsers';
 			$controller = 'users';
 			$pagetitle = 'See all users';
+                        $stylesheet = 'admin';
 			
 			$jscript = "allUsers";
 			
@@ -493,6 +503,7 @@ class ControllerUsers {
 		$view = 'retrieveAccount';
 		$controller = 'users';
 		$pagetitle = 'Bienvenue';
+                $stylesheet = 'admin';
 		
 		require_once(File::build_path(array('view','view.php')));
 	}

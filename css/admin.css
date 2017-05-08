@@ -1,0 +1,11 @@
+main{
+	height:100vh;
+	padding-top: 30px;
+}
+
+.adminPage{
+	background-color: white;
+	padding: 2%;
+	box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.4);
+	border-radius: 10px;
+}

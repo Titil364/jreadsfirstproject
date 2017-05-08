@@ -1,3 +1,4 @@
+<main>
 <div class="formCss">
 		<fieldset>
 				<legend>Manage the users</legend>
@@ -21,3 +22,4 @@
 				</div>
 		</fieldset>
 </div>
+</main>>    

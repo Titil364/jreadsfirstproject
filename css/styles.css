@@ -260,3 +260,12 @@ box-shadow: 0px 9px 22px -11px rgba(0,0,0,0.51);
 .addQuestionButton{
 	width: 300px;
 }
+
+/*admin pannel css */
+
+html {
+  height: 100%;
+}
+body{
+  min-height: 100%;
+}
