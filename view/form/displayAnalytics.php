@@ -34,10 +34,15 @@
 	$questionPre_array = $questionsPre_array_list[$i];
 		
 	for($j=0; $j < count($questionPre_array);$j++){
+                        $k = $j+1;
+                        $name = "Applic".$i."Q".$k."pre";
+                        $qId = $formId.$name;
+                        $total = $allAnswers[$qId]["nb"];
 					//displaying questions
 			echo '<div id="Applic'.$i.'Q'.$j.'" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
 			echo "<h3> ";
 			echo htmlspecialchars($questionPre_array[$j]->getQuestionName());
+                        echo "    (Answers : ".$total." )";
 			echo " </h3>";
 			$qType = $questionTypePre_list[$i][$j];
 			//var_dump($questionType_list[$i][$j]->getQuestionTypeId());
@@ -73,13 +78,11 @@
                             $answerTypeId = htmlspecialchars($a['answerTypeId']);
                             
                             $id = "Applic".$i."question".$j.$answerName;
-                            $k = $j+1;
-                            $name = "Applic".$i."Q".$k."pre";
-							$qId = $formId.$name;
+
                             echo '<div>';
                             echo '<div>';
 							$nb = 0;
-							$total = $allAnswers[$qId]["nb"];
+
                             foreach($allAnswers[$qId] as $t){
 								if($t["answer"] == $answerName){
 									$nb = $t["nbAnswer"];
@@ -135,11 +138,16 @@
 	$questionPost_array = $questionsPost_array_list[$i];
 		
 	for($j=0; $j < count($questionPost_array);$j++){
+                        $k = $j+1;
+                        $name = "Applic".$i."Q".$k."pre";
+                        $qId = $formId.$name;
+                        $total = $allAnswers[$qId]["nb"];            
 					//displaying questions
 				$idAppli = 'Applic'.$i.'Q'.$j;
 			echo '<div id="$idAppli" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
 			echo "<h3> ";
 			echo htmlspecialchars($questionPost_array[$j]->getQuestionName());
+                        echo "    (Answers : ".$total." )";                        
 			echo " </h3>";
 	
 			
@@ -164,13 +172,9 @@
                             $answerTypeId = htmlspecialchars($a['answerTypeId']);
                             
 							$id = "Applic".$i."question".$j.$answerName;
-                            $k = $j+1;
-                            $name = "Applic".$i."Q".$k."post";
-							$qId = $formId.$name;
                             echo '<div>';
                             echo '<div>';
 							$nb = 0;
-							$total = $allAnswers[$qId]["nb"];
                             foreach($allAnswers[$qId] as $t){
 								if($t["answer"] == $answerName){
 									$nb = $t["nbAnswer"];
@@ -216,10 +220,6 @@
 			   <tbody>
 			<?php
 				foreach($applicationTable as $at){
-					echo '<tr>';
-					echo '<td>';
-					echo $at->getApplicationName();
-					echo '</td>';
 					$appliId = $at->getApplicationId();
 					$varY = 0;
 					$varM = 0;
@@ -237,6 +237,12 @@
 						}
 					}
 					$tot =  $varM+$varN+$varY;
+                                        
+                                        echo '<tr>';
+					echo '<td>';
+					echo $at->getApplicationName();
+                                        echo "    (Answers : ".$tot." )";
+					echo '</td>';
                                         
                                         if($tot!=0){
                                             echo '<td>'.$varY;
