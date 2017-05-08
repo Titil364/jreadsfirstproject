@@ -15,6 +15,7 @@
 					<th>Mail</th>
 					<th>isAdmin</th>
 					<th>State</th>
+                                        <th></th>
 				</tr>
 		   </thead>
 EOT;
