@@ -434,7 +434,9 @@ function answers(event){
 function customQuestion(customCheckbox, answerArea){
 	var customCheckboxId = customCheckbox.id;
 
-	var splittedId  = customCheckboxId.match(/[a-zA-Z]+|[0-9]+/g); //separating numbers and characters into an array ex : "Applic1Q5pre"
+	var questionId = "Applic"+customCheckboxId.split('Applic')[1];
+
+	var splittedId  = questionId.match(/[a-zA-Z]+|[0-9]+/g); //separating numbers and characters into an array ex : "Applic1Q5pre"
 
 	var numApp = splittedId[1]; // in ex will be 1
 

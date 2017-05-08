@@ -421,6 +421,11 @@ function cancelDeletion(){
 }
 
 function extractData(){
+	var formName = $("#formName").val();
+	if(formName === ""){
+		alert("Please enter the name of the form. ");
+		return null;
+	}
 	var applications = $(".application"), a=[], pre = [], post = [], q=[];
 	
 	for(var i = 0; i < applications.length; i++){
@@ -452,9 +457,24 @@ function extractData(){
 			qLabel = $("#"+qId+"Name").val();
 			qType = $(pre[y]).find("select").val();
 			qPre = 1;
-			qCustomAns = 1;
+
+			var customAns = null;
+
+			if ($("#checkbox"+qId).is(":checked")){ //if is custom question
+
+				customAns = [];	//defining an array
+				var title = $("#titlecheckbox"+qId)[0].value; //first value  = custom questionType title
+				customAns.push(title);
+
+
+				var fieldList = $(".fieldcheckbox"+qId); //next are the fields by order 
+				for(var j = 0; j<fieldList.length; j++){
+					customAns.push(fieldList[j].value);
+				}
+
+			}
 			
-			q.push(new Question(qId, qLabel, qType, qPre, qCustomAns));
+			q.push(new Question(qId, qLabel, qType, qPre, customAns));
 		}		
 		post = $(applic).find(".questionPost");
 		console.log(post)
@@ -463,9 +483,24 @@ function extractData(){
 			qLabel = $("#"+qId+"Name").val();
 			qType = $(pre[y]).find("select").val();
 			qPre = 0;
-			qCustomAns = 1;
+
+			var customAns = null;
+
+			if ($("#checkbox"+qId).is(":checked")){ //if is custom question
+
+				customAns = [];	//defining an array
+				var title = $("#titlecheckbox"+qId)[0].value; //first value  = custom questionType title
+				customAns.push(title);
+
+
+				var fieldList = $(".fieldcheckbox"+qId); //next are the fields by order 
+				for(var j = 0; j<fieldList.length; j++){
+					customAns.push(fieldList[j].value);
+				}
+
+			}
 			
-			q.push(new Question(qId, qLabel, qType, qPre, qCustomAns));
+			q.push(new Question(qId, qLabel, qType, qPre, customAns));
 		}
 	}
 		console.log(a);
