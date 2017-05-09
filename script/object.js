@@ -14,12 +14,13 @@ class Application{
 	}
 }
 class Question{
-	constructor(id, label, type, pre, customAns){
+	constructor(id, label, type, pre, customAns, applicationId = null){
 		this.id = id;
 		this.label = label;
 		this.type = type;
 		this.pre = pre;
 		this.customAns = customAns;
+		this.applicationId = applicationId;
 	}
 }
 class QType{

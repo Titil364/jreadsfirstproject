@@ -8,8 +8,17 @@ class ControllerApplication {
 	 * trigger Use when ?
 	 */
 	public static function saveImg(){
-		if(Session::is_connected())
-			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$_SESSION['nickname']."/".$_FILES['file']['name']);
+		if(Session::is_connected()){
+			if(isset($_GET['formId'])){
+				$f = ModelForm::select($_GET['formId']);
+				$folder = $f->getUserNickname();
+			}else{
+				$folder = $_SESSION['nickname'];
+			}
+			var_dump($_FILES);
+			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$folder."/".$_FILES['file']['name']);
+		}
+		
     }
 	
 	

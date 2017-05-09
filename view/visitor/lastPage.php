@@ -136,6 +136,31 @@
 				   <th>No</th>
 			   </tr>
 			</thead>
+			<tbody>
+			<?php
+				for($i = 0; $i<$nb ;$i++){
+					$trId = $formId;
+					$trId .= "Applic";
+					$trId .=  $randomTable[$i]-1;
+					echo '<tr id='.$trId.'>';
+					echo'<td>';
+					echo $application_array[$randomTable[$i]-1]->getApplicationName();
+					echo '</td>';
+					for($j = 2; $j>=0; $j--){
+						echo '<td>';
+						echo  '<input type="radio" class="radioButtonFS" name="radio'.$i.'" value = "'.$j.'"';
+						foreach($AAFilled as $af){
+							if($af->getApplicationId() == $trId && $af->getAgain() == $j){
+								echo 'checked';
+							}
+						}
+						echo '>';
+						echo '</td>';
+					}
+					echo '</tr>';
+				}
+			?>
+			</tbody>
 		</table>
 	</div>
 	<p></p>
@@ -158,6 +183,35 @@
 				   <th>Oldest</th>
 			   </tr>
 			</thead>
+			<tbody>
+			<?php
+				for($i = 0; $i<$nbFS ;$i++){
+					$alphabeta = $alphabet;
+					$f = $FS[$randomFS[$i]-1];
+					$name = split("/",$f->getFSQuestionName());
+					$nameLeft = $name[0];
+					$nameRight = $name[1];
+					foreach($FSFilled as $fsf){
+						if($fsf->getFSQuestionName() == $f->getFSQuestionName() && $fsf->getApplicationRatingOrder() !=null){
+							$alphabeta = str_split($fsf->getApplicationRatingOrder());
+						}
+					}
+					echo '<tr>';
+						echo '<td>'.$nameLeft.'</td>';
+						$j = 0;
+						foreach($applicationTable as $value){
+							$divId = "FSmove";
+							$divId .= $randomFS[$i]-1;
+							echo '<td><div class='.$divId.'>';
+							echo $alphabeta[$j];
+							echo '</div></td>';
+							$j++;
+						}
+						echo '<td>'.$nameRight.'</td>';
+					echo '</tr>';
+				}
+			?>
+			</tbody>
 		</table>
 	</div>
 </main>

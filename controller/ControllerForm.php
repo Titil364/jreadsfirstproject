@@ -168,23 +168,7 @@ class ControllerForm {
 				foreach($applications as $a){
 					$appliId = $a->getApplicationId();
 					$questions_pre[$appliId] = ModelQuestion::getQuestionByApplicationIdAndPre($appliId, 1);
-					$questions_post[$appliId] = ModelQuestion::getQuestionByApplicationIdAndPre($appliId, 0);
-					
-					//Collect the answer for the pre questions
-					//foreach question of the application 
-					/*foreach($questions_pre[$appliId] as $q){
-						$questionId = $q->getQuestionId();
-						$questionTypeId = $q->getQuestionTypeId();
-						//$answer_pre[$appliId][$questionId] = ModelAnswerType::getAnswerTypeByQuestionId($questionTypeId);
-					}*/
-					//Collect the answer for the post questions
-					//foreach question of the application 
-					/*foreach($questions_post[$appliId] as $q){
-						$questionId = $q->getQuestionId();
-						$questionTypeId = $q->getQuestionTypeId();
-						//$answer_post[$appliId][$questionId] = ModelAnswerType::getAnswerTypeByQuestionId($questionTypeId, 1);
-					}*/
-					
+					$questions_post[$appliId] = ModelQuestion::getQuestionByApplicationIdAndPre($appliId, 0);				
 				}
 	
 				
@@ -205,7 +189,161 @@ class ControllerForm {
 		}
 
 	}
-	
+	public static function updated(){		
+		if(Session::is_connected()){
+			$form = json_decode($_POST['form'], true);
+			
+			$formName = $form['name'];
+			$formId = $form['id'];
+			
+			$f = ModelForm::select($formId);
+			
+			if(!$f){
+				$data["message"] = "The form doesn't exist. ";
+				$data["pagetitle"] = "Form error";
+			
+				ControllerDefault::message($data);
+			}
+			
+			if($_SESSION['nickname'] == $f->getUserNickname() || Session::is_admin()){
+				
+				if($formName != $f->getFormName()){
+					$data = array(
+						"formId" => $formId,
+						"formName" => $formName
+					);
+					ModelForm::update($data);
+				}
+
+				
+				$applications = json_decode($_POST["applications"], true);
+				$questions = json_decode($_POST["questions"], true);
+				$information = json_decode($_POST["information"], true);
+				$FSQuestions = json_decode($_POST["FSQuestions"], true);
+				$infoToDelete = json_decode($_POST["informationToDelete"], true);
+				$fsToDelete = json_decode($_POST["fsToDelete"], true);
+				
+			//	var_dump($applications);
+				$appliToDelete = ModelApplication::getApplicationByFormId($formId);
+				$nbAppli = count($appliToDelete);
+
+				foreach($applications as $a){
+					
+					$data = array(
+					  'applicationId' => $a['id'],
+					  'applicationName' => $a['name'],
+					  'applicationDescription' => $a['description'],
+					  'formId' => $formId
+					  );
+					if(ModelApplication::select($data['applicationId'])){
+						if($a['img'] == 'ToDelete'){
+							$folder = "media/" . $f->getUserNickname() . "/" . $a['id'] . "Img.png";
+							if(file_exists($folder)){
+								unlink($folder);
+							}
+						}
+						ModelApplication::update($data);
+					}else{
+						ModelApplication::save($data);
+					}
+					if($nbAppli > count($applications)){
+						foreach($appliToDelete as $key => $a2){
+							if($a2->getApplicationId() == $a['id']){
+								unset($appliToDelete[$key]);
+								echo "bite";
+							}
+						}
+					}
+				}
+				var_dump($appliToDelete);
+				
+
+				if($nbAppli > count($applications)){
+					foreach($appliToDelete as $a){
+						ModelApplication::delete($a->getApplicationId());
+						$questionToDelete = ModelQuestion::getQuestionByApplicationId($a->getApplicationId());
+						foreach($questionToDelete as $q){
+							ModelQuestion::delete($q->getQuestionId());
+						}
+					}
+				}
+				
+				$questionToDelete = ModelQuestion::getQuestionByFormId($formId);
+				$nbQuestions = count($questionToDelete);
+				foreach($questions as $q){
+					$data = array(
+						"questionId" => $q['id'],
+						"questionName" => $q['label'],
+						"applicationId" => $q["applicationId"],
+						"questionTypeId" => $q["type"],
+						"questionPre" => $q["pre"]
+					);
+					
+					if(ModelQuestion::select($data['questionId'])){
+						ModelQuestion::update($data);
+					}else{
+						ModelQuestion::save($data);
+					}
+					if($nbQuestions > count($questions)){
+						foreach($questionToDelete as $key => $q2){
+							if($q2->getQuestionId() == $q['id']){
+								unset($questionToDelete[$key]);
+							}
+						}
+					}
+				}
+
+				if($nbQuestions > count($questions)){
+					foreach($questionToDelete as $q){
+						ModelQuestion::delete($q->getQuestionId());
+					}
+				}
+			//	Deleting the information removed
+				foreach($infoToDelete as $i){
+					$data = array(
+						"formId" => $formId,
+						"personnalInformationName" => $i
+					);
+					if(ModelAssocFormPI::select($data))
+						ModelAssocFormPI::delete($data);
+				}
+			//Deleting the fs questions removed
+				foreach($fsToDelete as $i){
+					$data = array(
+						"formId" => $formId,
+						"FSQuestionName" => $i
+					);
+					if(ModelAssocFormFS::select($data))
+						ModelAssocFormFS::delete($data);
+				}	
+			//Saving the information
+				foreach($information as $i){
+					$data = array(
+						"formId" => $formId,
+						"personnalInformationName" => $i
+					);
+					if(!ModelAssocFormPI::select($data))
+						ModelAssocFormPI::save($data);
+				}
+			//Saving the fsquestions 
+				foreach($FSQuestions as $i){
+					$data = array(
+						"formId" => $formId,
+						"FSQuestionName" => $i['name']
+					);
+					if(!ModelAssocFormFS::select($data))
+						ModelAssocFormFS::save($data);
+				}
+				
+				echo json_encode(true);
+			}else{
+				echo json_encode(false);
+			}
+		}else{
+			echo json_encode(false);
+		}
+		
+	}
 	/*desc getting post info from filled form, save them into DB
 	 * 
 	 */

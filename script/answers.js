@@ -4,9 +4,6 @@ var formId;
 var visitorId;
 var secretName;
 var pre;
-var AAfilled;
-var FSfilled;
-var length;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -43,7 +40,7 @@ function getAAFilled(visitorId){ //Getting answers filled in the AA table for th
         function(res){
             if (res!=null) {
                AAfilled = res;
-               randomizeAA();       
+               //randomizeAA();       
             }
         },
         "json"
@@ -100,39 +97,13 @@ function getApplication(b){ //Getting the applications for the given formId
         },
         function(res){
             applicationName = res;              
-            applicationNumber = res.length;     
-			getQuestionsName(b);
+            applicationNumber = res.length;  
         },
         "json"
     );
 }
-function getQuestionsName(a){       //Getting the FS questions for the given formId 
-    $.get(
-        "index.php",
-        {
-            "action":"FSQuestionName",
-            "controller":"FSQuestion",
-            "formId":JSON.stringify(a),
-        },
-        function(res) {
-            if (res.length ==0) {
-                var changeCss = $(".fsAndAa");
-                if (visitorId !== 0) {
-                  //  randomizeAA();
-                }
-                return null;
-            }
-            tabName = res;
-            length = tabName.length;
-			if (pre === 0) {            //If we are in the postForm we send the following functions
-                //console.log("trying to get");
-                getFSFilled(visitorId);     
-                getAAFilled(visitorId);
-            }
-        },
-        "json"
-    );
-}
+
+
 
 
 
@@ -263,7 +234,7 @@ function sendPost(){    //Function used when submit in PostForm pressed, it will
 	);
 }
 
-function randomizeFS() {      
+/*function randomizeFS() {      
     var alphabeta = Array(applicationNumber);
     
     var array = new Array();
@@ -347,7 +318,7 @@ function randomizeAA(){
 			 * 2 = yes
 			 * 1 = maybe
 			 * 0 = no
-			 */
+			 
             var td = document.createElement('td');
             var button = document.createElement("input");
             button.setAttribute("type","radio");
@@ -365,8 +336,7 @@ function randomizeAA(){
         tbody.appendChild(table_row);  
     }
 	table.appendChild(tbody);
-    addAA();
-}
+} */
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
     b = jQuery(b)[0]; 
@@ -380,7 +350,8 @@ jQuery.fn.swap = function(b){
 
 
 function makeFSDraggable() {
-    for (k =0; k < length; k++){
+    var FSlength = $("#fs tbody tr").length;
+    for (k =0; k < FSlength; k++){
         var select = ".FSmove"+k;
         $( select ).draggable({containment : $(select).parent().parent(), revert: true, helper: "clone" });
     
@@ -593,7 +564,11 @@ function init(){
     if (pre ==1 ) { //If we are in the preForm
         document.getElementById("secretName").addEventListener("change",saveSecretName); //AddEventListener on Secret name 
         addEventInfo();     //And add event Listener on the head information
-    } //Else the randomizeAA and randomizeFS are called in callback of getAAFilled and getFSFilled
+    }else{ //Else the randomizeAA and randomizeFS are called in callback of getAAFilled and getFSFilled
+        addAA();
+        makeFSDraggable();
+        addFS();
+    }
 	$("#submit").click(extractAnswers);
     add(); //AddEventListener on each answerInput
 }
