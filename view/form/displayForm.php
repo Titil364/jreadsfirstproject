@@ -237,42 +237,97 @@
 	echo"<div id=\"applications\" class=\"fsAndAa\" >"; // div of all app
  ?>
 	<div id="AAtable">
-		   <p>
-			   Would you like to do these activities again ? Tick a box for each ?
-		   </p>
-		   <table id="aa">
-			   <thead>
-				  <tr>
-					  <th></th>
-					  <th>Yes</th>
-					  <th>Maybe</th>
-					  <th>No</th>
-				  </tr>
-			   </thead>
-		   </table>
-	   </div>
-	   <p></p>
-	   <div id="FunSorter">
-		   <p>
-			   Write the activities in the boxes to show your preferences. The first is an example
-		   </p>
-		   <table id="fs">
-			   <thead>
-				  <tr>
-					  <th>Newest</th>
-					  <?php
-						   $i = 0;
-						   foreach($applicationTable as $value){
-							   echo "<th>".htmlspecialchars($value->getApplicationName())." : ".htmlspecialchars($alphabet[$i])."</th>";
-							   $i++;
-						   }
-					  ?>
-					  <th>Oldest</th>
-				  </tr>
-			   </thead>
-		   </table>
-	   </div>
-	   </div>
+		<p>
+			Would you like to do these activities again ? Tick a box for each ?
+			
+		</p>
+		<table id="aa">
+			<caption>Again Again table</caption>
+			<thead>
+			   <tr>
+				   <th></th>
+				   <th>Yes</th>
+				   <th>Maybe</th>
+				   <th>No</th>
+			   </tr>
+			</thead>
+			<tbody>
+			<?php
+				for($i = 0; $i<$nb ;$i++){
+					$trId = $formId;
+					$trId .= "Applic";
+					$trId .=  $randomTable[$i]-1;
+					echo '<tr id='.$trId.'>';
+					echo'<td>';
+					echo $application_array[$randomTable[$i]-1]->getApplicationName();
+					echo '</td>';
+					for($j = 2; $j>=0; $j--){
+						echo '<td>';
+						echo  '<input type="radio" class="radioButtonFS" name="radio'.$i.'" value = "'.$j.'"';
+						foreach($AAFilled as $af){
+							if($af->getApplicationId() == $trId && $af->getAgain() == $j){
+								echo 'checked';
+							}
+						}
+						echo '>';
+						echo '</td>';
+					}
+					echo '</tr>';
+				}
+			?>
+			</tbody>
+		</table>
+	</div>
+	<p></p>
+	<div id="FunSorter">
+		<p>
+			Write the activities in the boxes to show your preferences. The first is an example
+		</p>
+		<table id="fs">
+			<caption>Fun Sorter</caption>
+			<thead>
+			   <tr>
+				   <th>Newest</th>
+				   <?php
+						$i = 0;
+						foreach($applicationTable as $value){
+							echo "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
+							$i++;
+						}
+				   ?>
+				   <th>Oldest</th>
+			   </tr>
+			</thead>
+			<tbody>
+			<?php
+				for($i = 0; $i<$nbFS ;$i++){
+					$alphabeta = $alphabet;
+					$f = $FS[$randomFS[$i]-1];
+					$name = split("/",$f->getFSQuestionName());
+					$nameLeft = $name[0];
+					$nameRight = $name[1];
+					foreach($FSFilled as $fsf){
+						if($fsf->getFSQuestionName() == $f->getFSQuestionName() && $fsf->getApplicationRatingOrder() !=null){
+							$alphabeta = str_split($fsf->getApplicationRatingOrder());
+						}
+					}
+					echo '<tr>';
+						echo '<td>'.$nameLeft.'</td>';
+						$j = 0;
+						foreach($applicationTable as $value){
+							$divId = "FSmove";
+							$divId .= $randomFS[$i]-1;
+							echo '<td><div class='.$divId.'>';
+							echo $alphabeta[$j];
+							echo '</div></td>';
+							$j++;
+						}
+						echo '<td>'.$nameRight.'</td>';
+					echo '</tr>';
+				}
+			?>
+			</tbody>
+		</table>
 	</div>
 	<?php
 	if(!($full)){

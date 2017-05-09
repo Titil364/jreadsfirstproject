@@ -94,6 +94,40 @@ class ControllerForm {
 			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
 			$applicationTable = ModelApplication::getApplicationByFormId($formId);
 			
+			//AATable
+				$randomTable = [];
+				$nb = count($application_array);
+				for($i = 0; $i<$nb ;$i++){
+					$tmp = rand(1,$nb);
+					while(in_array($tmp,$randomTable)){
+						$tmp = rand(1,$nb);
+					}
+					array_push($randomTable, $tmp);
+				}
+				$AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+				
+				//FSTable
+				$alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
+				$randomFS =[];
+				$FS = ModelFSQuestion::getFSQuestionByFormId($formId);
+				$nbFS = count($FS);
+				for($i = 0; $i<$nbFS ;$i++){
+					$tmp = rand(1,$nbFS);
+					while(in_array($tmp,$randomFS)){
+						$tmp = rand(1,$nbFS);
+					}
+					array_push($randomFS, $tmp);
+				}
+				
+				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
+				!//var_dump($FSFilled);
+				
+				$jscript = "answers";
+				$pagetitle = 'Welcome back visitor';
+				$view='lastPage';
+				$controller = 'visitor';
+			
             $pagetitle = 'Form';
             $view='displayForm';
             $controller = 'form';
