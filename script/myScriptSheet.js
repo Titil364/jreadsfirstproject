@@ -20,7 +20,7 @@ function getApplication(b){
         function(res){
             applicationName = res;
             applicationNumber = applicationName.length;
-			getQuestionsName(formId); //1 is the form ID
+			//getQuestionsName(formId); //1 is the form ID
         },
         "json"
     );
@@ -31,41 +31,7 @@ function getVisitorId(){
     visitorId = f.value;
 }
 
-function getAAFilled(visitorId){
-    $.post(
-        "index.php",
-        {
-            "action":"getAgainAgainByVisitorId",
-            "controller":"visitor",
-            "visitorId":JSON.stringify(visitorId)
-        },
-        function(res){
-            if (res!=null) {
-               AAfilled = res;
-            }
-        },
-        "json"
-    );
-}
-
-function getFSFilled(visitorId){
-    $.post(
-        "index.php",
-        {
-            "action":"getFSByVisitorId",
-            "controller":"visitor",
-            "visitorId":JSON.stringify(visitorId)
-        },
-        function(res){
-            if (res!=null) {
-               FSfilled = res;
-            }
-        },
-        "json"
-    );
-}
-
-function randomizeAA(){
+/*function randomizeAA(){
     console.log(AAfilled);
     var array = new Array();
     for (i = 0; i<applicationNumber;i++) {
@@ -103,9 +69,9 @@ function randomizeAA(){
         }
         table.appendChild(table_row);  
     }
-}
+}*/
 
-function randomizeFS() {
+/*function randomizeFS() {
     var alphabeta = Array(applicationNumber);
     var array = new Array();
     for(i = 0; i < length; i++){
@@ -160,7 +126,7 @@ function randomizeFS() {
          
          tbody.appendChild(table_row);      //Add tr to the table
     }
- }
+ }*/
 
 function getQuestionsName(a){
     $.get(
@@ -322,8 +288,6 @@ function init(){
     getFormId();
     getVisitorId();
     getApplication(formId);
-    getAAFilled(visitorId);
-    getFSFilled(visitorId);
     var print = document.getElementById("print");
 	if(print){
 		print.addEventListener("click",makePrintable);

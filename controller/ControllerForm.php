@@ -742,6 +742,24 @@ class ControllerForm {
 				
 				//AATable
 				
+				$nb = count($application_array);
+				$randomTable = [];
+				$nb = count($application_array);
+				for($i = 0; $i<$nb ;$i++){
+					$tmp = $i+1;
+					array_push($randomTable, $tmp);
+				}
+				$AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+				
+				$randomFS =[];
+				$FS = ModelFSQuestion::getFSQuestionByFormId($formId);
+				$nbFS = count($FS);
+				for($i = 0; $i<$nbFS ;$i++){
+					$tmp = $i+1;
+					array_push($randomFS, $tmp);
+				}
+				
+				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
 			
 			require File::build_path(array('view', 'view.php'));
 		}

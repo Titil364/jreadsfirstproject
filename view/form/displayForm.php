@@ -110,38 +110,24 @@
 						}
 						foreach($answers_array as $a){
 							if(!$full){
-								$answerName = htmlspecialchars($a['answerTypeName']);
-								$answerImage = htmlspecialchars($a['answerTypeImage']);
-								$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
-								$answerTypeId = htmlspecialchars($a['answerTypeId']);
-							
-								$id = "Applic".$i."question".$j.$answerName;
-								$name = "Applic".$i."question".$j;
-								echo '<div>';
-								echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
-								echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
-								echo '</div>';
-							}else{
-								$answerName = htmlspecialchars($a['answerTypeName']);
-								$answerImage = htmlspecialchars($a['answerTypeImage']);
-								$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
-								$answerTypeId = htmlspecialchars($a['answerTypeId']);
-								if($ret == $answerName){
-									$id = "Applic".$i."question".$j.$answerName;
-									$name = "Applic".$i."question".$j;
-									echo '<div>';
-									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" checked readonly>";
-									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
-									echo '</div>';
-								} else{
-									$id = "Applic".$i."question".$j.$answerName;
-									$name = "Applic".$i."question".$j;
-									echo '<div>';
-									echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" disabled readonly>";
-									echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
-									echo '</div>';
-								}
+								$readonly = "";
+							} else{
+								$readonly = "readonly";
 							}
+							
+							$answerName = htmlspecialchars($a['answerTypeName']);
+							$answerImage = htmlspecialchars($a['answerTypeImage']);
+							$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+							$answerTypeId = htmlspecialchars($a['answerTypeId']);
+							if($ret == $answerName){
+								$checked = "checked = \"checked\"";
+							} else $checked = "disabled";
+							$id = "Applic".$i."question".$j.$answerName;
+							$name = "Applic".$i."question".$j;
+							echo '<div>';
+							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked $readonly>";
+							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
+							echo '</div>';
 						}
 						echo '</div>';
 						break;
@@ -206,19 +192,26 @@
 						break;*/
 					default :
 						echo '<div class = "answerArea">';
+						foreach($answer as $a){
+							if($a->getQuestionId() ==$questionPost_array[$j]->getQuestionId()){
+								$ret = $a->getAnswer();
+							}
+						}
 						foreach($answers_array as $a){
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
 							$questionTypeId = htmlspecialchars($questionPost_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
-						
+							if($ret == $answerName){
+									$checked = "checked = \"checked\"";
+								} else $checked = "disabled";
 							$id = "Applic".$i."question".$j.$answerName;
 							$name = "Applic".$i."question".$j;
 							echo '<div>';
-							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">" ;
-
+							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked readonly>";
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 							echo '</div>';
+							
 						}
 						echo '</div>';
 						break;
@@ -266,7 +259,13 @@
 						echo  '<input type="radio" class="radioButtonFS" name="radio'.$i.'" value = "'.$j.'"';
 						foreach($AAFilled as $af){
 							if($af->getApplicationId() == $trId && $af->getAgain() == $j){
-								echo 'checked';
+								if(!$full){
+									$readonly = "";
+								}else{
+									$readonly = "readonly";
+								}
+								echo "checked=\"checked\"";
+								echo $readonly;
 							}
 						}
 						echo '>';
@@ -329,12 +328,5 @@
 			</tbody>
 		</table>
 	</div>
-	<?php
-	if(!($full)){
-		echo '<div>
-			   <input type ="button" id="print" value="Printable">
-		</div>';
-	}
-	?>
 	</div>
 </main>
