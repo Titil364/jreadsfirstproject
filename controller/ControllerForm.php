@@ -1230,7 +1230,9 @@ class ControllerForm {
                     if (file_exists($img)) {
                         $currentPage.= "<img src = $img >";
                     }
+                    $currentPage.="<p>".$taskDesc."</p>";
                     $currentPage.="<br>";
+                    
 
 
                     $questionPre_array = $questionsPre_array_list[$i];
