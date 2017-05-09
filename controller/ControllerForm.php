@@ -897,17 +897,33 @@ class ControllerForm {
         $formId = $_GET['id'];
        
         $tabPages = self::preparePDF($formId);//getting the pages
-        
+        $nbPages = count($tabPages);
         $html=""; //initializing html content str
         
-        $html.=$tabPages[0]; //to have 2 first pages in one
         
-        for($pageCpt = 1;$pageCpt < count($tabPages)-2;$pageCpt++){ 
-            $html.=$tabPages[$pageCpt];                                 //adding page
-            $html.= '<div style="page-break-before: always;"></div>';   //adding page break
+        switch ($nbPages){
+            case 0:
+                break;
+            case 1:
+                $html.=$tabPages[0];
+                break;
+            case 2:
+                $html.=$tabPages[0];
+                $html.= '<div style="page-break-before: always;"></div>';
+                $html.=$tabPages[1];
+                break;
+            default:
+                $html.=$tabPages[0]; //to have 2 first pages in one
+                for($pageCpt = 1;$pageCpt < $nbPages-1;$pageCpt++){ 
+                    $html.=$tabPages[$pageCpt];                                 //adding page
+                    $html.= '<div style="page-break-before: always;"></div>';   //adding page break
+                }
+                $html.=$tabPages[$nbPages-1]; //adding last page without page break (putting white page at the end otherwise
+                break;
         }
-        $html.=$tabPages[count($tabPages)-1]; //adding last page without page break (putting white page at the end otherwise
+          
 
+        
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
