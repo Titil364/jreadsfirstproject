@@ -4,9 +4,6 @@ var formId;
 var visitorId;
 var secretName;
 var pre;
-var AAfilled;
-var FSfilled;
-var length;
 var alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 function getFormId(){
@@ -237,7 +234,7 @@ function sendPost(){    //Function used when submit in PostForm pressed, it will
 	);
 }
 
-function randomizeFS() {      
+/*function randomizeFS() {      
     var alphabeta = Array(applicationNumber);
     
     var array = new Array();
@@ -296,7 +293,7 @@ function randomizeFS() {
     makeFSDraggable();
     addFS();
 }
-/*function randomizeAA(){
+function randomizeAA(){
     var array = new Array();
     for (i = 0; i<applicationNumber;i++) {
         var a = Math.random()*applicationNumber;
