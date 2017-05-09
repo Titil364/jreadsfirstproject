@@ -1419,17 +1419,17 @@ class ControllerForm {
                 $aaPage="";
                 $aaPage.= "
                     <style>
-                    #AA table {
+                    #AA table, #FS table {
                         border-collapse: collapse;
                         width:100%;
                         
                     }
 
-                    #AA table,#AA th,#AA td {
+                    #AA table,#AA th,#AA td,#FS table,#FS th,#FS td {
                         border: 1px solid black;
                     }
                     
-                    #row th, #row td{
+                    .row th, .row td{
                         height: 50px;
                     }
                     </style>
@@ -1455,7 +1455,7 @@ class ControllerForm {
 					$trId = $formId;
 					$trId .= "Applic";
 					$trId .=  $randomTable[$i]-1;
-					$aaPage.= '<tr id="row">';
+					$aaPage.= '<tr class="row">';
 					$aaPage.='<td>';
 					$aaPage.= $application_array[$randomTable[$i]-1]->getApplicationName();
 					$aaPage.= '</td>';
@@ -1469,7 +1469,61 @@ class ControllerForm {
 			</tbody>
 		</table>
 	</div>";
-                array_push($tabPages, $aaPage); //pushing page to array  
+                //array_push($tabPages, $aaPage); //pushing page to array  
+                
+                //------- FS table
+                $fsPage="";
+                $fsPage.= "
+                    <style>
+                    .fsCase{
+                        height: 30px;
+                    }
+                    
+                    </style>
+		<p>
+			Write the activities in the boxes to show your preferences. The first is an example
+		</p>
+                <div id=\"FS\">
+		<table >
+			<caption>Fun Sorter</caption>
+			<thead>
+			   <tr>
+				   <th>Newest</th>";
+				   
+						$i = 0;
+						foreach($application_array as $value){
+							$fsPage.= "<th>".$value->getApplicationName()." : ".$alphabet[$i]."</th>";
+							$i++;
+						}
+		$fsPage.="		  
+				   <th>Oldest</th>
+			   </tr>
+			</thead>
+			<tbody>";
+			
+				for($i = 0; $i<$nbFS ;$i++){
+					$alphabeta = $alphabet;
+					$f = $FS[$randomFS[$i]-1];
+					$name = split("/",$f->getFSQuestionName());
+					$nameLeft = $name[0];
+					$nameRight = $name[1];
+					$fsPage.= '<tr class=\"row\">';
+						$fsPage.= '<td class=\"fsCase\">'.$nameLeft.'</td>';
+                                                
+						foreach($application_array as $value){
+							$fsPage.= '<td class=\"fsCase\"></td>';
+						}
+                
+						$fsPage.= '<td class=\"fsCase\">'.$nameRight.'</td>';
+					$fsPage.= '</tr>';
+				}
+                $fsPage.="
+			</tbody>
+		</table>
+	</div>";
+                $aaAndFs = $aaPage."<br><br><br><br><br>".$fsPage;
+                array_push($tabPages, $aaAndFs); //pushing page to array  
+                
                 return $tabPages;
 
             }
