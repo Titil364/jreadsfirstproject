@@ -1166,6 +1166,7 @@ class ControllerForm {
             ControllerDefault::message($data);
         } else {
 
+            $visitorId = $formId . "Example";
             $folder = $f->getUserNickname();
             $application_array = ModelApplication::getApplicationByFormId($f->getFormID());
 
@@ -1227,11 +1228,36 @@ class ControllerForm {
                 }
             }
 
-            $alphabet = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+            //AATable
+            $randomTable = [];
+            $nb = count($application_array);
+            for ($i = 0; $i < $nb; $i++) {
+                $tmp = rand(1, $nb);
+                while (in_array($tmp, $randomTable)) {
+                    $tmp = rand(1, $nb);
+                }
+                array_push($randomTable, $tmp);
+            }
+            $AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
 
-            $FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
-            $applicationTable = ModelApplication::getApplicationByFormId($formId);
-            
+            //FSTable
+            $alphabet = Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            $randomFS = [];
+            $FS = ModelFSQuestion::getFSQuestionByFormId($formId);
+            $nbFS = count($FS);
+            for ($i = 0; $i < $nbFS; $i++) {
+                $tmp = rand(1, $nbFS);
+                while (in_array($tmp, $randomFS)) {
+                    $tmp = rand(1, $nbFS);
+                }
+                array_push($randomFS, $tmp);
+            }
+
+            $FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
+ 
+
+
             //============ STARTING PAGE GENERATION ===========
             
             //----------- page 1 personnal info
@@ -1389,6 +1415,61 @@ class ControllerForm {
                     
 
                 }
+                //------- AA table
+                $aaPage="";
+                $aaPage.= "
+                    <style>
+                    #AA table {
+                        border-collapse: collapse;
+                        width:100%;
+                        
+                    }
+
+                    #AA table,#AA th,#AA td {
+                        border: 1px solid black;
+                    }
+                    
+                    #row th, #row td{
+                        height: 50px;
+                    }
+                    </style>
+		<p>
+			Would you like to do these activities again ? Tick a box for each ?
+			
+		</p>
+                <div id=\"AA\">
+		<table>
+			<caption>Again Again table</caption>
+			<thead>
+			   <tr>
+				   <th></th>
+				   <th>Yes</th>
+				   <th>Maybe</th>
+				   <th>No</th>
+			   </tr>
+			</thead>
+			<tbody>
+                      " ;
+			
+				for($i = 0; $i<$nb ;$i++){
+					$trId = $formId;
+					$trId .= "Applic";
+					$trId .=  $randomTable[$i]-1;
+					$aaPage.= '<tr id="row">';
+					$aaPage.='<td>';
+					$aaPage.= $application_array[$randomTable[$i]-1]->getApplicationName();
+					$aaPage.= '</td>';
+					for($j = 2; $j>=0; $j--){
+						$aaPage.= '<td>';
+						$aaPage.= '</td>';
+					}
+					$aaPage.= '</tr>';
+				}
+			$aaPage.="
+			</tbody>
+		</table>
+	</div>";
+                array_push($tabPages, $aaPage); //pushing page to array  
                 return $tabPages;
 
             }
