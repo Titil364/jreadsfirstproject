@@ -168,6 +168,36 @@ class ControllerVisitor{
 					}
 					
 				}
+				
+				//AATable
+				$randomTable = [];
+				$nb = count($application_array);
+				for($i = 0; $i<$nb ;$i++){
+					$tmp = rand(1,$nb);
+					while(in_array($tmp,$randomTable)){
+						$tmp = rand(1,$nb);
+					}
+					array_push($randomTable, $tmp);
+				}
+				$AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+				
+				//FSTable
+				$alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
+				$randomFS =[];
+				$FS = ModelFSQuestion::getFSQuestionByFormId($formId);
+				$nbFS = count($FS);
+				for($i = 0; $i<$nbFS ;$i++){
+					$tmp = rand(1,$nbFS);
+					while(in_array($tmp,$randomFS)){
+						$tmp = rand(1,$nbFS);
+					}
+					array_push($randomFS, $tmp);
+				}
+				
+				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
+				!//var_dump($FSFilled);
+				
 				$jscript = "answers";
 				$pagetitle = 'Welcome back visitor';
 				$view='lastPage';
@@ -291,20 +321,6 @@ class ControllerVisitor{
 		echo json_encode($return);
 	}
 	
-	public static function getFSByVisitorId(){
-		//Return an array made of FSQuestionName and the related answer for a given visitorId
-		$visitorId = json_decode($_POST['visitorId']);
-		$AA = ModelSortApplication::getFSByVisitorId($visitorId);
-		$return = [];
-		foreach($AA as $a){
-			$data = array(
-				"FSQuestionName" => $a->getFSQuestionName(),
-				"applicationRatingOrder" => $a->getApplicationOrder()
-			);
-			array_push($return, $data);
-		}
-		echo json_encode($return);
-	}
 	
 	//I wrote this function but i'm not sure if it will be usefull or not
 	//Now I am pretty sure it is useless
