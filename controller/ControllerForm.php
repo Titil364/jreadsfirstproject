@@ -6,6 +6,8 @@ require_once File::build_path(array('model', 'ModelAgainAgain.php'));
 
 require_once File::build_path(array('model', 'ModelSortApplication.php'));
 
+use Dompdf\Dompdf;
+
 
 class ControllerForm {
     /*
@@ -749,78 +751,40 @@ class ControllerForm {
 		}
 	} */
 
-    public static function toPDF(){
+    /* desc making the pdf for paper version
+     * 
+     * making the pdf from all the pages of the differents activities
+     */        
+    public static function toPDF() {
+        $formId = $_GET['id'];
+       
+        $tabPages = self::preparePDF($formId);//getting the pages
         
-        // create new PDF document
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        ob_start(); 
-        // set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('ChiCl');
-        $pdf->SetTitle('exported form');
-        $pdf->SetSubject('form');
-        $pdf->SetKeywords('');
-
-        // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-
-        // set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-        // set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-        // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-        // set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        // set image scale factor
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-        // set some language-dependent strings (optional)
-        if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-            require_once(dirname(__FILE__).'/lang/eng.php');
-            $pdf->setLanguageArray($l);
+        $html=""; //initializing html content str
+        
+        $html.=$tabPages[0]; //to have 2 first pages in one
+        
+        for($pageCpt = 1;$pageCpt < count($tabPages)-2;$pageCpt++){ 
+            $html.=$tabPages[$pageCpt];                                 //adding page
+            $html.= '<div style="page-break-before: always;"></div>';   //adding page break
         }
-        // ---------------------------------------------------------
+        $html.=$tabPages[count($tabPages)-1]; //adding last page without page break (putting white page at the end otherwise
 
-        // set default font subsetting mode
-        $pdf->setFontSubsetting(true);
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
 
-        // Set font
-        // dejavusans is a UTF-8 Unicode font, if you only need to
-        // print standard ASCII chars, you can use core fonts like
-        // helvetica or times to reduce file size.
-        $pdf->SetFont('dejavusans', '', 14, '', true);
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-        // Add a page
-        // This method has several options, check the source code documentation for more information.
-        $pdf->AddPage();
+        // Render the HTML as PDF
+        $dompdf->render();
 
-        // set text shadow effect
-        $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
-        // Set some content to print
-
-        $html = file_get_contents('http://localhost/www/tests/index.php?controller=form&action=read&id=1');
-        //echo $html;
-        /*$html = <<<EOD
-
-        EOD;*/
-
-        // Print text using writeHTMLCell()
-        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-
-        //Close and output PDF document
-        $pdf->Output('form.pdf', 'I');
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
-	
-	public static function changeFillable(){
+
+    public static function changeFillable(){
 		if(Session::is_connected()){
 			$form = json_decode($_POST["form"], true);
 			$newFill = json_decode($_POST["newFill"], true);
@@ -989,5 +953,256 @@ class ControllerForm {
 			require File::build_path(array('view', 'view.php'));
 		}
 	}
+    /* desc preparing the pages for the toPDF version
+     * param -id the form id
+     * return an array of all the pages of the paper form
+     *      first page = personnals information
+     *      1 page per pre or post activity
+     *       
+     */          
+    public static function preparePDF($id = NULL) {
+        
+        //same part as read with some simplifications
+        if(isset($_GET['id'])){
+            $formId = $_GET['id'];
+        }else{
+            $formId = $id;
+        }
+        $f = ModelForm::select($formId);
+        $tabPages = [];
+
+        if (!$f) {
+            $data["message"] = "The form doesn't exist. ";
+            $data["pagetitle"] = "Read form error";
+
+            ControllerDefault::message($data);
+        } else {
+
+            $folder = $f->getUserNickname();
+            $application_array = ModelApplication::getApplicationByFormId($f->getFormID());
+
+            $questionsPre_array_list = [];
+            $questionsPost_array_list = [];
+
+            $answersPre_array_list = [];
+            $answersPost_array_list = [];
+
+            $questionTypePre_list = [];
+            $questionTypePost_list = [];
+
+            $answer = [];
+
+            $field_array = [];
+            //Personnal information
+            $assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
+            foreach ($assoc_array as $assoc) {
+                $perso_inf_id = $assoc->getPersonnalInformationName();
+                $perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+
+                array_push($field_array, $perso_inf);
+            }
+
+            //PRE Questions
+            for ($i = 0; $i < count($application_array); $i++) {
+                $questionAndAnswer = [];
+                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(), "1"); // getting questions
+                array_push($questionsPre_array_list, $questions_arrayFromModel);
+
+                array_push($answersPre_array_list, []);
+                array_push($questionTypePre_list, []);
+
+                for ($j = 0; $j < count($questions_arrayFromModel); $j++) {
+
+                    $qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+                    $answersPre_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId()); //getting answers
+                    array_push($answersPre_array_list[$i], $answersPre_array);
+                    array_push($questionTypePre_list[$i], $qType);
+                }
+            }
+
+            //POST Questions
+            for ($i = 0; $i < count($application_array); $i++) {
+                $questionAndAnswer = [];
+                $questions_arrayFromModel = ModelQuestion::getQuestionByApplicationIdAndPre($application_array[$i]->getApplicationId(), "0");
+                array_push($questionsPost_array_list, $questions_arrayFromModel);
+
+                array_push($answersPost_array_list, []);
+                array_push($questionTypePost_list, []);
+
+                for ($j = 0; $j < count($questions_arrayFromModel); $j++) {
+                    $qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+
+                    $answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
+
+                    array_push($answersPost_array_list[$i], $answersPost_array);
+                    array_push($questionTypePost_list[$i], $qType);
+                }
+            }
+
+            $alphabet = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            $FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
+            $applicationTable = ModelApplication::getApplicationByFormId($formId);
+            
+            //============ STARTING PAGE GENERATION ===========
+            
+            //----------- page 1 personnal info
+            $page1 = "";
+            
+            $formName = htmlspecialchars($f->getFormName());
+
+            //displaying form  informations
+            $page1 .= "<h1> $formName </h1><br><br>";
+            foreach ($field_array as $field) {
+                $fieldName = htmlspecialchars($field->getPersonnalInformationName());
+                    $page1 .= '<div>';
+                    $page1 .= '<label for="field' . $fieldName . '">' . $fieldName . ' : </label>';
+                    $page1 .= '<input id="field' . $fieldName . '" name="' . $fieldName . '"  type="text">';
+                    $page1 .= '</div>';
+
+            }
+            array_push($tabPages, $page1);
+           
+            //---------- Next pages : activities : pre post, pre post...
+            	//displaying tasks
+                for ($i = 0; $i < count($application_array); $i++) {
+                    
+                    $currentPage=""; //current page var 
+                    $taskName = htmlspecialchars($application_array[$i]->getApplicationName());
+                    $taskDesc = htmlspecialchars($application_array[$i]->getApplicationDescription());
+                    $img = "media/" . $folder . "/" . $application_array[$i]->getApplicationId() . "Img.png";
+
+                    $currentPage.= "<h2>$taskName</h2>";
+                    if (file_exists($img)) {
+                        $currentPage.= "<img src = $img >";
+                    }
+                    $currentPage.="<br>";
+
+
+                    $questionPre_array = $questionsPre_array_list[$i];
+
+                    for ($j = 0; $j < count($questionPre_array); $j++) {
+                        //adding title to page
+                        $currentPage.= "<h3> ";
+                        $currentPage.= htmlspecialchars($questionPre_array[$j]->getQuestionName());
+                        $currentPage.= " </h3><br>";
+                        
+                        $qType = $questionTypePre_list[$i][$j];
+                        $answers_array = $answersPre_array_list[$i][$j];
+                        
+                        //diplaying answers
+                        if (!is_null($answers_array[0])) {
+                            switch ($answers_array[0]['answerTypeName']) {
+                                case "textarea":
+
+                                    $currentPage.="<br><br><br><br><br><br>";
+                                    break;
+                                default :
+                                    
+                                    $currentPage.='<table style="width:100%"><tbody><tr>'; //opening answers tab
+                                    foreach ($answers_array as $a) {
+                                        $currentPage.='<th>'; //opening answers case
+                                        
+                                            $answerName = htmlspecialchars($a['answerTypeName']);
+                                            $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                            $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+                                            $answerTypeId = htmlspecialchars($a['answerTypeId']);
+                                            $id = "Applic" . $i . "question" . $j . $answerName;
+                                            $name = "Applic" . $i . "question" . $j;
+                                            
+                                            $currentPage.='<table style="width:100%"><tbody>'; //sub table
+                                                $currentPage.="<tr><th>"; //opening answers subcase
+                                                    $currentPage.=$answerName; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase
+
+                                                $currentPage.="<tr><th>"; //opening answers subcase
+                                                    $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\">"; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase
+
+                                                $currentPage.="<tr><th>"; //opening answers subcase
+                                                    $currentPage.="<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">"; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase   
+                                            $currentPage.='</tbody></table>'; //closing sub table
+
+                                        
+                                        $currentPage.='</th>'; //closing answers case
+                                    }
+                                    $currentPage.='</tr></tbody></table>'; //closing answers tab
+                                    break;
+                            }
+                        }
+
+
+
+                    }
+                    array_push($tabPages, $currentPage); //pushing page to array
+                    
+                    //post questions
+                    $currentPage="";
+                    $questionPost_array = $questionsPost_array_list[$i];
+
+                    for ($j = 0; $j < count($questionPost_array); $j++) {
+                        //displaying questions
+                        $currentPage.= "<h3> ";
+                        $currentPage.= htmlspecialchars($questionPost_array[$j]->getQuestionName());
+                        $currentPage.= " </h3><br>";
+                        
+                        $qType = $questionTypePost_list[$i][$j];
+
+                        $answers_array = $answersPost_array_list[$i][$j];
+  
+                        if (!is_null($answers_array[0])) {
+                            switch ($answers_array[0]['answerTypeName']) {
+                                case "textarea":
+
+                                    $currentPage.="<br><br><br><br><br><br>";
+                                    break;
+                                default :
+                                    
+                                    $currentPage.='<table style="width:100%"><tbody><tr>'; //opening answers tab
+                                    foreach ($answers_array as $a) {
+                                        $currentPage.='<th>'; //opening answers case
+                                        
+                                            $answerName = htmlspecialchars($a['answerTypeName']);
+                                            $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                            $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+                                            $answerTypeId = htmlspecialchars($a['answerTypeId']);
+                                            $id = "Applic" . $i . "question" . $j . $answerName;
+                                            $name = "Applic" . $i . "question" . $j;
+                                            
+                                            $currentPage.='<table style="width:100%"><tbody>'; //sub table
+                                                $currentPage.='<tr><th style = "text-align : center">'; //opening answers subcase
+                                                    $currentPage.=$answerName; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase
+
+                                                $currentPage.="<tr><th>"; //opening answers subcase
+                                                    $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\" >"; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase
+
+                                                $currentPage.='<tr><th style = "">'; //opening answers subcase
+                                                    $currentPage.="<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">"; 
+                                                $currentPage.='</th></tr>'; //closing answers subcase   
+                                            $currentPage.='</tbody></table>'; //closing sub table
+
+                                        
+                                        $currentPage.='</th>'; //closing answers case
+                                    }
+                                    $currentPage.='</tr></tbody></table>'; //closing answers tab
+                                    break;
+                            }
+                        }
+
+
+
+                    }
+                    array_push($tabPages, $currentPage); //pushing page to array                    
+                    
+
+                }
+                return $tabPages;
+
+            }
+    }
+
 }
 ?>

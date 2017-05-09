@@ -267,6 +267,7 @@ function sleep(milliseconds) {
 //create pdf
 
 function createPDF(event){
+    /**
     $('html, body').animate({ scrollTop: 0 }, 'fast');
 	getCanvas().then(function(canvas){
 		var 
@@ -280,7 +281,22 @@ function createPDF(event){
         doc.addHTML(document.body,function() {
             pdf.output('datauri');
         })
-	});
+	});*/
+   
+    var id = getFormId();
+
+    var adr = "index.php?";
+    var params = jQuery.param({
+            "action":"toPDF",
+            "controller":"form",
+            "id":id,
+        });
+    adr+=params;
+    console.log(adr)
+        ;
+        window.location.href = adr;
+
+
 }
 
 ;
@@ -298,6 +314,8 @@ function getFormId() {
     var f = $(select).attr('id');
     var id = f.split("-");
     formId = id[1];
+
+    return formId;
 }
 
 function init(){
