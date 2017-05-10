@@ -18,6 +18,7 @@
         echo '<div id="userInformation">';
         foreach ($field_array as $field){
                 $fieldName = htmlspecialchars($field->getPersonnalInformationName());
+				
             echo '<div>';
                 echo '<label for="field'.$fieldName.'">'.$fieldName.' : </label>';
 				foreach($informationTable as $it){

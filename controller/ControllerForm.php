@@ -123,10 +123,10 @@ class ControllerForm {
 				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
 				!//var_dump($FSFilled);
 				
-				$jscript = "answers";
+				/*$jscript = "answers";
 				$pagetitle = 'Welcome back visitor';
 				$view='lastPage';
-				$controller = 'visitor';
+				$controller = 'visitor';*/
 			
             $pagetitle = 'Form';
             $view='displayForm';

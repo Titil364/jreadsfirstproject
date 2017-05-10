@@ -21,12 +21,7 @@ function getVisitorId(){
 }
 
 function getPre(){
-    var f = document.getElementById("aa"); //If there is an AA table that means that we're in the postForm and not the PreForm
-    if (f == null) {
-        pre = 1;
-    } else {
-        pre = 0;
-    }
+    
 }
 
 function getAAFilled(visitorId){ //Getting answers filled in the AA table for this visitorID
@@ -555,13 +550,33 @@ function saveAA(tmp){
         "json"
     ); 
 }
+function redirect(){
+    var empty = false;
+    var secretName = $("#secretName");
+    if (secretName.val() == "") {
+        empty = true;
+    }
+    var SNVal = secretName.val();
+    var info = $("#userInformation div input");
+    for(var i=0; i<info.length; i++){
+        if (info[i].value == "") {
+            empty = true;
+        }
+    }
+    if (!empty) {
+        window.location="index.php?action=answerApplication&controller=visitor&visitorId="+visitorId+"&formId="+formId;
+    } else{
+        alert("Fill all the fields !");
+    }
+}
 
 function init(){
     getFormId();
     getVisitorId();
-
-    getPre();
-    if (pre ==1 ) { //If we are in the preForm
+    document.getElementById("secretName").addEventListener("change",saveSecretName);
+    addEventInfo();
+    document.getElementById("submit").addEventListener("click", redirect);
+   /* if (pre ==1 ) { //If we are in the preForm
         document.getElementById("secretName").addEventListener("change",saveSecretName); //AddEventListener on Secret name 
         addEventInfo();     //And add event Listener on the head information
     }else{ //Else the randomizeAA and randomizeFS are called in callback of getAAFilled and getFSFilled
@@ -571,6 +586,7 @@ function init(){
     }
 	$("#submit").click(extractAnswers);
     add(); //AddEventListener on each answerInput
+    */
 }
 
 

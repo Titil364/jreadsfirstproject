@@ -16,8 +16,8 @@ function getApplicationId(){
     var f = document.getElementById("applicationId");
     return f.value;
 }
-function getPost(){
-    var f = document.getElementById("post");
+function getPre(){
+    var f = document.getElementById("pre");
     return f.value;
 }
 
@@ -59,8 +59,8 @@ function addEventToInput(){
 function submit(){
 	var visitorId = getVisitorId();
 	var applicationId = getApplicationId();
-	var post = getPost();
-	
+	var pre = getPre();
+	console.log(pre);
 	$.post(
         "index.php",
         {
@@ -68,7 +68,7 @@ function submit(){
             "controller":"visitor",
 			"applicationId":applicationId,
 			"visitorId":visitorId,
-			"post":post
+			"pre":pre
         },
         function(res) {
 				console.log(res)
