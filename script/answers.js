@@ -570,6 +570,23 @@ function redirect(){
     }
 }
 
+function createPDF(event){
+
+   console.log("toto");
+    var id = getFormId();
+
+    var adr = "index.php?";
+    var params = jQuery.param({
+            "action":"toPDF",
+            "controller":"form",
+            "id":id,
+        });
+    adr+=params;
+    console.log(adr);
+        window.location.href = adr;
+
+}
+
 function init(){
     getFormId();
     getVisitorId();
@@ -587,6 +604,7 @@ function init(){
 	$("#submit").click(extractAnswers);
     add(); //AddEventListener on each answerInput
     */
+    $( "#create_pdf" ).on( "click", createPDF);
 }
 
 

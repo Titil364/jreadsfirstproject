@@ -248,7 +248,6 @@ function createPDF(event){
             pdf.output('datauri');
         })
 	});*/
-   
     var id = getFormId();
 
     var adr = "index.php?";
@@ -258,14 +257,13 @@ function createPDF(event){
             "id":id,
         });
     adr+=params;
-    console.log(adr)
-        ;
+    console.log(adr);
         window.location.href = adr;
 
 
 }
 
-;
+
 // create canvas object
 function getCanvas(){
 	//form.width((a4[0]) -80).css('max-width','none');
@@ -292,10 +290,12 @@ function init(){
 	if(print){
 		print.addEventListener("click",makePrintable);
 	}
-	var pdf = document.getElementById("create_pdf");
-	if(pdf){
-		pdf.addEventListener("click",createPDF);
-	}
+	//ar pdf = document.getElementById("create_pdf");
+
+	//pdf.addEventListener("click",createPDF);
+
+    $( "#create_pdf" ).on( "click", createPDF);
+
 }
 
 
