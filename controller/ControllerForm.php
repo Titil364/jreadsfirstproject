@@ -1280,7 +1280,18 @@ class ControllerForm {
             
             //----------- page 1 personnal info
             $page1 = "";
-            
+            $page1.= "<style>                    
+                        tr, td, th {
+                            align: center;
+                            text-align: center;
+                        }
+                        
+                        .textZone{
+                            border: solid 1px;
+                            height: 100px;
+                        
+                        }
+                    </style>";
             $formName = htmlspecialchars($f->getFormName());
 
             //displaying form  informations
@@ -1329,7 +1340,7 @@ class ControllerForm {
                             switch ($answers_array[0]['answerTypeName']) {
                                 case "textarea":
 
-                                    $currentPage.="<br><br><br><br><br><br>";
+                                    $currentPage.='<table style="width:100%"><tbody><tr><td class="textZone"></td></tr></tbody></table>';
                                     break;
                                 default :
                                     
@@ -1354,7 +1365,7 @@ class ControllerForm {
                                                 $currentPage.='</th></tr>'; //closing answers subcase
 
                                                 $currentPage.="<tr><th>"; //opening answers subcase
-                                                    $currentPage.="<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">"; 
+                                                    $currentPage.="<img src=\"media/radio.png\" class=\"answerIcon\">";  
                                                 $currentPage.='</th></tr>'; //closing answers subcase   
                                             $currentPage.='</tbody></table>'; //closing sub table
 
@@ -1414,7 +1425,7 @@ class ControllerForm {
                                                 $currentPage.='</th></tr>'; //closing answers subcase
 
                                                 $currentPage.='<tr><th style = "">'; //opening answers subcase
-                                                    $currentPage.="<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\">"; 
+                                                     $currentPage.="<img src=\"media/radio.png\" class=\"answerIcon\">";  
                                                 $currentPage.='</th></tr>'; //closing answers subcase   
                                             $currentPage.='</tbody></table>'; //closing sub table
 
@@ -1446,6 +1457,7 @@ class ControllerForm {
                     #AA table,#AA th,#AA td,#FS table,#FS th,#FS td {
                         border: 1px solid black;
                     }
+                    
                     
                     .row th, .row td{
                         height: 50px;
