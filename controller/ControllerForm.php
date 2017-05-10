@@ -305,13 +305,60 @@ class ControllerForm {
 				$questionToDelete = ModelQuestion::getQuestionByFormId($formId);
 				$nbQuestions = count($questionToDelete);
 				foreach($questions as $q){
-					$data = array(
+
+                                        //=======
+                                        if(isset($q["customAns"])){ 
+                                                // if the question has custom answers, saving them + corresponding new QuestionType
+                                                    $customAns = $q["customAns"];
+                                                    
+                                                    $questionType = array(
+                                                        "questionTypeName" => $customAns[0], //title choose by user
+                                                        "userNickname" => $f->getUserNickname()
+                                                    );
+                                                    if(!ModelQuestionType::save($questionType)){
+							$abort = true;
+							break;
+                                                    }                                                    
+                                                    
+                                                    $questionTypeId = ModelQuestionType::getLastInsert(); //answerType will be linked to the qType juste created
+                                                    $questionTypeName = $customAns[0];
+                                                    
+                                                    //getting questionType which new questionType is based on
+                                                    //its name will be used to construct image name to have same images
+                                                    $original = ModelQuestionType::select($q["type"]); 
+                                                    $originalName = $original->getQuestionTypeName();
+                                                    
+                                                    for($j = 1; $j < sizeof($customAns); $j++){
+                                                        $answerType = array(
+                                                            "answerTypeName" => $customAns[$j],
+                                                            "answerTypeImage" => $originalName . $j ."image", //construction of image name ex : smiley2image
+                                                            "questionTypeId" => $questionTypeId
+
+                                                        );
+                                                    if(!ModelAnswerType::save($answerType)){
+							$abort = true;
+							break;
+                                                    }
+                                                    }
+                                                $data = array(
+						"questionId" => $q['id'],
+						"questionName" => $q['label'],
+						"applicationId" => $q["applicationId"],
+						"questionTypeId" => $questionTypeId,
+						"questionPre" => $q["pre"]
+                                                );
+                                        } else {
+                                                $data = array(
 						"questionId" => $q['id'],
 						"questionName" => $q['label'],
 						"applicationId" => $q["applicationId"],
 						"questionTypeId" => $q["type"],
 						"questionPre" => $q["pre"]
-					);
+                                                );
+                                        }
+                                        
+                                        
+                                        //======
 					
 					if(ModelQuestion::select($data['questionId'])){
 						ModelQuestion::update($data);
