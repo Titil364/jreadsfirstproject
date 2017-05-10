@@ -17,7 +17,7 @@ class ControllerForm {
     public static function read(){
 		$formId = $_GET['id'];
         $f = ModelForm::select($formId);
-		$jscript = "myScriptSheet";
+		
 		$full = false;
         if (!$f){
 			$data["message"] = "The form doesn't exist. ";
@@ -122,12 +122,13 @@ class ControllerForm {
 				
 				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
 				!//var_dump($FSFilled);
-				
+				/*
 				$jscript = "answers";
 				$pagetitle = 'Welcome back visitor';
 				$view='lastPage';
 				$controller = 'visitor';
-			
+	*/		
+            $jscript = "myScriptSheet";
             $pagetitle = 'Form';
             $view='displayForm';
             $controller = 'form';
