@@ -1035,7 +1035,7 @@ class ControllerForm {
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream();
+        $dompdf->stream($formId);
     }
 
     public static function changeFillable(){
