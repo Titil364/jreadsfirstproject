@@ -385,8 +385,9 @@ class ControllerVisitor{
             require File::build_path(array('view','view.php'));
 		}
 	}
+	
 	public static function answerApplication(){
-		if(!isset($_GET['visitorId']) || !isset($_GET['applicationId']) || !isset($_GET['formId'])){
+		if(!isset($_GET['visitorId']) || !isset($_GET['formId'])){
 			$data["message"] = "There are not enough information. ";
 			$data["pagetitle"] = "Information missing";
 			
@@ -406,6 +407,47 @@ class ControllerVisitor{
 		
 		$visitorId = $_GET['visitorId'];
 		//Checking if the visitor exists
+		
+		$infoEmpty = false;
+		$info = ModelInformation::getInformationByVisitorId($visitorId);
+		foreach($info as $i){
+			if($i->getInformationName() == NULL){
+			$infoEmpty = true;
+			}
+		}
+		if($infoEmpty){
+			$folder = $f->getUserNickname();
+			$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+			
+			$secretName = $visitor->getVisitorSecretName();
+			
+			$information = ModelInformation::getInformationByVisitorId($visitorId);
+			$informationEmpty = ModelAssocFormPI::getAssocFormPIByFormId($formId);
+			$infoFilled = [];
+			
+			$answersFilled = [];
+			$answers = ModelAnswer::getAnswerByVisitorId($visitorId);
+			$applicationsEmpty = ModelApplication::getApplicationByFormId($formId);
+			$answersEmpty =[];
+			foreach($applicationsEmpty as $app){
+				$questionsEmpty = ModelQuestion::getQuestionByApplicationId($app->getApplicationId());
+				array_push($answersEmpty,$questionsEmpty);
+			}									
+			foreach($information as $i){
+				array_push($infoFilled,$i->getInformationName());
+			}
+			foreach($answers as $a){
+				$ans = array(
+					"questionId" => $a->getQuestionId(),
+					"answer" => $a->getAnswer()
+				);
+				array_push($answersFilled, $ans);
+			}
+			$pagetitle = 'Welcome visitor';
+			$view='answerForm';
+			$controller = 'visitor';
+		}
+		
 		$visitor = ModelVisitor::select($visitorId);
 		if(!$visitor){
 			$data["message"] = "The visitor doesn't exist. ";
@@ -423,23 +465,61 @@ class ControllerVisitor{
 		}
 		
 		
-		
-		$applicationId = $_GET['applicationId'];
+		$visitor = ModelVisitor::select($visitorId);
+		$appliOrder = $visitor->getApplicationOrder();
+		$applicationOrder = json_decode($appliOrder);
 		//Checking if the application does exist in the database
-		$application = ModelApplication::select($applicationId);
 		
-		if(!$application){
-			$data["message"] = "The application does exist. ";
-			$data["pagetitle"] = "Information missing";
+		
+		$applicationId = $formId."Applic".$applicationOrder[0];
+		$application = ModelApplication::select($applicationId);
+		$pre = $visitor->getApplicationPreOrPost($applicationId);
+		
+		$i = 0;
+		while($i<sizeOf($applicationOrder) && $pre == 2){
+			$i++;
+			$applicationId = $formId."Applic".$applicationOrder[$i];
+			$application = ModelApplication::select($applicationId);
+			$pre = $visitor->getApplicationPreOrPost($applicationId);
+		}
+		
+		$applicationId = $formId."Applic".$applicationOrder[$i];
+		$application = ModelApplication::select($applicationId);
+		$pre = $visitor->getApplicationPreOrPost($applicationId);	
+		$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
+		
+		//This array will contain the answer of the question
+		$question_answers = [];
+		
+		//This array will contain the answer of the visitor
+		$visitorAnswers = [];
+		foreach($questions as $q){
+			array_push($question_answers, ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId()));
+			$data = array(
+				"visitorId" => $visitorId,
+				"questionId" => $q->getQuestionId()
+			);
+			array_push($visitorAnswers, ModelAnswer::select($data));
+		}
+		
+		$folder = $f->getUserNickname();
+		$jscript = "answerApplication";
+		$stylesheet = "answerApplication";
+		$pagetitle = 'Welcome on board';
+		//Le nom sera a changé, je ne savais pas comment appeler cette page
+		$view='answerApplication';
+		$controller = 'visitor';
+
+		require File::build_path(array('view','view.php'));
+		
 			
-			ControllerDefault::message($data);
-			return null;
-		}else{
-			//Checking the application is from the formId
+			
+			/*//Checking the application is from the formId
 			if($application->getFormId() == $formId){
 				//If there is a date in the dateCompletePre field that means the visitor has already 
 				//answer the pre
 				$pre = $visitor->getApplicationPreOrPost($applicationId);
+				var_dump($pre);
 				$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
 				
 				//This array will contain the answer of the question
@@ -461,7 +541,7 @@ class ControllerVisitor{
 				
 				
 				
-				$folder = $f->getUserNickname();
+				
 				
 				$jscript = "answerApplication";
 				$stylesheet = "answerApplication";
@@ -469,22 +549,17 @@ class ControllerVisitor{
 				//Le nom sera a changé, je ne savais pas comment appeler cette page
 				$view='answerApplication';
 				$controller = 'visitor';
-
-				require File::build_path(array('view','view.php'));
-			}else{
-				$data["message"] = "The application doesnt belong to this form. ";
-				$data["pagetitle"] = "Application lost";
-
-				ControllerDefault::message($data);
-				return null;
-			}
-		}	
+	
+				require File::build_path(array('view','view.php'));*/
+			//}
+		//}
+		
 	}
 	
 	public static function sendAnswer(){
 		$applicationId = $_POST['applicationId'];
 		$visitorId = $_POST['visitorId'];
-		$post = ($_POST['post'] == 0?"pre":($_POST['post'] == 1?"post":"null"));
+		$post = ($_POST['pre'] == 0?"post":($_POST['pre'] == 1?"pre":"null"));
 
 		$data = array(
 				"visitorId" => $visitorId,

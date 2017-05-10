@@ -29,7 +29,7 @@
         echo '</div>';
 	
 	//displaying tasks
-	
+	/*
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 	echo"<div id=\"applications\">"; // div of all app
 	for($i=0; $i < count($application_array);$i++){
@@ -113,7 +113,7 @@
 		}
 		echo '</div>'; //closing current application div
 	}
-
+*/
  ?>
  
    </div> <!-- applications -->

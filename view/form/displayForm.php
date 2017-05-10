@@ -103,6 +103,7 @@
 					default :
 						$count = 0;
 						echo '<div class = "answerArea">';
+						$ret = "";
 						foreach($answer as $a){
 							if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
 								$ret = $a->getAnswer();

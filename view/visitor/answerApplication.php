@@ -17,7 +17,7 @@
 		$protectedApplicationId = htmlspecialchars($application->getApplicationId());
 		
 		echo "<input type=\"hidden\" id=\"applicationId\" value=\"$protectedApplicationId\">";
-		echo "<input type=\"hidden\" id=\"post\" value=\"$pre\">";
+		echo "<input type=\"hidden\" id=\"pre\" value=\"$pre\">";
 		
 		//center pourra être remplacé par du css
 		echo "<center><legend>$protectedFormName</legend></center>";
@@ -31,6 +31,14 @@
 		if($protectedDesc != ""){
 			echo "<p>$protectedDesc</p>";
 		}
+		echo '<div id="pre">';
+		if($pre == 1){
+			echo "PRE Questions";
+		}
+		if($pre ==0){
+			echo "POST Questions";
+		}
+		echo '</div>';
 
 		//For each question 
 		//question counter
