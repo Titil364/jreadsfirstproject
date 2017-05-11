@@ -303,7 +303,7 @@ class ControllerVisitor{
 	
 	public static function getFormIdByVisitor(){
 		$visitorId = json_decode($_POST['visitorId']);
-		echo json_encode(ModelVisitor::Select($visitorId)->getformId());
+		echo json_encod	(ModelVisitor::Select($visitorId)->getformId());
 	}
 	
 	public static function getAgainAgainByVisitorId(){
@@ -574,49 +574,6 @@ class ControllerVisitor{
 		$controller = 'visitor';
 
 		require File::build_path(array('view','view.php'));
-		
-			
-			
-			/*//Checking the application is from the formId
-			if($application->getFormId() == $formId){
-				//If there is a date in the dateCompletePre field that means the visitor has already 
-				//answer the pre
-				$pre = $visitor->getApplicationPreOrPost($applicationId);
-				var_dump($pre);
-				$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
-				
-				//This array will contain the answer of the question
-				$question_answers = [];
-				
-				//This array will contain the answer of the visitor
-				$visitorAnswers = [];
-				
-				foreach($questions as $q){
-					array_push($question_answers, ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId()));
-					$data = array(
-						"visitorId" => $visitorId,
-						"questionId" => $q->getQuestionId()
-					);
-					array_push($visitorAnswers, ModelAnswer::select($data));
-				}
-				//var_dump($visitorAnswers);
-				
-				
-				
-				
-				
-				
-				$jscript = "answerApplication";
-				$stylesheet = "answerApplication";
-				$pagetitle = 'Welcome on board';
-				//Le nom sera a changé, je ne savais pas comment appeler cette page
-				$view='answerApplication';
-				$controller = 'visitor';
-	
-				require File::build_path(array('view','view.php'));*/
-			//}
-		//}
-		
 	}
 	
 	public static function sendAnswer(){
