@@ -27,7 +27,7 @@ function getFormIdByVisitor(){
 		function(res){
 			var f = res;
 			console.log(f);
-			window.location.href = "index.php?controller=visitor&action=read&formId="+res+"&visitorId="+select;
+			window.location.href = "index.php?controller=visitor&action=answerApplication&formId="+res+"&visitorId="+select;
 			
 		},
 		"json"

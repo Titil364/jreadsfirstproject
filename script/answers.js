@@ -20,49 +20,6 @@ function getVisitorId(){
     getSecretName();
 }
 
-function getPre(){
-    
-}
-
-function getAAFilled(visitorId){ //Getting answers filled in the AA table for this visitorID
-    $.post(
-        "index.php",
-        {
-            "action":"getAgainAgainByVisitorId",
-            "controller":"visitor",
-            "visitorId":JSON.stringify(visitorId)
-        },
-        function(res){
-            if (res!=null) {
-               AAfilled = res;
-               //randomizeAA();       
-            }
-        },
-        "json"
-    );
-}
-
-function getFSFilled(visitorId){ //Getting answers filled in the FunSorter for this visitorID
-    $.post(
-        "index.php",
-        {
-            "action":"getFSByVisitorId",
-            "controller":"visitor",
-            "visitorId":JSON.stringify(visitorId)
-        },
-        function(res){
-           // console.log(FSfilled);
-            if (res!=null) {
-               FSfilled = res;
-              // console.log(FSfilled);
-            }
-            randomizeFS()
-            ;
-        },
-        "json"
-    );
-}
-
 
 function getSecretName() { //Get the secretName to fill the secret Name field
     $.post(
@@ -99,93 +56,6 @@ function getApplication(b){ //Getting the applications for the given formId
 }
 
 
-
-
-
-function extractAnswers(){      //Since the answers are saved onchange, this function is only used to verify if all the fields are filled when submit is pressed.
-	var answers=[];
-	var n = "", val = "";
-	
-    var newSecretName = $("#secretName").val();
-   
-	var shortcut = $(".shortcut");
-	for(var i = 0; i < shortcut.length; i++){
-		n = shortcut[i].name;
-		val = $("input[name="+n+"]:checked").val();
-		if(val === undefined | val === ""){
-			alert("Please answer to all the questions. ");
-			return null;
-		}
-		
-	}
-	var textarea = $("textarea");
-		
-	for(var i = 0; i < textarea.length; i++){
-		val = $(textarea[i]).val();
-		if(val === undefined | val === ""){
-			alert("Please answer to all the questions. aaa ");
-			return null;
-		}		
-	}
-	
-	var f = $("div[id^=form]")[0].id.split("-")[1];
-    if (pre == 1) {
-		var personnalInfo=[];
-		var info = $("#userInformation input");
-		for(var i = 0; i < info.length; i++){
-			val = $(info[i]).val();
-			if(val === undefined | val === ""){
-				alert("Please answer to all the personnal questions. ");
-				return null;
-			}
-		}
-        sendPre();
-       
-    } else{
-		//Extracting the aa datas
-		var tr = $("#aa tbody tr");
-		var aa = [], td, name, val;
-		for(var i = 0; i < tr.length; i++){
-			td = $(tr[i]).children();
-		 	//console.log(tr[i]);
-			//console.log(tr[i].id);
-			name = tr[i].id.slice(3, tr[i].id.length);
-
-			val = $("input[name=radio"+i+"]:checked").val();    
-			if(val === undefined){
-				alert("Please answer the again again table. ");
-				return null;
-			}
-			aa.push(new AA(name, val));
-		}
-		
-		//console.log(aa);
-		//console.log(JSON.stringify(aa));
-		
-		
-		//Extracting the funsorter data
-		var tr = $("#FunSorter tbody tr");
-		var fs = [], td, name, tab;
-		for(var i = 0; i < tr.length; i++){
-			tab = [];
-			td = $(tr[i]).children();
-			name = td[0].innerHTML + "/" + td[td.length-1].innerHTML;
-			//console.log(name);
-			for(var y = 1; y < td.length-1; y++){
-				tab.push($(td[y]).children()[0].innerHTML);
-			}
-			fs.push(new FSQ(name, tab));
-		}
-		
-		//console.log(fs);
-		//console.log(JSON.stringify(fs));
-		
-
-		
-        sendPost();
-    }
-	
-}
 
 function sendPre(){      //Function used when submit in PreForm pressed, it will save the field dateCompletedPre
 	$.post(
@@ -229,109 +99,6 @@ function sendPost(){    //Function used when submit in PostForm pressed, it will
 	);
 }
 
-/*function randomizeFS() {      
-    var alphabeta = Array(applicationNumber);
-    
-    var array = new Array();
-    for(i = 0; i < length; i++){
-        var a = Math.random()*length;
-        var b = Math.ceil(a);
-        while (array.includes(b-1)){
-            a = Math.random()*length;
-            b = Math.ceil(a);
-        }
-       array[i] = b-1;
-    }
-    var table = document.getElementById("fs"); 
-    var tbody = document.createElement("tbody"); //Create tbody 
-    table.appendChild(tbody); //Add tbody to the table
-    for (i = 0; i<length; i++) {
-        for(k = 0; k<length; k++){
-            alphabeta[k] = alphabet[k];
-        }
-        var table_row = document.createElement('tr'); //create a table row
-        table_row.id = "tr"+array[i]; //Add id to the table row
-        
-        for(c = 0; c<FSfilled.length; c++){
-            if (tabName[array[i]] === FSfilled[c]['FSQuestionName']){
-                var toSplit = FSfilled[c]['applicationOrder'];
-                if(toSplit !== null){
-                    var splited = toSplit.split("");
-                    for(t = 0; t<splited.length; t++){
-                        alphabeta[t] = splited[t];
-                    }
-                }
-            }
-        }
-        
-        var name = tabName[array[i]].split("/"); //Split the name when / is met on the string
-        var textLeft = document.createTextNode(name[0]); //Two text are created one is containing the left part of the question
-        var textRight = document.createTextNode(name[1]); //And the second one, the right part
-        var td = document.createElement('td'); //Create TD 
-            td.appendChild(textLeft);       //Add left text to the Td
-            table_row.appendChild(td);      //Add td to the TR
-        for(j=0;j<applicationNumber;j++){   //For each application we let an empty td
-            var td = document.createElement('td');
-            var div = document.createElement('div');
-                div.setAttribute("class","FSmove"+array[i]);
-            var textDiv = document.createTextNode(alphabeta[j]);
-            div.appendChild(textDiv);
-            td.appendChild(div);
-            table_row.appendChild(td);
-        }
-        var td2 = document.createElement('td');
-            td2.appendChild(textRight);
-            table_row.appendChild(td2);     //Add right text to the td and td to the tr                  
-         
-         tbody.appendChild(table_row);      //Add tr to the table
-    }
-    makeFSDraggable();
-    addFS();
-}
-function randomizeAA(){
-    var array = new Array();
-    for (i = 0; i<applicationNumber;i++) {
-        var a = Math.random()*applicationNumber;
-        var b = Math.ceil(a);
-        while (array.includes(b-1)){
-            a = Math.random()*applicationNumber;
-            b = Math.ceil(a);
-        }
-        array[i] = b-1;
-    }
-    var table = document.getElementById("aa");
-    var tbody = document.createElement("tbody");
-    for (i=0; i<applicationNumber;i++){
-        var table_row = document.createElement('tr');
-            table_row.id= formId + "Applic"+array[i];
-        var td = document.createElement('td');
-        var text = document.createTextNode(applicationName[array[i]]);
-        td.appendChild(text);
-        table_row.appendChild(td);
-        for (j = 2; j>=0; j--){
-			/* Value : 
-			 * 2 = yes
-			 * 1 = maybe
-			 * 0 = no
-			 
-            var td = document.createElement('td');
-            var button = document.createElement("input");
-            button.setAttribute("type","radio");
-            button.setAttribute("class","radioButtonFS");            
-            button.setAttribute("name","radio"+i);
-            button.setAttribute("value", j);
-            for(c =0; c<AAfilled.length; c++){
-                if (AAfilled[c]['applicationId'] === table_row.id && AAfilled[c]['again']===j.toString()) {
-                    button.setAttribute("checked",true);
-                }
-            }
-            td.appendChild(button);
-            table_row.appendChild(td);
-        }
-        tbody.appendChild(table_row);  
-    }
-	table.appendChild(tbody);
-} */
 jQuery.fn.swap = function(b){ 
     // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
     b = jQuery(b)[0]; 
@@ -483,7 +250,7 @@ function addEventInfo(){        //Add eventlistener on each input of  <div #user
     }
 }
 
-function addAA(){           //Add eventListener on each table Row of the AA table
+function addAAEvent(){           //Add eventListener on each table Row of the AA table
     var select =$("#aa tbody tr");      
     for (i = 0; i<select.length; i++) {
         select[i].addEventListener("change", function(){
@@ -492,7 +259,7 @@ function addAA(){           //Add eventListener on each table Row of the AA tabl
         });
     }
 }
-function addFS() {          //Add EventListenr on each table Row of the fun sorter
+function addFSEvent() {          //Add EventListenr on each table Row of the fun sorter
     var tr = $("#FunSorter tbody tr");
     for (j = 0;j<tr.length;j++){
         tr[j].addEventListener("mouseup", function(){       //The event is the mouseup, so the function is thrown when the user drop the item

@@ -24,10 +24,6 @@ class ModelAssocFormPI extends ModelAssoc{
 
         }
     }
-    
-	/*
-	 *
-	 */
 	public static function getAssocFormPIByFormId($id){
 		try{
 			$sql  = "SELECT * FROM AssocFormPI WHERE formId=:id";

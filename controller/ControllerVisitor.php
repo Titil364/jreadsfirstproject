@@ -404,9 +404,27 @@ class ControllerVisitor{
 			ControllerDefault::message($data);
 			return null;
 		}
-		
-		$visitorId = $_GET['visitorId'];
 		//Checking if the visitor exists
+		$visitorId = $_GET['visitorId'];
+		
+		$visitor = ModelVisitor::select($visitorId);
+		if(!$visitor){
+			$data["message"] = "The visitor doesn't exist. ";
+			$data["pagetitle"] = "Anonymous visitor";
+			
+			ControllerDefault::message($data);
+			return null;	
+		}
+		if($visitor->getFormId() != $formId){
+			$data["message"] = "The visitor doesn't belong to this form";
+			$data["pagetitle"] = "Wrong form";
+			
+			ControllerDefault::message($data);
+			return null;
+		}
+		
+		
+		$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 		
 		$infoEmpty = false;
 		$info = ModelInformation::getInformationByVisitorId($visitorId);
@@ -416,8 +434,16 @@ class ControllerVisitor{
 			}
 		}
 		if($infoEmpty){
+			$field_array = [];
+			
+			$assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
+			foreach ($assoc_array as $assoc){
+				$perso_inf_id = $assoc->getPersonnalInformationName();
+				$perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+				
+				array_push($field_array, $perso_inf);					
+			}
 			$folder = $f->getUserNickname();
-			$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 			
 			$secretName = $visitor->getVisitorSecretName();
 			
@@ -443,64 +469,101 @@ class ControllerVisitor{
 				);
 				array_push($answersFilled, $ans);
 			}
+			$jscript = 'answers';
 			$pagetitle = 'Welcome visitor';
 			$view='answerForm';
 			$controller = 'visitor';
+			require File::build_path(array('view','view.php'));
+			return;
 		}
 		
-		$visitor = ModelVisitor::select($visitorId);
-		if(!$visitor){
-			$data["message"] = "The visitor doesn't exist. ";
-			$data["pagetitle"] = "Anonymous visitor";
+		
+		//We will check if each application is completed for this visitorId and $full will get true if any date is null
+		$fullDate = true;
+		$appliComplete = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
+		foreach($appliComplete as $ac){
+			$data = array(
+				"applicationId" => $ac["applicationId"],
+				"visitorId" => $visitorId
+			);
+			$s = ModelApplicationDateComplete::select($data);
+			if($s->getApplicationDateCompletePre() == null || $s->getApplicationDateCompletePost() == null){
+				$fullDate = false;
+			}
+		}
+		if(!$fullDate){
+			$visitor = ModelVisitor::select($visitorId);
+			$appliOrder = $visitor->getApplicationOrder();
+			$applicationOrder = json_decode($appliOrder);
+			//Checking if the application does exist in the database
 			
-			ControllerDefault::message($data);
-			return null;	
-		}
-		if($visitor->getFormId() != $formId){
-			$data["message"] = "The visitor doesn't belong to this form";
-			$data["pagetitle"] = "Wrong form";
 			
-			ControllerDefault::message($data);
-			return null;
-		}
-		
-		
-		$visitor = ModelVisitor::select($visitorId);
-		$appliOrder = $visitor->getApplicationOrder();
-		$applicationOrder = json_decode($appliOrder);
-		//Checking if the application does exist in the database
-		
-		
-		$applicationId = $formId."Applic".$applicationOrder[0];
-		$application = ModelApplication::select($applicationId);
-		$pre = $visitor->getApplicationPreOrPost($applicationId);
-		
-		$i = 0;
-		while($i<sizeOf($applicationOrder) && $pre == 2){
-			$i++;
-			$applicationId = $formId."Applic".$applicationOrder[$i];
+			$applicationId = $formId."Applic".$applicationOrder[0];
 			$application = ModelApplication::select($applicationId);
 			$pre = $visitor->getApplicationPreOrPost($applicationId);
+			
+			$i = 0;
+			while($i<sizeOf($applicationOrder)-1 && $pre == 2){
+				$i++;
+				$applicationId = $formId."Applic".$applicationOrder[$i];
+				$application = ModelApplication::select($applicationId);
+				$pre = $visitor->getApplicationPreOrPost($applicationId);
+			}
+			if($application->getFormId() == $formId){
+				//If there is a date in the dateCompletePre field that means the visitor has already 
+				//answer the pre
+				$pre = $visitor->getApplicationPreOrPost($applicationId);
+				$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
+				
+				//This array will contain the answer of the question
+				$question_answers = [];
+				
+				//This array will contain the answer of the visitor
+				$visitorAnswers = [];
+				
+				foreach($questions as $q){
+					array_push($question_answers, ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId()));
+					$data = array(
+						"visitorId" => $visitorId,
+						"questionId" => $q->getQuestionId()
+					);
+					array_push($visitorAnswers, ModelAnswer::select($data));
+				}
+				//var_dump($visitorAnswers);
+			}
+			
+		}else {
+			//AATable
+			$randomTable = [];
+			$nb = count($application_array);
+			for($i = 0; $i<$nb ;$i++){
+				$tmp = rand(1,$nb);
+				while(in_array($tmp,$randomTable)){
+					$tmp = rand(1,$nb);
+				}
+				array_push($randomTable, $tmp);
+			}
+			$AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+			
+			//FSTable
+			$alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
+			$randomFS =[];
+			$FS = ModelFSQuestion::getFSQuestionByFormId($formId);
+			$nbFS = count($FS);
+			for($i = 0; $i<$nbFS ;$i++){
+				$tmp = rand(1,$nbFS);
+				while(in_array($tmp,$randomFS)){
+					$tmp = rand(1,$nbFS);
+				}
+				array_push($randomFS, $tmp);
+			}
+			
+			$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
 		}
+		//var_dump($fullDate);
+	
 		
-		$applicationId = $formId."Applic".$applicationOrder[$i];
-		$application = ModelApplication::select($applicationId);
-		$pre = $visitor->getApplicationPreOrPost($applicationId);	
-		$questions = ModelQuestion::getQuestionByApplicationIdAndPre($applicationId, $pre);
-		
-		//This array will contain the answer of the question
-		$question_answers = [];
-		
-		//This array will contain the answer of the visitor
-		$visitorAnswers = [];
-		foreach($questions as $q){
-			array_push($question_answers, ModelAnswerType::getAnswerTypeByQuestionId($q->getQuestionTypeId()));
-			$data = array(
-				"visitorId" => $visitorId,
-				"questionId" => $q->getQuestionId()
-			);
-			array_push($visitorAnswers, ModelAnswer::select($data));
-		}
 		
 		$folder = $f->getUserNickname();
 		$jscript = "answerApplication";

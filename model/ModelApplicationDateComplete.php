@@ -1,7 +1,7 @@
 <?php
-require_once File::build_path(array('model', 'Model.php'));
+require_once File::build_path(array('model', 'ModelAssoc.php'));
 
-class ModelApplicationDateComplete extends Model{
+class ModelApplicationDateComplete extends ModelAssoc{
         
 	private $applicationId;
 	private $visitorId;
@@ -61,28 +61,27 @@ public function getApplicationDateCompletePost(){return $this->applicationDateCo
             return false;
         }
     }
-	public static function select($data){
-		        try {
-            $table_name = static::$object;
-            $class_name = 'Model' . $table_name;
-
-			$primary_key1 = static::$primary1;
-			$primary_key2 = static::$primary2;
+	
+	public static function getApplicationDateCompleteByVisitorId($visitorId){
+		try{
+			$sql  = "SELECT applicationId FROM ApplicationDateComplete WHERE visitorId=:visitorId";
+			$prep = Model::$pdo->prepare($sql);
 			
-            $sql = "SELECT * FROM Answer WHERE $primary_key1=:$primary_key1 AND $primary_key2=:$primary_key2;";
 
-            $req_prep = Model::$pdo->prepare($sql);
-            $req_prep->execute($data);
-            $req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
-            $tab_p = $req_prep->fetchAll();
+			$values = array(
+				"visitorId" => $visitorId
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_ASSOC);
 			
-            if(empty($tab_p)){
-                return false;
-            }
-            return $tab_p[0];
-        } catch (PDOException $ex) {
+			return $prep->fetchAll();
+
+		}catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();
+            } else {
+                echo "Error";
             }
             return false;
         }
