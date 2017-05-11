@@ -150,41 +150,60 @@ class ModelVisitor extends Model{
         }
 	}
         
-        public static function deleteAllVisitorContent($visitorId){
-            $info_array = ModelInformation::getInformationByVisitorId($visitorId);
-            foreach ($info_array as $i){
-                $name = $i->getPersonnalInformationName();
-                ModelInformation::delete($name, $visitorId);
-            }
-            
-            $aa_aray = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
-
-            foreach ($aa_aray as $aa){      
-                $aaAppId = $aa->getApplicationId();
-                ModelAgainAgain::delete($visitorId, $aaAppId);
-            }
-
-            
-            $answer_array = ModelAnswer::getAnswerByVisitorId($visitorId);
-            foreach ($answer_array as $ans){ //ans
-                $qId = $ans->getQuestionId();
-                ModelAnswer::delete($visitorId, $qId);
-            }
-            
-            $sortApp_array = ModelSortApplication::getFSByVisitorId($visitorId);
-            foreach ($sortApp_array as $sort){
-                $name = $sort->getFSQuestionName();
-                ModelSortApplication::delete($visitorId, $name);
-            }
-            
-            $appDate_array = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
-            foreach ($appDate_array as $appDate){
-                $applicationId = $appDate->getApplicationId();
-                ModelApplicationDateComplete::delete($applicationId, $visitorId);
-            }
-            
-            ModelVisitor::delete($visitorId);
+    public static function deleteAllVisitorContent($visitorId){
+        $info_array = ModelInformation::getInformationByVisitorId($visitorId);
+        foreach ($info_array as $i){
+            $name = $i->getPersonnalInformationName();
+			$data = array(
+				"personnalInformationName" => $name,
+				"visitorId" => $visitorId
+			);
+            ModelInformation::delete($data);
         }
-	
-	
+        
+        $aa_aray = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+
+        foreach ($aa_aray as $aa){      
+            $aaAppId = $aa->getApplicationId();
+			$data = array(
+				"applicationId" => $aaAppId,
+				"visitorId" => $visitorId
+			);
+            ModelAgainAgain::delete($data);
+        }
+
+        
+        $answer_array = ModelAnswer::getAnswerByVisitorId($visitorId);
+        foreach ($answer_array as $ans){ //ans
+            $qId = $ans->getQuestionId();
+			$data = array(
+				"questionId" => $qId,
+				"visitorId" => $visitorId
+			);
+            ModelAnswer::delete($data);
+        }
+        
+        $sortApp_array = ModelSortApplication::getFSByVisitorId($visitorId);
+        foreach ($sortApp_array as $sort){
+            $name = $sort->getFSQuestionName();
+			$data = array(
+				"FSQuestionName" => $name,
+				"visitorId" => $visitorId
+			);
+            ModelSortApplication::delete($data);
+        }
+        
+        $appDate_array = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
+        foreach ($appDate_array as $appDate){
+
+            $applicationId = $appDate['applicationId'];
+			$data = array(
+				"applicationId" => $applicationId,
+				"visitorId" => $visitorId
+			);
+            ModelApplicationDateComplete::delete($data);
+        }
+        
+        ModelVisitor::delete($visitorId);
+    }	
 }

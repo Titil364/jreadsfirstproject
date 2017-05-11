@@ -80,34 +80,6 @@ class ModelAnswer extends ModelAssoc{
 		}
 		
 	}
-        
-            public static function delete($primary1,$primary2) {
-        try {
-            $table_name = static::$object;
-            $class_name = 'Model' . $table_name;
-			
-			
-            $sql = "DELETE FROM $table_name WHERE visitorId=:v AND questionId =:q";
-			
-            $req_prep = Model::$pdo->prepare($sql);
-			
-            $values = array(
-                "v" => $primary1,
-                "q" => $primary2
-            );
-			
-            $req_prep->execute($values);
-            return true;
-			
-        } catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error while deleting the object";
-            }
-            return false;
-        }
-    }
 
 }
 
