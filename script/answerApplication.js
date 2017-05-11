@@ -1,10 +1,9 @@
-
+var visitorId = getVisitorId();
+var formId = getFormId();
 
 function getFormId(){
-    var f = document.getElementsByClassName("formCss");
-    var g = f[0].getAttribute("id");
-    var split =  g.split("-");
-    return split[1];
+    var f = document.getElementById("formId");
+    return f.value;
 }
 
 function getVisitorId(){
@@ -48,19 +47,68 @@ function saveAnswer(self){
         },
         "json"
     );
-	
 }
-function addEventToInput(){
-	$(document).on("change","input[type=radio]", saveAnswer);
+function addAAEvent(){           //Add eventListener on each table Row of the AA table
+    var select = $("#aa tbody tr");
+    for (i = 0; i<select.length; i++) {
+        select[i].addEventListener("change", function(){
+           var tmp = $(this);
+           saveAA(tmp);
+        });
+    }
+}
+function saveAA(tmp){
+    var id = tmp.prop("id");
+    //console.log(id);
+    val = $("#"+id+" td input:checked").val();  //Looking for the checked item with the given id
+    $.post(
+		"index.php", // url
+		{
+			"action":"saveAA",
+			"controller":"form",
+            "visitorId" : JSON.stringify(visitorId),
+            "applicationId" : JSON.stringify(id),
+			"value" : JSON.stringify(val)
+		},
+        function (res){
+            
+        },
+        "json"
+    ); 
+}
+
+function addEventToAll(){
+	$(document).on("change",".question input[type=radio]", saveAnswer);
     
     $(document).on("change","textarea", saveAnswer);
+    
+    addAAEvent();
 }
 
 function submit(){
 	var visitorId = getVisitorId();
 	var applicationId = getApplicationId();
 	var pre = getPre();
-	console.log(pre);
+
+    var input = $(".question input");
+    
+    for(var i = 0; i < input.length; i++){
+        if(!$.trim($(input[i]).val())){
+            alert("Please answer all the questions. ");
+            return;
+        }        
+    }
+    
+    var textarea = $(".question textarea");
+    for(var i = 0; i < textarea.length; i++){
+        if(!$.trim($(textarea[i]).val())){
+            alert("Please answer all the questions. ");
+            return;
+        }        
+    }
+    
+
+
 	$.post(
         "index.php",
         {
@@ -72,6 +120,9 @@ function submit(){
         },
         function(res) {
 				console.log(res)
+                if (res) {
+                    location.reload()
+                }
         },
         "json"
     );
@@ -79,7 +130,7 @@ function submit(){
 
 function init(){
 	$("#submit").click(submit);
-	addEventToInput();
+	addEventToAll();
 }
 
 

@@ -49,9 +49,9 @@
 										<label class="input-item" for="visitor_id" required>Visitor Id : </label>
 										<input class="input-field" id="visitor_id" type="text" name="visitorId"/>
 								</div>
-								<div>
-										<input class="input-field" type="button" id="submit" value="Send"/>
-								</div>
+								
+										<input class="input-field" type="submit" value="Send"/>
+								
 						</fieldset> 
 				</form>
 	</div>

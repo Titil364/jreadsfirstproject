@@ -120,7 +120,7 @@ class ModelForm extends Model{
 	
 	public static function getCompletedFormByForm($formId){
 		try{
-			$sql  = "SELECT ApplicationDateComplete.visitorId, count(ApplicationDateComplete.visitorId)=:applicationNumber as 'nb' FROM Application, ApplicationDateComplete WHERE Application.applicationId =ApplicationDateComplete.applicationId AND Application.formId=:formId AND ApplicationDateComplete.applicationDateCompletePost is not null GROUP BY (ApplicationDateComplete.visitorId)";
+			$sql  = "SELECT ApplicationDateComplete.visitorId, count(ApplicationDateComplete.visitorId)=:applicationNumber as 'nb' FROM Application, ApplicationDateComplete WHERE Application.applicationId = ApplicationDateComplete.applicationId AND Application.formId=:formId AND ApplicationDateComplete.applicationDateCompletePost is not null GROUP BY (ApplicationDateComplete.visitorId)";
 			$prep = Model::$pdo->prepare($sql);
 
 			
@@ -145,42 +145,50 @@ class ModelForm extends Model{
         }
 	}
         
-        public static function deleteAllFormContent($formId) {
-            
-            $visitor_array = ModelVisitor::getVisitorByFormId($formId);
-            foreach ($visitor_array as $v){
-                $vId = $v->getVisitorId();
-                ModelVisitor::deleteAllVisitorContent($vId);
-            }
-            
-            
-            $app_Array = ModelApplication::getApplicationByFormId($formId);
-            
-            foreach ($app_Array as $app){ //app
-                $appId = $app->getApplicationId();
-                $question_array = ModelQuestion::getQuestionByApplicationId($appId);
-                    
-                foreach ($question_array as $q){ //quest
-                    $qId = $q->getQuestionId();
-                    ModelQuestion::delete($qId);
-                }
-                ModelApplication::delete($appId);
-
-            }
-            $affs_array = ModelAssocFormFS::getAssocFormFSByFormId($formId);  //assocFormFS
-            foreach ($affs_array as $affs){
-                $FSQuestionName = $affs->getFSQuestionName();
-                ModelAssocFormFS::delete($formId, $FSQuestionName);
-            }
-            
-            $afpi_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //assocFormPI
-            
-            foreach ($afpi_array as $afpi){
-                $personnalInformationName = $afpi->getPersonnalInformationName();
-                ModelAssocFormPI::delete($formId, $personnalInformationName);
-            }
-            
-            ModelForm::delete($formId);
+    public static function deleteAllFormContent($formId) {
+        
+        $visitor_array = ModelVisitor::getVisitorByFormId($formId);
+        foreach ($visitor_array as $v){
+            $vId = $v->getVisitorId();
+            ModelVisitor::deleteAllVisitorContent($vId);
         }
+        
+        
+        $app_Array = ModelApplication::getApplicationByFormId($formId);
+        
+        foreach ($app_Array as $app){ //app
+            $appId = $app->getApplicationId();
+            $question_array = ModelQuestion::getQuestionByApplicationId($appId);
+                
+            foreach ($question_array as $q){ //quest
+                $qId = $q->getQuestionId();
+                ModelQuestion::delete($qId);
+            }
+            ModelApplication::delete($appId);
+        }
+
+        $affs_array = ModelAssocFormFS::getAssocFormFSByFormId($formId);  //assocFormFS
+        foreach ($affs_array as $affs){
+            $FSQuestionName = $affs->getFSQuestionName();
+			$data = array(
+				"FSQuestionName" => $FSQuestionName,
+				"formId" => $formId
+			);
+            ModelAssocFormFS::delete($data);
+        }
+        
+        $afpi_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //assocFormPI
+        
+        foreach ($afpi_array as $afpi){
+            $personnalInformationName = $afpi->getPersonnalInformationName();
+			$data = array(
+				"personnalInformationName" => $personnalInformationName,
+				"formId" => $formId
+			);
+            ModelAssocFormPI::delete($data);
+        }
+        
+        echo ModelForm::delete($formId);
+    }
 }
 
