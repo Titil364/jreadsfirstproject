@@ -153,8 +153,26 @@ class ControllerForm {
 		}
 
 	}
-	
-	public static function update(){
+        
+        public static function delete(){
+            $formId = $_GET["id"];
+            var_dump($formId);
+            
+            if(Session::is_connected() &&  Session::is_admin()){
+                var_dump(" cas 2");
+                ModelForm::deleteAllFormContent($formId);
+                
+            }else{
+                var_dump(" cas 3");
+                $form = ModelForm::select($formId);
+                $formAuthor = $form->getUserNickname();
+                if(Session::is_connected() &&  $_SESSION['nickname'] == $formAuthor ){
+                    ModelForm::deleteAllFormContent($formId);
+                }
+            }
+        }
+
+        public static function update(){
 		
 		if(isset($_GET["id"])){
 			$formId = $_GET["id"];

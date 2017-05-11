@@ -144,5 +144,43 @@ class ModelForm extends Model{
             return false;
         }
 	}
+        
+        public static function deleteAllFormContent($formId) {
+            
+            $visitor_array = ModelVisitor::getVisitorByFormId($formId);
+            foreach ($visitor_array as $v){
+                $vId = $v->getVisitorId();
+                ModelVisitor::deleteAllVisitorContent($vId);
+            }
+            
+            
+            $app_Array = ModelApplication::getApplicationByFormId($formId);
+            
+            foreach ($app_Array as $app){ //app
+                $appId = $app->getApplicationId();
+                $question_array = ModelQuestion::getQuestionByApplicationId($appId);
+                    
+                foreach ($question_array as $q){ //quest
+                    $qId = $q->getQuestionId();
+                    ModelQuestion::delete($qId);
+                }
+                ModelApplication::delete($appId);
+
+            }
+            $affs_array = ModelAssocFormFS::getAssocFormFSByFormId($formId);  //assocFormFS
+            foreach ($affs_array as $affs){
+                $FSQuestionName = $affs->getFSQuestionName();
+                ModelAssocFormFS::delete($formId, $FSQuestionName);
+            }
+            
+            $afpi_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //assocFormPI
+            
+            foreach ($afpi_array as $afpi){
+                $personnalInformationName = $afpi->getPersonnalInformationName();
+                ModelAssocFormPI::delete($formId, $personnalInformationName);
+            }
+            
+            ModelForm::delete($formId);
+        }
 }
 
