@@ -87,4 +87,58 @@ public function getApplicationDateCompletePost(){return $this->applicationDateCo
             return false;
         }
 	}
+        
+	public static function getApplicationDateCompleteByVisitorId($visitorId){
+		try{
+			$sql  = "SELECT * FROM ApplicationDateComplete WHERE visitorId=:visitorId";
+			$prep = Model::$pdo->prepare($sql);
+                        
+			$values = array(
+				"visitorId" => $visitorId
+				);
+                        
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS,'ModelApplicationDateComplete');
+                        
+			$question_array = $prep->fetchAll();
+
+			return $question_array;
+
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}        
+        
+        public static function delete($primary1,$primary2) {
+        try {
+            $table_name = static::$object;
+            $class_name = 'Model' . $table_name;
+			
+			
+            $sql = "DELETE FROM $table_name WHERE applicationId=:a AND visitorId =:v";
+			
+            $req_prep = Model::$pdo->prepare($sql);
+			
+            $values = array(
+                "a" => $primary1,
+                "v" => $primary2
+            );
+			
+            $req_prep->execute($values);
+            return true;
+			
+        } catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error while deleting the object";
+            }
+            return false;
+        }
+    }        
 }

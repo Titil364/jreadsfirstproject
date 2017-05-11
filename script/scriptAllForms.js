@@ -5,7 +5,7 @@ $('select').on('change',function(){
   console.log("formId = "+formId);
   console.log("valueSelect = "+value);
   changeFillable(formId, value);
-})
+});
 
 function changeFillable(form, newfill) {
     $.post(
@@ -26,3 +26,51 @@ function changeFillable(form, newfill) {
         }, "json"
     );
 }
+
+$('.updateForm').on('change',updateForm);
+$('.deleteForm').on('change',deleteForm);
+
+function updateForm(event){
+  var formId = event.target.id;
+ 
+  var adr = "index.php?";
+  var params = jQuery.param({
+          "action":"update",
+          "controller":"form",
+          "id":formId,
+      });
+  adr+=params;
+  console.log(adr);
+      window.location.href = adr;
+
+
+}
+
+function deleteForm(event){
+var r = confirm("Are you sure? (this will delete ALL informations related to this form (including visitor and their answers))");
+if (r == true) {
+ 
+  var formId = event.target.id;
+    console.log(formId);
+      $.get(
+        "index.php",
+        {
+            "controller":"form",
+            "action": "delete",
+            "id": formId
+        },
+        function (res){
+            location.reload();
+        }, "json"
+    );
+  }
+}
+
+
+
+function init(){
+  $('.updateForm').on('click',updateForm);
+  $('.deleteForm').on('click',deleteForm);
+
+}
+$(init);

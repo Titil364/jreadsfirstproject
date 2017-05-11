@@ -14,7 +14,7 @@ class ModelVisitor extends Model{
     protected static $primary = 'visitorId';
 
     public function getVisitorId(){return $this->visitorId;}
-    public function setVisitorId($visitorGroupId){$this->visitorId = $visitorId;}
+    public function setVisitorId($visitorId){$this->visitorId = $visitorId;}
 	
     public function getVisitorSecretName(){return $this->visitorSecretName;}
     public function setVisitorSecretName($visitorSecretName){$this->visitorSecretName = $visitorSecretName ;}
@@ -126,6 +126,65 @@ class ModelVisitor extends Model{
             return false;
         }
 	}
+        
+        public static function getVisitorByFormId($formId){
+		try{
+			$sql = "Select * From Visitor Where formId=:formId";
+			$prep = Model::$pdo->prepare($sql);
+
+			$values = array(
+				"formId" => $formId,
+				);
+
+			$prep-> execute($values);
+			$prep->setFetchMode(PDO::FETCH_CLASS, 'ModelVisitor');
+			
+			return $prep->fetchAll();
+		}catch (PDOException $ex) {
+            if (Conf::getDebug()) {
+                echo $ex->getMessage();
+            } else {
+                echo "Error";
+            }
+            return false;
+        }
+	}
+        
+        public static function deleteAllVisitorContent($visitorId){
+            $info_array = ModelInformation::getInformationByVisitorId($visitorId);
+            foreach ($info_array as $i){
+                $name = $i->getPersonnalInformationName();
+                ModelInformation::delete($name, $visitorId);
+            }
+            
+            $aa_aray = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
+
+            foreach ($aa_aray as $aa){      
+                $aaAppId = $aa->getApplicationId();
+                ModelAgainAgain::delete($visitorId, $aaAppId);
+            }
+
+            
+            $answer_array = ModelAnswer::getAnswerByVisitorId($visitorId);
+            foreach ($answer_array as $ans){ //ans
+                $qId = $ans->getQuestionId();
+                ModelAnswer::delete($visitorId, $qId);
+            }
+            
+            $sortApp_array = ModelSortApplication::getFSByVisitorId($visitorId);
+            foreach ($sortApp_array as $sort){
+                $name = $sort->getFSQuestionName();
+                ModelSortApplication::delete($visitorId, $name);
+            }
+            
+            $appDate_array = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
+            foreach ($appDate_array as $appDate){
+                $applicationId = $appDate->getApplicationId();
+                ModelApplicationDateComplete::delete($applicationId, $visitorId);
+            }
+            
+            ModelVisitor::delete($visitorId);
+        }
 	
 	
 }

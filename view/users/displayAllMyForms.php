@@ -11,6 +11,7 @@
 			<th>Number of form completed</th>
 			<th></th>
 			<th>Who answered ?</th>
+                        <th></th>
        </tr>
 	</thead>
 
@@ -39,6 +40,7 @@
 				echo "<td>$secureNbCompletedForm</td>";
 				echo "<td><a href=\"index.php?controller=form&action=read&id=$protectedId\" >See the form</a></td>";
 				echo "<td><a href=\"index.php?controller=form&action=whoAnswered&id=$protectedId\" >Answers</a></td>";
+                                echo "<td><button class=\"updateForm\" id=\"$secureId\">Update</button><br><button class=\"deleteForm\" id=\"$secureId\">Delete</button></td>";
 				
 			echo "</tr>";
 		}
@@ -64,5 +66,6 @@ EOT;
 
 	</table>
     </div>
+
 </main>
 <script src ="script/scriptAllForms.js"></script>
