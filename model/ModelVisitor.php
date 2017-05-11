@@ -182,7 +182,8 @@ class ModelVisitor extends Model{
 			);
             ModelAnswer::delete($data);
         }
-        
+       
+
         $sortApp_array = ModelSortApplication::getFSByVisitorId($visitorId);
         foreach ($sortApp_array as $sort){
             $name = $sort->getFSQuestionName();
