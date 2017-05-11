@@ -1008,46 +1008,83 @@ class ControllerForm {
     public static function toPDF() {
         $formId = $_GET['id'];
        
-        $tabPages = self::preparePDF($formId);//getting the pages
-        $nbPages = count($tabPages);
-        $html=""; //initializing html content str
+        $tabForm = self::preparePDF($formId);//getting the pages
+        var_dump($tabForm);
+        $cpt = 0;
         
-        
-        switch ($nbPages){
-            case 0:
-                break;
-            case 1:
-                $html.=$tabPages[0];
-                break;
-            case 2:
-                $html.=$tabPages[0];
-                $html.= '<div style="page-break-before: always;"></div>';
-                $html.=$tabPages[1];
-                break;
-            default:
-                $html.=$tabPages[0]; //to have 2 first pages in one
-                for($pageCpt = 1;$pageCpt < $nbPages-1;$pageCpt++){ 
-                    $html.=$tabPages[$pageCpt];                                 //adding page
-                    $html.= '<div style="page-break-before: always;"></div>';   //adding page break
-                }
-                $html.=$tabPages[$nbPages-1]; //adding last page without page break (putting white page at the end otherwise
-                break;
+        $zip = new ZipArchive();
+        $filename = File::build_path(array('tmpPDF', $formId.'.zip'));
+
+        if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+            exit("cannot open <$filename>\n");
         }
-          
-
         
-        // instantiate and use the dompdf class
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
+        foreach ($tabForm as $tabPages){
+            $nbPages = count($tabPages);
+            $html=""; //initializing html content str
 
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait');
 
-        // Render the HTML as PDF
-        $dompdf->render();
+            switch ($nbPages){
+                case 0:
+                    break;
+                case 1:
+                    $html.=$tabPages[0];
+                    break;
+                case 2:
+                    $html.=$tabPages[0];
+                    $html.= '<div style="page-break-before: always;"></div>';
+                    $html.=$tabPages[1];
+                    break;
+                default:
+                    $html.=$tabPages[0]; //to have 2 first pages in one
+                    for($pageCpt = 1;$pageCpt < $nbPages-1;$pageCpt++){ 
+                        $html.=$tabPages[$pageCpt];                                 //adding page
+                        $html.= '<div style="page-break-before: always;"></div>';   //adding page break
+                    }
+                    $html.=$tabPages[$nbPages-1]; //adding last page without page break (putting white page at the end otherwise
+                    break;
+            }
 
-        // Output the generated PDF to Browser
-        $dompdf->stream($formId);
+
+
+            // instantiate and use the dompdf class
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Optional) Setup the paper size and orientation
+            $dompdf->setPaper('A4', 'portrait');
+
+            // Render the HTML as PDF
+            $dompdf->render();
+
+            $output = $dompdf->output();
+            //file_put_contents(File::build_path(array('tmpPDF', 'doc'.$cpt.'.pdf')), $output);
+            
+            // Output the generated PDF to Browser
+            //$dompdf->stream($formId);
+            
+            $zip->addFromString($formId.'num'.$cpt.'.pdf', $output);
+            $zip->addFile($thisdir . "/too.php","/testfromfile.php");
+            echo "numfiles: " . $zip->numFiles . "\n";
+            echo "status:" . $zip->status . "\n";
+            $cpt++;
+        }
+
+
+
+        $zip->close();
+        
+        if (file_exists($filename)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filename));
+            readfile($filename);
+            exit;
+        }
     }
 
     public static function changeFillable(){
@@ -1333,9 +1370,32 @@ class ControllerForm {
             }
 
             $FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
- 
-
-
+            //=================
+            
+            $allOrders=[];
+            
+            for($order=0; $order<4; $order++){
+                $applicationOrder = [];
+                    $nbApplications = count($application_array);
+                    while($nbApplications != 0 ){
+                      $nombre = mt_rand(0, count($application_array)-1);
+                      if( !in_array($nombre, $applicationOrder) )
+                      {
+                            $applicationOrder[] = $nombre;
+                            $nbApplications--;
+                      }
+                    }
+                    array_push($allOrders, $applicationOrder);
+            }
+            $allForm = [];
+            var_dump($f);
+            $formName = htmlspecialchars($f->getFormName());
+            
+            
+            
+            foreach($allOrders as $currentOrder){
+            $tabPages=[];
+                
             //============ STARTING PAGE GENERATION ===========
             
             //----------- page 1 personnal info
@@ -1352,7 +1412,7 @@ class ControllerForm {
                         
                         }
                     </style>";
-            $formName = htmlspecialchars($f->getFormName());
+
 
             //displaying form  informations
             $page1 .= "<h1> $formName </h1><br><br>";
@@ -1368,7 +1428,7 @@ class ControllerForm {
            
             //---------- Next pages : activities : pre post, pre post...
             	//displaying tasks
-                for ($i = 0; $i < count($application_array); $i++) {
+                foreach ($currentOrder as $i) {
                     
                     $currentPage=""; //current page var 
                     $taskName = htmlspecialchars($application_array[$i]->getApplicationName());
@@ -1593,8 +1653,8 @@ class ControllerForm {
 			
 				for($i = 0; $i<$nbFS ;$i++){
 					$alphabeta = $alphabet;
-					$f = $FS[$randomFS[$i]-1];
-					$name = split("/",$f->getFSQuestionName());
+					$f2 = $FS[$randomFS[$i]-1];
+					$name = split("/",$f2->getFSQuestionName());
 					$nameLeft = $name[0];
 					$nameRight = $name[1];
 					$fsPage.= '<tr class=\"row\">';
@@ -1614,7 +1674,10 @@ class ControllerForm {
                 $aaAndFs = $aaPage."<br><br><br><br><br>".$fsPage;
                 array_push($tabPages, $aaAndFs); //pushing page to array  
                 
-                return $tabPages;
+                //return $tabPages;
+                array_push($allForm, $tabPages);
+            }
+            return $allForm;
 
             }
     }
