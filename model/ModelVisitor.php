@@ -90,7 +90,7 @@ class ModelVisitor extends Model{
 	
 	/* desc Return 0, 1 or -1 if the visitor has completed the application
 	 *
-	 * return 0 if he doesn't fill the pre, 1 for the post and -1 if he has finished to fill the two parts
+	 * return 0 if he hasn't filled the pre, 1 for the post and 2 if he has finished to fill the two parts
 	 */
 	public function getApplicationPreOrPost($applicationId){
 		try{	
@@ -107,7 +107,7 @@ class ModelVisitor extends Model{
 			if($result != null){
 				if($result->getApplicationDateCompletePre() != null){
 					if($result->getApplicationDateCompletePost() != null){
-						return -1;
+						return 2;
 					}else{
 						return 0;
 					}

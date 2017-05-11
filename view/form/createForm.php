@@ -109,7 +109,7 @@
 									$i = $protectedAppliId . "Img";
 									$text = ($src != ""?"(only if you want to change)":"");
 									echo "<label for=\"$i\">Image of the application $text : </label>";
-									echo "<input type=\"file\" id=\"$i\" name=\"Applic3Img\" accept=\"image/*\">";
+									echo "<input type=\"file\" id=\"$i\" name=\"$i\" accept=\"image/*\">";
 									echo "<button class=\"removeImage\" type=\"button\" value=\"Remove image\">Remove the image</button>";
 								echo "</div>";
 							echo "</div>";

@@ -365,7 +365,7 @@ function addEventDelete(){
 	$(document).on("click", ".removeImage", removeImage);
 }
 
-//REMOVE L'IMAGE SUR LE SERVEUR
+
 function removeImage(event){
 	if(confirm("Are you sure you want to the image of the application ?")){
 		var button = event.currentTarget;
@@ -387,24 +387,134 @@ function removeApplication(button){
 				nbApplication--;
 				deletedObject.push([application.parentNode, application]);
 				$(application).remove();
+				refreshApplication();
 			}	
 	}else{
 		deletedObject.push([application.parentNode, application]);
 		$(application).remove();
+		refreshApplication();
 	}
 }
 
 function removeQuestion(button){
 	var question = button.currentTarget.parentNode.parentNode;
 	var inputName = $("#"+question.id+"Name").val();
+	var application = question.parentNode.parentNode; 
 	if(!(inputName=="") && (inputName !== undefined)){
 		if(confirm("Are you sure you want to delete this question ?")){
 				deletedObject.push([question.parentNode, question]);
 				$(question).remove();
+				refreshQuestion(application);
 			}	
 	}else{
 		deletedObject.push(question.parentNode, question);
 		$(question).remove();
+		refreshQuestion(application);
+	}
+	console.log(question);
+}
+
+function refreshApplication(){
+	var application = $(".application");
+	var idForm = $(".formCss")[0].id;
+	for(var x = 0; x < application.length; x++){
+		var currentA = application[x];
+		var prevId = currentA.id;
+		var newId = idForm+"Applic"+x;
+		currentA.id = newId;
+		
+		//info - idA + "Info"
+		var infoA = $(currentA).children()[0];
+			infoA.id = newId+"Info";
+			//.appCreationTitle
+				//Maj title - label for - idA + "Name"
+				$(infoA).find("label")[0].setAttribute("for", newId+"Name");
+				//Maj title - input id + name - idA + "Name"
+				$("#"+prevId+"Name").attr("name", newId+"Name");
+				$("#"+prevId+"Name").attr("id", newId+"Name");
+			//div
+				//Maj desc - label for - idA + "Desc"
+				$(infoA).find("label")[1].setAttribute("for", newId+"Desc");
+				//Maj desc - textarea id + name - idA + "Desc
+				$("#"+prevId+"Desc").attr("name", newId+"Desc");
+				$("#"+prevId+"Desc").attr("id", newId+"Desc");
+			//div
+				//Maj img - label for - idA + "Img"
+				$(infoA).find("label")[2].setAttribute("for", newId+"Img");
+				//Maj img - input id + name - idA + "Img"
+				$("#"+prevId+"Img").attr("name", newId+"Img");
+				$("#"+prevId+"Img").attr("id", newId+"Img");
+			
+
+		refreshQuestion(currentA);
+	}
+}
+
+/*
+ * the parent is the application
+ */
+function refreshQuestion(application){
+	var parentId = application.id;
+	var preQuestions = $(application).find(".questionPre");
+	var postQuestions = $(application).find(".questionPost");
+	refreshQuestionPreOrPost(preQuestions, parentId, "pre");
+	refreshQuestionPreOrPost(postQuestions, parentId, "post");
+}
+
+function refreshQuestionPreOrPost(questions, parentId, text){
+
+	for(var i = 0; i < questions.length; i++){
+		var currentQ = questions[i];
+		
+		console.log(currentQ);
+	//Maj id wrapper - IdQ
+		var newId = parentId + "Q" + (i+1) + text;
+		var prevId = currentQ.id;
+		currentQ.id = newId;
+		//div
+		var questionInfo = $(currentQ).children()[0];
+			//Maj label for idQ + "Name"
+		$(questionInfo).children()[0].setAttribute("for", newId+"Name");
+		$(questionInfo).children()[0].innerHTML = "Question "+text.capitalizeFirstLetter()+" n°"+(i+1)+" : ";
+		
+			//Maj input id idQ + "Name"
+		$("#"+prevId+"Name").attr("id", newId+"Name");
+		$("#"+prevId+"Name").attr("name", newId+"Name");
+			//divCheckbox
+		
+		var divCheckbox = $(currentQ).find(".divCheckbox");
+		if($(divCheckbox).children().length > 0){
+					//Maj label box
+			$(divCheckbox).find("label")[0].setAttribute("for", "checkbox"+newId);
+					//Maj input box - "checkbox" + IdQ
+			$(divCheckbox).find("input")[0].setAttribute("id", "checkbox"+newId);
+			if($("#checkbox"+newId).is(':checked')){
+				//divCustomTitle
+					//If checked maj label custom
+				$(divCheckbox).find(".divCustomTitle label")[0].setAttribute("for", "titlecheckbox"+newId);
+					//If checked maj title custom - "titlecheckbox" + IdQ
+				$(divCheckbox).find(".divCustomTitle input")[0].setAttribute("id", "titlecheckbox"+newId);
+					//If checked maj id p - "msgcheckbox" + IdQ
+				$(divCheckbox).find(".divCustomTitle p")[0].setAttribute("id", "msgcheckbox"+newId);
+
+			//.answerArea
+				var answerArea = $($(currentQ).find(".answerArea")).children();
+					//foreach div
+				for(var y = 0; y < answerArea.length; y++){
+					var elem = answerArea[y];
+					//span - IdQ + value
+					var value = $(elem).find("span")[0].innerHTML;
+					$(elem).find("span")[0].setAttribute("id", newId+value);
+					//label - IdQ + value (ex smiley1)
+					$(elem).find("label")[0].setAttribute("for", "custom"+newId+value);
+					//If checked maj id input custom - custom + idQ + value
+						//If checked maj class input custon - fieldcheckbox + IdQ
+					$(elem).find("input")[0].setAttribute("id", "custom"+newId+value);
+					$(elem).find("input")[0].setAttribute("class", "fieldcheckbox"+newId);
+				}
+
+			}
+		}
 	}
 }
 
