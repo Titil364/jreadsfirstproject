@@ -17,7 +17,6 @@ function getFormId(){
  * \author Cyril Govin
  * \brief Delete a custom personnal information to the form and add it to the persoInfoToDelete tab. 
 	
-	
  * \param self The remove button
  */
 function deletePersonnalInformation(self){

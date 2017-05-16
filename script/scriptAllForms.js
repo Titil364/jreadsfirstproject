@@ -1,12 +1,14 @@
+
+//Not used atm
+//Fillable was a state of the form regarding if the form is available or not
 $('select').on('change',function(){
-    
   var formId =  this.parentNode.parentNode.id;
   var value = $(this).val();
   console.log("formId = "+formId);
   console.log("valueSelect = "+value);
   changeFillable(formId, value);
 });
-
+//Not used atm
 function changeFillable(form, newfill) {
     $.post(
         "index.php",
@@ -26,9 +28,6 @@ function changeFillable(form, newfill) {
         }, "json"
     );
 }
-
-$('.updateForm').on('change',updateForm);
-$('.deleteForm').on('change',deleteForm);
 
 function updateForm(event){
   var formId = event.target.id;
@@ -71,6 +70,5 @@ if (r == true) {
 function init(){
   $('.updateForm').on('click',updateForm);
   $('.deleteForm').on('click',deleteForm);
-
 }
 $(init);
