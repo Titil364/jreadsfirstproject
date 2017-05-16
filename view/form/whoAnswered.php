@@ -49,7 +49,7 @@
 					$secure = htmlspecialchars ($a->getInformationName());
 					echo "<td>$secure</td>";
 				}
-				$visitorId = $information[$i]->getVisitorId();
+				$visitorId = $f->getVisitorId();
 				echo "<td><a href=\""."index.php?controller=form&action=readAnswer&formId=$formId&visitorId=$visitorId\">Answer</a></td>";
 				echo "</tr>";
 				$i++;

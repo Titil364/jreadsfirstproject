@@ -3,7 +3,9 @@ require_once File::build_path(array('model', 'ModelVisitor.php'));
 require_once File::build_path(array('model', 'ModelApplicationDateComplete.php'));
 
 class ControllerVisitor{
-    
+    /*@author Alexandre Comas
+	 * desc : Display the form for the visitor, in order he to fill it
+	 */
     public static function read(){
 		if(!isset($_GET['visitorId'])){
 			$data["message"] = "There are not enough information.  ";
@@ -32,19 +34,16 @@ class ControllerVisitor{
 			
 			ControllerDefault::message($data);	
         }else{
-			
+			//Test if the visitor has completed the Pre or not
 			if($visitor->getDateCompletePre() == null){
 				$pre = 0;
 			}else{
 				$pre = 1;
-			
-			}
-			
+			}			
 			$FSQuestionTable = ModelFSQuestion::getFSQuestionByFormId($formId);
-
+			
 			if($pre === 0){
-				$jscript = "answers";	
-				//$visitor = true;
+				$jscript = "answers";
 				$folder = $f->getUserNickname();
 				$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
 				
@@ -169,11 +168,11 @@ class ControllerVisitor{
 					
 				}
 				
-				//AATable
+				//Randomize AATable
 				$randomTable = [];
 				$nb = count($application_array);
 				for($i = 0; $i<$nb ;$i++){
-					$tmp = rand(1,$nb);
+					$tmp = rand(1,$nb); //Choose a number between 1 and $nb
 					while(in_array($tmp,$randomTable)){
 						$tmp = rand(1,$nb);
 					}
@@ -181,7 +180,7 @@ class ControllerVisitor{
 				}
 				$AAFilled = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
 				
-				//FSTable
+				//RandomizeFSTable
 				$alphabet = Array ('A', 'B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
 				$randomFS =[];
@@ -193,10 +192,8 @@ class ControllerVisitor{
 						$tmp = rand(1,$nbFS);
 					}
 					array_push($randomFS, $tmp);
-				}
-				
+				}				
 				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
-				//var_dump($FSFilled);
 				
 				$jscript = "answers";
 				$pagetitle = 'Welcome back visitor';
@@ -208,6 +205,9 @@ class ControllerVisitor{
 		}
     }
 	
+	/* @author Alexandre Comas
+	 * desc : Function called when the button addVisitor is pressed
+	 */
 	public static function addVisitor(){
 		/* When a visitor is created, everything about him is created on the dataBase's tables
 		 * -Visitor
@@ -228,13 +228,12 @@ class ControllerVisitor{
 		$nbApplications = count($applications);
 		while($nbApplications != 0 ){
 		  $nombre = mt_rand(0, count($applications)-1);
-		  if( !in_array($nombre, $applicationOrder) )
-		  {
+		  if(!in_array($nombre, $applicationOrder)){
 			$applicationOrder[] = $nombre;
 			$nbApplications--;
 		  }
 		}
-		
+		//Add a line in table Visitor
 		$data = array(
 				"visitorId" => $visitorId,
 				"formId" => $formId,
@@ -245,7 +244,7 @@ class ControllerVisitor{
 			$return = false;
 		}
 		
-		
+		//Foreach application add a line in ApplicationDateComplete	 and foreach question add a line to the table Answer with the answer null
 		foreach($applications as $a){
 			$applicationId = $a->getApplicationId();
 			$questions = ModelQuestion::getQuestionByApplicationId($applicationId);
@@ -267,7 +266,7 @@ class ControllerVisitor{
 			}
 		}
 		
-		
+		//Foreach PersonnalInformation required in this form, add a line in Information
 		$information = ModelAssocFormPI::getAssocFormPIByFormId($formId);
 		foreach($information as $i){
 			$info = array(
@@ -279,6 +278,7 @@ class ControllerVisitor{
 				$return = false;
 			}			
 		}
+		//Foreach Application add a line in AgainAgain with the answer null
 		foreach($applications as $app){
 			$datAA = array(
 				"visitorId" => $visitorId,
@@ -288,6 +288,7 @@ class ControllerVisitor{
 				$return = false;
 			}
 		}
+		//Foreach FSQuestion add a line in SortApplication with the answer null
 		$FSQ = ModelFSQuestion::getFSQuestionByFormId($formId);
 		foreach($FSQ as $f){
 			$dataFS = array (
@@ -301,13 +302,20 @@ class ControllerVisitor{
 		echo json_encode($return);
 	}
 	
+	/* @author Alexandre Comas
+	 * JSON
+	 * desc : send the form if with a given form Id
+	 */
 	public static function getFormIdByVisitor(){
 		$visitorId = json_decode($_POST['visitorId']);
 		echo json_encod	(ModelVisitor::Select($visitorId)->getformId());
 	}
 	
+	/* @author Alexandre Comas
+	 * JSON
+	 * desc : Return an array made of applicactionId and the related answer for a given visitorId
+	 */
 	public static function getAgainAgainByVisitorId(){
-		//Return an array made of applicactionId and the related answer for a given visitorId
 		$visitorId = json_decode($_POST['visitorId']);
 		$AA = ModelAgainAgain::getAgainAgainByVisitorId($visitorId);
 		$return = [];

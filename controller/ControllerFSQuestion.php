@@ -4,6 +4,9 @@ require_once File::build_path(array('model', 'ModelFSQuestion.php'));
 
 class ControllerFSQuestion {
     
+	/* @author Alexandre Comas
+	 * desc Create a table of questions Name
+	 */
     public static function FSQuestionName(){
         $formId = json_decode($_GET['formId']);
         $FSQuestion = ModelFSQuestion::getFSQuestionByFormId($formId);
