@@ -140,14 +140,20 @@ function makeFSDraggable() {
         });
     }
 }
-
-function add(){     //This function addEventListener on answers of shortcut and textarea class, addEventListener which calls a function the pressed element as parameter
+/**
+ * \author Alexandre Comas
+ * \brief This function addEventListener on answers of shortcut and textarea class, addEventListener which calls a function the pressed element as parameter
+	
+	If a field is empty (name of form for example), the extraction is cancelled and an alert popped out. 
+ * \param 
+ */
+function add(){    
     var shortcut = document.getElementsByClassName("shortcut");
     for (i = 0; i<shortcut.length; i++ ) {
-        var parent = shortcut[i].parentElement;     //We get the parentNode of the shortCut class element.
+        var parent = shortcut[i].parentElement;     //!< We get the parentNode of the shortCut class element.
 		//console.log(parent);
-        parent.addEventListener("change", function(){       //On which we add the eventListener
-            saveShortcut($(this));     //Call the saveShortcut function with the pressed element as parameter
+        parent.addEventListener("change", function(){       //!< On which we add the eventListener
+            saveShortcut($(this));     //!< Call the saveShortcut function with the pressed element as parameter
         });                                
     }
 	
@@ -155,7 +161,7 @@ function add(){     //This function addEventListener on answers of shortcut and 
     var textarea = $("textarea");
 	for(var i = 0; i < textarea.length; i++){
 		textarea[i].addEventListener("change", function(){
-            saveTextarea($(this));    //Call the saveShortcut function with the changed element as parameter
+            saveTextarea($(this));    //!<Call the saveShortcut function with the changed element as parameter
         });
     }
 }

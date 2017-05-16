@@ -5,10 +5,15 @@ var fsquestions;
 var qType = [];
 
 var customTitleState = []; //0 : not custom , 1 valid custom title, -1 invalid or empty custom title
+
 /**
-* [Form Creation] Add an application to the DOM
-*
-*/
+  * \brief Add an application to the DOM
+	
+	This function is triggered when clicking on the "Add an application" button.
+	This function has beend modified by 
+  * \author Cyril Govin
+  *
+  */
 function addApplication(event){
 	//Recovery of the container
 	var form = document.getElementById("newForm");
@@ -145,6 +150,15 @@ function addApplication(event){
 	customTitleState.push([ [] , [] ]); // 1st : pre quest of app, 2 nde post quest
 }
 
+/**
+  * \author Cyril Govin
+  * \brief Display the image from the input in the imgDisplayer parameter.
+	
+	This function is triggered when the input file is changed (this input accepts only image files)
+	When the file is finnaly loaded, the image is displayed in the imgDisplayer
+  * \param input The image input which accepts only img files
+  * \param imgDisplayer The wrapper which supposed to display the img file
+  */
 function displayImage(input, imgDisplayer){
  	if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -154,11 +168,30 @@ function displayImage(input, imgDisplayer){
         reader.readAsDataURL(input.files[0]);
     }
 }
+/**
+  * \author Cyril Govin
+  * \brief Add an event "on focus" to the body which will empty the imgDisplayer if no file has been loaded. 
+	
+	This function is triggered when the img-file input is clicked by the user. 
+  * \param input The image input which accepts only img files
+  * \param imgDisplayer The wrapper which supposed to display the img file
+  *
+  */
 function noSelection(input, imgDisplayer){
  	document.body.onfocus = function(event){
  		emptyImage(input, imgDisplayer);
  	};	
 }
+
+/**
+  * \author Cyril Govin
+  * \brief Empty the img variable which display the img
+	
+	This function is triggered when the body has the focus. 
+  * \param input The image input which accepts only img files
+  * \param img The wrapper which supposed to display the img file (this variable is the same imgDisplayer variable as the previous function )
+  *
+  */
 function emptyImage(input, img){
  	if($(input).val()){
  		img.src = "";
@@ -166,6 +199,16 @@ function emptyImage(input, img){
  	document.body.onfocus = null;
 }
 
+/**
+  * \author Cyril Govin
+  * \brief Delete an element from the DOM
+	
+	This function is triggered when clicking on each "Remove" button and is adaptative. 
+	This function is messy and can be changed. Don't forget to refreshApplication and refreshQuestion when deleting an application or question. 
+  * \param input The image input which accepts only img files
+  * \param img The wrapper which supposed to display the img file (this variable is the same imgDisplayer variable as the previous function )
+  *
+  */
 function removeMe(event, me){
 
 	var inputChild = me.getElementsByTagName("input")[0];
@@ -192,16 +235,23 @@ function removeMe(event, me){
 		parent.removeChild(me);
 	}
 }
+/**
+  * \author Cyril Govin
+  * \brief Correct the id of all applications, changing each id according to their order
+	
+	This function is invoked in RemoveMe. 
+  *
+  */
 function refreshApplication(){
 	var applications = $(".application");
 	var count = 0;
 	console.log(applications.length);
 	for(var i = 0; i < applications.length; i++){
-		// The method who make the application dragable and dropabble create a moving div
-		// build exactly as the application with the same class but with no id
-		// because of this, the application tab "applications" above contains one more div 
-		// without any id which is modified as his comrades whereas it whould normally disappear
-		// we need not to modify this one otherwise the form and the drag&drop will not work. 
+		//!< The method who make the application dragable and dropabble create a moving div
+		//!< build exactly as the application with the same class but with no id
+		//!< because of this, the application tab "applications" above contains one more div 
+		//!< without any id which is modified as his comrades whereas it whould normally disappear
+		//!< we need not to modify this one otherwise the form and the drag&drop will not work. 
 		if(!(applications[i].id === "")){
 			var formerId = applications[i].id;
 			var newId = "Applic"+count;
@@ -215,9 +265,9 @@ function refreshApplication(){
 				
 				var aInfo = $("#"+aInfoWrapper.id + " > div");
 				console.log(aInfo);
-				//Each component is composed of a label and an input
+				//!<Each component is composed of a label and an input
 				for(var y = 0; y < aInfo.length; y++){
-					//Modifying the label
+					//!<Modifying the label
 					var children = $(aInfo[y]).children();
 					
 					console.log(children[1]);
@@ -225,13 +275,13 @@ function refreshApplication(){
 
 					children[0].setAttribute("for", name);
 					
-					//Modifying the input
+					//!<Modifying the input
 					children[1].setAttribute("name", name);
 					children[1].setAttribute("id", name);
 				}
 				
-				//This mean that if there is at least one question
-				//The question will be refreshed
+				//!<This mean that if there is at least one question
+				//!<The question will be refreshed
 				if($(applications[i]).children().length >= 2)
 					refreshQuestion(applications[i]);
 			}
@@ -240,6 +290,14 @@ function refreshApplication(){
 	}
 }
 
+
+/**
+  * \author Cyril Govin
+  * \brief Correct the id of all questions, changing each id according to their order
+	
+	This function is invoked in RemoveMe and consider the questions' parent.
+  * \param parent The 
+  */
 function refreshQuestion(parent){
 	
 	var parentId = parent.id;
@@ -289,20 +347,25 @@ function refreshQuestion(parent){
 }
 
 /**
-* [Form Creation] Add a pre question to the DOM
-*@param event the event
-*@param parent the parent application
-*/
+ * \author Cyril Govin
+ * \author Alexandre Comas
+ * \brief Add a question to the form
+	This function is triggered when clicking on the "Add a question" button. 
+	It takes in account if the question is pre or post. 
+ * \param event The clicking event
+ * \param parent The application parent
+ * \param preOrPost The type "pre" or "post" shall be given
+ */
 function addQuestion(event, parent, preOrPost) {
     //console.log(button);
 	//console.log(button.parentElement);
 	
 	var p = preOrPost;
 	var P = preOrPost.capitalizeFirstLetter();
-	//Recovery of the application associated with the question (button's parent)
-		//the button is in a wrapper but we need to climb up to the application container
+	//!< Recovery of the application associated with the question (button's parent)
+		//!< the button is in a wrapper but we need to climb up to the application container
 	var application = parent;
-		//
+		
 	var nbQuestions = application.children.length-1;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
@@ -310,15 +373,15 @@ function addQuestion(event, parent, preOrPost) {
 	var applicNumber = application.parentNode.id.split("Applic")[1];
 	customTitleState[applicNumber][0].push(0);
 	
-	//Creation of the question wrapper
+	//!< Creation of the question wrapper
 	var qWrapper = document.createElement("div");
 	qWrapper.setAttribute("id", questionName+p);
 	qWrapper.setAttribute("class", "question"+P);
 	application.appendChild(qWrapper);
 	
-	//Creation of the childs
+	//!< Creation of the childs
 		
-		//The label of the question
+		//!< The label of the question
 	var questionInfoWrapper = document.createElement("div");
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", questionName+"Name");
@@ -326,7 +389,7 @@ function addQuestion(event, parent, preOrPost) {
 			questionInfoWrapper.appendChild(applicationNameLabel);
 			
 			
-			//The input of the application's name
+			//!< The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
 			inputQuestion.id= questionName+p+"name";
@@ -335,7 +398,7 @@ function addQuestion(event, parent, preOrPost) {
 			questionInfoWrapper.appendChild(inputQuestion);	
 			
 			
-			//Creation of the remove question button
+			//!< Creation of the remove question button
 		var removeQButton = document.createElement("button");
 			removeQButton.setAttribute("class", "removeButton");
 			removeQButton.type="button";
@@ -343,16 +406,16 @@ function addQuestion(event, parent, preOrPost) {
 			removeQButton.innerHTML ="Remove the question";
 			questionInfoWrapper.appendChild(removeQButton);
 			
-			//Add the event for removing the application
+			//!< Add the event for removing the application
 				removeQButton.addEventListener("click", function(event){
 					removeMe(event, qWrapper);
 				});
 	qWrapper.appendChild(questionInfoWrapper);
 			
-	//Add evalutation choices
+	//!< Add evalutation choices
 	
 	
-		//Add a choice wrapper
+		//!< Add a choice wrapper
 		var cWrapper  = document.createElement("select");
 			questionInfoWrapper.appendChild(cWrapper);
 
@@ -367,20 +430,21 @@ function addQuestion(event, parent, preOrPost) {
 		}
 		
 
-		//Add the answer area (ex : the area where the smileys will be displayed)
+		//!< Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
 			answerArea.setAttribute("class","answerArea");
 			qWrapper.appendChild(answerArea);
 
-			//add listener on radio changement
+			//!< add listener on radio changement
 			$(cWrapper).bind("change", answers);
 		$(cWrapper).trigger("change");
 }
 
 /**
-* [Form Creation] change the answer area depending on questionType
-*@param event the event
-*/
+ * \author Cyril Govin
+ * \brief Change the answer area depending on questionType
+ * \param event The clicking event 
+ */
 function answers(event){
 
 	var id = event.target.parentElement.parentElement.id; 
@@ -509,9 +573,10 @@ function customQuestion(customCheckbox, answerArea){
 }
 
 /**
-* add field for custom information
-*@event the event
-*/
+ * \author Cyril GOvin
+ * \brief Add a new custom field for personnal information
+ * \param event the event
+ */
 function addField(event){
     
     //wrapper creation
@@ -544,11 +609,12 @@ function addField(event){
 
 
 /**
-* make radio button
-*@name the radio button name
-*@value its value
-*@text the text inside the button
-*/
+ * \brief Make radio button
+	
+ * \param the radio button name
+ * \param value its value
+ * \param text the text inside the button
+ */
 function makeRadioButton(name, value, text){
 
     var label = document.createElement("label");
@@ -613,7 +679,13 @@ function makeLabelImage(name, value, imageAdr, parent){
 	parent.appendChild(wrapper);
 }
 
-
+/**
+ * \author Cyril Govin
+ * \brief JSON function which ask to the database all the question types available for the user. 
+ 
+	The types are put in qType as 'questionTypeName' => 'questionTypeId'
+	This function is invoked when the DOM is ready. 
+ */
 function answersPlaceholder(){
 	$.get(
 		"index.php", // url
@@ -703,7 +775,7 @@ function addFSQuestion(event) {
 		
 		//Add the event for removing the application
 			removeApplicationButton.addEventListener("click", function(event){
-				removeMe(event, wrapper);
+				removeMe(event, wrapperv);
 			});
             
    //Add fieldset to thecodex
@@ -838,7 +910,12 @@ function isCustomTitleFree(event){
 
 }
 
-
+/**
+ * \author Cyril Govin
+ * \author Alexandre Comas
+ * \brief Initialize the page. 
+	Add all required events and invokes the answersPlaceholder function? 
+ */
 function init(){
 	answersPlaceholder();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
@@ -857,7 +934,11 @@ $(init);
 
 
 
-
+/**
+ * \brief Capitalize the first letter of a string
+	
+ * \return The string which the first letter capitalized. 
+ */
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }

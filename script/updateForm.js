@@ -1,33 +1,57 @@
-persoInfoToDelete = [];
-FSToDelete = [];
 
-deletedObject = [];
+persoInfoToDelete = []; //!< The personnal information that need to be deleted to the form
+FSToDelete = []; //!<  The FS questions that need to be deleted to the form. 
+deletedObject = []; //!< This array can be used to cancel a deletion. Add a couple [parent, child] to make it works. 
 
+/**
+ * \author Alexandre Comas
+ * \brief Get the id of the form. 
+	Adapted by Cyril Govin
+ * \return The id of the form
+ */
 function getFormId(){
     var f = document.getElementsByClassName("formCss");
     return f[0].getAttribute("id");
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Delete a custom personnal information to the form and add it to the persoInfoToDelete tab. 
+	
+	
+ * \param self The remove button
+ */
 function deletePersonnalInformation(self){
 	var parent = self.currentTarget.parentNode;
 	persoInfo = $(parent).find("input").val();
 
-	//remove
+	//!< remove
 	$(parent).remove();
 	persoInfoToDelete.push(persoInfo);
 
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Delete a custom FQ Question to the form and add it to the persoInfoToDelete tab. 
+	
+	
+ * \param self The remove button
+ */
 function deleteFSQuestion(self){	
 	var parent = self.currentTarget.parentNode;
 	var input = $(parent).find("input");
 	var name = $(input[0]).val() + "/" + $(input[2]).val();
 	FSToDelete.push(name);
-	//remove
+	//!< remove
 	$(parent).remove();
 }
 
-
+/**
+ * \author Cyril Govin
+ * \brief Delete an element from his parent. 
+	
+	
+ * \param self The remove button
+ */
 function removeMe(self){
 	var parent = self.currentTarget.parentNode;
 	$(parent).remove();
@@ -48,7 +72,12 @@ function toDelete(self, tab){
 	}
 }
 
-
+/**
+ * \author Cyril Govin
+ * \brief Count the number of current applications and return it. 
+	
+ * \return nb The number of applications
+ */
 function countApplications(){
 	var nb = $(".application").length;
 	for(var i = 0; i < nb; i++){
@@ -56,23 +85,29 @@ function countApplications(){
 	}
 	return nb;
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Add an application to the form. 
+	
+	The id created so that we don"t need to manage it in the php script. 
+ * \param event The event when the user clicks on the add button. 
+ */
 function addApplication(event){
-	//Recovery of the container
+	//!< Recovery of the container
 	var form = document.getElementById("newForm");
 	
 	var applicationParent = document.getElementById("applications");
 	
-	//Name of the application
+	//!< Name of the application
 	var applicationName = getFormId()+"Applic"+nbApplication;
 	
-	//Creation of the application wrapper
+	//!< Creation of the application wrapper
 	var application = document.createElement("div");
 		application.setAttribute("class", "application newApplication");
 		application.setAttribute("id", applicationName);
 		applicationParent.appendChild(application);
 	
-	//Creation of the childs
+	//!< Creation of the childs
 	
 	var applicationInformationWrapper = document.createElement("div");
 		applicationInformationWrapper.setAttribute("id", applicationName+"Info");
@@ -82,14 +117,14 @@ function addApplication(event){
 		imgDisplayer.setAttribute("class","imgDisplayer");
 	applicationInformationWrapper.appendChild(imgDisplayer);
 	
-		//The label of the application's name
+		//!< The label of the application's name
 	var nameWrapper = document.createElement("div");
 	nameWrapper.setAttribute('class','appCreationTitle')
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", applicationName+"Name");
 			applicationNameLabel.innerHTML ="Name of the application : ";
 			nameWrapper.appendChild(applicationNameLabel);
-			//The input of the application's name
+			//!< The input of the application's name
 		var inputApplicationName = document.createElement("input");
 			inputApplicationName.type = "text";
 			inputApplicationName.id = applicationName+"Name";
@@ -97,14 +132,14 @@ function addApplication(event){
 			inputApplicationName.placeholder="Application's Title";
 			nameWrapper.appendChild(inputApplicationName);
 			
-		//Creation of the remove application button
+		//!< Creation of the remove application button
 		var removeApplicationButton = document.createElement("button");
 			removeApplicationButton.setAttribute("class", "removeButton");
 			removeApplicationButton.type="button";
 			removeApplicationButton.value= "Remove the application";
 			removeApplicationButton.innerHTML ="Remove the application";
 			nameWrapper.appendChild(removeApplicationButton);
-			//Add the event for removing the application
+			//!< Add the event for removing the application
 			removeApplicationButton.addEventListener("click", function(event){
 				removeMe(event, application);
 			});
@@ -112,13 +147,13 @@ function addApplication(event){
 
 		
 	
-	//Adding the description field for the application
+	//!< Adding the description field for the application
 	var descWrapper = document.createElement("div");
 		var applicationDescLabel = document.createElement("label");
 			applicationDescLabel.setAttribute("for", applicationName+"Desc");
 			applicationDescLabel.innerHTML ="Describe your application : ";
 			descWrapper.appendChild(applicationDescLabel);
-			//Adding the textarea section
+			//!< Adding the textarea section
 		var inputApplicationDesc = document.createElement("textArea");
 			inputApplicationDesc.type = "text";
 			inputApplicationDesc.id = applicationName+"Desc";
@@ -127,13 +162,13 @@ function addApplication(event){
 			descWrapper.appendChild(inputApplicationDesc);
 	applicationInformationWrapper.appendChild(descWrapper);	
 	
-	//Adding the img downloading field for the application
+	//!< Adding the img downloading field for the application
 	var imgWrapper = document.createElement("div");
 		var applicationImg = document.createElement("label");
 			applicationImg.setAttribute("for", applicationName+"Img");
 			applicationImg.innerHTML ="Image of the application : ";
 			imgWrapper.appendChild(applicationImg);
-			//The input of the application's name
+			//!< The input of the application's name
 		var inputApplicationImg = document.createElement("input");
 			inputApplicationImg.type = "file";
 			inputApplicationImg.id = applicationName+"Img";
@@ -150,7 +185,7 @@ function addApplication(event){
 	applicationInformationWrapper.appendChild(imgWrapper);	
 	
 	
-	//Creation of the add question button
+	//!< Creation of the add question button
 	var wrapQuestionPre = document.createElement("div");
 		wrapQuestionPre.setAttribute("class", "questionPreDiv");
 	var titlePre = document.createElement('h3');
@@ -179,18 +214,18 @@ function addApplication(event){
 		application.appendChild(wrapQuestionPost);
 		
 		    
-		//Add the event for adding the question
+		//!< Add the event for adding the question
 			buttonQuestion.addEventListener("click", function(event){
 				addQuestion(event, wrapQuestionPre, "pre");
 			});
-		//Add the event for adding the question
+		//!< Add the event for adding the question
 			buttonQuestionPost.addEventListener("click", function(event){
 				addQuestion(event, wrapQuestionPost, "post");
 			});
 	
 	nbApplication++;
 
-	customTitleState.push([ [] , [] ]); // 1st : pre quest of app, 2 nde post quest
+	customTitleState.push([ [] , [] ]); //!<  1st : pre quest of app, 2 nde post quest
 }
 
 /**
@@ -199,15 +234,15 @@ function addApplication(event){
 *@param parent the parent application
 */
 function addQuestion(event, parent, preOrPost) {
-    //console.log(button);
-	//console.log(button.parentElement);
+    //!< console.log(button);
+	//!< console.log(button.parentElement);
 	
 	var p = preOrPost;
 	var P = preOrPost.capitalizeFirstLetter();
-	//Recovery of the application associated with the question (button's parent)
-		//the button is in a wrapper but we need to climb up to the application container
+	//!< Recovery of the application associated with the question (button's parent)
+		//!< the button is in a wrapper but we need to climb up to the application container
 	var application = parent;
-		//
+		//!< 
 	var nbQuestions = application.children.length-1;
 	
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
@@ -215,15 +250,15 @@ function addQuestion(event, parent, preOrPost) {
 	var applicNumber = application.parentNode.id.split("Applic")[1];
 	customTitleState[applicNumber][0].push(0);
 	
-	//Creation of the question wrapper
+	//!< Creation of the question wrapper
 	var qWrapper = document.createElement("div");
 	qWrapper.setAttribute("id", questionName+p);
 	qWrapper.setAttribute("class", "question"+P+" new"+P+"Question");
 	application.appendChild(qWrapper);
 	
-	//Creation of the childs
+	//!< Creation of the childs
 		
-		//The label of the question
+		//!< The label of the question
 	var questionInfoWrapper = document.createElement("div");
 		var applicationNameLabel = document.createElement("label");
 			applicationNameLabel.setAttribute("for", questionName+"Name");
@@ -231,7 +266,7 @@ function addQuestion(event, parent, preOrPost) {
 			questionInfoWrapper.appendChild(applicationNameLabel);
 			
 			
-			//The input of the application's name
+			//!< The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
 			inputQuestion.id= questionName+p+"Name";
@@ -240,7 +275,7 @@ function addQuestion(event, parent, preOrPost) {
 			questionInfoWrapper.appendChild(inputQuestion);	
 			
 			
-			//Creation of the remove question button
+			//!< Creation of the remove question button
 		var removeQButton = document.createElement("button");
 			removeQButton.setAttribute("class", "removeButton");
 			removeQButton.type="button";
@@ -248,14 +283,14 @@ function addQuestion(event, parent, preOrPost) {
 			removeQButton.innerHTML ="Remove the question";
 			questionInfoWrapper.appendChild(removeQButton);
 			
-			//Add the event for removing the application
+			//!< Add the event for removing the application
 				removeQButton.addEventListener("click", removeQuestion);
 	qWrapper.appendChild(questionInfoWrapper);
 			
-	//Add evalutation choices
+	//!< Add evalutation choices
 	
 	
-		//Add a choice wrapper
+		//!< Add a choice wrapper
 		var cWrapper  = document.createElement("select");
 			questionInfoWrapper.appendChild(cWrapper);
 
@@ -270,16 +305,21 @@ function addQuestion(event, parent, preOrPost) {
 		}
 		
 
-		//Add the answer area (ex : the area where the smileys will be displayed)
+		//!< Add the answer area (ex : the area where the smileys will be displayed)
 		var answerArea = document.createElement("div");
 			answerArea.setAttribute("class","answerArea");
 			qWrapper.appendChild(answerArea);
 
-			//add listener on radio changement
+			//!< add listener on radio changement
 			$(cWrapper).bind("change", answers);
 		$(cWrapper).trigger("change");
 }
 
+/**
+ * \author Cyril Govin
+ * \brief Add all the events needed. 
+	
+ */
 function addEventDelete(){
 	$(document).on("click",".removeButtonAECustom", deletePersonnalInformation);
 
@@ -300,7 +340,7 @@ function addEventDelete(){
 	//<<focusin>> save the previous value
 	//<<change>> check if the value are different and delete the link between the form and the personnal information
 	$(document).on('focusin', '.fieldInputCustom', function(){
-		//console.log("Saving value " + $(this).val());
+		//!< console.log("Saving value " + $(this).val());
 		$(this).data('val', $(this).val());
 	}).on('change','.fieldInputCustom', function(){
 		var prev = $(this).data('val');
@@ -313,14 +353,14 @@ function addEventDelete(){
 		var parent = this.parentNode;
 		$(parent).find("button").switchClass("removeButtonAECustom", "removeButtonAE");
 		
-		//console.log("Prev value " + prev);
-		//console.log("New value " + current);
+		//!< console.log("Prev value " + prev);
+		//!< console.log("New value " + current);
 	});
 	
 	//<<focusin>> save the previous value
 	//<<change>> check if the value are different and delete the link between the form and the personnal information
 	$(document).on('focusin', '.questionInputLeftCustom, .questionInputRightCustom', function(){
-		//console.log("Saving value " + $(this).val());
+		//!< console.log("Saving value " + $(this).val());
 		$(this).data('val', $(this).val());
 	}).on('change','.questionInputLeftCustom, .questionInputRightCustom', function(){
 		var prev = $(this).data('val');
@@ -328,7 +368,7 @@ function addEventDelete(){
 		
 		
 		var parent = this.parentNode.parentNode.parentNode.parentNode.parentNode;
-		//console.log(parent);
+		//!< console.log(parent);
 		var input = $(parent).find("input");
 		
 		
@@ -346,12 +386,12 @@ function addEventDelete(){
 		$(parent).find("button").switchClass("removeButtonFS", "removeButton");
 	});
 	
-	//Div answer event 
+	//!< Div answer event 
 	
 	$(document).on('change', "select", answers);
-	//remove application event
+	//!< remove application event
 	$(document).on('click', ".appCreationTitle .removeButton", removeApplication);
-	//remove question event
+	//!< remove question event
 	$(document).on("click", ".questionPre .removeButton, .questionPost .removeButton", removeQuestion);
 	
 	$(document).on("click", ".questionPreDiv .addQuestionButton", function(event){
@@ -365,7 +405,13 @@ function addEventDelete(){
 	$(document).on("click", ".removeImage", removeImage);
 }
 
-
+/**
+ * \author Cyril Govin
+ * \brief Change the src of the imgDisplayer to "" for removing the image. 
+	
+	
+ * \param event The event when the user clicks on the removeImage button
+ */
 function removeImage(event){
 	if(confirm("Are you sure you want to the image of the application ?")){
 		var button = event.currentTarget;
@@ -374,6 +420,17 @@ function removeImage(event){
 		//$(application).find(".imgDisplayer")[0].className = "imgDisplayer";
 	}
 }
+
+/**
+ * \author Cyril Govin
+ * \brief Remove an application 
+	
+	Ask if you are sure to remove the application before deleting it if not empty (application name and number of pre and post questions). 
+	Automaticly refresh the id of the application. 
+	The parent and the application are added to the deletedObject tab. 
+	This function is triggered when clicking on the "Remove application" button. 
+ * \param self The remove button
+ */
 function removeApplication(button){
 
 	var application = button.currentTarget.parentNode.parentNode.parentNode;
@@ -395,7 +452,16 @@ function removeApplication(button){
 		refreshApplication();
 	}
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Remove a question  
+	
+	Ask if you are sure to remove the question before deleting it if not empty. 
+	Automaticly refresh the id of all the questions of the parent application. 
+	The parent and the question are added to the deletedObject tab. 
+	This function is triggered when clicking on the "Remove question" button. 
+ * \param button The event when clicking on the remove button
+ */
 function removeQuestion(button){
 	var question = button.currentTarget.parentNode.parentNode;
 	var inputName = $("#"+question.id+"Name").val();
@@ -413,7 +479,10 @@ function removeQuestion(button){
 	}
 	console.log(question);
 }
-
+/**
+ * \author Cyril Govin
+ * \brief  Update all the ID, name, class of the all the applications and all the questions. 
+ */
 function refreshApplication(){
 	var application = $(".application");
 	var idForm = $(".formCss")[0].id;
@@ -423,25 +492,25 @@ function refreshApplication(){
 		var newId = idForm+"Applic"+x;
 		currentA.id = newId;
 		
-		//info - idA + "Info"
+		//!< info - idA + "Info"
 		var infoA = $(currentA).children()[0];
 			infoA.id = newId+"Info";
 			//.appCreationTitle
-				//Maj title - label for - idA + "Name"
+				//!< Maj title - label for - idA + "Name"
 				$(infoA).find("label")[0].setAttribute("for", newId+"Name");
-				//Maj title - input id + name - idA + "Name"
+				//!< Maj title - input id + name - idA + "Name"
 				$("#"+prevId+"Name").attr("name", newId+"Name");
 				$("#"+prevId+"Name").attr("id", newId+"Name");
-			//div
-				//Maj desc - label for - idA + "Desc"
+			//!< div
+				//!< Maj desc - label for - idA + "Desc"
 				$(infoA).find("label")[1].setAttribute("for", newId+"Desc");
-				//Maj desc - textarea id + name - idA + "Desc
+				//!< Maj desc - textarea id + name - idA + "Desc
 				$("#"+prevId+"Desc").attr("name", newId+"Desc");
 				$("#"+prevId+"Desc").attr("id", newId+"Desc");
-			//div
-				//Maj img - label for - idA + "Img"
+			//!< div
+				//!< Maj img - label for - idA + "Img"
 				$(infoA).find("label")[2].setAttribute("for", newId+"Img");
-				//Maj img - input id + name - idA + "Img"
+				//!< Maj img - input id + name - idA + "Img"
 				$("#"+prevId+"Img").attr("name", newId+"Img");
 				$("#"+prevId+"Img").attr("id", newId+"Img");
 			
@@ -450,8 +519,10 @@ function refreshApplication(){
 	}
 }
 
-/*
- * the parent is the application
+/**
+ * \author Cyril Govin
+ * \brief Update all the id, name, class of all the questions (pre then post) of an application
+ * \param application The parent application of the questions
  */
 function refreshQuestion(application){
 	var parentId = application.id;
@@ -460,55 +531,61 @@ function refreshQuestion(application){
 	refreshQuestionPreOrPost(preQuestions, parentId, "pre");
 	refreshQuestionPreOrPost(postQuestions, parentId, "post");
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Update all the id, name, class of all questions given in paramater using the parentId and the type ("post" or "pre")
+ * \param questions An array containing the questions
+ * \param parentId The id of the parent (formId + Applic + position of the application)
+ * \param text The type of the question. It shall be 'post' or 'pre'
+ */
 function refreshQuestionPreOrPost(questions, parentId, text){
 
 	for(var i = 0; i < questions.length; i++){
 		var currentQ = questions[i];
 		
 		console.log(currentQ);
-	//Maj id wrapper - IdQ
+	//!< Maj id wrapper - IdQ
 		var newId = parentId + "Q" + (i+1) + text;
 		var prevId = currentQ.id;
 		currentQ.id = newId;
-		//div
+		//!< div
 		var questionInfo = $(currentQ).children()[0];
-			//Maj label for idQ + "Name"
+			//!< Maj label for idQ + "Name"
 		$(questionInfo).children()[0].setAttribute("for", newId+"Name");
 		$(questionInfo).children()[0].innerHTML = "Question "+text.capitalizeFirstLetter()+" n°"+(i+1)+" : ";
 		
-			//Maj input id idQ + "Name"
+			//!< Maj input id idQ + "Name"
 		$("#"+prevId+"Name").attr("id", newId+"Name");
 		$("#"+prevId+"Name").attr("name", newId+"Name");
-			//divCheckbox
+			//!< divCheckbox
 		
 		var divCheckbox = $(currentQ).find(".divCheckbox");
 		if($(divCheckbox).children().length > 0){
-					//Maj label box
+					//!< Maj label box
 			$(divCheckbox).find("label")[0].setAttribute("for", "checkbox"+newId);
-					//Maj input box - "checkbox" + IdQ
+					//!< Maj input box - "checkbox" + IdQ
 			$(divCheckbox).find("input")[0].setAttribute("id", "checkbox"+newId);
 			if($("#checkbox"+newId).is(':checked')){
-				//divCustomTitle
-					//If checked maj label custom
+				//!< divCustomTitle
+					//!< If checked maj label custom
 				$(divCheckbox).find(".divCustomTitle label")[0].setAttribute("for", "titlecheckbox"+newId);
-					//If checked maj title custom - "titlecheckbox" + IdQ
+					//!< If checked maj title custom - "titlecheckbox" + IdQ
 				$(divCheckbox).find(".divCustomTitle input")[0].setAttribute("id", "titlecheckbox"+newId);
-					//If checked maj id p - "msgcheckbox" + IdQ
+					//!< If checked maj id p - "msgcheckbox" + IdQ
 				$(divCheckbox).find(".divCustomTitle p")[0].setAttribute("id", "msgcheckbox"+newId);
 
 			//.answerArea
 				var answerArea = $($(currentQ).find(".answerArea")).children();
-					//foreach div
+					//!< foreach div
 				for(var y = 0; y < answerArea.length; y++){
 					var elem = answerArea[y];
-					//span - IdQ + value
+					//!< span - IdQ + value
 					var value = $(elem).find("span")[0].innerHTML;
 					$(elem).find("span")[0].setAttribute("id", newId+value);
-					//label - IdQ + value (ex smiley1)
+					//!< label - IdQ + value (ex smiley1)
 					$(elem).find("label")[0].setAttribute("for", "custom"+newId+value);
-					//If checked maj id input custom - custom + idQ + value
-						//If checked maj class input custon - fieldcheckbox + IdQ
+					//!< If checked maj id input custom - custom + idQ + value
+						//!< If checked maj class input custon - fieldcheckbox + IdQ
 					$(elem).find("input")[0].setAttribute("id", "custom"+newId+value);
 					$(elem).find("input")[0].setAttribute("class", "fieldcheckbox"+newId);
 				}
@@ -518,18 +595,23 @@ function refreshQuestionPreOrPost(questions, parentId, text){
 	}
 }
 
-/* desc Append to the parent the child 
- * additional Information Pop the last element in the deletedObject
- * TO DO - regarder si on peut pas garder l'ordre 
+/** \author Cyril Govin
+  *	\brief Append to the parent the child 
+	The feature hasn't been implemented in the user interface but the function associated is working. 
+	Pop the last element in the deletedObject and add it to his parent. The previous position is not kept. 
  */
 function cancelDeletion(){
 	if(deletedObject.length > 0){
 		var tab = deletedObject.pop();
 		var parent = tab[0], child = tab[1];
-		parent.appendChild(child);	
+		parent.appendChild(child);
+		refreshApplication();
 	}
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Extract all the datas of the form for saving the modifications. 
+ */
 function extractData(){
 	var formName = $("#formName").val();
 	if(formName === ""){
@@ -550,7 +632,7 @@ function extractData(){
 		var desc = $("#"+id+"Desc").val();
 		var img = $("#"+id+"Img").val();
 		if(img === "" && $("#"+id+" .displayed").length > 0){
-			//false -> to delete
+			//!< false -> to delete
 			img = ($("#"+id+" .displayed").attr("src") != "" ?id+"Img":"ToDelete");
 		}else{
 			img = id+"Img";
@@ -558,7 +640,7 @@ function extractData(){
 		
 		if(desc === "" && img === ""){
 			console.log("Please put an application description or an application image. ");
-			//return null;
+			//!< return null;
 		}
 		a.push(new Application(id, name, desc, img));
 		
@@ -572,14 +654,14 @@ function extractData(){
 
 			var customAns = null;
 
-			if ($("#checkbox"+qId).is(":checked")){ //if is custom question
+			if ($("#checkbox"+qId).is(":checked")){ //!< if is custom question
 
-				customAns = [];	//defining an array
-				var title = $("#titlecheckbox"+qId)[0].value; //first value  = custom questionType title
+				customAns = [];	//!< defining an array
+				var title = $("#titlecheckbox"+qId)[0].value; //!< first value  = custom questionType title
 				customAns.push(title);
 
 
-				var fieldList = $(".fieldcheckbox"+qId); //next are the fields by order 
+				var fieldList = $(".fieldcheckbox"+qId); //!< next are the fields by order 
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
 				}
@@ -596,14 +678,14 @@ function extractData(){
 
 			var customAns = null;
 
-			if ($("#checkbox"+qId).is(":checked")){ //if is custom question
+			if ($("#checkbox"+qId).is(":checked")){ //!< if is custom question
 
-				customAns = [];	//defining an array
-				var title = $("#titlecheckbox"+qId)[0].value; //first value  = custom questionType title
+				customAns = [];	//!< defining an array
+				var title = $("#titlecheckbox"+qId)[0].value; //!< first value  = custom questionType title
 				customAns.push(title);
 
 
-				var fieldList = $(".fieldcheckbox"+qId); //next are the fields by order 
+				var fieldList = $(".fieldcheckbox"+qId); //!< next are the fields by order 
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
 				}
@@ -612,22 +694,26 @@ function extractData(){
 			q.push(new Question(qId, qLabel, qType[qqType], qPre, customAns, id));
 		}
 	}
-	//	console.log(a);
-	//	console.log(q);
+	//!< 	console.log(a);
+	//!< 	console.log(q);
 		
 	var pi = extractPersonnalInfo(), fs = extractFSQuestion();
 	send(form, a, q, pi, fs);
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Extract the FS questions
+ * \return fs An array containing FSQ object defined in objects.js
+ */
 function extractFSQuestion(){
 	var fs = [], def = $("input.defaultFSQuestion:checked");
 	
-	//Pushing the defautFSQuestion not already checked in the list
+	//!< Pushing the defautFSQuestion not already checked in the list
 	for(var i = 0; i < def.length; i++){
 		fs.push(new FSQ(def[i].id, 1));
 	}
 	
-	//Pushing the FSQuestions that have been created
+	//!< Pushing the FSQuestions that have been created
 	def = $(".FSQuestionCustom");
 	for(var i = 0; i < def.length; i++){
 		if($(def[i]).find(".questionInputLeft").length > 0){
@@ -637,11 +723,15 @@ function extractFSQuestion(){
 	}
 	return fs;
 }
-
+/**
+ * \author Cyril Govin
+ * \brief Extract the personnal information
+ * \return pInfo An array containing string
+ */
 function extractPersonnalInfo(){
 	var pInfo = [], def = $("input.defaultInformation:checked");
 	
-	//Pushing the defaut personnal information not already checked in the list
+	//!< Pushing the defaut personnal information not already checked in the list
 	for(var i = 0; i < def.length; i++){
 		pInfo.push(def[i].id);
 	}
@@ -652,10 +742,22 @@ function extractPersonnalInfo(){
 	
 	return pInfo;
 }
+/**
+ * \author Cyril Govin
+ * \brief JSON Send the datas (form, applications, questions (pre and post), informations and FSQuestions to the php script for updating the form
+	
+	If the save succeeds, the image files are sent to an other php script to be saved in the server. 
+	If all saves succeed, a confirmation alert pops and the user is redirected
+ * \param f A form object defined in objects.js
+ * \param a An array of application objects defined in objects.js
+ * \param q An array of question objects defined in objects.js (the questions mixed pre and post objects)
+ * \param i An array of information objects defined in objects.js
+ * \param fs An array of FS Question objects defined in objects.js
+ */
 
 function send(form, a, q, pInfo, fs){	
 	$.post(
-		"index.php", // url
+		"index.php", //!<  url
 		{
 			"action":"updated",
 			"controller":"form",
@@ -666,11 +768,11 @@ function send(form, a, q, pInfo, fs){
 			"FSQuestions":JSON.stringify(fs),
 			"informationToDelete": JSON.stringify(persoInfoToDelete),
 			"fsToDelete": JSON.stringify(FSToDelete)
-		},  //data
-		function(res){ //callback
+		},  //!< data
+		function(res){ //!< callback
 				console.log("Le resultat = "+res);
-					//res is supposed to send the id of the form
-					//We need this form ID to save the image
+					//!< res is supposed to send the id of the form
+					//!< We need this form ID to save the image
 				if(res !== false){
 					var re = /(?:\.([^.]+))?$/;
 					var ext = "";
@@ -695,7 +797,7 @@ function send(form, a, q, pInfo, fs){
 									data: form_data,                  
 									type: 'post',
 									success: function(result){
-											  //console.log(result);
+											  //!< console.log(result);
 											},
 									error: function(){
 											  console.log("Error while downloading the file. ");
@@ -705,13 +807,13 @@ function send(form, a, q, pInfo, fs){
 					}
 					alert("The form has been successfully registered ! (You will be redirected)");
 					//$("#submit").unbind("click", extractData);
-					//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+					//!< setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
 					
 				}else{
 					console.log("Error when saving the form. ");
 				}
 			},
-		"json" // type
+		"json" //!<  type
 	);
 }
 
