@@ -123,6 +123,7 @@ class ControllerForm {
 				$FSFilled = ModelSortApplication::getFSByVisitorId($visitorId);
 				!//var_dump($FSFilled);
 
+            $jscript = "myScriptSheet";
             $pagetitle = 'Form';
             $view='displayForm';
             $controller = 'form';
@@ -996,11 +997,11 @@ class ControllerForm {
         $formId = $_GET['id'];
        
         $tabForm = self::preparePDF($formId);//getting the pages
-        var_dump($tabForm);
         $cpt = 0;
         
         $zip = new ZipArchive();
         $filename = File::build_path(array('tmpPDF', $formId.'.zip'));
+        //var_dump($filename);
 
         if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
             exit("cannot open <$filename>\n");
@@ -1051,28 +1052,43 @@ class ControllerForm {
             //$dompdf->stream($formId);
             
             $zip->addFromString($formId.'num'.$cpt.'.pdf', $output);
-            $zip->addFile($thisdir . "/too.php","/testfromfile.php");
-            echo "numfiles: " . $zip->numFiles . "\n";
-            echo "status:" . $zip->status . "\n";
+            //$zip->addFile($thisdir . "/too.php","/testfromfile.php");
+
             $cpt++;
         }
 
 
 
         $zip->close();
+
+  
+       //$archive_file_name = $filename;
+        $file=$filename;
+
         
-        if (file_exists($filename)) {
+
+        //$file = File::build_path(array('tmpPDF', 'toto.txt'));
+        ob_clean(); //cleaning header otherwise it's corrupting the file
+        
+
+        if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: ' . filesize($filename));
-            readfile($filename);
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            unlink($file); //deleting file
             exit;
         }
+
+
+        
     }
+
+    
 
     public static function changeFillable(){
 		if(Session::is_connected()){
@@ -1375,7 +1391,6 @@ class ControllerForm {
                     array_push($allOrders, $applicationOrder);
             }
             $allForm = [];
-            var_dump($f);
             $formName = htmlspecialchars($f->getFormName());
             
             
