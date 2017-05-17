@@ -8,8 +8,7 @@ class ControllerQuestionType {
 	 * trigger Onload when creating a form
 	 * additional information Use for what ?
 	 */
-	public static function answersPlaceholder(){
-		
+	public static function answersPlaceholder(){		
 		if(Session::is_connected()){
 			$questionType = ModelQuestionType::getQuestionTypeForUser($_SESSION["nickname"]);
 			$placeholders = array();

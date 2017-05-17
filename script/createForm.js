@@ -1,9 +1,19 @@
+/**
+ * \author Cyril Govin
+ * \brief Extract all the personnal information entered by the user and put it in the "info" tab. 
+	
+	If a custom information (field) is empty, the function ignore it. 
+ */
+
 function extractInformation(){
+	//!< Collecting the checked default information
 	var predef = $(".defaultInformation:checked");
 	var info = [];
 	for(var i = 0; i < predef.length; i++){
 		info.push(predef[i].id);
 	}
+	
+	//!< Collection the custom information
 	var custom = $(".fieldInput");
 	for(var i = 0; i < custom.length; i++){
 		if($(custom[i]).val() === "" ){
@@ -42,9 +52,14 @@ function extractFSQuestions(){
 
 
 
-
+/**
+ * \author Cyril Govin
+ * \brief Extract the form datas, applications datas and questions datas of the page. 
+	
+	If a field is empty (name of form for example), the extraction is cancelled and an alert popped out. 
+ */
 function extractData(){
-	//Liste of application in the form
+	//!< Liste of application in the form
 	var formName = $("#formName").val();
 	if(formName === ""){
 		alert("Please enter the name of the form. ");
@@ -59,16 +74,15 @@ function extractData(){
 	for(var i = 0; i < applications.length; i++){
 		var id = applications[i].id;
 		var applicationName = $("#"+id+"Name").val();
-		//console.log("Task : "+applicationName);
+		
 		var applicationDesc = $("#"+id+"Desc").val();
-		//console.log("Description : "+applicationDesc);
+		
 		var applicationImg = id+"Img";
-		//console.log("Image : "+applicationImg);
+		
 		a.push(new Application(id, applicationName, applicationDesc, applicationImg));
 		qPre.push([]);
 		qPost.push([]);
-		//console.log("desc "+applicationDesc);
-		//console.log("img "+applicationImg);
+		
 		
 		if(applicationName === "" | (applicationDesc === "" & $("#"+applicationImg).val() === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
@@ -86,9 +100,8 @@ function extractData(){
                 alert("At least one question has no name. Please check and add a name or delete the question");
 				return null;
 			}
-			//console.log("label pre = "+qPreLabel);
+			
 			var qPreType = $("#"+idQ+" select").val();
-			//console.log(qType);
 			
 			var customAns = null;
 
@@ -139,7 +152,7 @@ function extractData(){
 				}
 
 			}
-			//console.log(qType);
+			
 			
 			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
@@ -147,7 +160,7 @@ function extractData(){
 
 	}
 
-	////verification  of cutomField answers
+	//!< Verification  of cutomField answers - Clement Manniez
 	var allCustomfields = $(".answerArea input");
 	for (var customFieldsCount = 0; customFieldsCount < allCustomfields.length; customFieldsCount++ ){
 		if (allCustomfields[customFieldsCount].value == ""){
@@ -157,7 +170,7 @@ function extractData(){
 	}
 
 
-	///// verification of customFielState
+	//!< Verification of customFielState - Clement Manniez
 	
 	for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
 		for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
@@ -170,11 +183,26 @@ function extractData(){
 		}
 	}
 
+	//!< Collecting the personnal information and the fs questions
 	var info = extractInformation();
 	var fs = extractFSQuestions();
+	//!< Sending all the information to the php script 
 	send(formName, a, qPre, qPost, info, fs);
 }
 
+/**
+ * \author Cyril Govin
+ * \brief JSON Send the datas (form, applications, pre questions, post questions, informations and FSQuestions to the php script
+	
+	If the save succeeds, the image files are sent to an other php script to be saved in the server. 
+	If all saves succeed, a confirmation alert pops and the user is redirected
+ * \param f A form object defined in objects.js
+ * \param a An array of application object defined in objects.js
+ * \param qPre An array of questions object defined in objects.js
+ * \param qPost An array of questions object defined in objects.js
+ * \param i An array of information object defined in objects.js
+ * \param fs An array of FS Question object defined in objects.js
+ */
 
 function send(f, a, qPre, qPost, i, fs) {
 
@@ -254,7 +282,11 @@ function saveQuestion(event) {
 }
 
 
-
+/**
+ * \brief Initilize the page. 
+	
+	Required event are set up and an application is added. 
+ */
 function init(){
 	//Adding one application
 	addApplication();

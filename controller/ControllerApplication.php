@@ -17,15 +17,13 @@ class ControllerApplication {
 			}
 			var_dump($_FILES);
 			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$folder."/".$_FILES['file']['name']);
-		}
-		
+		}		
     }
 	
 	
 	//JSON
-	/* desc 
-	 * trigger Use when ?
-	 * additional information Use for what ?
+	/* @author Alexandre Comas
+	 * function used to count the application in the JS
 	 */
 	public static function getApplicationCount(){
 		$formId = json_decode($_GET['formId']);

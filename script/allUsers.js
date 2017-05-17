@@ -1,9 +1,13 @@
 var deletedUsers = [];
+/**
+ * \author Cyril Govin
+ * \brief Delete an user from the database
+ */
 function deleteUser(){
 	var children = this.parentNode.parentNode.getElementsByTagName("td"), s = children[0].innerHTML, f = children[1].innerHTML;
 	
 
-	if(confirm("Do you really want to delete "+ s+ " " + f + " ?")){
+	if(confirm("Do you really want to delete "+ s + " " + f + " ?")){
 		var id = this.parentNode.parentNode.id;
 	
 		$.ajax({
@@ -22,7 +26,10 @@ function deleteUser(){
 		deletedUsers.push(id);
 	}
 }
-
+/**
+ * \author Cyril Govin
+ * \brief JSON Activate or desactivate and account
+ */
 function changeStatus(id, n, v) {
     $.post(
         "index.php",
@@ -39,6 +46,11 @@ function changeStatus(id, n, v) {
 		"json"
     );
 }
+/**
+ * \author Cyril Govin
+ * \brief JSON syncronized Delete the $_SESSION['users'] containing all the users
+	This function is triggered before the window is unload (onbeforeunload event)
+ */
 function destroySessionUser(){
 	$.ajax({
 		type: 'POST',
