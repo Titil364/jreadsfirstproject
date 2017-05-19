@@ -61,7 +61,7 @@ function extractFSQuestions(){
 function extractData(){
 	//!< Liste of application in the form
 	var formName = $("#formName").val();
-	if(formName === ""){
+	if(formName.trim() === ""){
 		alert("Please enter the name of the form. ");
 		return null;
 	}
@@ -84,7 +84,7 @@ function extractData(){
 		qPost.push([]);
 		
 		
-		if(applicationName === "" | (applicationDesc === "" & $("#"+applicationImg).val() === "")){
+		if(applicationName.trim() === "" | (applicationDesc.trim() === "" & $("#"+applicationImg).val() === "")){
 			alert("At least one application is not fully completed. Please check and add a description or image and a title. ");
 			return null;
 		}
@@ -95,8 +95,8 @@ function extractData(){
 			
 			var idQ = questionsPre[y].id;
 
-			var qPreLabel = $("#"+idQ+"name").val();
-			if (qPreLabel === "") {
+			var qPreLabel = $("#"+idQ+"Name").val();
+			if (qPreLabel.trim() === "") {
                 alert("At least one question has no name. Please check and add a name or delete the question");
 				return null;
 			}
@@ -109,20 +109,31 @@ function extractData(){
 
 				customAns = [];
 				var title = $("#titlecheckbox"+idQ)[0].value;
+				console.log(title+"title");
+				if(title.trim() === ""){
+					alert("At least one custom title is empty. ");
+					return null;
+				}
+				if($("#msgcheckbox"+idQ)[0].style.color === "red"){
+					alert("At least one custom title is already taken. ");
+					return null;
+				}
 				customAns.push(title);
 
 
 				var fieldList = $(".fieldcheckbox"+idQ);
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
+					if(fieldList[j].value.trim() === ""){	
+						alert("At least one custom answers is empty");
+						return null;
+					}
 				}
 
 			}
 
 
 			qPre[i].push(new Question(idQ, qPreLabel, qType[qPreType], 1, customAns));
-
-
 		}
 		var questionsPost = $("#"+id+" > .questionPostDiv > .questionPost");
 		for(var y = 0; y < questionsPost.length; y++){
@@ -143,12 +154,25 @@ function extractData(){
 			if ($("#checkbox"+idQ).is(":checked")){
 
 				customAns = [];
-				var title = $("#titlecheckbox"+idQ)[0].value;
+				var title = $("#titlecheckbox"+idQ).value;
+				if(title.trim() === ""){
+					alert("At least one custom title is empty. ");
+					return null;
+				}
+				
+				if($("#msgcheckbox"+idQ)[0].style.color === "red"){
+					alert("At least one custom title is already taken. ");
+					return null;
+				}
 				customAns.push(title);
 
 				var fieldList = $(".fieldcheckbox"+idQ);
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
+					if(fieldList[j].value.trim() === ""){	
+						alert("At least one custom answers is empty");
+						return null;
+					}
 				}
 
 			}
@@ -156,32 +180,7 @@ function extractData(){
 			
 			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
-
-
-	}
-
-	//!< Verification  of cutomField answers - Clement Manniez
-	var allCustomfields = $(".answerArea input");
-	for (var customFieldsCount = 0; customFieldsCount < allCustomfields.length; customFieldsCount++ ){
-		if (allCustomfields[customFieldsCount].value == ""){
-			alert("At least one custom answers is empty");
-			return null;
-		}
-	}
-
-
-	//!< Verification of customFielState - Clement Manniez
-	
-	for (var appCpt = 0; appCpt < customTitleState.length; appCpt ++){
-		for (var prePostCpt = 0; prePostCpt < customTitleState[appCpt].length; prePostCpt++){
-			for (var questCpt = 0; questCpt < customTitleState[appCpt][prePostCpt].length; questCpt ++ ){
-				if (customTitleState[appCpt][prePostCpt][questCpt] == -1){
-					alert("at least one customFieldTitle is incorrect");
-					return null;
-				} 
-			}
-		}
-	}
+	// }
 
 	//!< Collecting the personnal information and the fs questions
 	var info = extractInformation();

@@ -34,30 +34,4 @@ public function getApplicationDateCompletePost(){return $this->applicationDateCo
 
         }
     }
-	
-	public static function getApplicationDateCompleteByVisitorId($visitorId){
-		try{
-			$sql  = "SELECT applicationId FROM ApplicationDateComplete WHERE visitorId=:visitorId";
-			$prep = Model::$pdo->prepare($sql);
-			
-
-			$values = array(
-				"visitorId" => $visitorId
-				);
-
-			$prep-> execute($values);
-			$prep->setFetchMode(PDO::FETCH_ASSOC);
-			
-			return $prep->fetchAll();
-
-		}catch (PDOException $ex) {
-            if (Conf::getDebug()) {
-                echo $ex->getMessage();
-            } else {
-                echo "Error";
-            }
-            return false;
-        }
-	}
-           
 }
