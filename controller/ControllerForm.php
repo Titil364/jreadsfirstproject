@@ -173,11 +173,11 @@ class ControllerForm {
 			$formId = $_GET["id"];
 			$form = ModelForm::select($formId);
 			if(!$form){
-			$data["message"] = "The form doesn't exist. ";
-			$data["pagetitle"] = "Form error";
-			
-			ControllerDefault::message($data);
-			return null;
+				$data["message"] = "The form doesn't exist. ";
+				$data["pagetitle"] = "Form error";
+				
+				ControllerDefault::message($data);
+				return null;
 			}
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
 				$formName = $form->getFormName();

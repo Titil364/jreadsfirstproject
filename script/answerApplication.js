@@ -80,7 +80,7 @@ function saveAA(tmp){
 function addEventToAll(){
 	$(document).on("change",".question input[type=radio]", saveAnswer);
     
-    $(document).on("change","textarea", saveAnswer);
+    $(document).on("change","textarea", saveAnswer);*
     
     addAAEvent();
 }

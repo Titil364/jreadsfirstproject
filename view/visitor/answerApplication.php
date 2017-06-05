@@ -155,7 +155,7 @@
 						for($i = 0; $i<$nbFS ;$i++){
 							$alphabeta = $alphabet;
 							$f = $FS[$randomFS[$i]-1];
-							$name = split("/",$f->getFSQuestionName());
+							$name = explode("/",$f->getFSQuestionName());
 							$nameLeft = $name[0];
 							$nameRight = $name[1];
 							foreach($FSFilled as $fsf){
