@@ -116,7 +116,8 @@
 							echo '<td>';
 							echo  '<input type="radio" class="radioButtonFS" name="radio'.$i.'" value = "'.$j.'"';
 							foreach($AAFilled as $af){
-								if($af->getApplicationId() == $trId && $af->getAgain() == $j){
+								if($af->getApplicationId() == $trId && $af->getAgain()!= NULL && $af->getAgain() == $j){
+									//echo "salut";
 									echo 'checked';
 								}
 							}
