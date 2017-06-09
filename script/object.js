@@ -1,3 +1,7 @@
+/** \author Cyril Govin
+ *  \brief Contains all the objcets used to send information using JSON 
+ */
+
 class Form{
 	constructor(id, name, userId){
 		this.id = id;

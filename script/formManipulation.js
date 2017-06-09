@@ -4,8 +4,6 @@ var placeholders;
 var fsquestions;
 var qType = [];
 
-var customTitleState = []; //0 : not custom , 1 valid custom title, -1 invalid or empty custom title
-
 /**
   * \brief Add an application to the DOM
 	
@@ -146,8 +144,6 @@ function addApplication(event){
 			});
 	
 	nbApplication++;
-
-	customTitleState.push([ [] , [] ]); // 1st : pre quest of app, 2 nde post quest
 }
 
 /**
@@ -243,50 +239,39 @@ function removeMe(event, me){
   *
   */
 function refreshApplication(){
-	var applications = $(".application");
-	var count = 0;
-	console.log(applications.length);
-	for(var i = 0; i < applications.length; i++){
-		//!< The method who make the application dragable and dropabble create a moving div
-		//!< build exactly as the application with the same class but with no id
-		//!< because of this, the application tab "applications" above contains one more div 
-		//!< without any id which is modified as his comrades whereas it whould normally disappear
-		//!< we need not to modify this one otherwise the form and the drag&drop will not work. 
-		if(!(applications[i].id === "")){
-			var formerId = applications[i].id;
-			var newId = "Applic"+count;
+	var application = $(".application");
+	var idForm = $(".formCss")[0].id;
+	idForm = (idForm==="newForm"?"":idForm);
+	for(var x = 0; x < application.length; x++){
+		var currentA = application[x];
+		var prevId = currentA.id;
+		var newId = idForm+"Applic"+x;
+		currentA.id = newId;
+		
+		//!< info - idA + "Info"
+		var infoA = $(currentA).children()[0];
+			infoA.id = newId+"Info";
+			//.appCreationTitle
+				//!< Maj title - label for - idA + "Name"
+				$(infoA).find("label")[0].setAttribute("for", newId+"Name");
+				//!< Maj title - input id + name - idA + "Name"
+				$("#"+prevId+"Name").attr("name", newId+"Name");
+				$("#"+prevId+"Name").attr("id", newId+"Name");
+			//!< div
+				//!< Maj desc - label for - idA + "Desc"
+				$(infoA).find("label")[1].setAttribute("for", newId+"Desc");
+				//!< Maj desc - textarea id + name - idA + "Desc
+				$("#"+prevId+"Desc").attr("name", newId+"Desc");
+				$("#"+prevId+"Desc").attr("id", newId+"Desc");
+			//!< div
+				//!< Maj img - label for - idA + "Img"
+				$(infoA).find("label")[2].setAttribute("for", newId+"Img");
+				//!< Maj img - input id + name - idA + "Img"
+				$("#"+prevId+"Img").attr("name", newId+"Img");
+				$("#"+prevId+"Img").attr("id", newId+"Img");
 			
-			if(!(formerId === newId)){
-				applications[i].id = newId;
-			
-				var aInfoWrapper = $(applications[i]).children()[0];
-				aInfoWrapper.setAttribute("id", newId+"Info");
 
-				
-				var aInfo = $("#"+aInfoWrapper.id + " > div");
-				console.log(aInfo);
-				//!<Each component is composed of a label and an input
-				for(var y = 0; y < aInfo.length; y++){
-					//!<Modifying the label
-					var children = $(aInfo[y]).children();
-					
-					console.log(children[1]);
-					var name = newId+children[1].id.slice(newId.length, children[1].id.length);
-
-					children[0].setAttribute("for", name);
-					
-					//!<Modifying the input
-					children[1].setAttribute("name", name);
-					children[1].setAttribute("id", name);
-				}
-				
-				//!<This mean that if there is at least one question
-				//!<The question will be refreshed
-				if($(applications[i]).children().length >= 2)
-					refreshQuestion(applications[i]);
-			}
-			count++;
-		}
+		refreshQuestion(currentA);
 	}
 }
 
@@ -298,51 +283,87 @@ function refreshApplication(){
 	This function is invoked in RemoveMe and consider the questions' parent.
   * \param parent The 
   */
-function refreshQuestion(parent){
-	
-	var parentId = parent.id;
-	var questions = $("#"+parentId+" > .question");
+function refreshQuestion(application){
+	var parentId = application.id;
+	var preQuestions = $(application).find(".questionPre");
+	var postQuestions = $(application).find(".questionPost");
+	refreshQuestionPreOrPost(preQuestions, parentId, "pre");
+	refreshQuestionPreOrPost(postQuestions, parentId, "post");
+}
+/**
+ * \author Cyril Govin
+ * \brief Update all the id, name, class of all questions given in paramater using the parentId and the type ("post" or "pre")
+ * \param questions An array containing the questions
+ * \param parentId The id of the parent (formId + Applic + position of the application)
+ * \param text The type of the question. It shall be 'post' or 'pre'
+ */
+function refreshQuestionPreOrPost(questions, parentId, text){
+
 	for(var i = 0; i < questions.length; i++){
-		var formerId = questions[i].id;
-		var newId = parentId+"Q"+(i+1);
-		if(!(formerId === newId)){
-			questions[i].id = newId;
-			
-			var questionInfoWrapper = $(questions[i]).children()[0];
-
-			
-			
-			//Modifying the label and the input id
-			var children = $(questionInfoWrapper).children();
-			//id
-			var id = children[1].id = newId+children[1].id.slice(formerId.length, children[1].id.length);
-			//label
-			children[0].setAttribute("for", id);
-			children[0].innerHTML = "Question n°"+(i+1)+" : ";
-			//input
-			children[1].id = id;
-			
-
-			var options = $("#"+newId+" option");
+		var currentQ = questions[i];
 		
-			for(var y = 0; y < options.length; y++){
-				options[y].id = options[y].value+newId;
-			}
-			//Selected option
-			var value = $("#"+newId+" select");
-			if((value === "smiley") || (value == "thumbs")){
-				var items = $("#"+newId+" > .answerArea > div");
-				for(var y = 0; y < items.length; y++){
-					children = $(items[y]).children();
-					id = newId+children[1].id.slice(formerId.lengt, children[1].id.length);
-					//label
-					children[0].setAttribute("for", id);
-					//input
-					children[1].setAttribute("id", id);
-				}
-			}
-		}
+		console.log(currentQ);
+	//!< Maj id wrapper - IdQ
+		var newId = parentId + "Q" + (i+1) + text;
+		var prevId = currentQ.id;
+		currentQ.id = newId;
+		//!< div
+		var questionInfo = $(currentQ).children()[0];
+		
+		console.log(questionInfo);
+			//!< Maj label for idQ + "Name"
+		$(questionInfo).children()[0].setAttribute("for", newId+"Name");
+		$(questionInfo).children()[0].innerHTML = "Question "+text.capitalizeFirstLetter()+" n°"+(i+1)+" : ";
+		
+			//!< Maj input id idQ + "Name"
+		$("#"+prevId+"Name").attr("id", newId+"Name");
+		$("#"+prevId+"Name").attr("name", newId+"Name");
 
+		var option = $(questionInfo).find("select").children();
+		
+		for(var y = 0; y < option.length; y++){
+			option[y].id = $(option[y]).val()+newId;
+		}
+			//!< divCheckbox	
+		var divCheckbox = $(currentQ).find(".divCheckbox");
+		if($(divCheckbox).children().length > 0){
+					//!< Maj label box
+			$(divCheckbox).find("label")[0].setAttribute("for", "checkbox"+newId);
+					//!< Maj input box - "checkbox" + IdQ
+			$(divCheckbox).find("input")[0].setAttribute("id", "checkbox"+newId);
+			
+			var isCustom = "";
+			if($("#checkbox"+newId).is(':checked')){
+				//!< divCustomTitle
+					//!< If checked maj label custom
+				$(divCheckbox).find(".divCustomTitle label")[0].setAttribute("for", "titlecheckbox"+newId);
+					//!< If checked maj title custom - "titlecheckbox" + IdQ
+				$(divCheckbox).find(".divCustomTitle input")[0].setAttribute("id", "titlecheckbox"+newId);
+					//!< If checked maj id p - "msgcheckbox" + IdQ
+				$(divCheckbox).find(".divCustomTitle p")[0].setAttribute("id", "msgcheckbox"+newId);
+
+				isCustom = "custom";
+
+			}
+			//.answerArea
+				var answerArea = $($(currentQ).find(".answerArea")).children();
+					//!< foreach div
+				for(var y = 0; y < answerArea.length; y++){
+					var elem = answerArea[y];
+					//!< span - IdQ + value
+					var value = $(elem).find("span")[0].innerHTML;
+					$(elem).find("span")[0].setAttribute("id", newId+value);
+					//!< label - IdQ + value (ex smiley1)
+					$(elem).find("label")[0].setAttribute("for", isCustom+newId+value);
+					if(isCustom === "custom"){
+						
+						//!< If checked maj id input custom - custom + idQ + value
+							//!< If checked maj class input custon - fieldcheckbox + IdQ
+						$(elem).find("input")[0].setAttribute("id", isCustom+newId+value);
+						$(elem).find("input")[0].setAttribute("class", "fieldcheckbox"+newId);
+					}
+				}
+		}
 	}
 }
 
@@ -371,7 +392,6 @@ function addQuestion(event, parent, preOrPost) {
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
 
 	var applicNumber = application.parentNode.id.split("Applic")[1];
-	customTitleState[applicNumber][0].push(0);
 	
 	//!< Creation of the question wrapper
 	var qWrapper = document.createElement("div");
@@ -392,7 +412,7 @@ function addQuestion(event, parent, preOrPost) {
 			//!< The input of the application's name
 		var inputQuestion = document.createElement("input");
 			inputQuestion.type = "text";
-			inputQuestion.id= questionName+p+"name";
+			inputQuestion.id= questionName+p+"Name";
 			inputQuestion.name= questionName+"Name";
 			inputQuestion.placeholder="Do you like carrots ?";
 			questionInfoWrapper.appendChild(inputQuestion);	
@@ -424,7 +444,7 @@ function addQuestion(event, parent, preOrPost) {
 			var option = document.createElement('option');
 				option.setAttribute('required', 'required');
 				option.setAttribute('value', name);
-				option.setAttribute('id', name+questionName);
+				option.setAttribute('id', name+questionName+p);
 				option.innerHTML = name;
 				cWrapper.appendChild(option); 
 		}
@@ -511,8 +531,6 @@ function customQuestion(customCheckbox, answerArea){
 
 	if ($(customCheckbox).is(':checked'))  { // ------- CHECKED : creating fields, collapsing titles
 
-		customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
-
 		div = customCheckbox.parentNode; 
 
 
@@ -554,7 +572,6 @@ function customQuestion(customCheckbox, answerArea){
 
 	}else{									// ------- UNCHECKED : deleting all fields, setting visibility back for titles
 
-		customTitleState[numApp][prepost][numQuest-1] = 0; //setting to state "not custom"
 
 		div = customCheckbox.parentNode; 
 
@@ -854,7 +871,6 @@ function makeDraggbleApplication(event) {
 }
 /**
 *Check if the cutsomTitle is free in DB
-*upadate the customTitleState global array 
 *@event the event from the modified title field
 *
 */
@@ -879,8 +895,6 @@ function isCustomTitleFree(event){
 	if (title =="") { // if empty
 		msgZone.style.color = "red";
 		msgZone.innerHTML = "Title needed." 
-         console.log("pas de titre");         
-         customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
     }else{
 		$.post( //making async request to the serv
 			"index.php", //target url
@@ -895,13 +909,11 @@ function isCustomTitleFree(event){
 				console.log("free");					
 					msgZone.style.color = "green";
 					msgZone.innerHTML = "title available." 
-					customTitleState[numApp][prepost][numQuest-1] = 1; //setting to state "valid custom title"
 				}
 				
 				else { // if already existing : not available 
 					msgZone.style.color = "red";
 					msgZone.innerHTML = "Title already used." 
-					customTitleState[numApp][prepost][numQuest-1] = -1; //setting to state "invalid custom title or empty"
 				}
 			},
 			"json"

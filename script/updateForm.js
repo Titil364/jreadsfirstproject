@@ -17,7 +17,6 @@ function getFormId(){
  * \author Cyril Govin
  * \brief Delete a custom personnal information to the form and add it to the persoInfoToDelete tab. 
 	
-	
  * \param self The remove button
  */
 function deletePersonnalInformation(self){
@@ -479,121 +478,7 @@ function removeQuestion(button){
 	}
 	console.log(question);
 }
-/**
- * \author Cyril Govin
- * \brief  Update all the ID, name, class of the all the applications and all the questions. 
- */
-function refreshApplication(){
-	var application = $(".application");
-	var idForm = $(".formCss")[0].id;
-	for(var x = 0; x < application.length; x++){
-		var currentA = application[x];
-		var prevId = currentA.id;
-		var newId = idForm+"Applic"+x;
-		currentA.id = newId;
-		
-		//!< info - idA + "Info"
-		var infoA = $(currentA).children()[0];
-			infoA.id = newId+"Info";
-			//.appCreationTitle
-				//!< Maj title - label for - idA + "Name"
-				$(infoA).find("label")[0].setAttribute("for", newId+"Name");
-				//!< Maj title - input id + name - idA + "Name"
-				$("#"+prevId+"Name").attr("name", newId+"Name");
-				$("#"+prevId+"Name").attr("id", newId+"Name");
-			//!< div
-				//!< Maj desc - label for - idA + "Desc"
-				$(infoA).find("label")[1].setAttribute("for", newId+"Desc");
-				//!< Maj desc - textarea id + name - idA + "Desc
-				$("#"+prevId+"Desc").attr("name", newId+"Desc");
-				$("#"+prevId+"Desc").attr("id", newId+"Desc");
-			//!< div
-				//!< Maj img - label for - idA + "Img"
-				$(infoA).find("label")[2].setAttribute("for", newId+"Img");
-				//!< Maj img - input id + name - idA + "Img"
-				$("#"+prevId+"Img").attr("name", newId+"Img");
-				$("#"+prevId+"Img").attr("id", newId+"Img");
-			
 
-		refreshQuestion(currentA);
-	}
-}
-
-/**
- * \author Cyril Govin
- * \brief Update all the id, name, class of all the questions (pre then post) of an application
- * \param application The parent application of the questions
- */
-function refreshQuestion(application){
-	var parentId = application.id;
-	var preQuestions = $(application).find(".questionPre");
-	var postQuestions = $(application).find(".questionPost");
-	refreshQuestionPreOrPost(preQuestions, parentId, "pre");
-	refreshQuestionPreOrPost(postQuestions, parentId, "post");
-}
-/**
- * \author Cyril Govin
- * \brief Update all the id, name, class of all questions given in paramater using the parentId and the type ("post" or "pre")
- * \param questions An array containing the questions
- * \param parentId The id of the parent (formId + Applic + position of the application)
- * \param text The type of the question. It shall be 'post' or 'pre'
- */
-function refreshQuestionPreOrPost(questions, parentId, text){
-
-	for(var i = 0; i < questions.length; i++){
-		var currentQ = questions[i];
-		
-		console.log(currentQ);
-	//!< Maj id wrapper - IdQ
-		var newId = parentId + "Q" + (i+1) + text;
-		var prevId = currentQ.id;
-		currentQ.id = newId;
-		//!< div
-		var questionInfo = $(currentQ).children()[0];
-			//!< Maj label for idQ + "Name"
-		$(questionInfo).children()[0].setAttribute("for", newId+"Name");
-		$(questionInfo).children()[0].innerHTML = "Question "+text.capitalizeFirstLetter()+" n°"+(i+1)+" : ";
-		
-			//!< Maj input id idQ + "Name"
-		$("#"+prevId+"Name").attr("id", newId+"Name");
-		$("#"+prevId+"Name").attr("name", newId+"Name");
-			//!< divCheckbox
-		
-		var divCheckbox = $(currentQ).find(".divCheckbox");
-		if($(divCheckbox).children().length > 0){
-					//!< Maj label box
-			$(divCheckbox).find("label")[0].setAttribute("for", "checkbox"+newId);
-					//!< Maj input box - "checkbox" + IdQ
-			$(divCheckbox).find("input")[0].setAttribute("id", "checkbox"+newId);
-			if($("#checkbox"+newId).is(':checked')){
-				//!< divCustomTitle
-					//!< If checked maj label custom
-				$(divCheckbox).find(".divCustomTitle label")[0].setAttribute("for", "titlecheckbox"+newId);
-					//!< If checked maj title custom - "titlecheckbox" + IdQ
-				$(divCheckbox).find(".divCustomTitle input")[0].setAttribute("id", "titlecheckbox"+newId);
-					//!< If checked maj id p - "msgcheckbox" + IdQ
-				$(divCheckbox).find(".divCustomTitle p")[0].setAttribute("id", "msgcheckbox"+newId);
-
-			//.answerArea
-				var answerArea = $($(currentQ).find(".answerArea")).children();
-					//!< foreach div
-				for(var y = 0; y < answerArea.length; y++){
-					var elem = answerArea[y];
-					//!< span - IdQ + value
-					var value = $(elem).find("span")[0].innerHTML;
-					$(elem).find("span")[0].setAttribute("id", newId+value);
-					//!< label - IdQ + value (ex smiley1)
-					$(elem).find("label")[0].setAttribute("for", "custom"+newId+value);
-					//!< If checked maj id input custom - custom + idQ + value
-						//!< If checked maj class input custon - fieldcheckbox + IdQ
-					$(elem).find("input")[0].setAttribute("id", "custom"+newId+value);
-					$(elem).find("input")[0].setAttribute("class", "fieldcheckbox"+newId);
-				}
-
-			}
-		}
-	}
-}
 
 /** \author Cyril Govin
   *	\brief Append to the parent the child 
@@ -658,12 +543,25 @@ function extractData(){
 
 				customAns = [];	//!< defining an array
 				var title = $("#titlecheckbox"+qId)[0].value; //!< first value  = custom questionType title
+				if(title.trim() === ""){
+					alert("At least one custom title is empty. ");
+					return null;
+				}
+				
+				if($("#msgcheckbox"+idQ)[0].style.color === "red"){
+					alert("At least one custom title is already taken. ");
+					return null;
+				}
 				customAns.push(title);
 
 
 				var fieldList = $(".fieldcheckbox"+qId); //!< next are the fields by order 
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
+					if(fieldList[j].value.trim() === ""){	
+						alert("At least one custom answers is empty");
+						return null;
+					}
 				}
 			}
 			
@@ -682,12 +580,26 @@ function extractData(){
 
 				customAns = [];	//!< defining an array
 				var title = $("#titlecheckbox"+qId)[0].value; //!< first value  = custom questionType title
+				if(title.trim() === ""){
+					alert("At least one custom title is empty. ");
+					return null;
+				}	
+				
+				if($("#msgcheckbox"+idQ)[0].style.color === "red"){
+					alert("At least one custom title is already taken. ");
+					return null;
+				}
+				
 				customAns.push(title);
 
 
 				var fieldList = $(".fieldcheckbox"+qId); //!< next are the fields by order 
 				for(var j = 0; j<fieldList.length; j++){
 					customAns.push(fieldList[j].value);
+					if(fieldList[j].value.trim() === ""){	
+						alert("At least one custom answers is empty");
+						return null;
+					}
 				}
 
 			}
