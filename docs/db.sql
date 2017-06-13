@@ -300,8 +300,8 @@ INSERT INTO AnswerType VALUES(8, "smiley2", "smiley2image", 3);
 INSERT INTO AnswerType VALUES(9, "smiley3", "smiley3image", 3);
 INSERT INTO AnswerType VALUES(10, "smiley4", "smiley4image", 3);
 INSERT INTO AnswerType VALUES(11, "smiley5", "smiley5image", 3);
-INSERT INTO AnswerType VALUES(12, "yes", "", 4);
-INSERT INTO AnswerType VALUES(13, "no", "", 4);
+INSERT INTO AnswerType VALUES(12, "yes", "Oui", 4);
+INSERT INTO AnswerType VALUES(13, "no", "Non", 4);
 
 INSERT INTO Form VALUES("FOMM0MA", 'Eat or drink', "Me", 0, 0);
 
