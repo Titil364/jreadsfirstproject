@@ -173,11 +173,12 @@ class ControllerForm {
 			$formId = $_GET["id"];
 			$form = ModelForm::select($formId);
 			if(!$form){
-			$data["message"] = "The form doesn't exist. ";
-			$data["pagetitle"] = "Form error";
-			
-			ControllerDefault::message($data);
-			return null;
+				$data["message"] = "The form doesn't exist. ";
+				$data["pagetitle"] = "Form error";
+				
+				ControllerDefault::message($data);
+
+				return null;
 			}
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
 				$formName = $form->getFormName();
@@ -684,6 +685,7 @@ class ControllerForm {
 				$array[$i][3] = $v->getVisitorId();
 				$i++;
 			}
+			
 			require File::build_path(array('view', 'view.php'));
 		}else{
 			$data["message"] = "Please log in to have access to this action. ";
@@ -1640,7 +1642,7 @@ class ControllerForm {
                         shuffle($FS);
 				foreach($FS as $fs){
 					$alphabeta = $alphabet;
-					$name = split("/",$fs->getFSQuestionName());
+					$name = explode("/",$fs->getFSQuestionName());
 					$nameLeft = $name[0];
 					$nameRight = $name[1];
 					$fsPage.= '<tr class=\"row\">';

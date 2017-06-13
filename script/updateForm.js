@@ -79,9 +79,6 @@ function toDelete(self, tab){
  */
 function countApplications(){
 	var nb = $(".application").length;
-	for(var i = 0; i < nb; i++){
-		customTitleState.push([ [] , [] ]);
-	}
 	return nb;
 }
 /**
@@ -223,8 +220,6 @@ function addApplication(event){
 			});
 	
 	nbApplication++;
-
-	customTitleState.push([ [] , [] ]); //!<  1st : pre quest of app, 2 nde post quest
 }
 
 /**
@@ -247,7 +242,6 @@ function addQuestion(event, parent, preOrPost) {
 	var questionName = application.parentNode.id+"Q"+nbQuestions;
 
 	var applicNumber = application.parentNode.id.split("Applic")[1];
-	customTitleState[applicNumber][0].push(0);
 	
 	//!< Creation of the question wrapper
 	var qWrapper = document.createElement("div");

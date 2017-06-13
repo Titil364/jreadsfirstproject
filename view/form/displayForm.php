@@ -121,7 +121,7 @@
 							$questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
 							if($ret == $answerName){
-								$checked = "checked = \"checked\"";
+								$checked = "checked";
 							} else $checked = "disabled";
 							$id = "Applic".$i."question".$j.$answerName;
 							$name = "Applic".$i."question".$j;
@@ -313,7 +313,7 @@
 				for($i = 0; $i<$nbFS ;$i++){
 					$alphabeta = $alphabet;
 					$f = $FS[$randomFS[$i]-1];
-					$name = split("/",$f->getFSQuestionName());
+					$name = explode("/",$f->getFSQuestionName());
 					$nameLeft = $name[0];
 					$nameRight = $name[1];
 					foreach($FSFilled as $fsf){

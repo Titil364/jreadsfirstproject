@@ -491,7 +491,7 @@ class ControllerVisitor{
 		$appliComplete = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
 		foreach($appliComplete as $ac){
 			$data = array(
-				"applicationId" => $ac["applicationId"],
+				"applicationId" => $ac->getApplicationId(),
 				"visitorId" => $visitorId
 			);
 			$s = ModelApplicationDateComplete::select($data);

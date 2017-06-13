@@ -67,6 +67,7 @@
 						echo "</div>";
 					}else{
 						echo "<input class=\"shortcut\" type=\"radio\" name=\"$protectedQuestionId\" style=\"display:none\">";
+
 						foreach($ans_array as $ans){
 							//var_dump($ans);
 							$protectedImageName = htmlspecialchars($ans['answerTypeImage']);
@@ -156,7 +157,7 @@
 						for($i = 0; $i<$nbFS ;$i++){
 							$alphabeta = $alphabet;
 							$f = $FS[$randomFS[$i]-1];
-							$name = split("/",$f->getFSQuestionName());
+							$name = explode("/",$f->getFSQuestionName());
 							$nameLeft = $name[0];
 							$nameRight = $name[1];
 							foreach($FSFilled as $fsf){
