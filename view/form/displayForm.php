@@ -126,8 +126,13 @@
 							$id = "Applic".$i."question".$j.$answerName;
 							$name = "Applic".$i."question".$j;
 							echo '<div>';
-							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked $readonly>";
-							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
+							if($answerTypeId == '12' || $answerTypeId == '13'){
+								echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked $readonly>";
+								echo "<img src=\"media/$answerImage.png\" class=\"answerIcon\">";								
+							} else {
+								echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked $readonly>";
+								echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";
+							}
 							echo '</div>';
 						}
 						echo '</div>';
