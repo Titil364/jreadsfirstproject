@@ -177,6 +177,7 @@ class ControllerForm {
 				$data["pagetitle"] = "Form error";
 				
 				ControllerDefault::message($data);
+
 				return null;
 			}
 			if($_SESSION['nickname'] == $form->getUserNickname() || Session::is_admin()){
@@ -692,6 +693,7 @@ class ControllerForm {
 				$array[$i][3] = $v->getVisitorId();
 				$i++;
 			}
+			
 			require File::build_path(array('view', 'view.php'));
 		}else{
 			$data["message"] = "Please log in to have access to this action. ";
@@ -1649,7 +1651,7 @@ class ControllerForm {
 				for($i = 0; $i<$nbFS ;$i++){
 					$alphabeta = $alphabet;
 					$f2 = $FS[$randomFS[$i]-1];
-					$name = split("/",$f2->getFSQuestionName());
+					$name = explode("/",$f2->getFSQuestionName());
 					$nameLeft = $name[0];
 					$nameRight = $name[1];
 					$fsPage.= '<tr class=\"row\">';

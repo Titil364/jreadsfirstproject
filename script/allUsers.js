@@ -4,12 +4,17 @@ var deletedUsers = [];
  * \brief Delete an user from the database
  */
 function deleteUser(){
-	var children = this.parentNode.parentNode.getElementsByTagName("td"), s = children[0].innerHTML, f = children[1].innerHTML;
-	
+	var children = this.parentNode.parentNode.getElementsByTagName("td"),
+							 s = children[0].innerHTML, //The surname
+							  f = children[1].innerHTML; //The forname
+	//s
 
+	//Ask the user for confirmation
 	if(confirm("Do you really want to delete "+ s + " " + f + " ?")){
+		//Extracting the id of the user
 		var id = this.parentNode.parentNode.id;
-	
+		
+		//Sending a SYNCHRONUS XMLHTTP request to make sure the user has been removed
 		$.ajax({
 			type: 'GET',
 			url: "index.php",
@@ -22,7 +27,10 @@ function deleteUser(){
 			success: function(res){console.log(res)},
 			async:true
 		});
+		//Removing the tr 
 		$("#"+id).remove();
+		//Adding the id to an array (to cancel your choice) 
+		// NB : The cancel function hasn't been implemented yet
 		deletedUsers.push(id);
 	}
 }
@@ -63,6 +71,7 @@ function destroySessionUser(){
 		async:false
 	});
 }
+
 function init(){
 	$('select').on('change',function(){
 

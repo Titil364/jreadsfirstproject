@@ -11,7 +11,7 @@ function extractInformation(){
 	var info = [];
 	for(var i = 0; i < predef.length; i++){
 		info.push(predef[i].id);
-	}
+		}
 	
 	//!< Collection the custom information
 	var custom = $(".fieldInput");
@@ -141,7 +141,9 @@ function extractData(){
 			
 			var idQ = questionsPost[y].id;
 			//console.log(idQ);
-			var qPostLabel = $("#"+idQ+"name").val();
+			var qPostLabel = $("#"+idQ+"Name").val();
+			console.log(idQ);
+			console.log(qPostLabel);
 			if (qPostLabel === "") {
                 alert("At least one question has no name. Please check and add a name or delete the question");
 				return null;
@@ -180,7 +182,7 @@ function extractData(){
 			
 			qPost[i].push(new Question(idQ, qPostLabel, qType[qPostType], 0, customAns));
 		}
-	// }
+	 }
 
 	//!< Collecting the personnal information and the fs questions
 	var info = extractInformation();
@@ -284,7 +286,7 @@ function saveQuestion(event) {
 /**
  * \brief Initilize the page. 
 	
-	Required event are set up and an application is added. 
+ * Required event are set up and an application is added. 
  */
 function init(){
 	//Adding one application
@@ -292,6 +294,5 @@ function init(){
 	$("#submit").click(extractData);
 
 }
-
 
 $(init);

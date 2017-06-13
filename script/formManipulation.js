@@ -698,7 +698,7 @@ function makeLabelImage(name, value, imageAdr, parent){
 
 /**
  * \author Cyril Govin
- * \brief JSON function which ask to the database all the question types available for the user. 
+ * \brief JSON function which ask  the database all the question types available for the user. 
  
 	The types are put in qType as 'questionTypeName' => 'questionTypeId'
 	This function is invoked when the DOM is ready. 

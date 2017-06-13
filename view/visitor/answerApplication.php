@@ -67,6 +67,7 @@
 						echo "</div>";
 					}else{
 						echo "<input class=\"shortcut\" type=\"radio\" name=\"$protectedQuestionId\" style=\"display:none\">";
+
 						foreach($ans_array as $ans){
 							//var_dump($ans);
 							$protectedImageName = htmlspecialchars($ans['answerTypeImage']);
