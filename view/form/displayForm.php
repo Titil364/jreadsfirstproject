@@ -193,22 +193,32 @@
 						break;*/
 					default :
 						echo '<div class = "answerArea">';
+						//$answer est un tableau contenant toutes les réponses pour le visitorID en cours
 						foreach($answer as $a){
+							//Si la question qui est en train d'être affichée est dans le tableau answer
 							if($a->getQuestionId() ==$questionPost_array[$j]->getQuestionId()){
+								//La variable $ret prend la valeur de la réponse à la question
 								$ret = $a->getAnswer();
 							}
 						}
+						//answer_array est un tableau contenant toutes les réponses POSSIBLES à la question en cours
 						foreach($answers_array as $a){
+							//On récupère toutes les informations nécessaires à l'affichage de chaque réponse possible
 							$answerName = htmlspecialchars($a['answerTypeName']);
 							$answerImage = htmlspecialchars($a['answerTypeImage']);
 							$questionTypeId = htmlspecialchars($questionPost_array[$j]->getQuestionTypeId());
 							$answerTypeId = htmlspecialchars($a['answerTypeId']);
+							//Si l'une des réponse possible est équivalente à la variable ret
 							if($ret == $answerName){
+									//Alors la variable checked prendra la valeur checked
 									$checked = "checked = \"checked\"";
 								} else $checked = "disabled";
 							$id = "Applic".$i."question".$j.$answerName;
 							$name = "Applic".$i."question".$j;
+							//Affichage de la réponse possible en cours
 							echo '<div>';
+							//Toutes les réponses sont en readonly, et toutes prennent la variable checked qui vaut
+							//"checked" ou "disabled" selon les tests précédents 
 							echo "<input type =\"radio\" name=\"$name\" value =\"$answerName\" id=\"$id\" $checked readonly>";
 							echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
 							echo '</div>';

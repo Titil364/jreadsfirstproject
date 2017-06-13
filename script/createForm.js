@@ -206,21 +206,17 @@ function extractData(){
  */
 
 function send(f, a, qPre, qPost, i, fs) {
-
-	//console.log(JSON.stringify(a));
-	//console.log(JSON.stringify(q));
-	//normalement les données seront envoyés en post
 	$.post(
 		"index.php", // url
 		{
 			"action":"created",
 			"controller":"form",
 			"form":JSON.stringify(f),
-			"applications":JSON.stringify(a),
-			"questionsPre":JSON.stringify(qPre),
-			"questionsPost":JSON.stringify(qPost),
-			"information":JSON.stringify(i),
-			"FSQuestions":JSON.stringify(fs)
+			"applications":JSON.stringify(a), //Applications array
+			"questionsPre":JSON.stringify(qPre), //QuestionsPre array
+			"questionsPost":JSON.stringify(qPost), //QuestionsPost array
+			"information":JSON.stringify(i),	//Required information array
+			"FSQuestions":JSON.stringify(fs)	//FSquesions array
 		},  //data
 		function(res){ //callback
 				console.log("Le resultat = "+res);

@@ -444,12 +444,6 @@ class ControllerForm {
 			
 			$userNickname = $_SESSION['nickname'];
 			
-			/*
-			for($i = 0; $i < sizeof($a); $i++){
-				$formId = $formId . ucfirst(substr($a[$i]["name"], 0, 1));
-			}*/
-			
-			
 			$form = array(
 						"formName" => json_decode($_POST["form"], true),
 						"userNickname" => $userNickname,
@@ -474,9 +468,7 @@ class ControllerForm {
 						break;
 					}
 					//$q[$i] the array containing the question of the application $i
-					for($y = 0; $y < sizeof($qPre[$i]); $y++){
-
-                                                
+					for($y = 0; $y < sizeof($qPre[$i]); $y++){                                                
                                                 if(isset($qPre[$i][$y]["customAns"])){ 
                                                 // if the question has custom answers, saving them + corresponding new QuestionType
                                                     $customAns = $qPre[$i][$y]["customAns"];
@@ -687,7 +679,7 @@ class ControllerForm {
 			$array = array();
 			$i = 0;
 			foreach($visitor as $v){
-				$array[$i][0] = $v->getDateCompletePre();
+				$array[$i][0] = $v->getDateCompletePost();
 				$array[$i][1] = ModelInformation::getInformationByVisitorId($v->getVisitorId());
 				$array[$i][2] = $v->getVisitorSecretName();
 				$array[$i][3] = $v->getVisitorId();
@@ -1076,7 +1068,7 @@ class ControllerForm {
 
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
+            header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="'.basename($file).'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
@@ -1241,13 +1233,13 @@ class ControllerForm {
 					array_push($answersPost_array_list, []);
 					array_push($questionTypePost_list, []);
 					
+					$reponses = array();
 					for($j=0; $j < count($questions_arrayFromModel);$j++){
-						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
-											
-						$answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
 						
+						$qType = ModelQuestionType::select($questions_arrayFromModel[$j]->getQuestionTypeId());
+						$answersPost_array = ModelAnswerType::getAnswerTypeByQuestionId($qType->getQuestionTypeId());
 						array_push($answersPost_array_list[$i], $answersPost_array);
-						array_push($questionTypePost_list[$i], $qType);  
+						array_push($questionTypePost_list[$i], $qType);
 					}                
 				}
 			require File::build_path(array('view', 'view.php'));

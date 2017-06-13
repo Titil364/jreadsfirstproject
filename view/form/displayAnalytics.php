@@ -6,7 +6,7 @@
         echo '<div class="formCss">';
         echo "<h1> $formName </h1>";
 		echo "Answers completed for the from : ";
-		echo $completed;
+		echo '2'; //Problem
     
         echo "<h1>Pre Questions</h1>";
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());
@@ -60,18 +60,12 @@
 							echo "<textarea rows=\"5\" cols =\"50\"></textarea>";
 						}
 						else{
-							echo "<textarea rows=\"5\" cols =\"50\"readonly>";
-							foreach($answer as $a){
-								if($a->getQuestionId() ==$questionPre_array[$j]->getQuestionId()){
-									echo $a->getAnswer();
-								}
-							}
 						}
 						echo "</textarea>";
 						break;
 					default :
 						echo '<div class = "answerArea">';
-						foreach($answers_array as $a){							
+						foreach($answers_array as $a){
                             $answerName = htmlspecialchars($a['answerTypeName']);
                             $answerImage = htmlspecialchars($a['answerTypeImage']);
                             $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
@@ -82,7 +76,7 @@
                             echo '<div>';
                             echo '<div>';
 							$nb = 0;
-
+						
                             foreach($allAnswers[$qId] as $t){
 								if($t["answer"] == $answerName){
 									$nb = $t["nbAnswer"];
@@ -139,42 +133,43 @@
 		
 	for($j=0; $j < count($questionPost_array);$j++){
                         $k = $j+1;
-                        $name = "Applic".$i."Q".$k."pre";
+                        $name = "Applic".$i."Q".$k."post";
                         $qId = $formId.$name;
-                        $total = $allAnswers[$qId]["nb"];            
+                        $total = $allAnswers[$qId]["nb"];
 					//displaying questions
-				$idAppli = 'Applic'.$i.'Q'.$j;
-			echo '<div id="$idAppli" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
+			echo '<div id="Applic'.$i.'Q'.$j.'" class = "question">'; //question div, id example : "Applic0Q1" for app 0 question 1
 			echo "<h3> ";
 			echo htmlspecialchars($questionPost_array[$j]->getQuestionName());
-                        echo "    (Answers : ".$total." )";                        
+                        echo "    (Answers : ".$total." )";
 			echo " </h3>";
-	
-			
-			$qType = $questionTypePost_list[$i][$j]->getQuestionTypeName();
+			$qType = $questionTypePost_list[$i][$j];
+			//$answers_array = ModelAnswerType::getAnswerTypeByQuestionTypeId($qType->getQuestionTypeId());
 			$answers_array = $answersPost_array_list[$i][$j];
-
+			//diplaying answers
+			/*
+			foreach($answers_array as $a){
+				
+			}*/
 			if(!is_null($answers_array[0])){
 				switch ($answers_array[0]['answerTypeName']){
 					case "textarea":
-						echo "<textarea name=\"$idAppli\" rows=\"5\" cols =\"50\"></textarea>";
+						echo"TextArea, no Analytics available.";
+						echo "</textarea>";
 						break;
-					/*case "yes" or "no":
-						echo "<input type = \"radio\" name = \"yesno\" value = \"yes\"> Yes <br>";
-						echo "<input type = \"radio\" name = \"yesno\" value = \"no\"> No <br>";
-						break;*/
 					default :
 						echo '<div class = "answerArea">';
 						foreach($answers_array as $a){							
                             $answerName = htmlspecialchars($a['answerTypeName']);
                             $answerImage = htmlspecialchars($a['answerTypeImage']);
-                            $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
+                            $questionTypeId = htmlspecialchars($questionPost_array[$j]->getQuestionTypeId());
                             $answerTypeId = htmlspecialchars($a['answerTypeId']);
                             
-							$id = "Applic".$i."question".$j.$answerName;
+                            $id = "Applic".$i."question".$j.$answerName;
+
                             echo '<div>';
                             echo '<div>';
 							$nb = 0;
+							
                             foreach($allAnswers[$qId] as $t){
 								if($t["answer"] == $answerName){
 									$nb = $t["nbAnswer"];
@@ -183,8 +178,8 @@
                             }
 							echo $nb;
 							echo '</br>';
-							$percentage = ($total!=0)?($nb/$total*100):0; //to avoid division by 0 if nbdy answered
-							echo $percentage."%"; 
+							$percentage = ($total!=0)?($nb/$total*100):0; //to avoid division by 0 if nobody answered
+							echo $percentage."%";
                             echo '</div>';
                             echo "<label for=\"$id\"><img src=\"media/$answerImage.png\" class=\"answerIcon\">$answerName</label>";    
                             echo '</div>';								
@@ -194,6 +189,8 @@
 				}
 				
 			}
+			
+			
 		  echo '</div>'; //closing current question div  
 			
 		}

@@ -600,5 +600,25 @@ class ControllerVisitor{
 		}	
 		echo json_encode($return);
 	}
+	public static function sendEnd(){
+		$visitorId = $_POST['visitorId'];
+		
+		$data = array(
+			"visitorId" => $visitorId,
+			"dateCompletePost" => date('Y/m/d H:i:s')
+		);
+		$return = true;
+		if(!ModelVisitor::update($data)){
+			$return = false;
+		}	
+		echo json_encode($return);		
+	}
+	
+	public static function ended(){
+		$pagetitle = 'End of the form';
+		$controller = 'visitor';
+		$view = 'end';
+		require File::build_path(array('view','view.php'));
+	}
 }
 ?>
