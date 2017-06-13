@@ -1637,11 +1637,10 @@ class ControllerForm {
 			   </tr>
 			</thead>
 			<tbody>";
-			
-				for($i = 0; $i<$nbFS ;$i++){
+                        shuffle($FS);
+				foreach($FS as $fs){
 					$alphabeta = $alphabet;
-					$f2 = $FS[$randomFS[$i]-1];
-					$name = split("/",$f2->getFSQuestionName());
+					$name = split("/",$fs->getFSQuestionName());
 					$nameLeft = $name[0];
 					$nameRight = $name[1];
 					$fsPage.= '<tr class=\"row\">';
