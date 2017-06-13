@@ -1446,19 +1446,24 @@ class ControllerForm {
                         
                         //diplaying answers
                         if (!is_null($answers_array[0])) {
-                            switch ($answers_array[0]['answerTypeName']) {
+                            $answerTypeName = $answers_array[0]['answerTypeName'];
+                            switch ($answerTypeName){
                                 case "textarea":
 
                                     $currentPage.='<table style="width:100%"><tbody><tr><td class="textZone"></td></tr></tbody></table>';
                                     break;
                                 default :
                                     
+                                    $yesno = $answerTypeName=="yes"; //beacause we are looki,g at the first
+                                    
                                     $currentPage.='<table style="width:100%"><tbody><tr>'; //opening answers tab
                                     foreach ($answers_array as $a) {
                                         $currentPage.='<th>'; //opening answers case
                                         
-                                            $answerName = htmlspecialchars($a['answerTypeName']);
-                                            $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                                $answerName = htmlspecialchars($a['answerTypeName']);
+                                            if(!$yesno){ // yes/no don't have image
+                                                $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                            }
                                             $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
                                             $answerTypeId = htmlspecialchars($a['answerTypeId']);
                                             $id = "Applic" . $i . "question" . $j . $answerName;
@@ -1469,10 +1474,11 @@ class ControllerForm {
                                                     $currentPage.=$answerName; 
                                                 $currentPage.='</th></tr>'; //closing answers subcase
 
-                                                $currentPage.="<tr><th>"; //opening answers subcase
-                                                    $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\">"; 
-                                                $currentPage.='</th></tr>'; //closing answers subcase
-
+                                                if(!$yesno){
+                                                    $currentPage.="<tr><th>"; //opening answers subcase
+                                                        $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\" >"; 
+                                                    $currentPage.='</th></tr>'; //closing answers subcase
+                                                }
                                                 $currentPage.="<tr><th>"; //opening answers subcase
                                                     $currentPage.="<img src=\"media/radio.png\" class=\"answerIcon\">";  
                                                 $currentPage.='</th></tr>'; //closing answers subcase   
@@ -1506,19 +1512,22 @@ class ControllerForm {
                         $answers_array = $answersPost_array_list[$i][$j];
   
                         if (!is_null($answers_array[0])) {
-                            switch ($answers_array[0]['answerTypeName']) {
+                            $answerTypeName = $answers_array[0]['answerTypeName'];
+                            switch ($answerTypeName) {
                                 case "textarea":
-
-                                    $currentPage.="<br><br><br><br><br><br>";
+                                    $currentPage.='<table style="width:100%"><tbody><tr><td class="textZone"></td></tr></tbody></table>';
                                     break;
                                 default :
+                                    $yesno = $answerTypeName=="yes";
                                     
                                     $currentPage.='<table style="width:100%"><tbody><tr>'; //opening answers tab
                                     foreach ($answers_array as $a) {
                                         $currentPage.='<th>'; //opening answers case
-                                        
+                                            
                                             $answerName = htmlspecialchars($a['answerTypeName']);
-                                            $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                            if(!$yesno){ // yes/no don't have image
+                                                $answerImage = htmlspecialchars($a['answerTypeImage']);
+                                            }
                                             $questionTypeId = htmlspecialchars($questionPre_array[$j]->getQuestionTypeId());
                                             $answerTypeId = htmlspecialchars($a['answerTypeId']);
                                             $id = "Applic" . $i . "question" . $j . $answerName;
@@ -1528,11 +1537,12 @@ class ControllerForm {
                                                 $currentPage.='<tr><th style = "text-align : center">'; //opening answers subcase
                                                     $currentPage.=$answerName; 
                                                 $currentPage.='</th></tr>'; //closing answers subcase
-
-                                                $currentPage.="<tr><th>"; //opening answers subcase
-                                                    $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\" >"; 
-                                                $currentPage.='</th></tr>'; //closing answers subcase
-
+                                                
+                                                if(!$yesno){
+                                                    $currentPage.="<tr><th>"; //opening answers subcase
+                                                        $currentPage.="<img src=\"media/$answerImage.png\" class=\"answerIcon\" >"; 
+                                                    $currentPage.='</th></tr>'; //closing answers subcase
+                                                }
                                                 $currentPage.='<tr><th style = "">'; //opening answers subcase
                                                      $currentPage.="<img src=\"media/radio.png\" class=\"answerIcon\">";  
                                                 $currentPage.='</th></tr>'; //closing answers subcase   
