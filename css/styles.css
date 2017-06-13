@@ -123,11 +123,12 @@ main{
 #passwordVerif,#nicknameVerif{
 	font-size: 75%;
 }
-/*
+
+
 img{
-	max-height:112px;
-	max-width:112px;
-}*/
+	max-height:160px;
+	max-width:160px;
+}
 
 /* FOOTER */
 

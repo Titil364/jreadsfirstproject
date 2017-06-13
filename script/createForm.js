@@ -219,7 +219,7 @@ function send(f, a, qPre, qPost, i, fs) {
 			"FSQuestions":JSON.stringify(fs)	//FSquesions array
 		},  //data
 		function(res){ //callback
-				console.log("Le resultat = "+res);
+				//console.log("Le resultat = "+res);
 					//res is supposed to send the id of the form
 					//We need this form ID to save the image
 				if(res !== false){
@@ -243,7 +243,7 @@ function send(f, a, qPre, qPost, i, fs) {
 									data: form_data,                  
 									type: 'post',
 									success: function(result){
-											  //console.log(result);
+											 // console.log(result);
 											},
 									error: function(){
 											  console.log("Error while downloading the file. ");
@@ -253,7 +253,7 @@ function send(f, a, qPre, qPost, i, fs) {
 					}
 					alert("The form has been successfully registered ! (You will be redirected)");
 					$("#submit").unbind("click", extractData);
-					setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+					setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 2000);
 					
 				}else{
 					console.log("Error when saving the form. ");

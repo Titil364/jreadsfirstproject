@@ -26,8 +26,7 @@
 			//center pourra être remplacé par du css
 			echo "<center><legend>$protectedFormName</legend></center>";
 			
-			//Return to the previous page
-			echo "<a href=\"index.php?controller=visitor&action=read2&formId=$secureFormId&visitorId=$secureVisitorId\"><button id=\"return\">Return to the previous page</button></a>";
+
 			echo "<center><h1>$protectedApplicationName</h1></center>";
 			if(file_exists($img)){
 					echo "<img src =\"$img\" >";

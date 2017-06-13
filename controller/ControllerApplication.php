@@ -15,7 +15,7 @@ class ControllerApplication {
 			}else{
 				$folder = $_SESSION['nickname'];
 			}
-			var_dump($_FILES);
+			//var_dump("media/".$folder."/".$_FILES['file']['name']);
 			echo move_uploaded_file($_FILES['file']['tmp_name'], "media/".$folder."/".$_FILES['file']['name']);
 		}		
     }

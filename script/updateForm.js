@@ -322,12 +322,19 @@ function addEventDelete(){
 	$(document).on("change",".defaultInformationAlreadyChecked", function(self){
 		toDelete(self, persoInfoToDelete)
 	});
+	$(document).on("change",".removeButton", function(self){
+		toDelete(self, persoInfoToDelete)
+	});
 
 	$(document).on("change",".defaultFSQuestionAlreadyChecked", function(self){
 		toDelete(self, FSToDelete)
 	});
 	
-	
+	$(document).on("click",".removeButton", function(self){
+		removeMe(self);
+		var parent = self.currentTarget.parentNode;
+		deletedObject.push([parent, self.currentTarget]);
+	});
 	
 	
 	//<<focusin>> save the previous value
@@ -713,7 +720,7 @@ function send(form, a, q, pInfo, fs){
 					}
 					alert("The form has been successfully registered ! (You will be redirected)");
 					//$("#submit").unbind("click", extractData);
-					//!< setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+res; }, 3000);
+					//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+getFormId(); }, 2000);
 					
 				}else{
 					console.log("Error when saving the form. ");

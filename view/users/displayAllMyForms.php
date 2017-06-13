@@ -1,7 +1,7 @@
 <main>
     <div class="adminPage">
 	<table>
-	<caption>All of my delicious forms</caption>
+	<caption>All the existing forms</caption>
 
 	<thead>
        <tr>

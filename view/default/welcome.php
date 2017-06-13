@@ -5,7 +5,7 @@
 
 <main>
 	<div id="connect">
-		<h3>Please log yourself</h3>
+		<h3>Sign In</h3>
 		<button class="return">Return</button>
 		<form class="formWelcome" method="POST" action="index.php">
 			<fieldset>
@@ -41,7 +41,7 @@
 				<form class="formWelcome" method="GET" action="index.php">
 						<fieldset>
 								<legend>Please enter your Id : </legend>
-								<input type='hidden' name='action' value='read'>
+								<input type='hidden' name='action' value='answerApplication'>
 								<input type='hidden' name='controller' value='visitor'>
 								<div class="input">
 								</div>

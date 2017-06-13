@@ -298,7 +298,7 @@ class ControllerForm {
 						}
 					}
 				}
-				var_dump($appliToDelete);
+//				var_dump($appliToDelete);
 				
 
 				if($nbAppli > count($applications)){
@@ -685,7 +685,7 @@ class ControllerForm {
 				$array[$i][3] = $v->getVisitorId();
 				$i++;
 			}
-			
+			var_dump($visitor);
 			require File::build_path(array('view', 'view.php'));
 		}else{
 			$data["message"] = "Please log in to have access to this action. ";

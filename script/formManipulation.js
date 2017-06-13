@@ -792,7 +792,7 @@ function addFSQuestion(event) {
 		
 		//Add the event for removing the application
 			removeApplicationButton.addEventListener("click", function(event){
-				removeMe(event, wrapperv);
+				removeMe(event, wrapper);
 			});
             
    //Add fieldset to thecodex

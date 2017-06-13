@@ -197,7 +197,7 @@ class ModelVisitor extends Model{
         $appDate_array = ModelApplicationDateComplete::getApplicationDateCompleteByVisitorId($visitorId);
         foreach ($appDate_array as $appDate){
 
-            $applicationId = $appDate['applicationId'];
+            $applicationId = $appDate->getApplicationId();
 			$data = array(
 				"applicationId" => $applicationId,
 				"visitorId" => $visitorId

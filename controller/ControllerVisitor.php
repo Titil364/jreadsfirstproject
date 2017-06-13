@@ -17,9 +17,10 @@ class ControllerVisitor{
 		
 		$visitorId = $_GET['visitorId'];
 		$visitor = ModelVisitor::select($visitorId);
+		$done = 0;
 		
 		if(!$visitor){
-			$data["message"] = "Your id doesn't exist. Please try make sure your id is valid. ";
+			$data["message"] = "Your id doesn't exist. Please make sure your id is valid. ";
 			$data["pagetitle"] = "Read form error";
 			
 			ControllerDefault::message($data);
@@ -144,7 +145,7 @@ class ControllerVisitor{
 				$assoc_array = ModelAssocFormPI::getAssocFormPIByFormId($formId); //get associations Form PersonnalInformation
 				foreach ($assoc_array as $assoc){
 					$perso_inf_id = $assoc->getPersonnalInformationName();
-					$perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Asooctiation $assoc
+					$perso_inf = ModelPersonnalInformation::select($perso_inf_id); //get PersonnalInformation of Assoctiation $assoc
 					
 					array_push($field_array, $perso_inf);					
 				}
@@ -200,7 +201,9 @@ class ControllerVisitor{
 				$view='lastPage';
 				$controller = 'visitor';
 			} //Put a default view if form is not available yet
-
+			
+			echo $view;
+			echo $pre;
             require File::build_path(array('view','view.php'));
 		}
     }
@@ -395,19 +398,9 @@ class ControllerVisitor{
 	}
 	
 	public static function answerApplication(){
-		if(!isset($_GET['visitorId']) || !isset($_GET['formId'])){
+		if(!isset($_GET['visitorId']) && !isset($_GET['formId'])){
 			$data["message"] = "There are not enough information. ";
 			$data["pagetitle"] = "Information missing";
-			
-			ControllerDefault::message($data);
-			return null;
-		}
-		
-		$formId = $_GET['formId'];
-		$f = ModelForm::select($formId);
-		if(!$f){
-			$data["message"] = "The form doesn't exist. ";
-			$data["pagetitle"] = "Unknown form";
 			
 			ControllerDefault::message($data);
 			return null;
@@ -423,6 +416,21 @@ class ControllerVisitor{
 			ControllerDefault::message($data);
 			return null;	
 		}
+		if(isset($_GET['formId'])){
+			$formId = $_GET['formId'];
+			$f = ModelForm::select($formId);
+			if(!$f){
+				$data["message"] = "The form doesn't exist. ";
+				$data["pagetitle"] = "Unknown form";
+				
+				ControllerDefault::message($data);
+				return null;
+			}
+		}else{
+			$formId = $visitor->getFormId();
+			$f = ModelForm::select($formId);
+		}
+
 		if($visitor->getFormId() != $formId){
 			$data["message"] = "The visitor doesn't belong to this form";
 			$data["pagetitle"] = "Wrong form";
@@ -432,7 +440,7 @@ class ControllerVisitor{
 		}
 		
 		
-		$application_array  = ModelApplication::getApplicationByFormId($f->getFormID());
+		$application_array  = ModelApplication::getApplicationByFormId($visitor->getFormId());
 		
 		$infoEmpty = false;
 		$info = ModelInformation::getInformationByVisitorId($visitorId);

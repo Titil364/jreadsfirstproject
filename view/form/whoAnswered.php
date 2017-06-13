@@ -4,7 +4,7 @@
 	</div>
 
 	<table>
-	<caption>All my delicious answers</caption>
+	<caption>All answers</caption>
 
 <?php
 	
@@ -24,7 +24,6 @@
 	else{
 //BODY
 		
-				
 		
 		echo "<thead>";
 		echo "<tr>";
@@ -37,9 +36,9 @@
 		echo "</tr>";
 		echo "<tbody>";
 		$i = 0;
-		foreach($visitor as $f){
+		foreach($visitor as $s){
 			$sName = $array[$i][2];
-			if($sName !== null){
+			if($sName != null){
 				$date = $array[$i][0];
 				echo "<tr>";			
 				echo "<td>".$date."</td>";
@@ -49,11 +48,11 @@
 					$secure = htmlspecialchars ($a->getInformationName());
 					echo "<td>$secure</td>";
 				}
-				$visitorId = $f->getVisitorId();
+				$visitorId = $s->getVisitorId();
 				echo "<td><a href=\""."index.php?controller=form&action=readAnswer&formId=$formId&visitorId=$visitorId\">Answer</a></td>";
 				echo "</tr>";
-				$i++;
 			}
+			$i++;
 		}
 		echo "</tbody>";
 //FOOTER
