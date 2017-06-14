@@ -156,7 +156,7 @@ function extractData(){
 			if ($("#checkbox"+idQ).is(":checked")){
 
 				customAns = [];
-				var title = $("#titlecheckbox"+idQ).value;
+				var title = $("#titlecheckbox"+idQ).val();
 				if(title.trim() === ""){
 					alert("At least one custom title is empty. ");
 					return null;

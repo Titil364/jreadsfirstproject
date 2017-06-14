@@ -71,13 +71,13 @@
 							//var_dump($ans);
 							$protectedImageName = htmlspecialchars($ans['answerTypeImage']);
 							$protectedName = htmlspecialchars($ans['answerTypeName']);
-							
+							$cacher = ($protectedName == "yes" || $protectedName == "no"?"none":"block");
 							$protectedAnswerId = $protectedQuestionId . $protectedName;
 							$checked = ($visitorAnswers[$i]->getAnswer()==$ans['answerTypeName']?"checked":"");
 							echo "<div>";
 								echo "<input type=\"radio\" name=\"$protectedQuestionId\" value=\"$protectedName\" id=\"$protectedAnswerId\" $checked>";
 								echo "<label for=\"$protectedAnswerId\">";
-								echo "<img src=\"media/$protectedImageName.png\" class=\"answerIcon\"><div style=\"text-align:center\">$protectedName</div></label>";
+								echo "<img src=\"media/$protectedImageName.png\" class=\"answerIcon\"><div style=\"text-align:center;display:$cacher\">$protectedName</div></label>";
 							echo "</div>";
 						}
 					}

@@ -210,6 +210,7 @@ function removeMe(event, me){
 	var inputChild = me.getElementsByTagName("input")[0];
 	var parent = me.parentElement;
 	var meClassName = me.className.split(" ");
+			console.log(meClassName);
 	
 	if(meClassName[0] === "application"){
 		if(!(inputChild.value=="") || $(me).children().length > 1){
@@ -223,8 +224,9 @@ function removeMe(event, me){
 
 		refreshApplication();
 	}
-	else if(meClassName[0] === "question"){
+	else if(meClassName[0] === "questionPre" || meClassName[0] === "questionPost"){
 		parent.removeChild(me);
+
 		refreshQuestion(parent);
 	}
 	else{
@@ -799,7 +801,7 @@ function addFSQuestion(event) {
     var customInfo = document.getElementById("customQuestion");
 		customInfo.appendChild(wrapper);
 }
-
+/*
 
 //Changement de l'ordre des questions
 //Drag and drop to switch
@@ -868,7 +870,7 @@ function makeDraggbleApplication(event) {
 			refreshApplication();
 		}
 	});
-}
+}*/
 /**
 *Check if the cutsomTitle is free in DB
 *@event the event from the modified title field
@@ -931,8 +933,8 @@ function isCustomTitleFree(event){
 function init(){
 	answersPlaceholder();
 	document.getElementById("addApplication").addEventListener("click", addApplication);
-	document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
-	document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
+	//document.getElementById("makeMoveableQuestion").addEventListener("click",makeDraggbleQuestion);
+	//document.getElementById("makeMoveableApplication").addEventListener("click",makeDraggbleApplication);
 	document.getElementById("addField").addEventListener("click",addField);
 	document.getElementById("addFSQuestion").addEventListener("click",addFSQuestion);
 

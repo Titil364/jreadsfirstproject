@@ -5,8 +5,6 @@
         $formName = htmlspecialchars($f->getFormName());
         echo '<div class="formCss">';
         echo "<h1> $formName </h1>";
-		echo "Answers completed for the from : ";
-		echo '2'; //Problem
     
         echo "<h1>Pre Questions</h1>";
 	//$task_array  = ModelApplication::getApplicationByFormId($f->getFormID());

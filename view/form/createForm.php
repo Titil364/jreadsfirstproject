@@ -64,8 +64,6 @@
 			<div id="applications">
 				<div>
 					<button type="button" id="addApplication">Add a new Application</button>
-					<button type="button" id="makeMoveableApplication">Make applications moveable</button>
-					<button type="button" id="makeMoveableQuestion">Make questions moveable</button>
 				</div>
 				<?php 
 				if(!$create){

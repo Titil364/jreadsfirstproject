@@ -719,8 +719,8 @@ function send(form, a, q, pInfo, fs){
 						}
 					}
 					alert("The form has been successfully registered ! (You will be redirected)");
-					//$("#submit").unbind("click", extractData);
-					//setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+getFormId(); }, 2000);
+					$("#submit").unbind("click", extractData);
+					setTimeout(function(){ window.location="index.php?controller=form&action=read&id="+getFormId(); }, 2000);
 					
 				}else{
 					console.log("Error when saving the form. ");

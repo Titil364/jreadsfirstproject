@@ -67,7 +67,7 @@ class ModelForm extends Model{
         }
     }
 	
-	public function getApplicationNumberByFormId($formId){
+	public static function getApplicationNumberByFormId($formId){
 		try{
 			$sql = "SELECT count(*) FROM Application WHERE Application.formId=:formId";
 			$prep = Model::$pdo->prepare($sql);
